@@ -13,11 +13,15 @@
 import * as B from './basket.js';
 import * as C from './checkout.js';
 import * as S from './stripe.js';
+import * as G from './basket-staging-gallery.js';
 
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const eur = c => c == null ? '—' : '€' + (c / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const nonce = () => [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2, '0')).join('');
 const gallery = env => env.GALLERY_ORIGIN || 'https://plotnua.ie';
+/* STAGING ONLY: synthetic artwork pages served by this Worker so testers can browse, add to a basket and pay in Stripe TEST
+   mode. Never in production or live mode: all three conditions must hold. */
+export const stagingGallery = env => env.STAGING_GALLERY === 'true' && ['staging', 'local'].includes(env.ENVIRONMENT) && (() => { const m = S.stripeMode(env); return m.ok && !m.live; })();
 
 function headers(env, n, { stripe = false } = {}) {
   const csp = ["default-src 'none'", `script-src 'nonce-${n}'${stripe ? ' https://js.stripe.com' : ''}`, `connect-src 'self'${stripe ? ' https://api.stripe.com' : ''}`,
@@ -66,22 +70,28 @@ label{display:block;font-size:14px;color:var(--stone);margin:12px 0 0}input[type
 .steps{list-style:none;padding:0;margin:14px 0 0;font-size:14.5px;color:var(--lime)}.steps li{padding:6px 0 6px 28px;position:relative}.steps li:before{content:attr(data-n);position:absolute;left:0;top:6px;width:20px;height:20px;border-radius:50%;border:1px solid var(--line-2);font-size:12px;text-align:center;line-height:18px;color:var(--stone)}
 .state{display:inline-block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--stone)}
 .state.captured,.state.paid{color:#d6ecd8;border-color:#4d6b51}.state.declined,.state.failed{color:#f3ddd6;border-color:#7a5a52}.state.action_required{color:#f2e6c8;border-color:#7a6a45}
-.empty{padding:40px 0;color:var(--stone)}footer{border-top:1px solid var(--line);margin-top:56px;padding-top:20px;font-size:13.5px;color:var(--mute)}
+.empty{padding:40px 0;color:var(--stone)}
+.item.st{grid-template-columns:minmax(0,1fr) auto}.btn.inl{width:auto;max-width:100%;white-space:normal;text-align:center;line-height:1.3}
+@media (max-width:560px){.item.st{grid-template-columns:1fr;gap:8px}.item.st .price{grid-column:1;text-align:left;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.item.st .price .d{display:inline}.btn.inl{width:100%}
+.top .in{flex-wrap:wrap;row-gap:6px}.brand small{display:none}}footer{border-top:1px solid var(--line);margin-top:56px;padding-top:20px;font-size:13.5px;color:var(--mute)}
 </style>`;
 const TEST_BANNER = '<p class="note test"><strong>Test mode.</strong> This basket runs in Stripe test mode. No real payment can be taken and no artwork is sold. Use Stripe’s test card 4242 4242 4242 4242.</p>';
-const banner = env => { const m = S.stripeMode(env); return m.ok && m.live ? '' : TEST_BANNER; };
+const banner = env => { const m = S.stripeMode(env); return (m.ok && m.live) || stagingGallery(env) ? '' : TEST_BANNER; };   // staging shows its own fuller note
 function page(env, title, body, { status = 200, script = '', stripe = false } = {}) {
   const n = nonce();
   return new Response(`<!DOCTYPE html><html lang="en-IE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
 <title>${esc(title)} · PlotArt</title>${STYLE}</head><body>
-<header class="top"><div class="in"><a class="brand" href="${esc(gallery(env))}/plotart/">PlotArt<small>Artists’ Gallery</small></a><a class="small" href="${esc(gallery(env))}/plotart/gallery/">Continue browsing</a></div></header>
+<header class="top"><div class="in"><a class="brand" href="${stagingGallery(env) ? '/gallery' : esc(gallery(env)) + '/plotart/'}">PlotArt<small>Artists’ Gallery${stagingGallery(env) ? ' · staging' : ''}</small></a><span class="small"><a href="${stagingGallery(env) ? '/gallery' : esc(gallery(env)) + '/plotart/gallery/'}">Continue browsing</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/basket">Basket</a></span></div></header>
+${stagingGallery(env) ? '<div class="wrap" style="padding-bottom:0"><p class="note test" style="margin:0"><strong>Private staging.</strong> Synthetic artists and artworks, Stripe test mode. No real payment is taken and nothing is sold. Card <strong>4242 4242 4242 4242</strong> pays; <strong>4000 0000 0000 0341</strong> is declined; <strong>4000 0027 6000 3184</strong> asks for a bank check. Any future expiry, any CVC.</p></div>' : ''}
 <main class="wrap">${body}<footer>Each artwork is sold by its artist. PlotArt introduces buyers to artists and provides this checkout; PlotArt is not the seller and does not hold your payment. Questions: <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></footer></main>
 ${stripe ? '<script src="https://js.stripe.com/v3/"></script>' : ''}${script ? `<script nonce="${n}">${script}</script>` : ''}</body></html>`, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', ...headers(env, n, { stripe }) } });
 }
 const json = (env, o, status = 200, extra = {}) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', ...extra } });
 
 /* ---------------------------------------------------------------- the basket page (client: localStorage list of artwork ids) */
-const IMG = '^https://plotnua\\.ie/plotart/artists/[a-z0-9-]{1,80}/img/[A-Za-z0-9._-]{1,120}$';
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+// images the basket may show: the gallery's published artwork images, and (staging only) the synthetic staging images
+const IMG = env => `^${reEsc(gallery(env))}/(plotart/artists/[a-z0-9-]{1,80}/img/[A-Za-z0-9._-]{1,120}${stagingGallery(env) ? '|staging-img/[A-Za-z0-9_-]{1,64}\\.svg' : ''})$`;
 function basketPage(env) {
   const counties = B.COUNTIES.map(c => `<option>${esc(c)}</option>`).join('');
   const body = `${banner(env)}<p class="eyebrow">Your basket</p><h1>Original works, one checkout</h1>
@@ -105,7 +115,7 @@ function basketPage(env) {
 <p id="err" class="note err" role="alert" hidden></p><button class="btn" type="submit" id="pay">Continue to secure payment</button></form>
 <p id="closed" class="note" hidden>Online purchase is not open at the moment. You can enquire about any artwork from its page.</p></aside></div>`;
   const script = `(function(){'use strict';
-var KEY='pa-basket-v1',IMG=new RegExp(${JSON.stringify(IMG)}),MAX=10;
+var KEY='pa-basket-v1',IMG=new RegExp(${JSON.stringify(IMG(env))}),MAX=10;
 function load(){try{var v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v.filter(function(x){return x&&typeof x.id==='string'}).slice(0,MAX):[]}catch(e){return[]}}
 function save(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}}
 var list=load(),q=new URLSearchParams(location.search),add=q.get('add');
@@ -149,10 +159,10 @@ refresh();})();`;
 /* ---------------------------------------------------------------- the basket's status, per artist payment */
 function statusPage(env, token, v, msg = null) {
   const pending = ['open', 'authorising', 'capturing'].includes(v.status);
-  const rows = v.lines.map(l => `<article class="item" style="grid-template-columns:minmax(0,1fr) auto"><div><h3>${esc(l.title || 'Original artwork')}</h3>
+  const rows = v.lines.map(l => `<article class="item st"><div><h3>${esc(l.title || 'Original artwork')}</h3>
 <p class="by">Sold by ${esc(l.artist)}${l.seller && l.seller !== l.artist ? ` (${esc(l.seller)})` : ''} · order ${esc(l.order)}</p>
 <p class="meta">${eur(l.artwork_cents)} + ${eur(l.delivery_cents)} delivery${l.delivery_window ? ` · delivery ${esc(l.delivery_window)}` : ''}</p>
-${l.action ? `<p><a class="btn" style="width:auto" href="/b/${esc(token)}/authenticate/${esc(l.order)}">Confirm the payment to ${esc(l.artist)}</a></p>` : ''}
+${l.action ? `<p><a class="btn inl" href="/b/${esc(token)}/authenticate/${esc(l.order)}">Confirm the payment to ${esc(l.artist)}</a></p>` : ''}
 ${l.confirmation ? `<p class="small"><a href="/b/${esc(token)}/confirmation/${esc(l.order)}">Your purchase confirmation from ${esc(l.artist)}</a> (save or print it)</p>` : ''}</div>
 <div class="price">${eur(l.total_cents)}<span class="d"><span class="state ${esc(l.state)}">${esc(l.state_text)}</span></span></div></article>`).join('');
   const body = `${banner(env)}<p class="eyebrow">Basket ${esc(v.reference)}</p><h1>${v.paid ? 'Thank you' : v.status === 'action_required' ? 'One more step' : v.ended ? 'Not completed' : 'Confirming your payment'}</h1>
@@ -181,6 +191,7 @@ fetch(${JSON.stringify(`/b/${token}/continue`)},{method:'POST',credentials:'same
 export async function handle(req, env, url) {
   const p = url.pathname, m = req.method;
   let mm;
+  if (stagingGallery(env) && m === 'GET') { const r = await G.route(env, url, { page, esc, eur, banner }); if (r) return r; }
   if (p === '/basket' && m === 'GET') {
     if (!(await B.installed(env))) return page(env, 'Not available', '<h1>Not available</h1><p>Online purchase is not available.</p>', { status: 404 });
     return basketPage(env);

@@ -1,0 +1,129 @@
+# PlotArt · multi-artist basket · PRIVATE STAGING (prepared 21 Nov 2026). Stripe TEST mode only. NEVER production.
+# Started ONLY by a change to worker/plotart-studio/staging/basket-staging-request.json on plotart/multi-artist-basket, and
+# every run waits for the founder's Approve on the "checkout-test" environment. The request file names ONE mode:
+#   plan       read only: variables/secrets present and well formed, token status, what exists, dry-run build of both Workers
+#   create     the staging D1 database (weur) and the three Access applications, if absent (nothing existing is changed)
+#   db_setup   EMPTY staging database only: schema.sql + 0013 + PROPOSED 0019 + the synthetic seed, then verify
+#   deploy     both staging Workers (rendered configs naming only the staging database), their secrets, outside check
+# Touches only: D1 plotart-basket-staging; Workers plotart-basket-staging, plotart-basket-staging-studio; the three
+# "PlotArt basket staging" Access apps. Production Workers, databases, secrets and the existing TEST Workers are never named.
+name: PlotArt basket private staging
+run-name: "Basket staging · ${{ github.sha }}"
+on:
+  push:
+    branches: [plotart/multi-artist-basket]
+    paths: [worker/plotart-studio/staging/basket-staging-request.json]
+permissions:
+  contents: read
+concurrency:
+  group: plotart-basket-staging
+  cancel-in-progress: false
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    environment: checkout-test
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      BASKET_STAGING_CF_TOKEN: ${{ secrets.BASKET_STAGING_CF_TOKEN }}
+      CHECKOUT_TEST_ACCESS_TOKEN: ${{ secrets.CHECKOUT_TEST_ACCESS_TOKEN }}
+      CHECKOUT_TEST_FOUNDER_EMAILS: ${{ secrets.CHECKOUT_TEST_FOUNDER_EMAILS }}
+      BASKET_STAGING_TESTER_EMAILS: ${{ secrets.BASKET_STAGING_TESTER_EMAILS }}
+      BASKET_STAGING_D1_DATABASE_ID: ${{ vars.BASKET_STAGING_D1_DATABASE_ID }}
+      ORIGIN_VAR: ${{ vars.CHECKOUT_TEST_ORIGIN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guards (branch, mode, names)
+        id: g
+        run: |
+          set -euo pipefail
+          [ "${{ github.ref }}" = refs/heads/plotart/multi-artist-basket ] || { echo "REFUSED: staging runs only from plotart/multi-artist-basket"; exit 1; }
+          MODE=$(node -e 'const j=JSON.parse(require("fs").readFileSync("worker/plotart-studio/staging/basket-staging-request.json","utf8"));process.stdout.write(String(j.mode||""))')
+          case "$MODE" in plan|create|db_setup|deploy) ;; *) echo "REFUSED: unknown mode"; exit 1;; esac
+          SUB=$(printf '%s' "$ORIGIN_VAR" | sed -nE 's#^https://[a-z0-9-]+\.([a-z0-9-]+)\.workers\.dev/?$#\1#p')
+          [ -n "$SUB" ] || { echo "REFUSED: CHECKOUT_TEST_ORIGIN does not name the workers.dev subdomain"; exit 1; }
+          for f in worker/plotart-studio/wrangler.basket-staging.toml worker/plotart-studio/wrangler.basket-staging-studio.toml; do
+            grep -q '^database_name = "plotart-basket-staging"$' "$f" && ! grep -qE 'plotart-studio"|plotart-checkout-test"|CHECKOUT_LIVE|ENVIRONMENT = "production"' "$f" || { echo "REFUSED: $f must name only the staging database"; exit 1; }
+          done
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"; echo "sub=$SUB" >> "$GITHUB_OUTPUT"
+          echo "### Basket staging · $MODE" >> "$GITHUB_STEP_SUMMARY"
+      - name: Cloudflare checks (plan) or creation (create)
+        if: ${{ steps.g.outputs.mode == 'plan' || steps.g.outputs.mode == 'create' }}
+        env:
+          WORKERS_SUBDOMAIN: ${{ steps.g.outputs.sub }}
+        run: python3 atlas-tools/release/studio/basket-staging.py "${{ steps.g.outputs.mode }}"
+      - name: Build both staging Workers with the TEST ONLY texts (dry run; nothing sent)
+        working-directory: worker/plotart-studio
+        env:
+          CHECKOUT_TARGET: test
+          PAYMENT_TERMS_DIR: agreements/payment-test
+        run: |
+          set -euo pipefail
+          node build-assets.mjs > /dev/null
+          grep -q PA-PAY-TEST-01 src/payment-terms.js || { echo "REFUSED: not built with the TEST texts"; exit 1; }
+          for c in wrangler.basket-staging.toml wrangler.basket-staging-studio.toml; do
+            npx --yes wrangler@4.150.0 deploy --config "$c" --dry-run --outdir "$RUNNER_TEMP/build-$c" > "$RUNNER_TEMP/w.log" 2>&1 || { python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$RUNNER_TEMP/w.log"; exit 1; }
+            echo "  PASS  $c builds"
+          done
+      - name: Staging database · gate (empty), schema + 0013 + 0019 + synthetic seed, verify
+        if: ${{ steps.g.outputs.mode == 'db_setup' }}
+        env:
+          WORKERS_SUBDOMAIN: ${{ steps.g.outputs.sub }}
+        run: |
+          set -uo pipefail
+          W="$GITHUB_WORKSPACE/worker/plotart-studio"; P="$GITHUB_WORKSPACE/atlas-tools/release/studio/basket-staging.py"; T="$RUNNER_TEMP/db"; mkdir -p "$T"
+          python3 "$P" db_gate || { echo "STOPPED: gate refused; nothing applied"; exit 1; }
+          node "$W/test/basket-staging-seed.mjs" --target plotart-basket-staging > "$T/seed.sql" || exit 1
+          printf 'name = "plotart-basket-staging-db"\ncompatibility_date = "2026-08-01"\n[[d1_databases]]\nbinding = "DB"\ndatabase_name = "plotart-basket-staging"\ndatabase_id = "%s"\n' "$BASKET_STAGING_D1_DATABASE_ID" > "$T/wrangler.toml"
+          export CLOUDFLARE_API_TOKEN="$BASKET_STAGING_CF_TOKEN"
+          for f in "$W/schema.sql" "$W/migrations/0013_gallery_artist_agreement_text.sql" "$W/migrations/0019_multi_artist_basket.sql" "$T/seed.sql"; do
+            (cd "$T" && npx --yes wrangler@4.150.0 d1 execute plotart-basket-staging --remote --config "$T/wrangler.toml" --file "$f" -y > "$T/out.log" 2>&1) \
+              && echo "  PASS  applied $(basename "$f") to plotart-basket-staging" \
+              || { python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$T/out.log"; echo "STOPPED at $(basename "$f") (staging database only)"; exit 1; }
+          done
+          python3 "$P" db_verify
+      - name: Deploy both staging Workers, write their secrets, check from outside
+        if: ${{ steps.g.outputs.mode == 'deploy' }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.BASKET_STAGING_CF_TOKEN }}
+          STRIPE_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
+          WH_CONNECT: ${{ secrets.BASKET_STAGING_WEBHOOK_SECRET }}
+          WH_PLATFORM: ${{ secrets.BASKET_STAGING_WEBHOOK_SECRET_PLATFORM }}
+          PK: ${{ vars.BASKET_STAGING_STRIPE_PUBLISHABLE_KEY }}
+          TEAM: ${{ vars.CHECKOUT_TEST_ACCESS_TEAM }}
+          STUDIO_AUD: ${{ vars.BASKET_STAGING_STUDIO_ACCESS_AUD }}
+          SUB: ${{ steps.g.outputs.sub }}
+        run: |
+          set -euo pipefail
+          [[ "$STRIPE_KEY" =~ ^(sk|rk)_test_[A-Za-z0-9]+$ ]] || { echo "REFUSED: the Stripe key is not a TEST key"; exit 1; }
+          [[ "$PK" =~ ^pk_test_[A-Za-z0-9]+$ ]] || { echo "REFUSED: BASKET_STAGING_STRIPE_PUBLISHABLE_KEY must be pk_test_"; exit 1; }
+          [[ "$WH_CONNECT" == whsec_* && "$WH_PLATFORM" == whsec_* ]] || { echo "REFUSED: both staging webhook secrets are needed"; exit 1; }
+          [[ "$BASKET_STAGING_D1_DATABASE_ID" =~ ^[0-9a-f-]{36}$ && -n "$STUDIO_AUD" && -n "$TEAM" ]] || { echo "REFUSED: staging variables missing"; exit 1; }
+          ORIGIN="https://plotart-basket-staging.$SUB.workers.dev"
+          for c in wrangler.basket-staging.toml wrangler.basket-staging-studio.toml; do
+            sed -i -e "s#__STAGING_ORIGIN__#$ORIGIN#g" -e "s#__STAGING_D1_DATABASE_ID__#$BASKET_STAGING_D1_DATABASE_ID#g" -e "s#__STRIPE_TEST_PUBLISHABLE_KEY__#$PK#g" \
+              -e "s#__ACCESS_TEAM__#$TEAM#g" -e "s#__STUDIO_ACCESS_AUD__#$STUDIO_AUD#g" "$c"
+            ! grep -q "__[A-Z_]*__" "$c" || { echo "REFUSED: $c still has placeholders"; exit 1; }
+          done
+          W="npx --yes wrangler@4.150.0"
+          for c in wrangler.basket-staging.toml wrangler.basket-staging-studio.toml; do
+            $W deploy --config "$c" > "$RUNNER_TEMP/w.log" 2>&1 || { python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$RUNNER_TEMP/w.log"; exit 1; }
+            echo "  PASS  deployed $c"
+          done
+          printf '%s' "$STRIPE_KEY"  | $W secret put STRIPE_SECRET_KEY --config wrangler.basket-staging.toml > /dev/null
+          printf '%s' "$WH_CONNECT"  | $W secret put STRIPE_WEBHOOK_SECRET --config wrangler.basket-staging.toml > /dev/null
+          printf '%s' "$WH_PLATFORM" | $W secret put STRIPE_WEBHOOK_SECRET_PLATFORM --config wrangler.basket-staging.toml > /dev/null
+          printf '%s' "$STRIPE_KEY"  | $W secret put STRIPE_SECRET_KEY --config wrangler.basket-staging-studio.toml > /dev/null
+          printf '%s' "$CHECKOUT_TEST_FOUNDER_EMAILS" | $W secret put FOUNDER_EMAILS --config wrangler.basket-staging-studio.toml > /dev/null
+          echo "  PASS  secrets written (values never printed)"
+          # from outside: pages are behind Access (redirect to sign-in); the webhook path is open but refuses unsigned posts
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$ORIGIN/gallery"); [[ "$code" =~ ^(302|403)$ ]] && echo "  PASS  $ORIGIN/gallery is behind Access ($code)" || { echo "FAIL  $ORIGIN/gallery answered $code without Access"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$ORIGIN/v1/stripe/webhook" -d '{}'); [ "$code" = 400 ] && echo "  PASS  the webhook refuses an unsigned post (400)" || { echo "FAIL  webhook answered $code"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' "https://plotart-basket-staging-studio.$SUB.workers.dev/"); [[ "$code" =~ ^(302|403)$ ]] && echo "  PASS  staging Studio is behind Access ($code)" || { echo "FAIL  staging Studio answered $code"; exit 1; }
+          echo "Staging: $ORIGIN/gallery" >> "$GITHUB_STEP_SUMMARY"

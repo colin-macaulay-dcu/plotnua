@@ -1,0 +1,33 @@
+# PlotArt · multi-artist basket · PRIVATE STAGING Studio (founder desk: baskets, orders, refunds) (prepared 21 Nov 2026).
+# NOT DEPLOYED. Same Studio code, the staging TEST database only, behind its own Cloudflare Access application (founder only).
+# SANDBOX = "true": no publishing pipeline, no GitHub dispatch, no email. No image store is bound (synthetic staging works
+# have no uploaded images). Placeholders are filled by .github/workflows/plotart-basket-staging.yml after approval.
+name = "plotart-basket-staging-studio"
+main = "src/studio-entry.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "staging"
+SANDBOX = "true"
+ACCESS_TEAM_DOMAIN = "__ACCESS_TEAM__"
+ACCESS_AUD = "__STUDIO_ACCESS_AUD__"
+INSTANT_AUTOPUBLISH = "false"
+INSTANT_PUBLISH_DISPATCH = "false"
+HIRE_TERMS_ENABLED = "false"
+HIRE_RETENTION = "off"
+MAILER = "none"
+CHECKOUT_PILOT_ENABLED = "true"
+BASKET_ENABLED = "true"
+BASKET_COMMISSION_FREE = "with_processing_consent"
+CHECKOUT_ORIGIN = "__STAGING_ORIGIN__"
+GALLERY_ORIGIN = "__STAGING_ORIGIN__"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-basket-staging"
+database_id = "__STAGING_D1_DATABASE_ID__"
+
+[observability]
+enabled = false

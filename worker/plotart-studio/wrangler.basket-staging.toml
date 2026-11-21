@@ -1,0 +1,32 @@
+# PlotArt · multi-artist basket · PRIVATE STAGING public Worker (prepared 21 Nov 2026). NOT DEPLOYED.
+# Separate from production and from the existing TEST Workers: its own Worker name and its own TEST database. Stripe TEST
+# mode only (stripe.js refuses a live key outside production). Every page is behind Cloudflare Access (testers' emails);
+# only /v1/stripe/webhook bypasses Access, and it accepts nothing that is not signed by Stripe. The placeholders below are
+# filled by .github/workflows/plotart-basket-staging.yml from the checkout-test environment, after the founder's approval.
+name = "plotart-basket-staging"
+main = "src/checkout-public.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "staging"
+STAGING_GALLERY = "true"                     # synthetic gallery pages (staging + Stripe TEST mode only)
+CHECKOUT_PILOT_ENABLED = "true"
+BASKET_ENABLED = "true"
+BASKET_COMMISSION_FREE = "with_processing_consent"   # TEST only; live keeps fee Model B (basket-terms.js)
+CHECKOUT_ORIGIN = "__STAGING_ORIGIN__"
+GALLERY_ORIGIN = "__STAGING_ORIGIN__"
+STRIPE_PUBLISHABLE_KEY = "__STRIPE_TEST_PUBLISHABLE_KEY__"   # pk_test_… (publishable; not a secret)
+MAILER = "none"                              # test sink only: no email leaves PlotArt
+
+[triggers]
+crons = ["*/5 * * * *"]                      # the sweep: card pages that expire, bank-check deadlines, retries, card release
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-basket-staging"
+database_id = "__STAGING_D1_DATABASE_ID__"
+
+[observability]
+enabled = false
