@@ -101,10 +101,11 @@ check('W1 the workflow parses, is manual only and defaults to a TEST dry run', O
 check('W2 it never applies a migration or runs d1 execute', !/d1 (migrations|execute)/.test(wf));
 // W3 (20 Nov 2026, live-mode gate; fail-closed after review): production writes no secret inline. The only production
 // secret writes are in checkout-live-enable.sh (OFF deploy, secrets, verify, LIVE deploy, recovery), on the live path only,
-// after the live credentials check; test keeps its own token and secrets.
+// after the live credentials check; test keeps its own token and secrets. (Window 900: the step also carries the basket's two
+// variables, 21 Nov 2026.)
 const PROD = wf.split('# ---------------------------------------------------------------- PRODUCTION')[1] || '';
 check('W3 production writes secrets only through the fail-closed live script (live path only, after the live credentials check); test uses its own token and secrets',
-  !/secret put/.test(PROD) && !/CHECKOUT_TEST_/.test(PROD) && /if: \$\{\{ inputs\.target == 'production' && !inputs\.dry_run && inputs\.enable_live_pilot \}\}\n[\s\S]{0,600}checkout-live-enable\.sh/.test(PROD)
+  !/secret put/.test(PROD) && !/CHECKOUT_TEST_/.test(PROD) && /if: \$\{\{ inputs\.target == 'production' && !inputs\.dry_run && inputs\.enable_live_pilot \}\}\n[\s\S]{0,900}checkout-live-enable\.sh/.test(PROD)
   && PROD.indexOf('check-stripe-live-secrets.sh') < PROD.indexOf('checkout-live-enable.sh')
   && (wf.match(/CHECKOUT_TEST_STRIPE_SECRET_KEY/g) || []).length >= 2 && /CHECKOUT_TEST_CF_TOKEN/.test(wf));
 check('W3b live checkout is off by default and needs the typed confirmation', ON && ON.workflow_dispatch.inputs.enable_live_pilot.default === false

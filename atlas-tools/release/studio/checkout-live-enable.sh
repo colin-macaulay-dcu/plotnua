@@ -50,6 +50,12 @@ put STRIPE_SECRET_KEY     "${LIVE_RUNTIME_KEY:-}"    plotart-checkout
 put STRIPE_WEBHOOK_SECRET "${LIVE_WEBHOOK_SECRET:-}" plotart-checkout
 put RESEND_API_KEY        "${LIVE_RESEND_KEY:-}"     plotart-checkout
 put STRIPE_SECRET_KEY     "${LIVE_STUDIO_KEY:-}"     plotart-studio
+# multi-artist basket (21 Nov 2026): the card page is on PlotArt's own account, so its events come from a separate
+# account-level webhook endpoint with its own secret; written only when the basket is enabled
+if [ "${ENABLE_LIVE_BASKET:-false}" = true ]; then
+  [[ "${LIVE_PLATFORM_WEBHOOK_SECRET:-}" == whsec_* ]] || recover "the basket needs LIVE_PLATFORM_WEBHOOK_SECRET (the PlotArt-account webhook endpoint)"
+  put STRIPE_WEBHOOK_SECRET_PLATFORM "${LIVE_PLATFORM_WEBHOOK_SECRET:-}" plotart-checkout
+fi
 echo "STEP 3  verify every required secret is present"
 C=$(names plotart-checkout) || recover "the secret list of plotart-checkout could not be read"
 S=$(names plotart-studio) || recover "the secret list of plotart-studio could not be read"
