@@ -68,15 +68,15 @@ LIVE_DOC = open(PAGE, encoding="utf-8").read()
 
 
 def layout_from(doc):
-    """The Gallery order as the page shows it (positions from the twenty-five index; galleries without a position in the
-    order the wall shows them): the order the Studio sent when the page was last built."""
+    """A Gallery order rebuilt from the page (test only). The public founding positions index was removed on 21 Nov 2026,
+    so the positions come from the wall's own numerals; the featured artists (whose numerals the page does not show)
+    and any gallery without a numeral follow without a position, in the order the page names them."""
     reg = doc[slice(*P.vg_region(doc))]
-    pos = []
-    for n, (st, body) in enumerate(re.findall(r'<li class="pa-vgc-pos is-(pub|res|prep|av)">(.*?)</li>', reg), 1):
-        m = re.search(r'artists/([a-z0-9-]+)/', body)
-        pos.append({"position": n, "slug": m.group(1) if st == "pub" else None, "reserved": st == "res", "assigned": st == "prep"})
-    numbered = {x["slug"] for x in pos if x["slug"]}
-    return {"positions": pos, "extra": [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', reg) if x not in numbered]}
+    pos = [{"position": int(n), "slug": sl, "reserved": False} for n, sl in re.findall(
+        r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', reg)]
+    numbered = {x["slug"] for x in pos}
+    extra = [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', reg) if x not in numbered]
+    return {"positions": pos, "extra": extra + [x["artist"] for x in FEAT.selection_in(doc) if x["artist"] not in extra]}
 
 
 LAY = layout_from(LIVE_DOC)
@@ -90,7 +90,9 @@ def build(doc, sel, pk, lay=LAY):
 
 
 wall = lambda d: re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', d[slice(*P.vg_region(d))])
-index = lambda d: re.findall(r'<li class="pa-vgc-pos is-[a-z]+">.*?</li>', d[slice(*P.vg_region(d))])
+# the wall's position numerals (the public positions index was removed 21 Nov 2026): artist -> numeral
+index = lambda d: dict((sl, n) for n, sl in re.findall(r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', d[slice(*P.vg_region(d))]))
+same_nums = lambda a, b: all(b.get(k, v) == v for k, v in a.items())
 both_out = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
 DOC = build(LIVE_DOC, [], PK)                         # the page with no selection: every published artist on the wall
 LIVE = {f: open(f, "rb").read() for f in glob.glob(os.path.join(ROOT, "plotart", "artists", "*", "gallery.json"))}
@@ -173,7 +175,7 @@ for sel in ([], SEL, SEL[:1], SEL[::-1], SEL[2:4], [A("lena-fawaz", next(w["id"]
     d = build(DOC, sel, PK)
     f, w = [x["artist"] for x in FEAT.selection_in(d)], wall(d)
     good = (not set(f) & set(w) and sorted(f + w) == sorted(ALL) and w == [x for x in FULL if x not in f]
-            and index(d) == index(DOC) and both_out(d) == both_out(DOC))
+            and same_nums(index(d), index(DOC)) and both_out(d) == both_out(DOC))
     ok6 &= good
     if not good:
         why6.append((f, w))

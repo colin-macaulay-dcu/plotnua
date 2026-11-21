@@ -89,8 +89,11 @@ const A = 'niamh@example.test';
 // gallery on the wall that holds no position.
 const gridItems = () => {
   const vg = page('gallery/index.html');
-  const plan = [...((vg.match(/<ol class="pa-vgc-plan"[^>]*>([\s\S]*?)\n    <\/ol>/) || [, ''])[1]).matchAll(/<li class="pa-vgc-pos is-(pub|res|prep|av)">([\s\S]*?)<\/li>/g)]
-    .map(m => m[1] === 'pub' ? 'card:' + ((m[2].match(/artists\/([a-z0-9-]+)\//) || [])[1]) : m[1] === 'res' ? 'reserved' : m[1] === 'prep' ? 'prep' : 'space');
+  const plan = (() => { // the public founding positions index was removed (21 Nov 2026): rebuild the 25 positions from the wall's numerals; the featured artists (numerals not shown) follow
+    const p = Array(25).fill('space');
+    for (const m of vg.matchAll(/<span class="pa-vgc-n" aria-hidden="true">(\d\d)<\/span><div><h3 class="pa-vgc-name"><a href="\.\.\/artists\/([a-z0-9-]+)\//g)) p[+m[1] - 1] = 'card:' + m[2];
+    return p.concat([...new Set([...vg.matchAll(/data-pa-featured="([a-z0-9-]+):/g)].map(m => m[1]))].map(s => 'card:' + s));
+  })();
   const extra = [...vg.matchAll(/<span class="pa-vgc-n" aria-hidden="true"><\/span><div><h3 class="pa-vgc-name"><a href="\.\.\/artists\/([a-z0-9-]+)\//g)].map(m => 'card:' + m[1]);
   return plan.concat(extra);
 };
