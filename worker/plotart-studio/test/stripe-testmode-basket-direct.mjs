@@ -64,7 +64,7 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
     const cus = await api('POST', '/v1/customers', { description: 'PlotArt basket POC test buyer (' + label + ')', 'metadata[poc]': tag });
     if (!cus.ok) return { error: cus.err };
     created.customers.push(cus.j.id);
-    const cs = await api('POST', '/v1/checkout/sessions', { mode: 'setup', customer: cus.j.id, currency: 'eur', 'payment_method_types[0]': 'card',
+    const cs = await api('POST', '/v1/checkout/sessions', { mode: 'setup', customer: cus.j.id, currency: 'eur', 'allowed_payment_method_types[0]': 'card',
       success_url: 'https://example.com/plotart-poc-done', cancel_url: 'https://example.com/plotart-poc-cancel', 'metadata[poc]': tag },
       { idem: tag + '-cs-' + label });
     if (!cs.ok) return { error: cs.err, customer: cus.j.id };
@@ -119,7 +119,7 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
   }
   async function charge(acct, pm, cents, feeCents, key, { manual = false, basket, artist } = {}) {
     const body = { amount: String(cents), currency: 'eur', payment_method: pm, confirm: 'true', off_session: 'true',
-      'payment_method_types[0]': 'card', description: 'PlotArt basket POC (TEST) · ' + artist,
+      'allowed_payment_method_types[0]': 'card', description: 'PlotArt basket POC (TEST) · ' + artist,
       'metadata[poc]': tag, 'metadata[basket]': basket, 'metadata[artist]': artist };
     if (feeCents > 0) body.application_fee_amount = String(feeCents);
     if (manual) body.capture_method = 'manual';
