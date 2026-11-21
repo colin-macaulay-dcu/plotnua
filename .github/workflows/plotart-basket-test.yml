@@ -4,7 +4,8 @@
 # plotart/multi-artist-basket; waits for the founder's Approve on "checkout-test". One run does, in order, and stops at the
 # first failure:
 #   1 Access: the TEST Studio, where the synthetic gallery is shown to the founder, must already be behind Access (checked)
-#   2 Stripe: the existing TEST key is checked for the calls the basket needs (deliberately invalid requests; nothing created)
+#   2 Stripe: the POC TEST key (founder approval: STRIPE_BASKET_KEY on the two TEST Workers only) is checked for the basket's
+#     calls (deliberately invalid requests; nothing created); the existing checkout key is unchanged
 #   3 TEST database: migration 0019 (new tables only) and the ADDITIVE basket seed (INSERT OR IGNORE; nothing existing changed)
 #   4 both TEST Workers redeployed from this branch with the pilot, the basket and the synthetic gallery ON; outside checks;
 #     automatic rollback of both Workers if the outside checks fail
@@ -52,24 +53,27 @@ jobs:
           SO="${CHECKOUT_TEST_ORIGIN%/}"; SO="${SO/plotart-checkout-test./plotart-studio-test.}"
           code=$(curl -s -o /dev/null -w '%{http_code}' "$SO/admin/checkout")
           [[ "$code" =~ ^(302|403)$ ]] && echo "  PASS  $SO is behind Access ($code)" || { echo "  FAIL  $SO answered $code without Access: STOPPED before anything changed"; exit 1; }
-      - name: 2 · Stripe TEST key covers the basket (deliberately invalid requests; nothing is created)
+      - name: 2 · Stripe TEST keys for the basket (deliberately invalid requests; nothing is created)
         env:
-          KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          MAIN: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          POC: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
         working-directory: worker/plotart-studio
         run: |
           set -euo pipefail
-          [[ "$KEY" =~ ^(sk|rk)_test_[A-Za-z0-9]+$ ]] || { echo "REFUSED: not a TEST key"; exit 1; }
+          # Founder approval 21 Nov 2026: the POC TEST key is used as STRIPE_BASKET_KEY on the two TEST Workers only, for the
+          # basket's own calls; the existing checkout key stays unchanged and serves everything else.
           node --input-type=module -e '
-            const KEY = process.env.KEY, cfg = JSON.parse((await import("node:fs")).readFileSync("test/stripe-test-run.json", "utf8")), A = cfg.reuse_account;
-            const h = { Authorization: "Bearer " + KEY, "Stripe-Version": "2026-10-28.endive", "Content-Type": "application/x-www-form-urlencoded" };
-            const p = async (m, u, acct) => (await fetch("https://api.stripe.com" + u, { method: m, headers: { ...h, ...(acct ? { "Stripe-Account": acct } : {}) }, body: m === "POST" ? "plotart_permission_probe=1" : undefined })).status;
-            const probes = { customers: await p("POST", "/v1/customers"), setup_page: await p("POST", "/v1/checkout/sessions"), clone_card: await p("POST", "/v1/payment_methods", A),
-              authorise: await p("POST", "/v1/payment_intents", A), capture: await p("POST", "/v1/payment_intents/pi_probe/capture", A), cancel: await p("POST", "/v1/payment_intents/pi_probe/cancel", A),
-              delete_customer: await p("DELETE", "/v1/customers/cus_probe") };
-            const bad = Object.entries(probes).filter(([, s]) => s === 401 || s === 403);
-            console.log("  probes (HTTP status; 401/403 = not permitted):", JSON.stringify(probes));
-            if (bad.length) { console.log("  FAIL  the TEST key lacks: " + bad.map(b => b[0]).join(", ")); process.exit(1); }
-            console.log("  PASS  the existing TEST key permits every call the basket makes");'
+            const { readFileSync } = await import("node:fs"), A = JSON.parse(readFileSync("test/stripe-test-run.json", "utf8")).reuse_account;
+            const probe = async KEY => { if (!/^(sk|rk)_test_[A-Za-z0-9]+$/.test(KEY || "")) return { missing: true };
+              const h = { Authorization: "Bearer " + KEY, "Stripe-Version": "2026-10-28.endive", "Content-Type": "application/x-www-form-urlencoded" };
+              const p = async (m, u, acct) => (await fetch("https://api.stripe.com" + u, { method: m, headers: { ...h, ...(acct ? { "Stripe-Account": acct } : {}) }, body: m === "POST" ? "plotart_permission_probe=1" : undefined })).status;
+              return { customers: await p("POST", "/v1/customers"), setup_page: await p("POST", "/v1/checkout/sessions"), clone_card: await p("POST", "/v1/payment_methods", A),
+                authorise: await p("POST", "/v1/payment_intents", A), capture: await p("POST", "/v1/payment_intents/pi_probe/capture", A), cancel: await p("POST", "/v1/payment_intents/pi_probe/cancel", A),
+                delete_customer: await p("DELETE", "/v1/customers/cus_probe") }; };
+            if (!/^(sk|rk)_test_/.test(process.env.MAIN || "")) { console.log("  FAIL  the existing checkout key is not a TEST key"); process.exit(1); }
+            const poc = await probe(process.env.POC); console.log("  basket key (POC TEST key) probes:", JSON.stringify(poc));
+            if (poc.missing || Object.values(poc).some(s => s === 401 || s === 403)) { console.log("  FAIL  the POC TEST key does not permit every basket call"); process.exit(1); }
+            console.log("  PASS  the POC TEST key permits every basket call; the existing checkout key is left unchanged");'
       - name: 3 · TEST database · migration 0019 and the additive basket seed
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
@@ -94,6 +98,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
           STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET }}
+          POC_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
           PK: ${{ vars.BASKET_STAGING_STRIPE_PUBLISHABLE_KEY }}
           CHECKOUT_TARGET: test
           PAYMENT_TERMS_DIR: agreements/payment-test
@@ -126,6 +131,9 @@ jobs:
           printf '%s' "$CHECKOUT_TEST_FOUNDER_EMAILS" | $W secret put FOUNDER_EMAILS --config wrangler.studio.test.toml > /dev/null
           printf '%s' "$STRIPE_SECRET_KEY" | $W secret put STRIPE_SECRET_KEY --config wrangler.checkout.test.toml > /dev/null
           printf '%s' "$STRIPE_WEBHOOK_SECRET" | $W secret put STRIPE_WEBHOOK_SECRET --config wrangler.checkout.test.toml > /dev/null
+          [[ "$POC_KEY" =~ ^(sk|rk)_test_[A-Za-z0-9]+$ ]] || { echo "REFUSED: the basket key is not a TEST key"; exit 1; }
+          for c in wrangler.studio.test.toml wrangler.checkout.test.toml; do printf '%s' "$POC_KEY" | $W secret put STRIPE_BASKET_KEY --config "$c" > /dev/null; done
+          echo "  PASS  STRIPE_BASKET_KEY (the POC TEST key) written to the two TEST Workers only; basket calls only" 
           echo "  PASS  secrets rewritten with the same TEST values (never printed)"
           sleep 5
           code=$(curl -s -o /dev/null -w '%{http_code}' "$GL"); [[ "$code" =~ ^(302|403)$ ]] || { echo "  FAIL  $GL answered $code without Access"; exit 1; }
