@@ -108,18 +108,41 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       await fill('#payment-expiryInput,#cardExpiry,input[autocomplete="cc-exp"]', '12 / 34');
       await fill('#payment-cvcInput,#cardCvc,input[autocomplete="cc-csc"]', '123');
       await fill('#billingName,input[autocomplete="cc-name"]', 'Test Buyer', 3000, false);
-      // billing country as Stripe shows it (GitHub runners are often geolocated to the US); postcode and mobile in that
-      // country's TEST format (fictional numbers reserved for drama/testing; no real person)
-      const country = await field('#billingCountry,select[autocomplete="country"]', 1000);
-      let cc = country ? String(await country.inputValue().catch(() => '')).toUpperCase() : '';
-      if (!cc) cc = (await field('text=/ZIP code/i', 500)) ? 'US' : 'IE';
+      // billing country, postcode and Link mobile, using the field ids Stripe's page actually has (run 44921638600 evidence:
+      // payment-countryInput, payment-postalCodeInput, payment-linkMobilePhoneInput / ...CountryInput). Values are synthetic
+      // test data in the format of the country Stripe selected (fictional numbers reserved for testing; no real person).
       const TEST_FORMAT = { US: { postal: '10001', phone: '2015550123' }, GB: { postal: 'SW1A 1AA', phone: '7700900123' },
         IE: { postal: 'D02 X285', phone: '851234567' }, CA: { postal: 'K1A 0B1', phone: '6135550123' } };
-      const fmt = TEST_FORMAT[cc] || TEST_FORMAT.US;
-      diag.billing_country = cc || 'unknown';
-      await fill('#billingPostalCode,input[autocomplete="postal-code"]', fmt.postal, 1500, false);
-      // Stripe Link's mobile field (appears after the email): complete it in the same country's test format
-      await fill('#phoneNumber,#linkMobilePhoneInput,input[type="tel"],input[autocomplete="tel"],input[autocomplete="tel-national"]', fmt.phone, 1500, false);
+      const valueOf = async css => { const el = await field(css, 1500); return el ? String(await el.inputValue().catch(() => '')).toUpperCase() : ''; };
+      const cc = await valueOf('#payment-countryInput,#billingCountry,select[autocomplete="country"]') || 'US';
+      diag.billing_country = cc;
+      if (await field('#payment-postalCodeInput,#billingPostalCode,input[autocomplete="postal-code"]', 1500))
+        await fill('#payment-postalCodeInput,#billingPostalCode,input[autocomplete="postal-code"]', (TEST_FORMAT[cc] || TEST_FORMAT.US).postal);
+      if (await field('#payment-linkMobilePhoneInput', 1500)) {
+        const pc = await valueOf('#payment-linkMobilePhoneCountryInput') || cc;
+        diag.phone_country = pc;
+        await fill('#payment-linkMobilePhoneInput', (TEST_FORMAT[pc] || TEST_FORMAT.US).phone);
+      }
+      // immediate validation before submitting: every visible required field filled, no field error showing
+      const problems = async () => {
+        const empty = [];
+        for (const css of ['#payment-numberInput', '#payment-expiryInput', '#payment-cvcInput', '#payment-postalCodeInput', '#payment-linkMobilePhoneInput']) {
+          const el = await field(css, 1); if (el && !(await el.inputValue().catch(() => ''))) empty.push(css.slice(1));
+        }
+        const msgs = [];
+        for (const f of page.frames()) msgs.push(...await f.locator('.FieldError:visible,[role="alert"]:visible,p[class*="Error"]:visible')
+          .evaluateAll(ns => ns.map(n => (n.innerText || '').trim()).filter(Boolean)).catch(() => []));
+        return { empty, messages: [...new Set(msgs.map(scrubText))].slice(0, 6) };
+      };
+      await page.waitForTimeout(800);   // let Stripe validate the fields just filled
+      let pre = await problems();
+      // the phone is only needed because Link sign-up is ticked; if Stripe still rejects it, untick Link instead (no Link account)
+      if (pre.messages.some(m => /phone/i.test(m))) {
+        const optIn = await field('#payment-linkOptInInput', 1000);
+        if (optIn && await optIn.isChecked().catch(() => false)) { await optIn.uncheck().catch(() => {}); diag.link_opt_in = 'unticked after phone rejected'; }
+        await page.waitForTimeout(800); pre = await problems();
+      }
+      if (pre.empty.length || pre.messages.length) { diag.pre_submit = pre; stage = 'pre-submit validation'; throw Error('form invalid before submit'); }
       stage = 'submit';
       const submit = await firstOf(['#payment-form-submit-button', '[data-testid="payment-form-submit-button"]', '[data-testid="hosted-payment-submit-button"]',
         'button[type="submit"]:text-matches("^(Pay|Save|Set up|Continue|Confirm)(\\s|$)","i")', 'button.SubmitButton'], 8000);
@@ -131,6 +154,8 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       while (Date.now() < end && !page.url().startsWith('https://example.com/')) {
         const auth = await field('#test-source-authorize-3ds,button:has-text("Complete"),button:has-text("COMPLETE")', 1500);
         if (auth) { challenged = true; await auth.click().catch(() => {}); }
+        const after = await problems();
+        if (after.messages.length) { diag.after_submit = after; throw Error('Stripe rejected the form: ' + after.messages.join(' | ')); }
         await page.waitForTimeout(500);
       }
       if (!page.url().startsWith('https://example.com/')) throw Error('hosted page did not complete');
@@ -147,6 +172,7 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
           .evaluateAll(ns => ns.map(n => (n.innerText || n.getAttribute('aria-label') || n.id || '').trim()).filter(Boolean)).catch(() => []));
       }
       let screenshot = null;
+      await page.waitForTimeout(1500).catch(() => {});   // let the page finish rendering before the screenshot
       try { mkdirSync(EVIDENCE, { recursive: true }); screenshot = 'basket-direct-' + label + '.png';
         await page.screenshot({ path: EVIDENCE + screenshot, fullPage: true }); } catch { screenshot = 'not captured'; }
       return { error: { stage, message: scrubText(e.message), page_host: (() => { try { return new URL(page.url()).host; } catch { return null; } })(),
