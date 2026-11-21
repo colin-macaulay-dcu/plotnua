@@ -59,7 +59,7 @@ h1{font-size:clamp(38px,6vw,60px);margin:.15em 0 .35em}h2{font-size:clamp(26px,3
 .panel{background:var(--anth);border:1px solid var(--line);border-radius:var(--r);padding:clamp(20px,3vw,32px);position:sticky;top:20px}
 @media (max-width:900px){.panel{position:static}}
 .sum{width:100%;border-collapse:collapse;font-size:16px}.sum td{padding:7px 0}.sum td:last-child{text-align:right;color:var(--ivory)}
-.sum .tot td{border-top:1px solid var(--line-2);padding-top:14px;font-size:20px;color:var(--ivory)}
+.sum .tot td{border-top:1px solid var(--line-2);padding-top:14px;font-size:20px;color:var(--ivory)}.sum.only .tot td{border-top:0;padding-top:0}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;font:600 16px var(--sans);padding:15px 24px;border-radius:999px;border:1px solid var(--paper);background:var(--paper);color:var(--anth);cursor:pointer;text-decoration:none}
 .btn:hover{background:var(--paper-2)}.btn[disabled]{opacity:.5;cursor:not-allowed}.btn.ghost{background:transparent;color:var(--ivory);border-color:var(--line-2)}
 .note{background:var(--wall-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;font-size:14.5px;color:var(--lime);margin:16px 0}
@@ -84,7 +84,7 @@ export function page(env, title, body, { status = 200, script = '', stripe = fal
 <title>${esc(title)} · PlotArt</title>${STYLE}</head><body>
 <header class="top"><div class="in"><a class="brand" href="${stagingGallery(env) ? esc(galleryLink(env)) : esc(gallery(env)) + '/plotart/'}">PlotArt<small>Artists’ Gallery${stagingGallery(env) ? ' · staging' : ''}</small></a><span class="small"><a href="${stagingGallery(env) ? esc(galleryLink(env)) : esc(gallery(env)) + '/plotart/gallery/'}">Continue browsing</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="${esc(String(env.CHECKOUT_ORIGIN || '').replace(/\/$/, ''))}/basket">Basket</a></span></div></header>
 ${stagingGallery(env) ? '<div class="wrap" style="padding-bottom:0"><p class="note test" style="margin:0"><strong>Private staging.</strong> Synthetic artists and artworks, Stripe test mode. No real payment is taken and nothing is sold. Card <strong>4242 4242 4242 4242</strong> pays; <strong>4000 0000 0000 0341</strong> is declined; <strong>4000 0027 6000 3184</strong> asks for a bank check. Any future expiry, any CVC.</p></div>' : ''}
-<main class="wrap">${body}<footer>Each artwork is sold by its artist. PlotArt introduces buyers to artists and provides this checkout; PlotArt is not the seller and does not hold your payment. Questions: <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></footer></main>
+<main class="wrap">${body}<footer>Each artwork is sold by its artist. PlotArt introduces buyers to artists and is not the seller. Questions: <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></footer></main>
 ${stripe ? '<script src="https://js.stripe.com/v3/"></script>' : ''}${script ? `<script nonce="${n}">${script}</script>` : ''}</body></html>`, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', ...headers(env, n, { stripe }) } });
 }
 const json = (env, o, status = 200, extra = {}) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', ...extra } });
@@ -96,13 +96,13 @@ const IMG = env => `^${reEsc(gallery(env))}/(plotart/artists/[a-z0-9-]{1,80}/img
 function basketPage(env) {
   const counties = B.COUNTIES.map(c => `<option>${esc(c)}</option>`).join('');
   const body = `${banner(env)}<p class="eyebrow">Your basket</p><h1>Original works, one checkout</h1>
-<p class="lede">Each artwork is sold to you by its artist. You enter your card once; each artist is then paid directly and separately. Nothing is taken unless every artist’s payment is approved.</p>
+<p class="lede">Original works from the gallery’s artists, in one secure checkout.</p>
 <div class="grid"><section aria-labelledby="items-h"><h2 id="items-h" class="pa-sr" style="position:absolute;left:-9999px">Artworks</h2><div id="items"><p class="empty">Loading your basket…</p></div>
 <noscript><p class="note">The basket needs JavaScript. You can still enquire about any artwork from its page in the gallery.</p></noscript></section>
 <aside class="panel" aria-labelledby="sum-h"><h2 id="sum-h">Summary</h2><table class="sum"><tbody>
-<tr><td>Artworks</td><td id="t-art">—</td></tr><tr><td>Delivery (per artwork, as offered by each artist)</td><td id="t-del">—</td></tr><tr class="tot"><td>Total</td><td id="t-tot">—</td></tr></tbody></table>
+<tr><td>Artworks</td><td id="t-art">—</td></tr><tr><td>Delivery</td><td id="t-del">—</td></tr><tr class="tot"><td>Total</td><td id="t-tot">—</td></tr></tbody></table>
 <p class="small muted" id="t-pay"></p>
-<form id="buy" novalidate hidden><fieldset><legend>Delivery</legend><p class="small muted">Delivery is to the Republic of Ireland. Each artist arranges delivery of their work as shown.</p>
+<form id="buy" novalidate hidden><fieldset><legend>Delivery</legend><p class="small muted">We deliver to addresses in the Republic of Ireland.</p>
 <label>Full name<input type="text" name="name" autocomplete="name" required maxlength="120"></label>
 <label>Email<input type="email" name="email" autocomplete="email" required maxlength="254"></label>
 <label>Address<input type="text" name="address_line1" autocomplete="address-line1" required maxlength="120"></label>
@@ -111,8 +111,8 @@ function basketPage(env) {
 <label>County<select name="county" required><option value="">Choose…</option>${counties}</select></label></div>
 <div class="two"><label>Eircode<input type="text" name="eircode" autocomplete="postal-code" maxlength="8"></label>
 <label>Telephone (for delivery)<input type="tel" name="phone" autocomplete="tel" required maxlength="30"></label></div></fieldset>
-<label class="check"><input type="checkbox" name="accept" id="accept" required><span>I have read the <a id="terms" target="_blank" rel="noopener">purchase terms</a>. I understand that I am buying each artwork from its artist, and that each artist’s payment appears separately on my statement.</span></label>
-<ol class="steps"><li data-n="1">Enter your card once on Stripe’s secure page.</li><li data-n="2">Each artist’s payment is approved by your bank. Some banks ask you to confirm a payment.</li><li data-n="3">Only when every payment is approved is anything taken.</li></ol>
+<label class="check"><input type="checkbox" name="accept" id="accept" required><span>I have read the <a id="terms" target="_blank" rel="noopener">purchase terms</a>. Each artwork is sold by its artist.</span></label>
+<p class="small muted">You’ll enter your card details on a secure payment page.</p>
 <p id="err" class="note err" role="alert" hidden></p><button class="btn" type="submit" id="pay">Continue to secure payment</button></form>
 <p id="closed" class="note" hidden>Online purchase is not open at the moment. You can enquire about any artwork from its page.</p></aside></div>`;
   const script = `(function(){'use strict';
@@ -131,7 +131,7 @@ data.items.forEach(function(it){var mine=list.filter(function(x){return x.id===i
 var art=el('div',{'class':'art'},[mine.img?el('img',{src:mine.img,alt:it.title?('“'+it.title+'”'+(it.artist?' by '+it.artist:'')):'Artwork',loading:'lazy'}):null]);
 var rm=el('button',{'class':'link',type:'button',text:'Remove'});rm.addEventListener('click',function(){list=list.filter(function(x){return x.id!==it.id});save(list);refresh()});
 var info=el('div',null,[el('h3',null,[it.url?el('a',{href:it.url,text:it.title||'Artwork'}):el('span',{text:it.title||'Artwork'})]),
-el('p',{'class':'by',text:it.artist?('Sold by '+it.artist+(it.seller&&it.seller!==it.artist?' ('+it.seller+')':'')):''}),
+el('p',{'class':'by',text:it.artist?('by '+it.artist):''}),
 it.ok?el('p',{'class':'meta',text:[it.medium,it.size,it.year].filter(Boolean).join(' · ')}):null,
 it.ok?el('p',{'class':'meta',text:'Delivery '+it.delivery.window+' with '+it.delivery.transporter+'; '+it.delivery.tracking+'. Insured: '+it.delivery.cover+'. '+it.delivery.returns+'.'}):null,
 !it.ok?el('p',{'class':'why',text:it.reason}):null,rm]);
@@ -139,7 +139,7 @@ var price=it.ok?el('div',{'class':'price'},[document.createTextNode(eur(it.price
 box.appendChild(el('article',{'class':'item'+(it.ok?'':' off')},[art,info,price]))});
 var ok=data.items.filter(function(i){return i.ok}),artists={};ok.forEach(function(i){artists[i.artist]=1});
 document.getElementById('t-art').textContent=eur(data.totals.artworks_cents);document.getElementById('t-del').textContent=eur(data.totals.delivery_cents);document.getElementById('t-tot').textContent=eur(data.totals.total_cents);
-var na=Object.keys(artists).length;document.getElementById('t-pay').textContent=ok.length?(ok.length+(ok.length===1?' artwork':' artworks')+' from '+na+(na===1?' artist':' artists')+': '+ok.length+' separate card '+(ok.length===1?'payment':'payments')+', each made directly to the artist.'):'';
+document.getElementById('t-pay').textContent=ok.length?(ok.length+(ok.length===1?' artwork':' artworks')):'';
 var can=data.open&&ok.length>0&&ok.length===data.items.length;form.hidden=!data.open||!ok.length;document.getElementById('closed').hidden=data.open;
 document.getElementById('pay').disabled=!can;if(data.terms){var t=document.getElementById('terms');t.href='/terms/'+data.terms.doc_id+'.html';t.textContent='purchase terms ('+data.terms.doc_id+')'}
 if(ok.length!==data.items.length&&ok.length)showErr('Remove the artworks that are no longer available to continue.');else hideErr()}
@@ -157,30 +157,35 @@ refresh();})();`;
   return page(env, 'Your basket', body, { script });
 }
 
-/* ---------------------------------------------------------------- the basket's status, per artist payment */
+/* ---------------------------------------------------------------- the order's status (one order, however many artists) */
+const irishTime = iso => new Date(iso).toLocaleTimeString('en-IE', { timeZone: 'Europe/Dublin', hour: '2-digit', minute: '2-digit' });
 function statusPage(env, token, v, msg = null) {
   const pending = ['open', 'authorising', 'capturing'].includes(v.status);
   const rows = v.lines.map(l => `<article class="item st"><div><h3>${esc(l.title || 'Original artwork')}</h3>
-<p class="by">Sold by ${esc(l.artist)}${l.seller && l.seller !== l.artist ? ` (${esc(l.seller)})` : ''} · order ${esc(l.order)}</p>
-<p class="meta">${eur(l.artwork_cents)} + ${eur(l.delivery_cents)} delivery${l.delivery_window ? ` · delivery ${esc(l.delivery_window)}` : ''}</p>
-${l.action ? `<p><a class="btn inl" href="/b/${esc(token)}/authenticate/${esc(l.order)}">Confirm the payment to ${esc(l.artist)}</a></p>` : ''}
-${l.confirmation ? `<p class="small"><a href="/b/${esc(token)}/confirmation/${esc(l.order)}">Your purchase confirmation from ${esc(l.artist)}</a> (save or print it)</p>` : ''}</div>
-<div class="price">${eur(l.total_cents)}<span class="d"><span class="state ${esc(l.state)}">${esc(l.state_text)}</span></span></div></article>`).join('');
-  const body = `${banner(env)}<p class="eyebrow">Basket ${esc(v.reference)}</p><h1>${v.paid ? 'Thank you' : v.status === 'action_required' ? 'One more step' : v.ended ? 'Not completed' : 'Confirming your payment'}</h1>
-<p class="lede"><span class="state ${esc(v.status)}">${esc(v.status.replace(/_/g, ' '))}</span> ${esc(v.status_text)}</p>
-${msg ? `<p class="note err" role="alert">${esc(msg)}</p>` : ''}${v.resolution ? `<p class="note">${esc(v.resolution)}.</p>` : ''}
-${v.status === 'action_required' ? `<p class="note">Your bank wants you to confirm ${v.lines.filter(l => l.action).length === 1 ? 'one payment' : 'some payments'}. Please do this by ${esc(new Date(v.action_deadline).toLocaleTimeString('en-IE', { timeZone: 'Europe/Dublin', hour: '2-digit', minute: '2-digit' }))} (Irish time); otherwise every payment in this basket is cancelled and nothing is bought.</p>` : ''}
-${v.paid ? `<p class="note">Each artist has received your payment directly. They (and PlotArt) will be in touch about delivery to ${esc(v.delivery_to)}. Stripe emails a receipt for each payment.</p>` : ''}
-<div class="grid"><section>${rows}</section><aside class="panel"><table class="sum"><tbody><tr class="tot"><td>Total</td><td>${eur(v.total_cents)}</td></tr></tbody></table>
-<p class="small muted">${v.lines.length} separate ${v.lines.length === 1 ? 'payment' : 'payments'}, each made directly to the artist.</p>
-${['open', 'action_required'].includes(v.status) ? `<form method="post" action="/b/${esc(token)}/cancel"><button class="btn ghost" type="submit">Cancel this basket</button></form>` : ''}
-${pending ? '<p class="small muted">This page refreshes itself.</p>' : ''}</aside></div>`;
-  return page(env, `Basket ${v.reference}`, body, { script: pending ? 'setTimeout(function(){location.reload()},4000);' : '' });
+<p class="by">by ${esc(l.artist)}</p>
+<p class="meta">${eur(l.artwork_cents)} + ${eur(l.delivery_cents)} delivery${l.delivery_window ? ` · delivered in ${esc(l.delivery_window)}` : ''}</p>
+${l.action ? `<p><a class="btn inl" href="/b/${esc(token)}/authenticate/${esc(l.order)}">Confirm payment</a></p>` : ''}
+${l.confirmation ? `<p class="small"><a href="/b/${esc(token)}/confirmation/${esc(l.order)}">View confirmation</a></p>` : ''}</div>
+<div class="price">${eur(l.total_cents)}${l.action ? '<span class="d"><span class="state action_required">Needs confirmation</span></span>' : ''}</div></article>`).join('');
+  const head = v.paid ? `<h1>Thank you for your purchase</h1><p class="lede"><span class="state paid">Order confirmed</span></p>
+<p class="lede">Your order has been successfully placed.</p>
+<p>Your artwork will be prepared for delivery to your nominated address. You’ll receive confirmation of your purchase, and we’ll be in touch with any delivery updates.</p>`
+    : v.status === 'action_required' ? `<h1>Confirm your payment</h1><p class="lede">${esc(v.status_text)}</p>
+<p class="note">Please confirm by ${esc(irishTime(v.action_deadline))} (Irish time); otherwise your order is cancelled and nothing is charged.</p>`
+    : v.ended ? `<h1>Payment not completed</h1><p class="lede">${esc(v.status_text)}</p>${v.resolution ? `<p class="note">${esc(v.resolution)}</p>` : ''}`
+    : `<h1>Confirming your order</h1><p class="lede">${esc(v.status_text)}</p>`;
+  const body = `${banner(env)}<p class="eyebrow">Order ${esc(v.reference)}</p>${head}
+${msg ? `<p class="note err" role="alert">${esc(msg)}</p>` : ''}
+<div class="grid"><section>${rows}</section><aside class="panel"><table class="sum only"><tbody><tr class="tot"><td>Total</td><td>${eur(v.total_cents)}</td></tr></tbody></table>
+${v.paid ? `<p class="small muted">Delivering to ${esc(v.delivery_to)}</p>` : ''}
+${['open', 'action_required'].includes(v.status) ? `<form method="post" action="/b/${esc(token)}/cancel"><button class="btn ghost" type="submit">Cancel order</button></form>` : ''}
+${pending ? '<p class="small muted">This page updates automatically.</p>' : ''}</aside></div>`;
+  return page(env, v.paid ? 'Order confirmed' : `Order ${v.reference}`, body, { script: pending ? 'setTimeout(function(){location.reload()},4000);' : '' });
 }
 function authenticatePage(env, token, a) {
-  const body = `${banner(env)}<p class="eyebrow">Order ${esc(a.order)}</p><h1>Confirm the payment to ${esc(a.artist)}</h1>
-<p class="lede">Your bank asks you to confirm this payment of ${eur(a.amount_cents)} to ${esc(a.artist)}. Your bank’s own screen will open.</p>
-<p id="msg" class="note" role="status">Opening your bank’s check…</p><p><a class="btn ghost" style="width:auto" href="/b/${esc(token)}">Back to your basket</a></p>`;
+  const body = `${banner(env)}<p class="eyebrow">Order ${esc(a.order)}</p><h1>Confirm your payment</h1>
+<p class="lede">Your bank asks you to confirm a payment of ${eur(a.amount_cents)}${a.title ? ` for ${esc(a.title)}` : ''}. Your bank’s own screen will open.</p>
+<p id="msg" class="note" role="status">Opening your bank’s check…</p><p><a class="btn ghost" style="width:auto" href="/b/${esc(token)}">Back to your order</a></p>`;
   const script = `(function(){var m=document.getElementById('msg');
 var s=Stripe(${JSON.stringify(a.publishable_key)},{stripeAccount:${JSON.stringify(a.account)}});
 s.confirmCardPayment(${JSON.stringify(a.client_secret)},${a.payment_method ? `{payment_method:${JSON.stringify(a.payment_method)}}` : '{}'}).then(function(r){

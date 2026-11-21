@@ -547,16 +547,19 @@ export async function buyerContinue(env, token) {
   return buyerView(env, token);
 }
 const BUYER_STATUS = {
-  open: 'Waiting for your card details on Stripe’s secure page.',
-  authorising: 'Confirming each artist’s payment…',
-  action_required: 'Your bank needs you to confirm one or more payments.',
-  capturing: 'Completing your payments…',
-  paid: 'Paid. Every artist’s payment has been confirmed.',
-  failed: 'Not completed. Nothing was bought, and any amount your bank held has been released.',
-  expired: 'Not completed: the secure page expired before a card was entered. Nothing was charged.',
-  cancelled: 'Not completed. Nothing was charged.',
-  needs_resolution: 'We’re sorting out a problem with this basket and will contact you. You will not be charged for anything you do not receive.',
+  open: 'Waiting for your card details.',
+  authorising: 'Confirming your payment…',
+  action_required: 'Your bank needs you to confirm your payment.',
+  capturing: 'Completing your order…',
+  paid: 'Order confirmed',
+  failed: 'Your payment could not be completed. Nothing was charged, and any amount held by your bank has been released.',
+  expired: 'The secure payment page expired before your card details were entered. Nothing was charged.',
+  cancelled: 'Your order was cancelled. Nothing was charged.',
+  needs_resolution: 'We’re sorting out a problem with your order and will contact you. You will not be charged for anything you do not receive.',
 };
+/* What a failed order tells the buyer: the reason in plain words, never internal payment detail. */
+const buyerReason = r => /declined|not authorised/i.test(r || '') ? 'Your card was declined.' : /bank check|confirm/i.test(r || '') ? 'The payment was not confirmed with your bank in time.'
+  : /no longer available/i.test(r || '') ? 'An artwork in your order is no longer available.' : null;
 const LINE_STATUS = { pending: 'Not yet charged', authorised: 'Authorised (not yet taken)', action_required: 'Needs your confirmation', captured: 'Paid',
   declined: 'Declined', cancelled: 'Cancelled: nothing taken', error: 'Retrying' };
 export async function buyerView(env, token) {
@@ -571,7 +574,7 @@ export async function buyerView(env, token) {
       delivery_window: (J(o.delivery) || {}).delivery_window });
   }
   return { reference: b.reference, status: b.status, status_text: BUYER_STATUS[b.status], paid: b.status === 'paid', ended: ENDED.includes(b.status),
-    total_cents: b.total_cents, lines, action_deadline: b.action_deadline, expires_at: b.expires_at, test_mode: !b.livemode, resolution: b.status === 'failed' ? (b.resolution || '').split(' · ')[0] : null,
+    total_cents: b.total_cents, lines, action_deadline: b.action_deadline, expires_at: b.expires_at, test_mode: !b.livemode, resolution: b.status === 'failed' ? buyerReason(b.resolution) : null,
     delivery_to: addressLine(J(b.delivery_address) || {}) };
 }
 /* The extra bank check for one artist's payment, in the buyer's browser (Stripe.js on the artist's account). */
@@ -585,7 +588,7 @@ export async function actionFor(env, token, orderRef) {
   if (!(live(env) ? /^pk_live_/ : /^pk_test_/).test(pk)) throw new Bad('Extra authentication is not configured. Please contact hello@plotnua.ie.', 503);
   const o = await C.getOrder(env, l.order_id);
   return { publishable_key: pk, account: l.account, client_secret: pi.client_secret, payment_method: l.clone_pm || (pi.last_payment_error && pi.last_payment_error.payment_method && pi.last_payment_error.payment_method.id) || null,
-    order: o.reference, artist: (J(o.seller) || {}).name, amount_cents: l.amount_cents, deadline: b.action_deadline };
+    order: o.reference, artist: (J(o.seller) || {}).name, title: (J(o.artwork_snapshot) || {}).title || null, amount_cents: l.amount_cents, deadline: b.action_deadline };
 }
 export async function confirmationFor(env, token, orderRef) {
   const b = await byToken(env, token);

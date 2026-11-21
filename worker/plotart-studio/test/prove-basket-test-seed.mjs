@@ -36,6 +36,12 @@ try {
   const after = { artists: await q("SELECT * FROM artists WHERE id NOT IN ('astgal') ORDER BY id"), works: await q("SELECT * FROM artworks WHERE id NOT LIKE 'wbk%' AND artist_id NOT IN ('astgal') ORDER BY id"),
     versions: await q("SELECT * FROM versions WHERE source <> 'basket-test-seed' AND artist_id NOT IN ('astgal') ORDER BY artist_id, version"), accounts: await q("SELECT * FROM payment_accounts WHERE artist_id NOT IN ('astgal') ORDER BY artist_id"), orders: await q('SELECT * FROM checkout_orders') };
   check('T3 nothing that existed changed: artists, artworks, versions, payment accounts, orders', JSON.stringify(after) === before);
+  // a later redeploy reads the database again: our own synthetic artists now own their accounts, and nothing new may be added
+  const state2 = { payment_accounts: await q('SELECT account_id, artist_id FROM payment_accounts'), artists: await q('SELECT id, slug, display_name, email, founding, account_status FROM artists') };
+  writeFileSync(TMP, JSON.stringify(state2));
+  const counts = async () => JSON.stringify([await q('SELECT COUNT(*) AS n FROM artworks'), await q('SELECT COUNT(*) AS n FROM versions'), await q('SELECT COUNT(*) AS n FROM artwork_delivery_offers')]);
+  const c0 = await counts(); err = await run(seed());
+  check('T2b a redeploy that reads the database again adds nothing (its own synthetic artists are recognised)', !err && (await counts()) === c0, { err, before: c0, after: await counts() });
   const v = JSON.parse((await q("SELECT snapshot FROM versions WHERE source = 'basket-test-seed'"))[0].snapshot);
   check('T4 the existing artist’s new published version keeps all their works and adds the synthetic basket works', v.works.length === 6 && v.works.filter(w => w.id.startsWith('wbk')).length === 3 && v.works.some(w => w.id === 'watestfnd1'));
   const r = await S.mf.dispatchFetch(S.url + '/api/admin/checkout/baskets/eligibility?ids=wastgal1,wbkatestfnd1,watestfnd1', { headers: { 'Cf-Access-Jwt-Assertion': token(FOUNDER), 'X-Studio': '1' } });

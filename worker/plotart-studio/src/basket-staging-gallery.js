@@ -75,7 +75,7 @@ export async function route(env, url, { page, esc, eur }, where = 'checkout') {
     const size = w.h_cm ? `${w.h_cm} × ${w.w_cm}${w.d_cm ? ' × ' + w.d_cm : ''} cm` : '';
     const img = P.img(w.id);
     const cta = it.ok
-      ? `<p><a class="btn" href="${esc(`${P.basket}?add=${encodeURIComponent(w.id)}&img=${encodeURIComponent(img)}`)}">Add to basket</a></p><p class="small muted">One secure card payment for works from several artists. ${esc(w.artist)} is the seller and is paid directly.</p>`
+      ? `<p><a class="btn" href="${esc(`${P.basket}?add=${encodeURIComponent(w.id)}&img=${encodeURIComponent(img)}`)}">Add to basket</a></p><p class="small muted">Add works by any of our artists to one basket and check out once.</p>`
       : `<p class="note">${esc(it.reason || 'This artwork can’t be bought online.')}</p>`;
     return page(env, w.title, `${STYLE}<p class="eyebrow"><a href="${esc(P.list)}">Gallery</a> / ${esc(w.artist)}</p><div class="aw"><div class="im"><img src="${esc(P.img(w.id))}" alt="Synthetic abstract image for “${esc(w.title)}”"></div>
 <div><p>${esc(w.artist)}${w.founding ? '<span class="badge">Founding Artist</span>' : ''}</p><h1>${esc(w.title)}</h1><p class="price">${it.ok ? eur(it.price_cents) : w.availability === 'sold' ? 'Sold' : w.price_eur ? eur(w.price_eur * 100) : 'Price on request'}</p>

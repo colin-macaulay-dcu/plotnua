@@ -159,6 +159,8 @@ console.log('— buyer: the basket page and live preview');
 r = await pub('GET', '/basket');
 check('B1 the basket page is served with a strict policy (nonce scripts only, no third-party scripts, no framing)', r.s === 200 && /Original works, one checkout/.test(r.t) && /script-src 'nonce-[0-9a-f]{32}'(;| )/.test(r.h.get('Content-Security-Policy'))
   && !/js\.stripe\.com/.test(r.h.get('Content-Security-Policy')) && r.h.get('X-Frame-Options') === 'DENY' && /Test mode/.test(r.t), r.h.get('Content-Security-Policy'));
+const bp = r.t;
+check('B1b the basket page carries no payment-arrangement detail (separate payments, paid directly, Stripe processing, number of transactions)', !/separate (card )?payments?|paid directly|directly to the artist|each artist(’|')s payment|Stripe emails|transactions?\\b/i.test(bp.replace(/<footer>[\s\S]*<\/footer>/, '').replace(/<p class="note test">[\s\S]*?<\/p>/, '')) && /Each artwork is sold by its artist/.test(bp));
 check('B1a the page carries PlotArt’s identity (Instrument Serif, Hanken Grotesk, anthracite) and is responsive', /Instrument\+Serif/.test(r.t) && /Hanken\+Grotesk/.test(r.t) && /#27282A/.test(r.t) && /@media \(max-width:560px\)/.test(r.t) && /name="viewport"/.test(r.t));
 r = await pub('GET', '/api/basket/items?ids=wagal1,wafnd1,wagal4,wanob1,nonexistent');
 const it = Object.fromEntries(r.j.items.map(i => [i.id, i]));
@@ -207,7 +209,7 @@ check('B16 the preview shows a reserved work as being bought by someone else', r
 console.log('— paying: authorise every artist’s payment, then capture');
 const token1 = new URL(sess1._f.success_url).pathname.split('/')[2];
 r = await pub('GET', `/b/${token1}`);
-check('P1 before the card is entered the status page says so; a return from Stripe is never proof of payment', r.s === 200 && /Waiting for your card/.test(r.t));
+check('P1 before the card is entered the status page says so; a return from Stripe is never proof of payment', r.s === 200 && /Waiting for your card details/.test(r.t));
 await shot('3-waiting', `/b/${token1}`);
 enterCard(sess1.id, {});
 const cBefore = M.calls.length;
@@ -238,7 +240,10 @@ check('P10 the buyer gets one purchase confirmation per artwork, naming the arti
 check('P11 the buyer’s saved card is not kept: the platform Customer is deleted once the basket ends', M.customers[B1p.platform_customer].deleted === true && !!B1p.card_released_at);
 r = await pub('GET', `/b/${token1}`);
 await shot('4-paid', `/b/${token1}`, { width: 1280 }); await shot('4b-paid-mobile', `/b/${token1}`, { width: 390, height: 844 });
-check('P12 the status page says paid only now, per artist payment, with each confirmation', /Thank you/.test(r.t) && (r.t.match(/state captured/g) || []).length === 2 && (r.t.match(/Your purchase confirmation from/g) || []).length === 2, r.t.slice(0, 400));
+check('P12 the confirmation: “Thank you for your purchase”, “Order confirmed”, the agreed message; titles, artists (once each), prices, delivery and total; one simple confirmation link per artwork; no payment-arrangement detail',
+  /Thank you for your purchase/.test(r.t) && /Order confirmed/.test(r.t) && /Your order has been successfully placed\./.test(r.t) && /Your artwork will be prepared for delivery to your nominated address\. You’ll receive confirmation of your purchase, and we’ll be in touch with any delivery updates\./.test(r.t)
+  && (r.t.match(/View confirmation/g) || []).length === 2 && /by Gale Gallery/.test(r.t) && !/Gale Gallery \(/.test(r.t) && /€1,245\.00/.test(r.t) && /€1,725\.00/.test(r.t) && /delivered in 5–8 working days/.test(r.t)
+  && !/separate (card )?payments?|paid directly|directly to the artist|each artist(’|')s payment|Stripe emails|transactions?\\b/i.test(r.t.replace(/<footer>[\s\S]*<\/footer>/, '')), r.t.slice(0, 400));
 r = await pub('GET', `/b/${token1}/confirmation/${O1p[0].reference}`);
 check('P13 the confirmation for one artwork is reachable only through this basket’s link', r.s === 200 && /PURCHASE CONFIRMATION/.test(r.t) && (await pub('GET', `/b/${'z'.repeat(48)}/confirmation/${O1p[0].reference}`)).s === 404);
 const cAfter = M.calls.length;
@@ -261,7 +266,7 @@ check('D3 both orders end unpaid, the artworks are released and stay available, 
   && !(await q('SELECT * FROM artwork_sales WHERE order_id IN (?,?)', O2[0].id, O2[1].id)).length && (await one("SELECT availability FROM artworks WHERE id='wagal2'")).availability === 'available' && M.customers[B2p.platform_customer].deleted);
 r = await pub('GET', `/b/${new URL(s2._f.success_url).pathname.split('/')[2]}`);
 await shot('6-declined', `/b/${new URL(s2._f.success_url).pathname.split('/')[2]}`);
-check('D4 the buyer is told plainly that nothing was bought and any hold is released', /Not completed/.test(r.t) && /declined/.test(r.t), r.t.slice(0, 600));
+check('D4 the buyer is told plainly: payment not completed, card declined, nothing charged (no artist or payment detail)', /Payment not completed/.test(r.t) && /Your card was declined\./.test(r.t) && /Nothing was charged/.test(r.t) && !/Fia Founding/.test(r.t.split('<section>')[0]), r.t.slice(0, 600));
 check('D5 no ledger entry exists for a failed basket', !(await q('SELECT * FROM order_ledger WHERE order_id IN (?,?)', O2[0].id, O2[1].id)).length);
 
 console.log('— extra bank authentication for one artist’s payment');
@@ -276,7 +281,7 @@ check('X2 a bank asking for authentication pauses the basket: the other artist s
 r = await pub('GET', `/b/${token3}`);
 const ref3 = (await one('SELECT reference FROM checkout_orders WHERE id = ?', L3[1].order_id)).reference;
 await shot('5-bank-check', `/b/${token3}`);
-check('X3 the status page asks the buyer to confirm that one artist’s payment, with a deadline', /Confirm the payment to Fia Founding/.test(r.t) && /otherwise every payment in this basket is cancelled/.test(r.t));
+check('X3 the status page asks the buyer to confirm their payment, with a deadline (no per-artist payment wording)', /Confirm your payment/.test(r.t) && /Confirm payment</.test(r.t) && /otherwise your order is cancelled and nothing is charged/.test(r.t) && !/separate (card )?payments?|paid directly|directly to the artist|each artist(’|')s payment|Stripe emails|transactions?\\b/i.test(r.t.replace(/<footer>[\s\S]*<\/footer>/, '')), r.t.slice(0, 500));
 r = await pub('GET', `/b/${token3}/authenticate/${ref3}`);
 check('X4 the confirmation page runs Stripe.js on THAT artist’s account with the payment’s own secret; only then is Stripe.js allowed', r.s === 200 && r.t.includes(`stripeAccount:"${ACC.afnd}"`) && r.t.includes('pk_test_mockpublishable') && r.t.includes(M.pis[L3[1].payment_intent].client_secret)
   && /script-src 'nonce-[0-9a-f]+' https:\/\/js\.stripe\.com/.test(r.h.get('Content-Security-Policy')), r.t.slice(0, 300));

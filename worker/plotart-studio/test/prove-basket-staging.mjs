@@ -94,7 +94,7 @@ try {
   const A = await buyer(page, { email: 'buyer-a@example.invalid', card: '4242424242424242', prefix: 'desktop' });
   const bA = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'buyer-a@example.invalid'");
   const oA = await q('SELECT o.* FROM checkout_orders o JOIN basket_lines l ON l.order_id = o.id WHERE l.basket_id = ? ORDER BY l.line_no', bA.id);
-  check('C1 the customer browses, adds works by two artists, enters the card once on the hosted page and sees “Thank you”', bA.status === 'paid' && /Thank you/.test(A.text) && (A.text.match(/Your purchase confirmation from/g) || []).length === 2, { status: bA.status, text: A.text.slice(0, 300) });
+  check('C1 the customer browses, adds works by two artists, enters the card once on the hosted page and sees “Thank you”', bA.status === 'paid' && /Thank you for your purchase/.test(A.text) && /Order confirmed/.test(A.text) && (A.text.match(/View confirmation/g) || []).length === 2, { status: bA.status, text: A.text.slice(0, 300) });
   const auths = M.calls.filter(c => c.path === '/v1/payment_intents' && c.method === 'POST');
   check('C2 commission on Stripe: EUR 180.00 on Aoife’s EUR 1,200 work (delivery EUR 35 not commissioned); none on Cian’s Founding work', auths.length === 2 && auths[0].f.application_fee_amount === '18000' && auths[0].f.amount === '123500'
     && !('application_fee_amount' in auths[1].f) && auths[1].f.amount === '78500' && oA[0].commission_cents === 18000 && oA[1].commission_cents === 0, auths.map(a => a.f));
@@ -121,7 +121,7 @@ try {
   { const v = await one("SELECT snapshot FROM versions WHERE artist_id = 'astfnd'"); const s = JSON.parse(v.snapshot); s.works.find(w => w.id === 'wastfnd2').availability = 'available'; await db.prepare("UPDATE versions SET snapshot = ? WHERE artist_id = 'astfnd'").bind(JSON.stringify(s)).run(); }
   const D = await buyer(page, { email: 'buyer-d@example.invalid', card: '4000000000000341', mobile: true, prefix: 'phone-declined' });
   const bD = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'buyer-d@example.invalid'");
-  check('C6 on a phone, a declined card: nothing is bought, the buyer is told plainly, both works are released', bD.status === 'failed' && /Not completed/.test(D.text) && /declined/i.test(D.text)
+  check('C6 on a phone, a declined card: nothing is bought, the buyer is told plainly, both works are released', bD.status === 'failed' && /Payment not completed/.test(D.text) && /declined/i.test(D.text)
     && !(await q('SELECT * FROM artwork_reservations WHERE artwork_id IN (?,?)', 'wastgal1', 'wastfnd2')).length, { status: bD.status });
   await ctx.close();
 
@@ -129,9 +129,9 @@ try {
   ctx = await context({ ...pw.devices['iPhone 13'] }); page = await ctx.newPage();
   const X = await buyer(page, { email: 'buyer-x@example.invalid', card: '4000002760003184', mobile: true, prefix: 'phone-bankcheck' });
   const bX = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'buyer-x@example.invalid'");
-  check('C7 a bank check: the status page asks the buyer to confirm each payment, with the deadline and a cancel button; nothing is taken yet', bX.status === 'action_required' && /One more step/.test(X.text) && /Confirm the payment to/.test(X.text)
+  check('C7 a bank check: the status page asks the buyer to confirm each payment, with the deadline and a cancel button; nothing is taken yet', bX.status === 'action_required' && /Confirm your payment/.test(X.text) && /Confirm payment/.test(X.text)
     && !M.calls.some(c => c.path.endsWith('/capture') && Object.values(M.pis).some(p => p.metadata.plotart_basket === bX.id && c.path.includes(p.id))), { status: bX.status });
-  await page.click('button:has-text("Cancel this basket")'); await page.waitForTimeout(500);
+  await page.click('button:has-text("Cancel order")'); await page.waitForTimeout(500);
   check('C8 the buyer can cancel instead: every authorisation is cancelled and the works are released', (await one('SELECT status FROM checkout_baskets WHERE id = ?', bX.id)).status === 'cancelled'
     && Object.values(M.pis).filter(p => p.metadata.plotart_basket === bX.id).every(p => ['canceled', 'requires_payment_method'].includes(p.status)));
   await ctx.close();

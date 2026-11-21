@@ -53,7 +53,8 @@ const ARTISTS = [
 ];
 const created = [];
 for (const A0 of ARTISTS) {
-  const own = owner(A0.account), ex = own && (STATE.artists || []).find(x => x.id === own.artist_id);
+  // an account already owned by one of OUR synthetic staging artists (a repeated run) is that artist's: nothing new is added
+  const own = owner(A0.account), ex = own && !ARTISTS.some(x => x.id === own.artist_id) && (STATE.artists || []).find(x => x.id === own.artist_id);
   // an existing TEST artist already owns this Stripe TEST account: that artist takes this slot (their own founding status)
   const A = ex ? { ...A0, id: ex.id, slug: ex.slug, name: ex.display_name, founding: ex.founding ? 1 : 0, existing: true, works: A0.works.filter(w => w[4]).slice(0, 3) } : A0;
   if (!ex) created.push(A.id);
