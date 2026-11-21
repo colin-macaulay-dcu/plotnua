@@ -23,6 +23,71 @@ const all = async (env, sql, ...b) => (await env.DB.prepare(sql).bind(...b).all(
 const one = (env, sql, ...b) => env.DB.prepare(sql).bind(...b).first();
 const run = (env, sql, ...b) => env.DB.prepare(sql).bind(...b).run();
 const st = (env, sql, ...b) => env.DB.prepare(sql).bind(...b);
+
+/* ---------------------------------------------------------------- shared artwork claims (migration 0019)
+   Once migration 0019 is installed, every hold, sale and sale reinstatement of an original by this checkout also takes the
+   artwork's one claim (artwork_claims) in the SAME D1 batch, and asserts it holds it (artwork_claim_assertions). D1 runs a
+   batch as one transaction and writes one at a time, so this checkout and a multi-artist basket can never both hold or sell
+   one original. A refused assertion says "UNIQUE constraint failed", which the existing paths already turn into "someone
+   else is completing a purchase" (startCheckout) or "paid, but already sold: refund the buyer" (recordPaid).
+   Without migration 0019 nothing here runs and the checkout behaves exactly as before. */
+const claimsMarked = new WeakSet();   // per database binding, never shared between databases
+export async function claimsOn(env) {
+  const on = !!(await one(env, "SELECT 1 AS x FROM sqlite_master WHERE type = 'table' AND name = 'artwork_claims'"));
+  // records that this (claims-aware) checkout is running: baskets refuse to claim until it has (migration 0019)
+  if (on && !claimsMarked.has(env.DB)) { await run(env, "INSERT OR IGNORE INTO checkout_capabilities (name, version, at) VALUES ('single_checkout_claims', 1, ?)", now()); claimsMarked.add(env.DB); }
+  return on;
+}
+export const RESERVE_SQL = `INSERT INTO artwork_reservations (artwork_id, order_id, quote_version, expires_at, created_at)
+    SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM artwork_sales WHERE artwork_id = ? AND released_at IS NULL)
+    ON CONFLICT(artwork_id) DO UPDATE SET order_id = excluded.order_id, quote_version = excluded.quote_version, expires_at = excluded.expires_at, created_at = excluded.created_at
+    WHERE artwork_reservations.order_id = excluded.order_id OR artwork_reservations.expires_at < excluded.created_at`;
+export const SALE_SQL = 'INSERT INTO artwork_sales (order_id, artwork_id, sold_at) VALUES (?,?,?)';
+export const REINSTATE_SQL = "UPDATE artwork_sales SET released_at = NULL, released_reason = NULL WHERE order_id = ? AND released_reason = 'fully refunded'";
+export const CLAIM_SQL = Object.freeze({
+  dropStale: "DELETE FROM artwork_claims WHERE artwork_id = ? AND kind = 'hold' AND julianday(expires_at) <= julianday('now')",
+  hold: `INSERT INTO artwork_claims (artwork_id, holder_kind, holder_id, kind, expires_at, claimed_at) VALUES (?, 'single', ?, 'hold', ?, ?)
+    ON CONFLICT(artwork_id) DO UPDATE SET expires_at = excluded.expires_at, claimed_at = excluded.claimed_at
+    WHERE artwork_claims.holder_kind = 'single' AND artwork_claims.holder_id = excluded.holder_id AND artwork_claims.kind = 'hold'`,
+  sale: `INSERT INTO artwork_claims (artwork_id, holder_kind, holder_id, kind, expires_at, claimed_at) VALUES (?, 'single', ?, 'sale', NULL, ?)
+    ON CONFLICT(artwork_id) DO UPDATE SET kind = 'sale', expires_at = NULL, claimed_at = excluded.claimed_at
+    WHERE artwork_claims.holder_kind = 'single' AND artwork_claims.holder_id = excluded.holder_id`,
+  assert: "INSERT INTO artwork_claim_assertions (artwork_id, holder_kind, holder_id, kind, purpose, at) VALUES (?, 'single', ?, ?, ?, ?)",
+  releaseHold: "DELETE FROM artwork_claims WHERE holder_kind = 'single' AND holder_id = ? AND kind = 'hold'",
+  releaseSale: "DELETE FROM artwork_claims WHERE holder_kind = 'single' AND holder_id = ? AND kind = 'sale'",
+  sweep: "DELETE FROM artwork_claims WHERE holder_kind = 'single' AND kind = 'hold' AND julianday(expires_at) <= julianday('now')",
+});
+export const claimHoldSts = (env, o, until, t) => [st(env, CLAIM_SQL.dropStale, o.artwork_id), st(env, CLAIM_SQL.hold, o.artwork_id, o.id, until, t),
+  st(env, CLAIM_SQL.assert, o.artwork_id, o.id, 'hold', 'checkout', t)];
+export const claimSaleSts = (env, o, t, purpose) => [st(env, CLAIM_SQL.dropStale, o.artwork_id), st(env, CLAIM_SQL.sale, o.artwork_id, o.id, t),
+  st(env, CLAIM_SQL.assert, o.artwork_id, o.id, 'sale', purpose, t)];
+/* The order's hold on its original: the reservation and, with migration 0019, the artwork's claim, in one transaction.
+   Returns false if anyone else (another order, or a basket) holds or has sold the original. */
+export async function reserveOriginal(env, o, holdUntil, t) {
+  const reserve = [o.artwork_id, o.id, o.quote_version, holdUntil, t, o.artwork_id];
+  const busy = e => { if (/UNIQUE/.test(String(e.message))) return { meta: { changes: 0 } }; throw e; };
+  const claims = await claimsOn(env);
+  const r = claims
+    ? await env.DB.batch([...claimHoldSts(env, o, holdUntil, t), st(env, RESERVE_SQL, ...reserve)]).then(rs => rs[rs.length - 1], busy)
+    : await run(env, RESERVE_SQL, ...reserve).catch(busy);
+  if (r.meta.changes) return true;
+  // the claim was ours but the reservation was not taken (another single-artist order holds it): give the claim back
+  if (claims) await run(env, CLAIM_SQL.releaseHold, o.id).catch(() => {});
+  return false;
+}
+/* The order's hold on its original is released (reservation first, then its claim: a live claim is kept while the hold is). */
+async function releaseHold(env, o) {
+  const sts = [st(env, 'DELETE FROM artwork_reservations WHERE order_id = ?', o.id)];
+  if (await claimsOn(env)) sts.push(st(env, CLAIM_SQL.releaseHold, o.id));
+  await env.DB.batch(sts);
+}
+/* Reinstating a sale after a refund that later failed: only if this order can (still) claim its original. */
+export async function reinstateSale(env, o) {
+  if (!(await claimsOn(env))) { await run(env, REINSTATE_SQL, o.id); return { ok: true }; }
+  if (!(await one(env, "SELECT 1 AS x FROM artwork_sales WHERE order_id = ? AND released_reason = 'fully refunded'", o.id))) return { ok: true, nothing: true };
+  try { await env.DB.batch([...claimSaleSts(env, o, now(), 'reinstate after failed refund'), st(env, REINSTATE_SQL, o.id)]); return { ok: true }; }
+  catch (e) { if (/UNIQUE/.test(String(e.message))) return { ok: false, why: 'the original is now held or sold through a PlotArt basket' }; throw e; }
+}
 const J = s => (s ? JSON.parse(s) : null);
 const sha256 = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].map(b => b.toString(16).padStart(2, '0')).join('');
 const plusDays = (iso, d) => new Date(Date.parse(iso) + d * 86400_000).toISOString();
@@ -701,6 +766,8 @@ async function workAvailable(env, artistId, artworkId) {
   const pw = await publishedWork(env, artistId, artworkId);
   if (!pw || pw.availability !== 'available') throw new Bad('That artwork is not published as available', 409);
   if (await one(env, 'SELECT 1 AS x FROM artwork_sales WHERE artwork_id = ? AND released_at IS NULL', artworkId)) throw new Bad('That artwork has already been sold through the pilot', 409);
+  if (await claimsOn(env) && await one(env, "SELECT 1 AS x FROM artwork_claims WHERE artwork_id = ? AND holder_kind = 'basket' AND (kind = 'sale' OR julianday(expires_at) > julianday('now'))", artworkId))
+    throw new Bad('That artwork is held or sold through a PlotArt basket', 409);
   return w;
 }
 
@@ -737,7 +804,7 @@ async function supersede(env, o, actor, why) {
     }
     await run(env, "UPDATE checkout_sessions SET status = 'superseded', updated_at = ? WHERE id = ? AND status = 'open'", now(), s.id);
   }
-  await run(env, 'DELETE FROM artwork_reservations WHERE order_id = ?', o.id);
+  await releaseHold(env, o);
   if (open.length) await event(env, o.id, actor, 'checkout_superseded', o.status, o.status, { sessions: open.map(s => s.id), why });
 }
 export async function updateOrder(env, founder, id, b) {
@@ -963,12 +1030,7 @@ export async function startCheckout(env, token, b) {
   const sessionExpires = new Date(Math.min(Date.parse(addMin(t, R.SESSION_MINUTES + 1)), Date.parse(o.quote_expires_at) + 60_000)).toISOString();
   if (Date.parse(sessionExpires) - Date.parse(t) < 30 * 60_000 + 30_000) throw new Bad('This quote expires too soon to pay. Please contact hello@plotnua.ie.', 410);
   const holdUntil = addMin(sessionExpires, R.RESERVATION_GRACE_MINUTES);
-  const r = await run(env, `INSERT INTO artwork_reservations (artwork_id, order_id, quote_version, expires_at, created_at)
-    SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM artwork_sales WHERE artwork_id = ? AND released_at IS NULL)
-    ON CONFLICT(artwork_id) DO UPDATE SET order_id = excluded.order_id, quote_version = excluded.quote_version, expires_at = excluded.expires_at, created_at = excluded.created_at
-    WHERE artwork_reservations.order_id = excluded.order_id OR artwork_reservations.expires_at < excluded.created_at`,
-    o.artwork_id, o.id, o.quote_version, holdUntil, t, o.artwork_id).catch(e => { if (/UNIQUE/.test(String(e.message))) return { meta: { changes: 0 } }; throw e; });
-  if (!r.meta.changes) throw new Bad('Someone else is completing a purchase of this artwork right now. Please try again later.', 409);
+  if (!(await reserveOriginal(env, o, holdUntil, t))) throw new Bad('Someone else is completing a purchase of this artwork right now. Please try again later.', 409);
   const money = R.amounts({ artwork_cents: o.artwork_cents, delivery_cents: o.delivery_cents, commission_bp: o.commission_bp });
   if (money.commission_cents !== o.commission_cents) throw new Bad('Quote integrity check failed', 500);
   const n = (await one(env, 'SELECT COUNT(*) AS n FROM checkout_sessions WHERE order_id = ?', o.id)).n;
@@ -980,7 +1042,7 @@ export async function startCheckout(env, token, b) {
       successUrl: `${env.CHECKOUT_ORIGIN}/q/${token}/return?result=success`, cancelUrl: `${env.CHECKOUT_ORIGIN}/q/${token}/return?result=cancel`,
       statement: `${o.reference} · sold by ${seller.name} · introduced by PlotArt` });
   } catch (e) {
-    await run(env, 'DELETE FROM artwork_reservations WHERE order_id = ?', o.id);
+    await releaseHold(env, o);
     throw new Bad(e instanceof S.StripeError ? `Checkout could not be opened: ${e.message}` : 'Checkout could not be opened', e.status && e.status < 500 ? 409 : 502);
   }
   if (s.amount_total != null && s.amount_total !== money.total_cents) throw new Bad('Checkout amount mismatch', 500);
@@ -1055,7 +1117,7 @@ async function apply(env, ev, obj) {
       if (!o) return { status: 'ignored' };
       await run(env, "UPDATE checkout_sessions SET status = 'expired', updated_at = ? WHERE id = ? AND status = 'open'", now(), obj.id);
       if (o.payment_status === 'paid') return { status: 'ignored', order: o.id, detail: 'already paid' };
-      await run(env, 'DELETE FROM artwork_reservations WHERE order_id = ?', o.id);
+      await releaseHold(env, o);
       if (R.canMove(o.status, 'payment_failed')) await move(env, o, 'payment_failed', 'provider', 'payment_failed', { payment_status: 'failed' }, { event: ev.id });
       return { status: 'processed', order: o.id };
     }
@@ -1066,7 +1128,7 @@ async function apply(env, ev, obj) {
       if (o.payment_status === 'paid' || ['paid', 'dispatched', 'delivered', 'closed', 'refund_pending', 'refunded', 'disputed'].includes(o.status))
         return { status: 'ignored', order: o.id, detail: 'order already paid: an out-of-order expiry is ignored' };
       const current = await one(env, "SELECT 1 AS x FROM checkout_sessions WHERE order_id = ? AND status = 'open'", o.id);
-      if (!current) await run(env, 'DELETE FROM artwork_reservations WHERE order_id = ?', o.id);   // released only if no newer checkout holds it
+      if (!current) await releaseHold(env, o);   // released only if no newer checkout holds it
       if (o.status === 'checkout_open' && !current) {
         const back = o.quote_expires_at > now() ? 'quoted' : 'expired';
         await move(env, o, back, 'provider', 'checkout_expired', { payment_status: 'none' }, { session: obj.id, superseded: row && row.status === 'superseded' });
@@ -1156,7 +1218,7 @@ function startClock(o, eventId, eventCreated) {
 /* A verified completed payment. The sale, the order, the session, the reservation release, the Studio "sold" mark and
    the ledger are written in ONE transaction. If the original has already been sold (to another order), nothing is sold
    twice: the payment is booked and the order is flagged for a refund. */
-async function recordPaid(env, o, s, eventId, eventCreated = null) {
+export async function recordPaid(env, o, s, eventId, eventCreated = null) {   // exported for the offline proofs only
   if (o.payment_status === 'paid' || ['paid', 'dispatched', 'delivered', 'closed', 'refunded', 'disputed'].includes(o.status)) return 'already recorded';
   const t = now(), pi = typeof s.payment_intent === 'string' ? s.payment_intent : s.payment_intent && s.payment_intent.id;
   const expected = o.artwork_cents + o.delivery_cents;
@@ -1176,18 +1238,21 @@ async function recordPaid(env, o, s, eventId, eventCreated = null) {
   if (sold) problems.push(`this original was already sold through another order (${(await getOrder(env, sold.order_id)).reference})`);
   const work = await one(env, 'SELECT availability FROM artworks WHERE id = ?', o.artwork_id);
   if (!sold && work.availability !== 'available') problems.push(`artwork marked ${work.availability} in the Studio before payment`);
+  const claims = await claimsOn(env);
   const flag = async why => {
     await env.DB.batch([...books,
       st(env, `UPDATE checkout_orders SET status = 'refund_pending', payment_status = 'paid', payment_intent = ?, amount_received_cents = ?, paid_at = ?, needs_resolution = ?, updated_at = ? WHERE id = ?`, pi, s.amount_total, t, why, t, o.id),
       st(env, "UPDATE checkout_sessions SET status = 'complete', updated_at = ? WHERE id = ?", t, s.id),
       st(env, 'DELETE FROM artwork_reservations WHERE order_id = ?', o.id),
+      ...(claims ? [st(env, CLAIM_SQL.releaseHold, o.id)] : []),
       evSt(env, o.id, 'provider', 'paid_needs_resolution', o.status, 'refund_pending', { event: eventId, why })]);
     return 'flagged: ' + why;
   };
   if (problems.length) return flag(problems.join('; ') + ' — refund or resolve with the buyer');
   try {
     await env.DB.batch([
-      st(env, 'INSERT INTO artwork_sales (order_id, artwork_id, sold_at) VALUES (?,?,?)', o.id, o.artwork_id, t),
+      ...(claims ? claimSaleSts(env, o, t, 'paid') : []),
+      st(env, SALE_SQL, o.id, o.artwork_id, t),
       ...books,
       ledgerSt(env, o.id, 'artist_artwork', o.artwork_cents - o.commission_cents, pi, 'artwork amount after commission, before Stripe fees'),
       ...(o.delivery_cents > 0 ? [ledgerSt(env, o.id, 'delivery_allocation', o.delivery_cents, pi, 'pays the quoted delivery obligation; not artist profit')] : []),
@@ -1406,7 +1471,7 @@ async function failRefund(env, rr, re) {
      · the order goes back to its paid state with a flag naming the ONE route to repay the buyer: a new refund through the
        pilot, or the artist's direct repayment recorded with evidence. Whichever happens first uses up the amount, so the
        other is refused ("more than remains unrefunded"): the buyer cannot be repaid twice through the pilot. */
-async function reverseRefund(env, rr, re) {
+export async function reverseRefund(env, rr, re) {   // exported for the offline proofs only
   const flip = await run(env, "UPDATE order_refunds SET status = 'failed', error = ?, updated_at = ? WHERE id = ? AND status = 'succeeded'",
     ('reversed by Stripe after succeeding: ' + (re.failure_reason || re.status)).slice(0, 200), now(), rr.id);
   if (!flip.meta.changes) return;   // another delivery already reversed it
@@ -1425,10 +1490,20 @@ async function reverseRefund(env, rr, re) {
   const sets = { payment_status: repaid > 0 ? 'partially_refunded' : 'paid', needs_resolution: flag };
   if (['refunded', 'refund_pending'].includes(o.status) && R.canMove(o.status, back)) await move(env, o, back, 'provider', 'refund_reversed', sets, { refund: rr.id, provider_refund: ref, reason: re.failure_reason || re.status });
   else { await run(env, 'UPDATE checkout_orders SET payment_status = ?, needs_resolution = ?, updated_at = ? WHERE id = ?', sets.payment_status, flag, now(), o.id); await event(env, o.id, 'provider', 'refund_reversed', o.status, o.status, { refund: rr.id, provider_refund: ref }); }
-  await run(env, "UPDATE artwork_sales SET released_at = NULL, released_reason = NULL WHERE order_id = ? AND released_reason = 'fully refunded'", o.id);   // the buyer still holds the sale
+  // the buyer still holds the sale, unless the original was meanwhile claimed through a multi-artist basket (migration 0019):
+  // then the sale is NOT reinstated, the order says so, and every step below still runs
+  let back2 = { ok: true };
+  try { back2 = await reinstateSale(env, o); }
+  catch (e) { back2 = { ok: false, why: 'reinstating the sale failed (' + String(e.message).slice(0, 120) + ')' }; }
+  const lost = back2.ok ? '' : ` The sale could NOT be reinstated: ${back2.why}. The buyer has paid and holds no artwork: they must be repaid in full (one route only), and the artist told.`;
+  if (!back2.ok) {
+    const cur = await getOrder(env, o.id);
+    await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?', [`sale not reinstated after refund ${ref} failed: ${back2.why}`, cur.needs_resolution].filter(Boolean).join(' | '), now(), o.id);
+    await event(env, o.id, 'provider', 'sale_reinstatement_refused', cur.status, cur.status, { refund: rr.id, provider_refund: ref, why: back2.why });
+  }
   await setOwedFlag(env, o.id);
   await buyerRefundNotice(env, await getOrder(env, o.id), 'buyer_refund_reversed', rr, re.failure_reason || re.status);
-  await notify(env, await getOrder(env, o.id), 'refund_reversed', `Stripe reversed a refund on PlotArt order ${o.reference} after first confirming it (${re.failure_reason || re.status}). The money is back in the seller's Stripe balance and the buyer has NOT been repaid. Repay the buyer by one route only: a new refund through PlotArt, or a direct repayment by the seller that PlotArt records with evidence.`);
+  await notify(env, await getOrder(env, o.id), 'refund_reversed', `Stripe reversed a refund on PlotArt order ${o.reference} after first confirming it (${re.failure_reason || re.status}). The money is back in the seller's Stripe balance and the buyer has NOT been repaid. Repay the buyer by one route only: a new refund through PlotArt, or a direct repayment by the seller that PlotArt records with evidence.${lost}`);
 }
 /* Backstop for missed events: a refund can fail days after succeeding, so recently succeeded refunds are re-read. */
 export const RECHECK_SUCCEEDED_REFUND_DAYS = 14;
@@ -1974,6 +2049,7 @@ async function settleAfterRefund(env, founder, id) {
     if (R.canMove(o.status, 'refunded')) await move(env, o, 'refunded', founder, 'refunded', { payment_status: 'refunded', needs_resolution: null });
     // a fully refunded sale no longer holds the original; the artist decides when (and whether) to offer it again
     await run(env, "UPDATE artwork_sales SET released_at = ?, released_reason = 'fully refunded' WHERE order_id = ? AND released_at IS NULL", now(), id);
+    if (await claimsOn(env)) await run(env, CLAIM_SQL.releaseSale, id);
     await setOwedFlag(env, id);   // settling the refund never hides money PlotArt still owes the artist
   } else {
     await run(env, "UPDATE checkout_orders SET payment_status = 'partially_refunded', updated_at = ? WHERE id = ?", now(), id);
@@ -2151,6 +2227,7 @@ export async function sweep(env) {
   if (!(await installed(env))) return null;
   const t = now();
   const released = await run(env, `DELETE FROM artwork_reservations WHERE expires_at < ? AND order_id NOT IN (SELECT order_id FROM checkout_sessions WHERE status = 'open' AND expires_at >= ?)`, t, t);
+  if (await claimsOn(env)) await run(env, CLAIM_SQL.sweep);
   let expired = 0;
   for (const o of await all(env, `SELECT * FROM checkout_orders WHERE status IN ('quoted','payment_failed') AND quote_expires_at <= ?`, t)) {
     try { await move(env, o, 'expired', 'scheduler', 'quote_expired'); expired++; } catch { /* moved meanwhile */ }

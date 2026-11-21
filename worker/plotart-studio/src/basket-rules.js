@@ -78,7 +78,8 @@ export function decisions(input) {
    and they are added here, with what they permit, in a reviewed change. Do not add an entry without that approval. */
 export const LIVE_BASKET_TERMS = Object.freeze({});
 /* TEST placeholders (synthetic, labelled TEST, never valid in live mode), mirroring PA-PAY-TEST-01 / PA-BPT-TEST-01. -02 lets
-   tests exercise commission-free lines; it is not a statement that any real terms will permit them. */
+   tests exercise commission-free lines; it is not a statement that any real terms will permit them. These are EXACTLY the
+   rows migration 0019 seeds into basket_terms, which enforces the same gate in the database (a test checks they agree). */
 export const TEST_BASKET_TERMS = Object.freeze({
   'PA-BASKET-TEST-01': Object.freeze({ buyer_terms_doc: 'PA-BASKET-BPT-TEST-01', commission_free_lines: false, permits: ALL_PERMITTED }),
   'PA-BASKET-TEST-02': Object.freeze({ buyer_terms_doc: 'PA-BASKET-BPT-TEST-02', commission_free_lines: true, permits: ALL_PERMITTED }),
@@ -141,8 +142,7 @@ export function apportion(total, weights) {
 const SEALED = new WeakSet();
 const isSealed = e => !!e && typeof e === 'object' && SEALED.has(e);
 
-/* The records lineEntitlements reads. Production passes nothing and these read the database; offline tests may supply
-   their own (refused when ENVIRONMENT is "production"). */
+/* The records lineEntitlements reads, always from the database. Nothing can be supplied in their place (review N5). */
 function dbRecords(env) {
   const one = (sql, ...a) => env.DB.prepare(sql).bind(...a).first();
   return {
@@ -163,11 +163,14 @@ function dbRecords(env) {
    named, the introduction is not logged for this artist, or it is not tied to THIS artwork (an introduction recorded
    without an artwork, or for another artwork, cannot carry Founding or any other commission terms to this one: deciding
    otherwise is a founder decision). Each result is sealed and carries its binding and the RECORDED processing consent. */
-export async function lineEntitlements(env, requests, decisionsInput, { at, records = null, resolve = R.entitlement } = {}) {
+export async function lineEntitlements(env, requests, decisionsInput, opts = {}) {
   const d = decisions(decisionsInput);
+  if (!opts || typeof opts !== 'object' || Object.keys(opts).some(k => k !== 'at'))
+    throw new R.RuleError('lineEntitlements reads the artist, artwork, introduction, consent and commission terms from the database only; it takes no other inputs');
+  const at = opts.at;
   if (typeof at !== 'string' || !Number.isFinite(Date.parse(at))) throw new R.RuleError('The time of the basket quote is required');
-  if (records && env && env.ENVIRONMENT === 'production') throw new R.RuleError('Records cannot be supplied in production: they are read from the database');
-  const rec = records || dbRecords(env);
+  if (!env || !env.DB) throw new R.RuleError('The database is required');
+  const rec = dbRecords(env), resolve = R.entitlement;
   if (!Array.isArray(requests) || !requests.length) throw new R.RuleError('Name the basket lines to resolve');
   const out = {}, seenRefs = new Set();
   for (const q of requests) {
@@ -329,12 +332,17 @@ export function settle(p, { fee_cents, fee_vat_cents }) {
 }
 
 /* ---------------------------------------------------------------- transfers: what to send now */
-/* For each artist: transfer the remainder now, hold it, or nothing (done). Never two in flight; a failed attempt is retried
-   with the next attempt number (a new idempotency key), a requested or made one never again.
-   state.artists[artist_id] = { release_ready_at, attempts, in_flight_or_made_cents, pending_reduced_cents }
-     attempts                 allocation transfers recorded so far (any status)
-     in_flight_or_made_cents  allocation transfers requested or created (not failed)
-   opts: { basket_id, now, open_dispute }   An open dispute holds every transfer (review M4). */
+/* For each artist: transfer the remainder now, hold it, wait, or nothing (done). Never two in flight; a failed attempt is
+   retried with the next attempt number (a new idempotency key), a requested or made one never again.
+   state.artists[artist_id] = {
+     release_ready_at, attempts,                 allocation attempts recorded so far (any status)
+     allocation_in_flight_cents,                 allocation transfers requested, not yet created or failed
+     allocation_made_cents,                      allocation transfers created
+     pending_reduced_cents,                      reductions applied before payout, LESS those restored (net)
+     restorations: [{ cause_id, restored_cents, paid_cents, attempts }] }   reductions restored because a refund failed
+   Before the allocation is paid, a restored reduction simply raises it. AFTER the allocation is paid, a restored reduction
+   is paid by a 'restoration' transfer tied to that refund (review N1), never by a second allocation; the database caps it at
+   what was restored. opts: { basket_id, now, open_dispute }. An open dispute holds every transfer (review M4). */
 export function transferPlan(p, settlement, state = {}, { basket_id, now, open_dispute = false } = {}) {
   assertPlan(p);
   if (!settlement || !Array.isArray(settlement.artists) || settlement.artists.length !== p.artists.length) throw new R.RuleError('The settlement of this plan is required');
@@ -342,16 +350,29 @@ export function transferPlan(p, settlement, state = {}, { basket_id, now, open_d
   if (typeof now !== 'string' || !Number.isFinite(Date.parse(now))) throw new R.RuleError('The current time is required');
   return freeze(settlement.artists.map(a => {
     const st = (state.artists || {})[a.artist_id] || {};
-    const made = cents(st.in_flight_or_made_cents ?? 0, 'transferred so far'), reduced = cents(st.pending_reduced_cents ?? 0, 'reductions');
-    const attempts = cents(st.attempts ?? 0, 'attempts');
-    const left = a.transfer_cents - made - reduced;
-    if (left < 0) throw new R.RuleError(`Allocation failed: ${a.artist_id} has been sent more than is due`);
-    if (left === 0) return { artist_id: a.artist_id, action: 'done', amount_cents: 0 };
-    if (made > 0) return { artist_id: a.artist_id, action: 'wait', amount_cents: 0, reason: 'a transfer for this artist is already in flight or made' };
-    if (open_dispute) return { artist_id: a.artist_id, action: 'hold', amount_cents: left, reason: 'a dispute on this basket is open' };
-    if (!st.release_ready_at || Date.parse(st.release_ready_at) > Date.parse(now)) return { artist_id: a.artist_id, action: 'hold', amount_cents: left, reason: `not released (${a.release})` };
-    const attempt = attempts + 1;
-    return { artist_id: a.artist_id, action: 'transfer', amount_cents: left, attempt, idempotency_key: keys.transfer({ basket_id, artist_id: a.artist_id, attempt }) };
+    const inflight = cents(st.allocation_in_flight_cents ?? 0, 'allocation in flight'), made = cents(st.allocation_made_cents ?? 0, 'allocation made');
+    const reduced = cents(st.pending_reduced_cents ?? 0, 'reductions'), attempts = cents(st.attempts ?? 0, 'attempts');
+    const rest = (st.restorations || []).map(r => ({ cause_id: id(r.cause_id, 'Restoration cause'), restored: cents(r.restored_cents, 'restored'),
+      paid: cents(r.paid_cents ?? 0, 'restoration paid'), attempts: cents(r.attempts ?? 0, 'restoration attempts') }));
+    if (rest.some(r => r.paid > r.restored)) throw new R.RuleError(`Allocation failed: ${a.artist_id} has been repaid more than was restored`);
+    if (inflight > 0) return { artist_id: a.artist_id, action: 'wait', amount_cents: 0, reason: 'an allocation transfer for this artist is in flight' };
+    if (made === 0) {
+      const left = a.transfer_cents - reduced;
+      if (left < 0) throw new R.RuleError(`Allocation failed: ${a.artist_id} has more reduced than is due`);
+      if (left === 0) return { artist_id: a.artist_id, action: 'done', amount_cents: 0 };
+      if (open_dispute) return { artist_id: a.artist_id, action: 'hold', amount_cents: left, reason: 'a dispute on this basket is open' };
+      if (!st.release_ready_at || Date.parse(st.release_ready_at) > Date.parse(now)) return { artist_id: a.artist_id, action: 'hold', amount_cents: left, reason: `not released (${a.release})` };
+      const attempt = attempts + 1;
+      return { artist_id: a.artist_id, action: 'transfer', kind: 'allocation', amount_cents: left, attempt, idempotency_key: keys.transfer({ basket_id, artist_id: a.artist_id, attempt }) };
+    }
+    const owed = a.transfer_cents - made - reduced - sum(rest, r => r.paid);
+    if (owed < 0) throw new R.RuleError(`Allocation failed: ${a.artist_id} has been sent more than is due`);
+    if (owed === 0) return { artist_id: a.artist_id, action: 'done', amount_cents: 0 };
+    const unpaid = rest.filter(r => r.restored > r.paid);
+    if (sum(unpaid, r => r.restored - r.paid) !== owed) throw new R.RuleError(`Allocation failed: ${a.artist_id}'s remaining ${owed} cents is not explained by restored reductions`);
+    if (open_dispute) return { artist_id: a.artist_id, action: 'hold', amount_cents: owed, reason: 'a dispute on this basket is open' };
+    return { artist_id: a.artist_id, action: 'restore', amount_cents: owed, items: unpaid.map(r => ({ kind: 'restoration', cause_id: r.cause_id,
+      amount_cents: r.restored - r.paid, attempt: r.attempts + 1, idempotency_key: keys.transfer({ basket_id, artist_id: a.artist_id, kind: 'restoration', cause_key: r.cause_id, attempt: r.attempts + 1 }) })) };
   }));
 }
 
@@ -427,24 +448,26 @@ function recover(S, parts) {
    made for it is undone: reductions restored, reversed amounts re-credited to the artist (a 'recredit' transfer tied to the
    refund), shortfalls cleared, and the commission PlotArt returned is kept by PlotArt again.
    Invariant: buyer refund = Σ (restored + recredited + shortfall cleared) + commission reclaimed. */
-export function refundFailed(p, refundResult) {
+function reasonText(r) { if (typeof r !== 'string' || r.trim().length < 10) throw new R.RuleError('Give a written reason (at least 10 characters) for this adjustment'); return r.trim(); }
+export function refundFailed(p, refundResult, { reason } = {}) {
   assertPlan(p);
   if (!refundResult || !Array.isArray(refundResult.artists) || !Number.isSafeInteger(refundResult.buyer_refund_cents)) throw new R.RuleError('The refund calculation (refund()) is required');
+  const why = reasonText(reason);
   const artists = refundResult.artists.map(a => ({ artist_id: a.artist_id, restore_pending_cents: a.reduce_pending_cents, recredit_cents: a.reverse_cents, shortfall_cleared_cents: a.shortfall_cents }));
   invariant(refundResult.buyer_refund_cents === sum(artists, a => a.restore_pending_cents + a.recredit_cents + a.shortfall_cleared_cents) + refundResult.commission_returned_cents,
     'the failed refund does not unwind exactly');
-  return freeze({ commission_reclaimed_cents: refundResult.commission_returned_cents, artists });
+  return freeze({ commission_reclaimed_cents: refundResult.commission_returned_cents, artists, reason: why });
 }
 
 /* A transfer reversal Stripe refused (for example the artist's Stripe balance cannot cover it). Either retry with the next
    attempt (a new idempotency key), or record the amount as a shortfall to recover outside Stripe. Never both. */
-export function reversalFailed({ transfer_id, cause_kind, cause_id, attempt, amount_cents }, { retry }) {
+export function reversalFailed({ transfer_id, cause_kind, cause_id, attempt, amount_cents }, { retry, reason } = {}) {
   id(transfer_id, 'Transfer id'); id(cause_id, 'Cause id'); posInt(attempt, 'Attempt'); cents(amount_cents, 'reversal amount');
   if (!['refund', 'dispute'].includes(cause_kind)) throw new R.RuleError('A reversal is for a refund or a dispute');
   if (retry !== true && retry !== false) throw new R.RuleError('Say whether to retry the reversal or record a shortfall');
-  return freeze(retry
-    ? { action: 'retry', attempt: attempt + 1, idempotency_key: keys.reversal({ transfer_id, cause_kind, cause_id, attempt: attempt + 1 }), amount_cents }
-    : { action: 'shortfall', amount_cents, cause_kind: 'reversal', cause_id: transfer_id + ':' + cause_kind + ':' + cause_id });
+  if (retry) return freeze({ action: 'retry', attempt: attempt + 1, idempotency_key: keys.reversal({ transfer_id, cause_kind, cause_id, attempt: attempt + 1 }), amount_cents });
+  // the shortfall stays tied to the refund or dispute that caused it, so it counts against that artist's liability for it
+  return freeze({ action: 'shortfall', amount_cents, cause_kind, cause_id, reason: reasonText(reason) });
 }
 
 /* ---------------------------------------------------------------- disputes */
@@ -477,7 +500,7 @@ export function dispute(p, state = {}, { outcome, amount_cents, fee_cents = 0, a
     if (total !== amount) throw new R.RuleError('The attribution must add up to the disputed amount');
     refundParts(p, S, att.lines, att.shipments);   // each part must be within what remains on that line or shipment
   }
-  if (!artistsBear) return freeze({ outcome, amount_cents: amount, fee_cents: fee, hold_transfers: [], attribution: att, artists: [],
+  if (!artistsBear) return freeze({ outcome, amount_cents: amount, fee_cents: fee, hold_transfers: [], attribution: att, artists: [], allocations: [],
     platform_cost_cents: amount + fee, commission_returned_cents: 0, lines: [], shipments: [], shortfall_cents: 0 });
 
   const parts = refundParts(p, S, att.lines, att.shipments);
@@ -491,7 +514,9 @@ export function dispute(p, state = {}, { outcome, amount_cents, fee_cents = 0, a
   const commission = d.dispute_loss_bearer === 'artists_by_line' ? sum(parts.lines, l => l.commission_returned_cents) : 0;
   const platformCost = amount + fee - sum(artists, a => a.debit_cents);
   invariant(platformCost >= 0, 'artists would be charged more than the dispute cost');
-  return freeze({ outcome, amount_cents: amount, fee_cents: fee, hold_transfers: [], attribution: att, artists, platform_cost_cents: platformCost,
+  // what each artist carries of this lost dispute: the cap on every reversal, reduction or shortfall for it (review N3)
+  const allocations = artists.filter(a => a.loss_cents + a.dispute_fee_cents > 0).map(a => ({ artist_id: a.artist_id, loss_cents: a.loss_cents, fee_cents: a.dispute_fee_cents }));
+  return freeze({ outcome, amount_cents: amount, fee_cents: fee, hold_transfers: [], attribution: att, artists, allocations, platform_cost_cents: platformCost,
     commission_returned_cents: commission, lines: parts.lines, shipments: parts.shipments, shortfall_cents: sum(artists, a => a.shortfall_cents) });
 }
 
