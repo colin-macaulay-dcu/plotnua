@@ -1,0 +1,16 @@
+{
+  "_note": "Changing this file on plotart/basket-direct-poc requests a CLEAN-UP ONLY run of .github/workflows/plotart-poc-stripe-cleanup.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). It creates no payment and does not run the POC tests.",
+  "requested": "2026-11-21T17:15:29.000Z",
+  "run_tag": "plotart-poc-runmwqnrwh5",
+  "accounts": [
+    "acct_1UclJXHx1Olx8cdw",
+    "acct_1Uct3vHx1OnYJa8H"
+  ],
+  "window": {
+    "from": 1795280400,
+    "to": 1795281300,
+    "_utc": "2026-11-21 17:00 to 17:15 (the run's payments were made 17:04 to 17:06)"
+  },
+  "mode": "inspect",
+  "_mode_note": "inspect = read-only: GET requests only; no refund, cancel, create or change"
+}

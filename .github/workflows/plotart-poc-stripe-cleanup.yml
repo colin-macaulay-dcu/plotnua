@@ -1,0 +1,47 @@
+# PlotArt basket POC · CLEAN-UP ONLY · Stripe TEST MODE ONLY (founder approval 21 Nov 2026).
+# Refunds the outstanding captured TEST charges and cancels uncaptured TEST authorisations left by one POC run (objects
+# tagged metadata poc = run_tag in worker/plotart-studio/test/stripe-cleanup-run.json) on the two named artist accounts.
+# Creates no payment, runs none of the POC tests, deploys nothing. Waits for the founder's Approve on checkout-test.
+name: PlotArt basket POC TEST clean-up
+run-name: "POC TEST clean-up (${{ github.ref_name }})"
+
+on:
+  push:
+    branches: [plotart/basket-direct-poc]
+    paths: [worker/plotart-studio/test/stripe-cleanup-run.json]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plotart-checkout-stripe-test
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    environment: checkout-test
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Clean up one POC run's TEST payments (key never printed)
+        working-directory: worker/plotart-studio
+        env:
+          STRIPE_POC_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
+        run: |
+          [[ "${STRIPE_POC_KEY:-}" =~ ^(sk|rk)_test_[A-Za-z0-9]+$ ]] || { echo "STOP  CHECKOUT_TEST_STRIPE_POC_KEY missing or not a TEST key"; exit 1; }
+          node test/stripe-testmode-poc-cleanup.mjs; code=$?
+          cat stripe-cleanup-evidence/cleanup.md >> "$GITHUB_STEP_SUMMARY" || true
+          exit $code
+      - name: Evidence artifact (no secrets)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stripe-cleanup-evidence
+          path: worker/plotart-studio/stripe-cleanup-evidence/
+          retention-days: 30
