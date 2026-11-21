@@ -32,12 +32,23 @@ const st = (env, sql, ...b) => env.DB.prepare(sql).bind(...b);
    else is completing a purchase" (startCheckout) or "paid, but already sold: refund the buyer" (recordPaid).
    Without migration 0019 nothing here runs and the checkout behaves exactly as before. */
 const claimsMarked = new WeakSet();   // per database binding, never shared between databases
+/* Read-only: is migration 0019 installed? (Read paths never write.) */
 export async function claimsOn(env) {
-  const on = !!(await one(env, "SELECT 1 AS x FROM sqlite_master WHERE type = 'table' AND name = 'artwork_claims'"));
-  // records that this (claims-aware) checkout is running: baskets refuse to claim until it has (migration 0019)
-  if (on && !claimsMarked.has(env.DB)) { await run(env, "INSERT OR IGNORE INTO checkout_capabilities (name, version, at) VALUES ('single_checkout_claims', 1, ?)", now()); claimsMarked.add(env.DB); }
-  return on;
+  return !!(await one(env, "SELECT 1 AS x FROM sqlite_master WHERE type = 'table' AND name = 'artwork_claims'"));
 }
+/* Records that this (claims-aware) checkout is running: baskets refuse to claim until it has (migration 0019). Called only
+   on the paths that hold, sell or sweep (reserveOriginal, recordPaid, sweep), never on a read. */
+export async function markClaimsAware(env) {
+  if (!(await claimsOn(env))) return false;
+  if (!claimsMarked.has(env.DB)) { await run(env, "INSERT OR IGNORE INTO checkout_capabilities (name, version, at) VALUES ('single_checkout_claims', 1, ?)", now()); claimsMarked.add(env.DB); }
+  return true;
+}
+/* A hold is valid while it has not expired OR its checkout is still open: a buyer who paid in time keeps priority even when
+   the payment notification is late (founder policy, review M-2). Only a hold that is expired AND no longer payable is stale. */
+const HOLD_STILL_PAYABLE = `(holder_kind = 'single' AND EXISTS (SELECT 1 FROM checkout_sessions s WHERE s.order_id = artwork_claims.holder_id AND s.status = 'open')
+      AND EXISTS (SELECT 1 FROM artwork_reservations r WHERE r.order_id = artwork_claims.holder_id AND r.artwork_id = artwork_claims.artwork_id))
+   OR (holder_kind = 'basket' AND EXISTS (SELECT 1 FROM basket_orders b WHERE b.id = artwork_claims.holder_id AND b.status = 'checkout_open')
+      AND EXISTS (SELECT 1 FROM basket_artwork_reservations r WHERE r.basket_id = artwork_claims.holder_id AND r.artwork_id = artwork_claims.artwork_id))`;
 export const RESERVE_SQL = `INSERT INTO artwork_reservations (artwork_id, order_id, quote_version, expires_at, created_at)
     SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM artwork_sales WHERE artwork_id = ? AND released_at IS NULL)
     ON CONFLICT(artwork_id) DO UPDATE SET order_id = excluded.order_id, quote_version = excluded.quote_version, expires_at = excluded.expires_at, created_at = excluded.created_at
@@ -45,7 +56,7 @@ export const RESERVE_SQL = `INSERT INTO artwork_reservations (artwork_id, order_
 export const SALE_SQL = 'INSERT INTO artwork_sales (order_id, artwork_id, sold_at) VALUES (?,?,?)';
 export const REINSTATE_SQL = "UPDATE artwork_sales SET released_at = NULL, released_reason = NULL WHERE order_id = ? AND released_reason = 'fully refunded'";
 export const CLAIM_SQL = Object.freeze({
-  dropStale: "DELETE FROM artwork_claims WHERE artwork_id = ? AND kind = 'hold' AND julianday(expires_at) <= julianday('now')",
+  dropStale: `DELETE FROM artwork_claims WHERE artwork_id = ? AND kind = 'hold' AND julianday(expires_at) <= julianday('now') AND NOT (${HOLD_STILL_PAYABLE})`,
   hold: `INSERT INTO artwork_claims (artwork_id, holder_kind, holder_id, kind, expires_at, claimed_at) VALUES (?, 'single', ?, 'hold', ?, ?)
     ON CONFLICT(artwork_id) DO UPDATE SET expires_at = excluded.expires_at, claimed_at = excluded.claimed_at
     WHERE artwork_claims.holder_kind = 'single' AND artwork_claims.holder_id = excluded.holder_id AND artwork_claims.kind = 'hold'`,
@@ -55,7 +66,12 @@ export const CLAIM_SQL = Object.freeze({
   assert: "INSERT INTO artwork_claim_assertions (artwork_id, holder_kind, holder_id, kind, purpose, at) VALUES (?, 'single', ?, ?, ?, ?)",
   releaseHold: "DELETE FROM artwork_claims WHERE holder_kind = 'single' AND holder_id = ? AND kind = 'hold'",
   releaseSale: "DELETE FROM artwork_claims WHERE holder_kind = 'single' AND holder_id = ? AND kind = 'sale'",
-  sweep: "DELETE FROM artwork_claims WHERE holder_kind = 'single' AND kind = 'hold' AND julianday(expires_at) <= julianday('now')",
+  sweep: `DELETE FROM artwork_claims WHERE holder_kind = 'single' AND kind = 'hold' AND julianday(expires_at) <= julianday('now') AND NOT (${HOLD_STILL_PAYABLE})`,
+  // a single-artist sale claim whose sale is no longer active (released, or its records purged) is an orphan (review M-3)
+  sweepSales: `DELETE FROM artwork_claims WHERE holder_kind = 'single' AND kind = 'sale'
+    AND NOT EXISTS (SELECT 1 FROM artwork_sales s WHERE s.order_id = artwork_claims.holder_id AND s.artwork_id = artwork_claims.artwork_id AND s.released_at IS NULL)`,
+  // retention: every claim of a purged order, in the same batch as (and after) its reservation and sale rows
+  purge: "DELETE FROM artwork_claims WHERE holder_kind = 'single' AND holder_id = ?",
 });
 export const claimHoldSts = (env, o, until, t) => [st(env, CLAIM_SQL.dropStale, o.artwork_id), st(env, CLAIM_SQL.hold, o.artwork_id, o.id, until, t),
   st(env, CLAIM_SQL.assert, o.artwork_id, o.id, 'hold', 'checkout', t)];
@@ -66,7 +82,7 @@ export const claimSaleSts = (env, o, t, purpose) => [st(env, CLAIM_SQL.dropStale
 export async function reserveOriginal(env, o, holdUntil, t) {
   const reserve = [o.artwork_id, o.id, o.quote_version, holdUntil, t, o.artwork_id];
   const busy = e => { if (/UNIQUE/.test(String(e.message))) return { meta: { changes: 0 } }; throw e; };
-  const claims = await claimsOn(env);
+  const claims = await markClaimsAware(env);
   const r = claims
     ? await env.DB.batch([...claimHoldSts(env, o, holdUntil, t), st(env, RESERVE_SQL, ...reserve)]).then(rs => rs[rs.length - 1], busy)
     : await run(env, RESERVE_SQL, ...reserve).catch(busy);
@@ -758,16 +774,18 @@ async function publishedWork(env, artistId, artworkId) {
 }
 /* The work must be the artist's, published, available in the gallery AND in the Studio working copy (where the artist
    records an outside sale), not archived, and not already sold through the pilot. */
+const basketClaim = (env, artworkId) => one(env, `SELECT 1 AS x FROM artwork_claims WHERE artwork_id = ? AND holder_kind = 'basket'
+  AND (kind = 'sale' OR julianday(expires_at) > julianday('now') OR ${HOLD_STILL_PAYABLE})`, artworkId);
 async function workAvailable(env, artistId, artworkId) {
   const w = await one(env, 'SELECT * FROM artworks WHERE id = ? AND artist_id = ?', artworkId, artistId);
   if (!w) throw new Bad('That artwork is not this artist’s', 404);
   if (w.archived) throw new Bad('That artwork is withdrawn', 409);
+  // a basket's hold or sale (migration 0019) also marks the work reserved/sold; say why, rather than "marked reserved"
+  if (await claimsOn(env) && await basketClaim(env, artworkId)) throw new Bad('That artwork is held or sold through a PlotArt basket', 409);
   if (w.availability !== 'available') throw new Bad(`That artwork is marked ${w.availability.replace(/_/g, ' ')} in the artist’s Studio`, 409);
   const pw = await publishedWork(env, artistId, artworkId);
   if (!pw || pw.availability !== 'available') throw new Bad('That artwork is not published as available', 409);
   if (await one(env, 'SELECT 1 AS x FROM artwork_sales WHERE artwork_id = ? AND released_at IS NULL', artworkId)) throw new Bad('That artwork has already been sold through the pilot', 409);
-  if (await claimsOn(env) && await one(env, "SELECT 1 AS x FROM artwork_claims WHERE artwork_id = ? AND holder_kind = 'basket' AND (kind = 'sale' OR julianday(expires_at) > julianday('now'))", artworkId))
-    throw new Bad('That artwork is held or sold through a PlotArt basket', 409);
   return w;
 }
 
@@ -1236,9 +1254,13 @@ export async function recordPaid(env, o, s, eventId, eventCreated = null) {   //
   ];
   const sold = await one(env, 'SELECT order_id FROM artwork_sales WHERE artwork_id = ? AND released_at IS NULL AND order_id <> ?', o.artwork_id, o.id);
   if (sold) problems.push(`this original was already sold through another order (${(await getOrder(env, sold.order_id)).reference})`);
+  const claims = await markClaimsAware(env);
+  const basket = !sold && claims && await basketClaim(env, o.artwork_id);
+  // accurate reasons for the founder alert and the buyer notice (review M-2): who has the original, and why this payment lost it
+  if (basket) problems.push(late ? 'this payment arrived after the hold had lapsed and the original is now held or sold through a PlotArt basket'
+    : 'the original is held or sold through a PlotArt basket');
   const work = await one(env, 'SELECT availability FROM artworks WHERE id = ?', o.artwork_id);
-  if (!sold && work.availability !== 'available') problems.push(`artwork marked ${work.availability} in the Studio before payment`);
-  const claims = await claimsOn(env);
+  if (!sold && !basket && work.availability !== 'available') problems.push(`artwork marked ${work.availability} in the Studio before payment`);
   const flag = async why => {
     await env.DB.batch([...books,
       st(env, `UPDATE checkout_orders SET status = 'refund_pending', payment_status = 'paid', payment_intent = ?, amount_received_cents = ?, paid_at = ?, needs_resolution = ?, updated_at = ? WHERE id = ?`, pi, s.amount_total, t, why, t, o.id),
@@ -2048,8 +2070,9 @@ async function settleAfterRefund(env, founder, id) {
   if (full) {
     if (R.canMove(o.status, 'refunded')) await move(env, o, 'refunded', founder, 'refunded', { payment_status: 'refunded', needs_resolution: null });
     // a fully refunded sale no longer holds the original; the artist decides when (and whether) to offer it again
-    await run(env, "UPDATE artwork_sales SET released_at = ?, released_reason = 'fully refunded' WHERE order_id = ? AND released_at IS NULL", now(), id);
-    if (await claimsOn(env)) await run(env, CLAIM_SQL.releaseSale, id);
+    // the sale and its claim are released in ONE transaction (review M-3: a crash between them left a stale claim)
+    await env.DB.batch([st(env, "UPDATE artwork_sales SET released_at = ?, released_reason = 'fully refunded' WHERE order_id = ? AND released_at IS NULL", now(), id),
+      ...(await claimsOn(env) ? [st(env, CLAIM_SQL.releaseSale, id)] : [])]);
     await setOwedFlag(env, id);   // settling the refund never hides money PlotArt still owes the artist
   } else {
     await run(env, "UPDATE checkout_orders SET payment_status = 'partially_refunded', updated_at = ? WHERE id = ?", now(), id);
@@ -2226,8 +2249,12 @@ export async function resendConfirmation(env, founder, id, b = {}) {
 export async function sweep(env) {
   if (!(await installed(env))) return null;
   const t = now();
-  const released = await run(env, `DELETE FROM artwork_reservations WHERE expires_at < ? AND order_id NOT IN (SELECT order_id FROM checkout_sessions WHERE status = 'open' AND expires_at >= ?)`, t, t);
-  if (await claimsOn(env)) await run(env, CLAIM_SQL.sweep);
+  const claims = await markClaimsAware(env);
+  // with migration 0019 a hold stays while its checkout is still open (payment may be in flight: review M-2); without it, as before
+  const released = claims
+    ? await run(env, `DELETE FROM artwork_reservations WHERE expires_at < ? AND order_id NOT IN (SELECT order_id FROM checkout_sessions WHERE status = 'open')`, t)
+    : await run(env, `DELETE FROM artwork_reservations WHERE expires_at < ? AND order_id NOT IN (SELECT order_id FROM checkout_sessions WHERE status = 'open' AND expires_at >= ?)`, t, t);
+  if (claims) { await run(env, CLAIM_SQL.sweep); await run(env, CLAIM_SQL.sweepSales); }
   let expired = 0;
   for (const o of await all(env, `SELECT * FROM checkout_orders WHERE status IN ('quoted','payment_failed') AND quote_expires_at <= ?`, t)) {
     try { await move(env, o, 'expired', 'scheduler', 'quote_expired'); expired++; } catch { /* moved meanwhile */ }
@@ -2298,7 +2325,9 @@ export async function retention(env, at = now()) {
         OR EXISTS (SELECT 1 FROM order_refunds r WHERE r.order_id = c.id AND r.status = 'pending'))`, o.id)) { held++; continue; }
     await env.DB.batch(['order_events', 'order_fulfilment_events', 'order_refunds', 'order_ledger', 'checkout_sessions', 'artwork_reservations', 'artwork_sales', 'payment_events', 'checkout_hold_events', 'checkout_holds',
       'quote_snapshots', 'order_message_deliveries', 'order_messages', 'checkout_founder_alert_reads', 'checkout_mail_sink', 'checkout_owed_payment_returns', 'checkout_owed_payments', 'checkout_owed']
-      .map(t => st(env, `DELETE FROM ${t} WHERE order_id = ?`, o.id)).concat([st(env, 'DELETE FROM checkout_orders WHERE id = ?', o.id)]));
+      .map(t => st(env, `DELETE FROM ${t} WHERE order_id = ?`, o.id))
+      .concat(await claimsOn(env) ? [st(env, CLAIM_SQL.purge, o.id)] : [])   // its claims go with its records (review M-3)
+      .concat([st(env, 'DELETE FROM checkout_orders WHERE id = ?', o.id)]));
     purged++;
   }
   // seller information is kept only while the artist is in the pilot (each quote keeps its own copy)

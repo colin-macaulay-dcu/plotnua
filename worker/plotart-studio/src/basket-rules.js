@@ -407,8 +407,9 @@ function refundParts(p, S, reqLines, reqShips) {
     const amt = cents(r.artwork_cents, `refund for ${l.line_id}`);
     if (amt === 0) throw new R.RuleError(`Refund for ${l.line_id} must be more than zero`);
     const st = (S.lines || {})[l.line_id] || {};
-    const before = cents(st.artwork_refunded_cents ?? 0, 'artwork refunded so far'), commBefore = cents(st.commission_returned_cents ?? 0, 'commission returned so far');
-    if (before + amt > l.artwork_cents) throw new R.RuleError(`Refund for ${l.line_id} exceeds the artwork amount paid`);
+    // what was already recovered from this line: refunds AND lost disputes (review H-3: never recovered twice)
+    const before = cents(st.artwork_refunded_cents ?? 0, 'artwork refunded so far') + cents(st.artwork_disputed_cents ?? 0, 'artwork lost in disputes so far'), commBefore = cents(st.commission_returned_cents ?? 0, 'commission returned so far');
+    if (before + amt > l.artwork_cents) throw new R.RuleError(`Refund for ${l.line_id} exceeds what remains of the artwork amount paid (after refunds and lost disputes)`);
     const ret = R.commissionRefund({ artwork_cents: l.artwork_cents, commission_cents: l.commission_cents, artwork_refunded_before: before,
       artwork_refund_now: amt, commission_refunded_before: commBefore });
     return { line_id: l.line_id, artist_id: l.artist_id, artwork_refund_cents: amt, commission_returned_cents: ret, artist_debit_cents: amt - ret };
@@ -420,8 +421,9 @@ function refundParts(p, S, reqLines, reqShips) {
     seen.add('s:' + s.shipment_id);
     const amt = cents(r.cents, `refund for ${s.shipment_id}`);
     if (amt === 0) throw new R.RuleError(`Refund for ${s.shipment_id} must be more than zero`);
-    const before = cents(((S.shipments || {})[s.shipment_id] || {}).refunded_cents ?? 0, 'shipment refunded so far');
-    if (before + amt > s.delivery_cents + s.insurance_cents) throw new R.RuleError(`Refund for ${s.shipment_id} exceeds its delivery and insurance charges`);
+    const sst = (S.shipments || {})[s.shipment_id] || {};
+    const before = cents(sst.refunded_cents ?? 0, 'shipment refunded so far') + cents(sst.disputed_cents ?? 0, 'shipment lost in disputes so far');
+    if (before + amt > s.delivery_cents + s.insurance_cents) throw new R.RuleError(`Refund for ${s.shipment_id} exceeds what remains of its delivery and insurance charges (after refunds and lost disputes)`);
     return { shipment_id: s.shipment_id, artist_id: s.artist_id, refund_cents: amt, artist_debit_cents: amt };
   });
   return { lines, shipments };
@@ -483,17 +485,20 @@ export function dispute(p, state = {}, { outcome, amount_cents, fee_cents = 0, a
   if (!['open', 'won', 'lost'].includes(outcome)) throw new R.RuleError('Dispute outcome must be open, won or lost');
   const amount = cents(amount_cents, 'disputed amount'), fee = cents(fee_cents, 'dispute fee');
   const S = state || {};
-  const refundable = sum(p.lines, l => l.artwork_cents - cents(((S.lines || {})[l.line_id] || {}).artwork_refunded_cents ?? 0, 'artwork refunded so far'))
-    + sum(p.shipments, s => s.delivery_cents + s.insurance_cents - cents(((S.shipments || {})[s.shipment_id] || {}).refunded_cents ?? 0, 'shipment refunded so far'));
+  const lineOf = l => (S.lines || {})[l.line_id] || {}, shipOf = s => (S.shipments || {})[s.shipment_id] || {};
+  const refundable = sum(p.lines, l => l.artwork_cents - cents(lineOf(l).artwork_refunded_cents ?? 0, 'artwork refunded so far') - cents(lineOf(l).artwork_disputed_cents ?? 0, 'artwork lost in disputes so far'))
+    + sum(p.shipments, s => s.delivery_cents + s.insurance_cents - cents(shipOf(s).refunded_cents ?? 0, 'shipment refunded so far') - cents(shipOf(s).disputed_cents ?? 0, 'shipment lost in disputes so far'));
   if (amount === 0 || amount > refundable) throw new R.RuleError('The disputed amount must be more than zero and no more than what remains unrefunded');
   const allArtists = p.artists.map(a => a.artist_id);
   if (outcome === 'open') return freeze({ outcome, amount_cents: amount, fee_cents: fee, hold_transfers: allArtists, artists: [], platform_cost_cents: 0, attribution: null });
   if (outcome === 'won') return freeze({ outcome, amount_cents: amount, fee_cents: fee, hold_transfers: [], artists: [], platform_cost_cents: 0, attribution: null });
 
   const d = p.decisions, artistsBear = d.dispute_loss_bearer === 'artists_by_line' || d.dispute_fee_bearer === 'artists_by_line';
-  if (artistsBear && !attribution) throw new R.RuleError('A lost dispute carried by artists needs an explicit attribution to the disputed lines or shipments');
+  // every lost dispute names the lines/shipments it was for (review H-2/H-3), whoever carries it: the database refuses a lost
+  // dispute without one, and the attribution is what stops the same line being recovered again by a refund or another dispute
+  if (!attribution) throw new R.RuleError('A lost dispute needs an explicit attribution to the disputed lines or shipments');
   let att = null;
-  if (attribution) {
+  {
     att = { lines: (attribution.lines || []).map(x => ({ line_id: x.line_id, artwork_cents: x.artwork_cents })),
       shipments: (attribution.shipments || []).map(x => ({ shipment_id: x.shipment_id, cents: x.cents })) };
     const total = sum(att.lines, x => cents(x.artwork_cents, 'attributed amount')) + sum(att.shipments, x => cents(x.cents, 'attributed amount'));

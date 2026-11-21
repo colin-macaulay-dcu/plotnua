@@ -475,9 +475,16 @@ console.log('— X disputes: holds while open; explicit attribution when artists
   const w = B.dispute(sp, settled(), { outcome: 'won', amount_cents: sp.total_cents, fee_cents: 2000 });
   check('X1 [P4][M4] an open dispute holds every artist\'s transfers; nothing moves', JSON.stringify(o.hold_transfers) === '["alder","rowan"]' && o.artists.length === 0 && o.platform_cost_cents === 0);
   check('X2 a won dispute releases the hold; nothing moves', w.hold_transfers.length === 0 && w.artists.length === 0);
-  const x = B.dispute(sp, settled(), { outcome: 'lost', amount_cents: sp.total_cents, fee_cents: 2000 });
+  const all = p => ({ lines: p.lines.map(l => ({ line_id: l.line_id, artwork_cents: l.artwork_cents })), shipments: p.shipments.filter(s => s.delivery_cents + s.insurance_cents > 0).map(s => ({ shipment_id: s.shipment_id, cents: s.delivery_cents + s.insurance_cents })) });
+  const x = B.dispute(sp, settled(), { outcome: 'lost', amount_cents: sp.total_cents, fee_cents: 2000, attribution: all(sp) });
   check('X3 lost, PlotArt bears loss and fee: no artist is debited or liable; PlotArt\'s cost = amount + fee', x.artists.length === 0 && x.allocations.length === 0 && x.platform_cost_cents === sp.total_cents + 2000);
-  check('X4 [L2] lost and PlotArt-borne BEFORE settlement: no longer throws', B.dispute(sp, {}, { outcome: 'lost', amount_cents: 1000, fee_cents: 2000 }).platform_cost_cents === 3000);
+  check('X4 [L2] lost and PlotArt-borne BEFORE settlement: no longer throws', B.dispute(sp, {}, { outcome: 'lost', amount_cents: 1000, fee_cents: 2000, attribution: { lines: [{ line_id: 'l1', artwork_cents: 1000 }] } }).platform_cost_cents === 3000);
+  check('X4b [H-2] EVERY lost dispute names what it was for, even one PlotArt carries (the database refuses one without)', ok(refuses(() => B.dispute(sp, settled(), { outcome: 'lost', amount_cents: 1000 }), /explicit attribution/)));
+  const lostL1 = { ...settled(), lines: { l1: { artwork_disputed_cents: 100000 } } };
+  check('X4c [H-3] a line already recovered through a lost dispute cannot be refunded again', ok(refuses(() => B.refund(sp, lostL1, { lines: [{ line_id: 'l1', artwork_cents: 1 }] }), /after refunds and lost disputes/)));
+  check('X4d [H-3] …nor attributed to a second lost dispute', ok(refuses(() => B.dispute(sp, lostL1, { outcome: 'lost', amount_cents: 1, attribution: { lines: [{ line_id: 'l1', artwork_cents: 1 }] } }), /exceeds what remains/)));
+  check('X4e [H-3] a partly disputed line can still be refunded for what remains, and no more', B.refund(sp, { ...settled(), lines: { l1: { artwork_disputed_cents: 60000 } } }, { lines: [{ line_id: 'l1', artwork_cents: 40000 }] }).lines[0].artwork_refund_cents === 40000
+    && ok(refuses(() => B.refund(sp, { ...settled(), lines: { l1: { artwork_disputed_cents: 60000 } } }, { lines: [{ line_id: 'l1', artwork_cents: 40001 }] }), /exceeds/)));
 }
 const XD = dec({ dispute_loss_bearer: 'artists_by_line', dispute_fee_bearer: 'artists_by_line' });
 {

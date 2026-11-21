@@ -17,7 +17,14 @@
 -- hold, sale or reinstatement; the basket tables refuse any hold or sale without the basket's own claim, and also check the
 -- single-artist tables directly. A basket claim is refused until the claims-aware single-artist checkout has recorded
 -- itself (checkout_capabilities), so baskets cannot run beside an older checkout that does not take claims.
--- Cross-checkout decisions use ONE clock: the database's (julianday('now')).
+-- Cross-checkout decisions use ONE clock: the database's (julianday('now')). A hold stays valid while it has not expired OR
+-- its checkout is still open (a payment may be in flight; a delayed webhook never loses a buyer their priority).
+-- ROLLBACK SAFETY: every basket hold and sale must also mark the artwork reserved / sold in artworks.availability in the SAME
+-- transaction (enforced on artwork_claims). Every version of checkout.js, including those older than this migration, refuses
+-- an artwork that is not 'available' when quoting, opening checkout and recording a payment, so a rolled-back or mixed
+-- deployment cannot sell a basket-held or basket-sold original (see the PR for the residual race and artist-edit cases).
+-- REPLACE: SQLite's INSERT OR REPLACE deletes conflicting rows without firing DELETE triggers. Every financial and claim table
+-- therefore refuses an INSERT that conflicts with any of its unique keys (the *_no_replace triggers).
 --
 -- Other integrity rules: strict basket status machine (created only as a draft; reconciled once on leaving draft; no
 -- reopening; no backwards moves except those a failed refund requires); approved basket terms and commission-free
@@ -89,7 +96,8 @@ CREATE TABLE IF NOT EXISTS basket_orders (
   CHECK (checkout_session_id IS NULL OR (livemode = 0 AND checkout_session_id GLOB 'cs_test_*') OR (livemode = 1 AND checkout_session_id GLOB 'cs_live_*')),
   CHECK (status <> 'draft' OR reconciled_at IS NULL),                          -- a draft is never reconciled
   CHECK (status IN ('draft', 'cancelled') OR reconciled_at IS NOT NULL),       -- every other status needs reconciliation
-  CHECK (payment_status NOT IN ('paid', 'partially_refunded', 'refunded') OR charge_id IS NOT NULL)
+  CHECK (payment_status NOT IN ('paid', 'partially_refunded', 'refunded') OR charge_id IS NOT NULL),
+  CHECK ((status IN ('paid','partially_refunded','refunded','disputed','closed')) = (payment_status IN ('paid','partially_refunded','refunded')))
 );
 CREATE INDEX IF NOT EXISTS basket_orders_buyer ON basket_orders(buyer_email, created_at);
 CREATE INDEX IF NOT EXISTS basket_orders_status ON basket_orders(status, updated_at);
@@ -157,8 +165,8 @@ WHEN NEW.status <> OLD.status AND NOT (
 BEGIN SELECT RAISE(ABORT, 'that basket status change is not allowed'); END;
 CREATE TRIGGER IF NOT EXISTS basket_orders_status_back_needs_failed_refund BEFORE UPDATE OF status ON basket_orders
 WHEN OLD.status IN ('partially_refunded','refunded') AND NEW.status IN ('paid','partially_refunded') AND NEW.status <> OLD.status
-  AND NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.basket_id = NEW.id AND r.status = 'failed')
-BEGIN SELECT RAISE(ABORT, 'a refunded basket returns to paid only when a refund failed'); END;
+  AND NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.basket_id = NEW.id AND r.status IN ('failed','canceled'))
+BEGIN SELECT RAISE(ABORT, 'a refunded basket returns to paid only when a refund failed or was cancelled'); END;
 CREATE TRIGGER IF NOT EXISTS basket_orders_payment_moves BEFORE UPDATE OF payment_status ON basket_orders
 WHEN NEW.payment_status <> OLD.payment_status AND NOT (
      (OLD.payment_status = 'none' AND NEW.payment_status IN ('open','paid'))
@@ -170,8 +178,8 @@ WHEN NEW.payment_status <> OLD.payment_status AND NOT (
 BEGIN SELECT RAISE(ABORT, 'that payment status change is not allowed'); END;
 CREATE TRIGGER IF NOT EXISTS basket_orders_payment_back_needs_failed_refund BEFORE UPDATE OF payment_status ON basket_orders
 WHEN OLD.payment_status IN ('partially_refunded','refunded') AND NEW.payment_status IN ('paid','partially_refunded') AND NEW.payment_status <> OLD.payment_status
-  AND NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.basket_id = NEW.id AND r.status = 'failed')
-BEGIN SELECT RAISE(ABORT, 'refunded money returns to paid only when a refund failed'); END;
+  AND NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.basket_id = NEW.id AND r.status IN ('failed','canceled'))
+BEGIN SELECT RAISE(ABORT, 'refunded money returns to paid only when a refund failed or was cancelled'); END;
 CREATE TRIGGER IF NOT EXISTS basket_orders_dispute_moves BEFORE UPDATE OF dispute_status ON basket_orders
 WHEN NEW.dispute_status <> OLD.dispute_status AND NOT (
      (OLD.dispute_status IN ('none','won','lost') AND NEW.dispute_status = 'open')
@@ -330,7 +338,7 @@ CREATE TABLE IF NOT EXISTS basket_disputes (
   opened_at          TEXT NOT NULL,
   closed_at          TEXT,
   CHECK ((status = 'open') = (closed_at IS NULL)),
-  CHECK (status = 'lost' OR attribution IS NULL)
+  CHECK ((status = 'lost') = (attribution IS NOT NULL))   -- a lost dispute always names the lines/shipments it was for
 );
 CREATE TRIGGER IF NOT EXISTS basket_disputes_insert_valid BEFORE INSERT ON basket_disputes
 WHEN NEW.status <> 'open' OR NOT EXISTS (SELECT 1 FROM basket_orders o WHERE o.id = NEW.basket_id AND o.charge_id IS NOT NULL
@@ -349,6 +357,35 @@ WHEN NEW.id <> OLD.id OR NEW.basket_id <> OLD.basket_id OR NEW.stripe_dispute_id
   OR (OLD.fee_cents IS NOT NULL AND NEW.fee_cents IS NOT OLD.fee_cents)
   OR (OLD.attribution IS NOT NULL AND NEW.attribution IS NOT OLD.attribution) OR (OLD.closed_at IS NOT NULL AND NEW.closed_at IS NOT OLD.closed_at)
 BEGIN SELECT RAISE(ABORT, 'a dispute only moves from open to won or lost; its amount and identifiers never change'); END;
+CREATE TRIGGER IF NOT EXISTS basket_disputes_attribution_valid BEFORE UPDATE OF status ON basket_disputes
+WHEN NEW.status = 'lost' AND OLD.status <> 'lost' AND (
+     EXISTS (SELECT 1 FROM json_each(NEW.attribution, '$.lines') j WHERE json_type(j.value, '$.artwork_cents') <> 'integer' OR json_extract(j.value, '$.artwork_cents') <= 0
+             OR NOT EXISTS (SELECT 1 FROM basket_lines l WHERE l.basket_id = NEW.basket_id AND l.line_id = json_extract(j.value, '$.line_id')))
+  OR EXISTS (SELECT 1 FROM json_each(NEW.attribution, '$.shipments') j WHERE json_type(j.value, '$.cents') <> 'integer' OR json_extract(j.value, '$.cents') <= 0
+             OR NOT EXISTS (SELECT 1 FROM basket_shipments s WHERE s.basket_id = NEW.basket_id AND s.shipment_id = json_extract(j.value, '$.shipment_id')))
+  OR (SELECT COALESCE(SUM(json_extract(value, '$.artwork_cents')), 0) FROM json_each(NEW.attribution, '$.lines'))
+   + (SELECT COALESCE(SUM(json_extract(value, '$.cents')), 0) FROM json_each(NEW.attribution, '$.shipments')) <> NEW.amount_cents)
+BEGIN SELECT RAISE(ABORT, 'a lost dispute is attributed to lines and shipments of its basket, adding up to the disputed amount'); END;
+-- what a line or shipment can still be recovered for: its price, less active refunds of it and other lost disputes of it
+CREATE TRIGGER IF NOT EXISTS basket_disputes_attribution_within_lines BEFORE UPDATE OF status ON basket_disputes
+WHEN NEW.status = 'lost' AND OLD.status <> 'lost' AND (
+     EXISTS (SELECT 1 FROM (SELECT json_extract(value, '$.line_id') AS lid, SUM(json_extract(value, '$.artwork_cents')) AS amt FROM json_each(NEW.attribution, '$.lines') GROUP BY lid) a
+       JOIN basket_lines l ON l.basket_id = NEW.basket_id AND l.line_id = a.lid
+       WHERE a.amt
+         + (SELECT COALESCE(SUM(p.amount_cents), 0) FROM basket_refund_parts p JOIN basket_refunds r ON r.id = p.refund_id
+              WHERE r.basket_id = NEW.basket_id AND p.kind = 'line' AND p.ref = a.lid AND r.status IN ('requested','pending','requires_action','succeeded'))
+         + (SELECT COALESCE(SUM(json_extract(j2.value, '$.artwork_cents')), 0) FROM basket_disputes d2, json_each(d2.attribution, '$.lines') j2
+              WHERE d2.basket_id = NEW.basket_id AND d2.id <> NEW.id AND d2.status = 'lost' AND json_extract(j2.value, '$.line_id') = a.lid)
+         > l.artwork_cents)
+  OR EXISTS (SELECT 1 FROM (SELECT json_extract(value, '$.shipment_id') AS sid, SUM(json_extract(value, '$.cents')) AS amt FROM json_each(NEW.attribution, '$.shipments') GROUP BY sid) a
+       JOIN basket_shipments s ON s.basket_id = NEW.basket_id AND s.shipment_id = a.sid
+       WHERE a.amt
+         + (SELECT COALESCE(SUM(p.amount_cents), 0) FROM basket_refund_parts p JOIN basket_refunds r ON r.id = p.refund_id
+              WHERE r.basket_id = NEW.basket_id AND p.kind = 'shipment' AND p.ref = a.sid AND r.status IN ('requested','pending','requires_action','succeeded'))
+         + (SELECT COALESCE(SUM(json_extract(j2.value, '$.cents')), 0) FROM basket_disputes d2, json_each(d2.attribution, '$.shipments') j2
+              WHERE d2.basket_id = NEW.basket_id AND d2.id <> NEW.id AND d2.status = 'lost' AND json_extract(j2.value, '$.shipment_id') = a.sid)
+         > s.delivery_cents + s.insurance_cents))
+BEGIN SELECT RAISE(ABORT, 'a lost dispute cannot recover a line or shipment beyond what is left after refunds and other disputes'); END;
 CREATE TRIGGER IF NOT EXISTS basket_disputes_no_delete BEFORE DELETE ON basket_disputes
 BEGIN SELECT RAISE(ABORT, 'basket disputes are never deleted'); END;
 -- what each artist carries of a LOST dispute (basket-rules dispute()); recorded once, within the dispute's amount and fee
@@ -370,6 +407,22 @@ WHEN NOT EXISTS (SELECT 1 FROM basket_disputes d JOIN basket_artist_allocations 
   OR NEW.fee_cents + (SELECT COALESCE(SUM(fee_cents), 0) FROM basket_dispute_allocations WHERE dispute_id = NEW.dispute_id)
      > (SELECT COALESCE(fee_cents, 0) FROM basket_disputes WHERE id = NEW.dispute_id)
 BEGIN SELECT RAISE(ABORT, 'an artist''s share of a lost dispute must be for an artist of that basket and within the dispute''s amount and fee'); END;
+CREATE TRIGGER IF NOT EXISTS basket_dispute_allocations_by_decision BEFORE INSERT ON basket_dispute_allocations
+WHEN (NEW.loss_cents > 0 AND EXISTS (SELECT 1 FROM basket_disputes d JOIN basket_orders o ON o.id = d.basket_id WHERE d.id = NEW.dispute_id
+        AND json_extract(o.decisions, '$.dispute_loss_bearer') <> 'artists_by_line'))
+  OR (NEW.fee_cents > 0 AND EXISTS (SELECT 1 FROM basket_disputes d JOIN basket_orders o ON o.id = d.basket_id WHERE d.id = NEW.dispute_id
+        AND json_extract(o.decisions, '$.dispute_fee_bearer') <> 'artists_by_line'))
+BEGIN SELECT RAISE(ABORT, 'the founder decisions for this basket put that part of a lost dispute on PlotArt, not the artist'); END;
+CREATE TRIGGER IF NOT EXISTS basket_dispute_allocations_within_share BEFORE INSERT ON basket_dispute_allocations
+WHEN NEW.loss_cents > (SELECT COALESCE(SUM(json_extract(j.value, '$.artwork_cents')), 0) FROM basket_disputes d, json_each(d.attribution, '$.lines') j
+       JOIN basket_lines l ON l.basket_id = d.basket_id AND l.line_id = json_extract(j.value, '$.line_id') WHERE d.id = NEW.dispute_id AND l.artist_id = NEW.artist_id)
+   + (SELECT COALESCE(SUM(json_extract(j.value, '$.cents')), 0) FROM basket_disputes d, json_each(d.attribution, '$.shipments') j
+       JOIN basket_shipments s ON s.basket_id = d.basket_id AND s.shipment_id = json_extract(j.value, '$.shipment_id') WHERE d.id = NEW.dispute_id AND s.artist_id = NEW.artist_id)
+  OR (NEW.fee_cents > 0 AND NOT EXISTS (SELECT 1 FROM basket_disputes d, json_each(d.attribution, '$.lines') j
+       JOIN basket_lines l ON l.basket_id = d.basket_id AND l.line_id = json_extract(j.value, '$.line_id') WHERE d.id = NEW.dispute_id AND l.artist_id = NEW.artist_id)
+     AND NOT EXISTS (SELECT 1 FROM basket_disputes d, json_each(d.attribution, '$.shipments') j
+       JOIN basket_shipments s ON s.basket_id = d.basket_id AND s.shipment_id = json_extract(j.value, '$.shipment_id') WHERE d.id = NEW.dispute_id AND s.artist_id = NEW.artist_id))
+BEGIN SELECT RAISE(ABORT, 'an artist carries no more of a lost dispute than the lines and shipments of theirs it was attributed to'); END;
 CREATE TRIGGER IF NOT EXISTS basket_dispute_allocations_no_update BEFORE UPDATE ON basket_dispute_allocations
 BEGIN SELECT RAISE(ABORT, 'basket_dispute_allocations is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS basket_dispute_allocations_no_delete BEFORE DELETE ON basket_dispute_allocations
@@ -445,18 +498,22 @@ WHEN NEW.kind = 'line' AND (
   OR NEW.amount_cents + (SELECT COALESCE(SUM(p.amount_cents), 0) FROM basket_refund_parts p JOIN basket_refunds r2 ON r2.id = p.refund_id
         WHERE p.kind = 'line' AND p.ref = NEW.ref AND r2.basket_id = (SELECT basket_id FROM basket_refunds WHERE id = NEW.refund_id)
           AND r2.status IN ('requested','pending','requires_action','succeeded'))
+       + (SELECT COALESCE(SUM(json_extract(j.value, '$.artwork_cents')), 0) FROM basket_disputes d, json_each(d.attribution, '$.lines') j
+            WHERE d.basket_id = (SELECT basket_id FROM basket_refunds WHERE id = NEW.refund_id) AND d.status = 'lost' AND json_extract(j.value, '$.line_id') = NEW.ref)
      > (SELECT l.artwork_cents FROM basket_lines l JOIN basket_refunds r ON r.basket_id = l.basket_id WHERE r.id = NEW.refund_id AND l.line_id = NEW.ref)
   OR NEW.commission_returned_cents + (SELECT COALESCE(SUM(p.commission_returned_cents), 0) FROM basket_refund_parts p JOIN basket_refunds r2 ON r2.id = p.refund_id
         WHERE p.kind = 'line' AND p.ref = NEW.ref AND r2.basket_id = (SELECT basket_id FROM basket_refunds WHERE id = NEW.refund_id)
           AND r2.status IN ('requested','pending','requires_action','succeeded'))
      > (SELECT l.commission_cents FROM basket_lines l JOIN basket_refunds r ON r.basket_id = l.basket_id WHERE r.id = NEW.refund_id AND l.line_id = NEW.ref))
-BEGIN SELECT RAISE(ABORT, 'a line refund must name a line of this basket and its artist, and stay within its price and commission'); END;
+BEGIN SELECT RAISE(ABORT, 'a line refund must name a line of this basket and its artist, and stay within what is left of its price (after refunds and lost disputes) and commission'); END;
 CREATE TRIGGER IF NOT EXISTS basket_refund_parts_shipment_valid BEFORE INSERT ON basket_refund_parts
 WHEN NEW.kind = 'shipment' AND (
      NOT EXISTS (SELECT 1 FROM basket_shipments s JOIN basket_refunds r ON r.basket_id = s.basket_id WHERE r.id = NEW.refund_id AND s.shipment_id = NEW.ref AND s.artist_id = NEW.artist_id)
   OR NEW.amount_cents + (SELECT COALESCE(SUM(p.amount_cents), 0) FROM basket_refund_parts p JOIN basket_refunds r2 ON r2.id = p.refund_id
         WHERE p.kind = 'shipment' AND p.ref = NEW.ref AND r2.basket_id = (SELECT basket_id FROM basket_refunds WHERE id = NEW.refund_id)
           AND r2.status IN ('requested','pending','requires_action','succeeded'))
+       + (SELECT COALESCE(SUM(json_extract(j.value, '$.cents')), 0) FROM basket_disputes d, json_each(d.attribution, '$.shipments') j
+            WHERE d.basket_id = (SELECT basket_id FROM basket_refunds WHERE id = NEW.refund_id) AND d.status = 'lost' AND json_extract(j.value, '$.shipment_id') = NEW.ref)
      > (SELECT s.delivery_cents + s.insurance_cents FROM basket_shipments s JOIN basket_refunds r ON r.basket_id = s.basket_id WHERE r.id = NEW.refund_id AND s.shipment_id = NEW.ref))
 BEGIN SELECT RAISE(ABORT, 'a shipment refund must name a shipment of this basket and its artist, and stay within its charges'); END;
 CREATE TRIGGER IF NOT EXISTS basket_refund_parts_no_update BEFORE UPDATE ON basket_refund_parts
@@ -522,21 +579,21 @@ WHEN NEW.amount_cents
 BEGIN SELECT RAISE(ABORT, 'this transfer would pay the artist more than is due'); END;
 CREATE TRIGGER IF NOT EXISTS basket_transfers_recredit_cap BEFORE INSERT ON basket_transfers
 WHEN NEW.kind = 'recredit' AND (
-     NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.cause_key AND r.basket_id = NEW.basket_id AND r.status = 'failed')
+     NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.cause_key AND r.basket_id = NEW.basket_id AND r.status IN ('failed','canceled'))
   OR NEW.amount_cents + (SELECT COALESCE(SUM(amount_cents), 0) FROM basket_transfers WHERE basket_id = NEW.basket_id AND artist_id = NEW.artist_id
         AND kind = 'recredit' AND cause_key = NEW.cause_key AND status IN ('requested','created'))
      > (SELECT COALESCE(SUM(v.amount_cents), 0) FROM basket_transfer_reversals v JOIN basket_transfers t ON t.id = v.transfer_id
         WHERE t.basket_id = NEW.basket_id AND t.artist_id = NEW.artist_id AND v.cause_kind = 'refund' AND v.cause_id = NEW.cause_key AND v.status = 'created'))
-BEGIN SELECT RAISE(ABORT, 'a recredit repays only what was reversed for a refund that failed'); END;
+BEGIN SELECT RAISE(ABORT, 'a recredit repays only what was reversed for a refund that failed or was cancelled'); END;
 CREATE TRIGGER IF NOT EXISTS basket_transfers_restoration_cap BEFORE INSERT ON basket_transfers
 WHEN NEW.kind = 'restoration' AND (
-     NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.cause_key AND r.basket_id = NEW.basket_id AND r.status = 'failed')
+     NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.cause_key AND r.basket_id = NEW.basket_id AND r.status IN ('failed','canceled'))
   OR NOT EXISTS (SELECT 1 FROM basket_transfers t WHERE t.basket_id = NEW.basket_id AND t.artist_id = NEW.artist_id AND t.kind = 'allocation' AND t.status = 'created')
   OR NEW.amount_cents + (SELECT COALESCE(SUM(amount_cents), 0) FROM basket_transfers WHERE basket_id = NEW.basket_id AND artist_id = NEW.artist_id
         AND kind = 'restoration' AND cause_key = NEW.cause_key AND status IN ('requested','created'))
      > (SELECT COALESCE(SUM(amount_cents), 0) FROM basket_allocation_adjustments WHERE basket_id = NEW.basket_id AND artist_id = NEW.artist_id
         AND kind = 'pending_restored' AND cause_kind = 'refund' AND cause_id = NEW.cause_key))
-BEGIN SELECT RAISE(ABORT, 'a restoration repays only a reduction restored for a failed refund, after the allocation was paid'); END;
+BEGIN SELECT RAISE(ABORT, 'a restoration repays only a reduction restored for a failed or cancelled refund, after the allocation was paid'); END;
 CREATE TRIGGER IF NOT EXISTS basket_transfers_update_valid BEFORE UPDATE ON basket_transfers
 WHEN NEW.id <> OLD.id OR NEW.basket_id <> OLD.basket_id OR NEW.artist_id <> OLD.artist_id OR NEW.kind <> OLD.kind OR NEW.cause_key <> OLD.cause_key
   OR NEW.attempt <> OLD.attempt OR NEW.destination <> OLD.destination OR NEW.idempotency_key <> OLD.idempotency_key
@@ -571,10 +628,10 @@ CREATE TRIGGER IF NOT EXISTS basket_reversals_insert_valid BEFORE INSERT ON bask
 WHEN NEW.status <> 'requested'
   OR NOT EXISTS (SELECT 1 FROM basket_transfers t WHERE t.id = NEW.transfer_id AND t.status = 'created')
   OR (NEW.cause_kind = 'refund' AND NOT EXISTS (SELECT 1 FROM basket_refunds r JOIN basket_transfers t ON t.basket_id = r.basket_id
-        WHERE t.id = NEW.transfer_id AND r.id = NEW.cause_id AND r.status IN ('requested','pending','requires_action','succeeded')))
+        WHERE t.id = NEW.transfer_id AND r.id = NEW.cause_id AND r.status = 'succeeded'))
   OR (NEW.cause_kind = 'dispute' AND NOT EXISTS (SELECT 1 FROM basket_disputes d JOIN basket_transfers t ON t.basket_id = d.basket_id
         WHERE t.id = NEW.transfer_id AND d.id = NEW.cause_id AND d.status = 'lost'))
-BEGIN SELECT RAISE(ABORT, 'a reversal starts as requested, on a made transfer, for an active refund or a lost dispute of the same basket'); END;
+BEGIN SELECT RAISE(ABORT, 'a reversal starts as requested, on a made transfer, for a SUCCEEDED refund or a lost dispute of the same basket'); END;
 CREATE TRIGGER IF NOT EXISTS basket_reversals_cap BEFORE INSERT ON basket_transfer_reversals
 WHEN NEW.amount_cents + (SELECT COALESCE(SUM(amount_cents), 0) FROM basket_transfer_reversals WHERE transfer_id = NEW.transfer_id AND status IN ('requested','created'))
    > (SELECT amount_cents FROM basket_transfers WHERE id = NEW.transfer_id)
@@ -627,8 +684,8 @@ CREATE TABLE IF NOT EXISTS basket_allocation_adjustments (
 CREATE TRIGGER IF NOT EXISTS basket_adjustments_cause_exists BEFORE INSERT ON basket_allocation_adjustments
 WHEN (NEW.cause_kind = 'refund' AND NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.cause_id AND r.basket_id = NEW.basket_id))
   OR (NEW.cause_kind = 'dispute' AND NOT EXISTS (SELECT 1 FROM basket_disputes d WHERE d.id = NEW.cause_id AND d.basket_id = NEW.basket_id AND d.status = 'lost'))
-  OR (NEW.kind = 'pending_restored' AND NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.cause_id AND NEW.cause_kind = 'refund' AND r.status = 'failed'))
-BEGIN SELECT RAISE(ABORT, 'an adjustment names a refund or lost dispute of this basket; a restoration needs that refund to have failed'); END;
+  OR (NEW.kind = 'pending_restored' AND NOT EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.cause_id AND NEW.cause_kind = 'refund' AND r.status IN ('failed','canceled')))
+BEGIN SELECT RAISE(ABORT, 'an adjustment names a refund or lost dispute of this basket; a restoration needs that refund to have failed or been cancelled'); END;
 CREATE TRIGGER IF NOT EXISTS basket_adjustments_reduction_cap BEFORE INSERT ON basket_allocation_adjustments
 WHEN NEW.kind = 'pending_reduction' AND (
      (SELECT transfer_due_cents FROM basket_artist_allocations WHERE basket_id = NEW.basket_id AND artist_id = NEW.artist_id) IS NULL
@@ -695,6 +752,8 @@ CREATE TRIGGER IF NOT EXISTS artwork_claims_basket_not_single BEFORE INSERT ON a
 WHEN NEW.holder_kind = 'basket' AND (
      EXISTS (SELECT 1 FROM artwork_sales s WHERE s.artwork_id = NEW.artwork_id AND s.released_at IS NULL)
   OR EXISTS (SELECT 1 FROM artwork_reservations r WHERE r.artwork_id = NEW.artwork_id AND julianday(r.expires_at) > julianday('now'))
+  -- a single-artist hold whose checkout is still open keeps priority past its expiry (payment may be in flight: review M-2)
+  OR EXISTS (SELECT 1 FROM artwork_reservations r JOIN checkout_sessions cs ON cs.order_id = r.order_id WHERE r.artwork_id = NEW.artwork_id AND cs.status = 'open')
   OR EXISTS (SELECT 1 FROM checkout_orders o WHERE o.artwork_id = NEW.artwork_id AND o.status IN ('quoted','checkout_open','payment_failed')
              AND (o.quote_expires_at IS NULL OR julianday(o.quote_expires_at) > julianday('now'))))
 BEGIN SELECT RAISE(ABORT, 'this artwork is sold, held or quoted through the single-artist checkout'); END;
@@ -707,8 +766,14 @@ BEGIN SELECT RAISE(ABORT, 'a basket claims only its own lines: a hold while its 
 CREATE TRIGGER IF NOT EXISTS artwork_claims_update_valid BEFORE UPDATE ON artwork_claims
 WHEN NEW.artwork_id <> OLD.artwork_id OR NEW.holder_kind <> OLD.holder_kind OR NEW.holder_id <> OLD.holder_id
   OR (OLD.kind = 'sale' AND NEW.kind = 'hold')
-  OR (OLD.kind = 'hold' AND NEW.kind = 'sale' AND julianday(OLD.expires_at) <= julianday('now'))
-BEGIN SELECT RAISE(ABORT, 'a claim never changes holder or artwork; an expired hold cannot become a sale; a sale never becomes a hold'); END;
+  -- an expired hold becomes a sale only if its checkout was still payable and nobody took the work over (review M-2: a
+  -- buyer who paid in time is never refused because Stripe's notification was late)
+  OR (OLD.kind = 'hold' AND NEW.kind = 'sale' AND julianday(OLD.expires_at) <= julianday('now') AND NOT (
+       (OLD.holder_kind = 'single' AND EXISTS (SELECT 1 FROM checkout_sessions s WHERE s.order_id = OLD.holder_id AND s.status = 'open')
+          AND EXISTS (SELECT 1 FROM artwork_reservations r WHERE r.order_id = OLD.holder_id AND r.artwork_id = OLD.artwork_id))
+    OR (OLD.holder_kind = 'basket' AND EXISTS (SELECT 1 FROM basket_orders o WHERE o.id = OLD.holder_id AND o.payment_status = 'paid' AND o.checkout_session_id IS NOT NULL)
+          AND EXISTS (SELECT 1 FROM basket_artwork_reservations b WHERE b.basket_id = OLD.holder_id AND b.artwork_id = OLD.artwork_id))))
+BEGIN SELECT RAISE(ABORT, 'UNIQUE constraint failed: a claim never changes holder or artwork; a lapsed hold no longer payable cannot become a sale; a sale never becomes a hold'); END;
 CREATE TRIGGER IF NOT EXISTS artwork_claims_sale_kept BEFORE DELETE ON artwork_claims
 WHEN OLD.kind = 'sale' AND (
      (OLD.holder_kind = 'single' AND EXISTS (SELECT 1 FROM artwork_sales s WHERE s.order_id = OLD.holder_id AND s.artwork_id = OLD.artwork_id AND s.released_at IS NULL))
@@ -719,6 +784,30 @@ WHEN OLD.kind = 'hold' AND julianday(OLD.expires_at) > julianday('now') AND (
      (OLD.holder_kind = 'single' AND EXISTS (SELECT 1 FROM artwork_reservations r WHERE r.order_id = OLD.holder_id AND r.artwork_id = OLD.artwork_id))
   OR (OLD.holder_kind = 'basket' AND EXISTS (SELECT 1 FROM basket_artwork_reservations b WHERE b.basket_id = OLD.holder_id AND b.artwork_id = OLD.artwork_id)))
 BEGIN SELECT RAISE(ABORT, 'a live hold''s claim is released only after the hold itself'); END;
+-- priority (review M-2): a hold whose checkout is still open is never taken away, even past its expiry: the buyer may
+-- already have paid and Stripe's notification may simply be late
+-- (the holder itself releases by deleting its reservation first, in the same transaction; nobody else can)
+CREATE TRIGGER IF NOT EXISTS artwork_claims_open_checkout_kept BEFORE DELETE ON artwork_claims
+WHEN OLD.kind = 'hold' AND (
+     (OLD.holder_kind = 'single' AND EXISTS (SELECT 1 FROM checkout_sessions s WHERE s.order_id = OLD.holder_id AND s.status = 'open')
+        AND EXISTS (SELECT 1 FROM artwork_reservations r WHERE r.order_id = OLD.holder_id AND r.artwork_id = OLD.artwork_id))
+  OR (OLD.holder_kind = 'basket' AND EXISTS (SELECT 1 FROM basket_orders o WHERE o.id = OLD.holder_id AND o.status = 'checkout_open')
+        AND EXISTS (SELECT 1 FROM basket_artwork_reservations b WHERE b.basket_id = OLD.holder_id AND b.artwork_id = OLD.artwork_id)))
+BEGIN SELECT RAISE(ABORT, 'UNIQUE constraint failed: this artwork''s hold belongs to a checkout that is still open'); END;
+-- rollback safety (review H-1): a basket's hold or sale is visible to every version of checkout.js through artworks.availability
+CREATE TRIGGER IF NOT EXISTS artwork_claims_basket_marks_artwork BEFORE INSERT ON artwork_claims
+WHEN NEW.holder_kind = 'basket' AND NOT EXISTS (SELECT 1 FROM artworks a WHERE a.id = NEW.artwork_id
+  AND a.availability = CASE NEW.kind WHEN 'hold' THEN 'reserved' ELSE 'sold' END)
+BEGIN SELECT RAISE(ABORT, 'a basket hold or sale marks the artwork reserved or sold in the same transaction (rollback safety)'); END;
+CREATE TRIGGER IF NOT EXISTS artwork_claims_basket_sale_marks_artwork BEFORE UPDATE ON artwork_claims
+WHEN NEW.holder_kind = 'basket' AND OLD.kind = 'hold' AND NEW.kind = 'sale'
+  AND NOT EXISTS (SELECT 1 FROM artworks a WHERE a.id = NEW.artwork_id AND a.availability = 'sold')
+BEGIN SELECT RAISE(ABORT, 'a basket sale marks the artwork sold in the same transaction (rollback safety)'); END;
+-- REPLACE (review M-1): a claim is never overwritten by another holder, and a sale is never turned back into a hold
+CREATE TRIGGER IF NOT EXISTS artwork_claims_no_replace BEFORE INSERT ON artwork_claims
+WHEN EXISTS (SELECT 1 FROM artwork_claims c WHERE c.artwork_id = NEW.artwork_id
+  AND (c.holder_kind <> NEW.holder_kind OR c.holder_id <> NEW.holder_id OR (c.kind = 'sale' AND NEW.kind = 'hold')))
+BEGIN SELECT RAISE(ABORT, 'UNIQUE constraint failed: this artwork is claimed by another holder'); END;
 -- the assertion each checkout makes, in the same transaction as its hold, sale or reinstatement: "I hold this claim".
 -- A refused assertion rolls the whole transaction back; an accepted one is kept as an audit record.
 CREATE TABLE IF NOT EXISTS artwork_claim_assertions (
@@ -819,12 +908,75 @@ BEGIN SELECT RAISE(ABORT, 'basket_events is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS basket_events_no_delete BEFORE DELETE ON basket_events
 BEGIN SELECT RAISE(ABORT, 'basket_events is append-only'); END;
 
+-- 14 · No REPLACE (review M-1). INSERT OR REPLACE deletes the conflicting row without firing DELETE triggers; each of these
+--      tables refuses an INSERT that conflicts with any of its unique keys, so "never changes / never deleted" holds.
+CREATE TRIGGER IF NOT EXISTS basket_terms_no_replace BEFORE INSERT ON basket_terms
+WHEN EXISTS (SELECT 1 FROM basket_terms t WHERE (t.doc_id = NEW.doc_id AND (t.buyer_terms_doc <> NEW.buyer_terms_doc OR t.livemode <> NEW.livemode
+    OR t.commission_free_lines <> NEW.commission_free_lines OR t.permits <> NEW.permits OR t.note <> NEW.note)) OR (t.buyer_terms_doc = NEW.buyer_terms_doc AND t.doc_id <> NEW.doc_id))
+BEGIN SELECT RAISE(ABORT, 'basket terms are never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_orders_no_replace BEFORE INSERT ON basket_orders
+WHEN EXISTS (SELECT 1 FROM basket_orders o WHERE o.id = NEW.id OR o.reference = NEW.reference OR o.transfer_group = NEW.transfer_group
+    OR o.checkout_session_id = NEW.checkout_session_id OR o.payment_intent_id = NEW.payment_intent_id OR o.charge_id = NEW.charge_id)
+BEGIN SELECT RAISE(ABORT, 'a basket is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_shipments_no_replace BEFORE INSERT ON basket_shipments
+WHEN EXISTS (SELECT 1 FROM basket_shipments s WHERE s.basket_id = NEW.basket_id AND s.shipment_id = NEW.shipment_id)
+BEGIN SELECT RAISE(ABORT, 'a shipment is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_lines_no_replace BEFORE INSERT ON basket_lines
+WHEN EXISTS (SELECT 1 FROM basket_lines l WHERE l.basket_id = NEW.basket_id AND (l.line_id = NEW.line_id OR l.artwork_id = NEW.artwork_id OR l.enquiry_ref = NEW.enquiry_ref))
+BEGIN SELECT RAISE(ABORT, 'a basket line is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_allocations_no_replace BEFORE INSERT ON basket_artist_allocations
+WHEN EXISTS (SELECT 1 FROM basket_artist_allocations a WHERE a.basket_id = NEW.basket_id AND a.artist_id = NEW.artist_id)
+BEGIN SELECT RAISE(ABORT, 'an allocation is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_disputes_no_replace BEFORE INSERT ON basket_disputes
+WHEN EXISTS (SELECT 1 FROM basket_disputes d WHERE d.id = NEW.id OR d.stripe_dispute_id = NEW.stripe_dispute_id)
+BEGIN SELECT RAISE(ABORT, 'a dispute is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_dispute_allocations_no_replace BEFORE INSERT ON basket_dispute_allocations
+WHEN EXISTS (SELECT 1 FROM basket_dispute_allocations a WHERE a.dispute_id = NEW.dispute_id AND a.artist_id = NEW.artist_id)
+BEGIN SELECT RAISE(ABORT, 'an artist''s share of a dispute is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_refunds_no_replace BEFORE INSERT ON basket_refunds
+WHEN EXISTS (SELECT 1 FROM basket_refunds r WHERE r.id = NEW.id OR r.idempotency_key = NEW.idempotency_key OR r.stripe_refund_id = NEW.stripe_refund_id)
+BEGIN SELECT RAISE(ABORT, 'a refund is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_refund_parts_no_replace BEFORE INSERT ON basket_refund_parts
+WHEN EXISTS (SELECT 1 FROM basket_refund_parts p WHERE p.refund_id = NEW.refund_id AND p.kind = NEW.kind AND p.ref = NEW.ref)
+BEGIN SELECT RAISE(ABORT, 'a refund part is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_transfers_no_replace BEFORE INSERT ON basket_transfers
+WHEN EXISTS (SELECT 1 FROM basket_transfers t WHERE t.id = NEW.id OR t.idempotency_key = NEW.idempotency_key OR t.stripe_transfer_id = NEW.stripe_transfer_id
+    OR (t.basket_id = NEW.basket_id AND t.artist_id = NEW.artist_id AND t.kind = NEW.kind AND t.cause_key = NEW.cause_key
+        AND (t.attempt = NEW.attempt OR t.status IN ('requested','created'))))
+BEGIN SELECT RAISE(ABORT, 'a transfer is never replaced, and never sent twice for one purpose'); END;
+CREATE TRIGGER IF NOT EXISTS basket_reversals_no_replace BEFORE INSERT ON basket_transfer_reversals
+WHEN EXISTS (SELECT 1 FROM basket_transfer_reversals v WHERE v.id = NEW.id OR v.idempotency_key = NEW.idempotency_key OR v.stripe_reversal_id = NEW.stripe_reversal_id
+    OR (v.transfer_id = NEW.transfer_id AND v.cause_kind = NEW.cause_kind AND v.cause_id = NEW.cause_id AND (v.attempt = NEW.attempt OR v.status IN ('requested','created'))))
+BEGIN SELECT RAISE(ABORT, 'a reversal is never replaced, and never made twice for one cause'); END;
+CREATE TRIGGER IF NOT EXISTS basket_adjustments_no_replace BEFORE INSERT ON basket_allocation_adjustments
+WHEN EXISTS (SELECT 1 FROM basket_allocation_adjustments j WHERE j.id = NEW.id OR (j.basket_id = NEW.basket_id AND j.artist_id = NEW.artist_id
+    AND j.kind = NEW.kind AND j.cause_kind = NEW.cause_kind AND j.cause_id = NEW.cause_id))
+BEGIN SELECT RAISE(ABORT, 'an adjustment is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS checkout_capabilities_no_replace BEFORE INSERT ON checkout_capabilities
+WHEN EXISTS (SELECT 1 FROM checkout_capabilities c WHERE c.name = NEW.name AND c.version <> NEW.version)
+BEGIN SELECT RAISE(ABORT, 'checkout_capabilities rows are never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS artwork_claim_assertions_no_replace BEFORE INSERT ON artwork_claim_assertions
+WHEN NEW.id IS NOT NULL AND EXISTS (SELECT 1 FROM artwork_claim_assertions a WHERE a.id = NEW.id)
+BEGIN SELECT RAISE(ABORT, 'artwork_claim_assertions rows are never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_hold_no_replace BEFORE INSERT ON basket_artwork_reservations
+WHEN EXISTS (SELECT 1 FROM basket_artwork_reservations b WHERE b.artwork_id = NEW.artwork_id)
+BEGIN SELECT RAISE(ABORT, 'a basket hold is never replaced: an expired one is released first'); END;
+CREATE TRIGGER IF NOT EXISTS basket_sales_no_replace BEFORE INSERT ON basket_artwork_sales
+WHEN EXISTS (SELECT 1 FROM basket_artwork_sales s WHERE (s.basket_id = NEW.basket_id AND s.artwork_id = NEW.artwork_id) OR (s.artwork_id = NEW.artwork_id AND s.released_at IS NULL))
+BEGIN SELECT RAISE(ABORT, 'a basket sale is never replaced'); END;
+CREATE TRIGGER IF NOT EXISTS basket_events_no_replace BEFORE INSERT ON basket_events
+WHEN NEW.id IS NOT NULL AND EXISTS (SELECT 1 FROM basket_events e WHERE e.id = NEW.id)
+BEGIN SELECT RAISE(ABORT, 'basket_events rows are never replaced'); END;
+-- basket_payment_events is deliberately left out: its webhook deduplication relies on INSERT ... ON CONFLICT DO NOTHING
+-- (as payment_events does), and it records no money.
+
 -- 13 · Backfill: claims for single-artist sales and live holds that already exist (pilot data, if any). Reads the
 --      single-artist tables; writes only artwork_claims. Running it twice changes nothing (INSERT OR IGNORE).
 INSERT OR IGNORE INTO artwork_claims (artwork_id, holder_kind, holder_id, kind, expires_at, claimed_at)
   SELECT artwork_id, 'single', order_id, 'sale', NULL, sold_at FROM artwork_sales WHERE released_at IS NULL;
 INSERT OR IGNORE INTO artwork_claims (artwork_id, holder_kind, holder_id, kind, expires_at, claimed_at)
-  SELECT artwork_id, 'single', order_id, 'hold', expires_at, created_at FROM artwork_reservations WHERE julianday(expires_at) > julianday('now');
+  SELECT r.artwork_id, 'single', r.order_id, 'hold', r.expires_at, r.created_at FROM artwork_reservations r WHERE julianday(r.expires_at) > julianday('now')
+    AND NOT EXISTS (SELECT 1 FROM artwork_claims c WHERE c.artwork_id = r.artwork_id);
 
 -- Rollback (only before any basket data exists):
 -- DROP TABLE IF EXISTS basket_events;
