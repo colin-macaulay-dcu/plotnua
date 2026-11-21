@@ -1,0 +1,64 @@
+/* PlotArt · Refine on All Artworks (founder approval 21 Nov 2026).
+   A quiet line of text controls above the wall, never a panel beside it; on phones one "Refine" button and a bottom
+   sheet. The art keeps the colour: only the existing anthracite, stone and ivory tokens are used. */
+.pa-rf{margin:-12px 0 clamp(36px,4vw,56px);font-family:var(--sans)}
+.pa-rf[hidden],.pa-rf [hidden],.pa-rf-none[hidden]{display:none!important}
+.pa-rf-line{display:flex;align-items:center;flex-wrap:wrap;gap:6px 30px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pa-rf-label{font-size:14px;color:var(--mute);margin-right:-6px}
+.pa-rf-open{display:none}
+.pa-rf-sheet{display:contents}
+.pa-rf-sheet-h,.pa-rf-sheet-f{display:none}
+.pa-rf-group{position:relative}
+.pa-rf-trig{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:baseline;gap:8px;font-size:15px;color:var(--lime);padding:6px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.pa-rf-trig:hover,.pa-rf-trig[aria-expanded="true"]{color:var(--ivory);border-bottom-color:var(--line-2)}
+.pa-rf-trig:focus-visible,.pa-rf-open:focus-visible,.pa-rf-clear:focus-visible,.pa-rf-x:focus-visible,.pa-rf-opt input:focus-visible+span{outline:2px solid var(--paper);outline-offset:4px;border-radius:2px}
+.pa-rf-trig svg{width:10px;height:7px;align-self:center;opacity:.7;transition:transform .2s}
+.pa-rf-trig[aria-expanded="true"] svg{transform:rotate(180deg)}
+.pa-rf-val{color:var(--ivory)}
+.pa-rf-val:not(:empty)::before{content:"· ";color:var(--mute)}
+.pa-rf-pop{position:absolute;z-index:30;top:calc(100% + 12px);left:-18px;min-width:240px;max-width:320px;max-height:min(60vh,440px);overflow:auto;
+  margin:0;padding:14px 18px 16px;border:1px solid var(--line-2);border-radius:var(--r-sm);background:var(--raised);box-shadow:var(--shadow-card)}
+.pa-rf-opt{display:flex;align-items:center;padding:8px 0;font-size:15px;color:var(--lime);cursor:pointer;position:relative}
+.pa-rf-opt:hover{color:var(--ivory)}
+.pa-rf-opt input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.pa-rf-opt span{display:flex;align-items:center;gap:12px}
+.pa-rf-opt span::before{content:"";flex:none;width:14px;height:14px;border:1px solid var(--bronze);border-radius:3px;transition:background .15s,border-color .15s}
+.pa-rf-opt input:checked+span{color:var(--ivory)}
+.pa-rf-opt input:checked+span::before{background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 7.2l2.6 2.6L11 4.4' fill='none' stroke='%231B1C1E' stroke-width='1.8'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--paper)}
+.pa-rf-note{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.5;color:var(--mute)}
+.pa-rf-clear{all:unset;cursor:pointer;font-size:14px;color:var(--stone);text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:4px}
+.pa-rf-clear:hover{color:var(--ivory)}
+.pa-rf-clear--line{margin-left:auto}
+.pa-rf-hire .pa-rf-opt{padding:6px 0}
+.pa-coll-work[data-rf-out]{display:none}
+.pa-rf-none{color:var(--stone);margin:0}
+.pa-rf-none .pa-rf-clear{font-size:inherit}
+
+/* phones and small tablets: one "Refine" control, the choices in a bottom sheet */
+@media (max-width:760px){
+  .pa-rf{margin:4px 0 30px}
+  .pa-rf-line{border:0;padding:0}
+  .pa-rf-label{display:none}
+  .pa-rf-open{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;color:var(--ivory);
+    padding:11px 20px;border:1px solid var(--line-2);border-radius:999px}
+  .pa-rf-badge:not(:empty){font-size:12.5px;color:var(--anth);background:var(--paper);border-radius:999px;padding:1px 8px}
+  .pa-rf-clear--line{margin-left:6px}
+  .pa-rf-sheet{display:none}
+  .pa-rf.is-open .pa-rf-sheet{display:block;position:fixed;z-index:60;left:0;right:0;bottom:0;max-height:86vh;overflow:auto;overscroll-behavior:contain;
+    background:var(--wall);border-top:1px solid var(--line-2);border-radius:var(--r) var(--r) 0 0;padding:6px var(--gut) 0;
+    box-shadow:0 -18px 50px rgba(0,0,0,.45)}
+  .pa-rf.is-open::before{content:"";position:fixed;inset:0;z-index:59;background:rgba(17,17,18,.62)}
+  .pa-rf-sheet-h{display:flex;align-items:center;justify-content:space-between;padding:12px 0 6px}
+  .pa-rf-sheet-t{margin:0;font-family:var(--serif);font-size:30px;color:var(--ivory);outline:none}
+  .pa-rf-x{all:unset;cursor:pointer;font-size:28px;line-height:1;color:var(--stone);padding:6px 4px}
+  .pa-rf-group{border-top:1px solid var(--line)}
+  .pa-rf-trig{display:flex;width:100%;padding:16px 0;font-size:16px;border:0}
+  .pa-rf-trig .pa-rf-val{margin-left:auto;font-size:14px;color:var(--stone)}
+  .pa-rf-trig svg{margin-left:10px}
+  .pa-rf-pop{position:static;max-width:none;min-width:0;max-height:none;border:0;border-radius:0;background:none;box-shadow:none;padding:0 0 14px}
+  .pa-rf-hire{padding:10px 0}
+  .pa-rf-sheet-f{display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;bottom:0;margin:0 calc(-1 * var(--gut));
+    padding:14px var(--gut) calc(14px + env(safe-area-inset-bottom));background:var(--wall);border-top:1px solid var(--line)}
+  .pa-rf-show{flex:1;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.pa-rf-trig,.pa-rf-trig svg,.pa-rf-opt span::before{transition:none}}
