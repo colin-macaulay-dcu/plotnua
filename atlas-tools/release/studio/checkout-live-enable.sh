@@ -55,12 +55,20 @@ put STRIPE_SECRET_KEY     "${LIVE_STUDIO_KEY:-}"     plotart-studio
 if [ "${ENABLE_LIVE_BASKET:-false}" = true ]; then
   [[ "${LIVE_PLATFORM_WEBHOOK_SECRET:-}" == whsec_* ]] || recover "the basket needs LIVE_PLATFORM_WEBHOOK_SECRET (the PlotArt-account webhook endpoint)"
   put STRIPE_WEBHOOK_SECRET_PLATFORM "${LIVE_PLATFORM_WEBHOOK_SECRET:-}" plotart-checkout
+  # the basket's own LIVE key (both Workers: the checkout runs baskets, the Studio reconciles them); the existing keys are unchanged
+  [[ "${LIVE_BASKET_KEY:-}" =~ ^(sk|rk)_live_ ]] || recover "the basket needs LIVE_BASKET_KEY (a Stripe LIVE key)"
+  put STRIPE_BASKET_KEY "${LIVE_BASKET_KEY:-}" plotart-checkout
+  put STRIPE_BASKET_KEY "${LIVE_BASKET_KEY:-}" plotart-studio
 fi
 echo "STEP 3  verify every required secret is present"
 C=$(names plotart-checkout) || recover "the secret list of plotart-checkout could not be read"
 S=$(names plotart-studio) || recover "the secret list of plotart-studio could not be read"
 for n in RESEND_API_KEY STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET; do [[ " $C " == *" $n "* ]] || recover "plotart-checkout is missing $n"; done
 for n in RESEND_API_KEY STRIPE_SECRET_KEY; do [[ " $S " == *" $n "* ]] || recover "plotart-studio is missing $n"; done
+if [ "${ENABLE_LIVE_BASKET:-false}" = true ]; then
+  for n in STRIPE_WEBHOOK_SECRET_PLATFORM STRIPE_BASKET_KEY; do [[ " $C " == *" $n "* ]] || recover "plotart-checkout is missing $n"; done
+  [[ " $S " == *" STRIPE_BASKET_KEY "* ]] || recover "plotart-studio is missing STRIPE_BASKET_KEY"
+fi
 echo "STEP 4  deploy the LIVE configuration (enables live checkout)"
 $W deploy --config "$ON" > "${RUNNER_TEMP:-/tmp}/wrangler-live.log" 2>&1 || recover "the LIVE deployment"
 grep -E "^Current Version ID" "${RUNNER_TEMP:-/tmp}/wrangler-live.log" || true

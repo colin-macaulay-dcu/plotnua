@@ -25,10 +25,10 @@ try {
   await db.prepare("INSERT INTO payment_accounts (artist_id, account_id, country, livemode, charges_enabled, payouts_enabled, details_submitted, created_at, updated_at) VALUES ('atestfnd', ?, 'IE', 0, 1, 1, 1, ?, ?)").bind(ACC[1], new Date().toISOString(), new Date().toISOString()).run();
   const before = JSON.stringify({ artists: await q('SELECT * FROM artists ORDER BY id'), works: await q('SELECT * FROM artworks ORDER BY id'), versions: await q('SELECT * FROM versions ORDER BY artist_id, version'),
     accounts: await q('SELECT * FROM payment_accounts ORDER BY artist_id'), orders: await q('SELECT * FROM checkout_orders') });
-  const state = { payment_accounts: await q('SELECT account_id, artist_id FROM payment_accounts'), artists: await q('SELECT id, slug, display_name, email, founding, account_status FROM artists') };
+  const state = { seller_profiles: await q('SELECT artist_id, legal_name, trading_name, address, returns_address, email, phone, vat_number FROM seller_profiles'), payment_accounts: await q('SELECT account_id, artist_id FROM payment_accounts'), artists: await q('SELECT id, slug, display_name, email, founding, account_status FROM artists') };
   writeFileSync(TMP, JSON.stringify(state));
   const seed = () => execFileSync('node', [HERE + 'test/basket-staging-seed.mjs', '--target', 'plotart-checkout-test', '--accounts', ACC.join(','), '--state', TMP], { encoding: 'utf8' });
-  const mig = readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8');
+  const mig = readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8') + '\n' + readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8');
   let err = (await run(mig)) || (await run(seed()));
   check('T1 0019 and the basket seed apply to the TEST database as it is', !err, err);
   err = (await run(mig)) || (await run(seed()));
@@ -37,7 +37,7 @@ try {
     versions: await q("SELECT * FROM versions WHERE source <> 'basket-test-seed' AND artist_id NOT IN ('astgal') ORDER BY artist_id, version"), accounts: await q("SELECT * FROM payment_accounts WHERE artist_id NOT IN ('astgal') ORDER BY artist_id"), orders: await q('SELECT * FROM checkout_orders') };
   check('T3 nothing that existed changed: artists, artworks, versions, payment accounts, orders', JSON.stringify(after) === before);
   // a later redeploy reads the database again: our own synthetic artists now own their accounts, and nothing new may be added
-  const state2 = { payment_accounts: await q('SELECT account_id, artist_id FROM payment_accounts'), artists: await q('SELECT id, slug, display_name, email, founding, account_status FROM artists') };
+  const state2 = { seller_profiles: await q('SELECT artist_id, legal_name, trading_name, address, returns_address, email, phone, vat_number FROM seller_profiles'), payment_accounts: await q('SELECT account_id, artist_id FROM payment_accounts'), artists: await q('SELECT id, slug, display_name, email, founding, account_status FROM artists') };
   writeFileSync(TMP, JSON.stringify(state2));
   const counts = async () => JSON.stringify([await q('SELECT COUNT(*) AS n FROM artworks'), await q('SELECT COUNT(*) AS n FROM versions'), await q('SELECT COUNT(*) AS n FROM artwork_delivery_offers')]);
   const c0 = await counts(); err = await run(seed());

@@ -1,6 +1,6 @@
-# PlotArt Artist Basket Addendum — PA-BAA-2026-11 (DRAFT r1, 21 November 2026)
+# PlotArt Artist Basket Addendum — PA-BAA-2026-11 (DRAFT r2, 22 November 2026)
 
-**Status: unissued draft for founder and legal review. Not shown to any artist. Not legally reviewed.** Derived from the issued Payment Pilot Addendum PA-PAY-2026-11, which is unchanged. Review points are listed in `PA-BBT-PA-BAA-r1-REVIEW-NOTES.md`. It will be issued only as fingerprinted HTML and installed by an approved migration.
+**Status: unissued draft for founder approval. Not shown to any artist.** Derived from the issued Payment Pilot Addendum PA-PAY-2026-11, which is unchanged; the artist agreements PA-FAA and PA-GAA are unchanged. Review notes: `PA-BBT-PA-BAA-r2-REVIEW-NOTES.md`. Issued only as fingerprinted HTML (`agreements/build-basket.cjs`) and installed by migration 0021 with the founder's approval.
 
 ## 0. How this addendum relates to the artist's agreement
 
@@ -40,11 +40,13 @@ PA-PAY clause 1.3, which excludes multi-artwork orders and sales that carry no c
 
 2.1 The artist is the seller of each of their artworks bought through the basket and contracts directly with the buyer. PlotArt introduces the buyer, provides the basket and checkout and coordinates the payments. It is not the seller, and does not take ownership or possession of any artwork.
 
-2.2 **Seller information and trader declaration.** PA-PAY clauses 2.2 and 2.3 apply. PlotArt shows the artist's seller information with each of their artworks on the basket page before the buyer pays, and in each purchase confirmation. An artwork cannot be offered in the basket while the artist's seller information or trader declaration is missing.
+2.2 **Seller information and trader declaration.** PA-PAY clauses 2.2 and 2.3 apply. The law requires a buyer to be given the seller's identity, the geographical address at which the seller is established, and contact details before paying. Because the basket page can be opened by anyone, PlotArt shows the artist's seller information there only after the artist has separately confirmed, in PlotArt Studio, that it may be shown before payment. The confirmation is recorded with the exact information it covers; if the artist changes that information, their artworks are withdrawn from the basket until the artist confirms again. The VAT number is shown only if the artist is registered. An artwork cannot be offered in the basket while the artist's seller information, trader declaration or this confirmation is missing. The confirmation statement is:
+
+I confirm that my seller information — legal name and any trading name, the geographical address at which I am established (and any separate returns address), my email and telephone for buyers, and my VAT number if I am registered — may be shown to anyone viewing the PlotArt basket before they buy one of my artworks, and in each purchase confirmation. I understand that the law requires buyers to be given the address at which I am established before they pay. If I do not want that address shown in this way, I will not confirm, and my artworks will not be offered in the basket; my gallery listing, enquiries and direct sales are unaffected.
 
 2.3 **Buyer terms.** The buyer's rights are set out in the Basket Purchase Terms PA-BBT-2026-11. The artist will honour them for each of their artworks, including:
   (a) the buyer may cancel one artwork and keep others (PA-BBT 7.1);
-  (b) the cancellation period runs from receipt of that artwork or, if later, of the last artwork in the basket that the buyer has not cancelled (PA-BBT 7.2). The artist's cancellation period may therefore end later than it would for a single-artwork sale; PlotArt tells the artist, in PlotArt Studio, when the buyer's last artwork was delivered;
+  (b) where the buyer bought two or more of the artist's artworks in one basket and they arrive separately, the cancellation period for each runs from receipt of the last of them (PA-BBT 7.2). Artworks by other artists in the same basket do not affect the artist's cancellation period;
   (c) if the artist cannot deliver within the stated window, the buyer may end the contract for that artwork and be refunded in full (PA-BBT 6.2).
 
 ## 3. Commission, processing fees and tax
@@ -94,7 +96,7 @@ With other cards the processing fee is higher (PA-PAY 3.7). A direct sale arrang
 
 ## 4. Processing consent for orders that carry no commission
 
-4.1 **What the consent is.** A Founding Artist, or any artist whose sale would carry no commission, may agree that their commission-free artworks can be bought through the basket on the basis that the artist bears Stripe's actual processing fee on those payments (clause 3.4). PlotArt asks for this consent separately from acceptance of this addendum, with its own statement, and records the date, the account that gave it and the version of this addendum.
+4.1 **What the consent is.** A Founding Artist, or any artist whose sale would carry no commission, may agree that their commission-free artworks can be bought through the basket on the basis that the artist bears Stripe's actual processing fee on those payments (clause 3.4). PlotArt asks for this consent separately from acceptance of this addendum, with its own statement and tick box, and records the artist, the account that gave it, the version and fingerprint of this addendum, the statement shown, the time and whether it is given or withdrawn. A consent counts only for the version of this addendum it names, and only in live mode if given in live mode.
 
 4.2 **Without the consent,** the artist's commission-free artworks are not offered in the basket. Buyers can still enquire about them, and the artist sells them directly, commission-free and with no PlotArt charge, as before. The artist's commission-bearing artworks, if any, can still be offered in the basket.
 
@@ -102,9 +104,14 @@ With other cards the processing fee is higher (PA-PAY 3.7). A direct sale arrang
 
 4.4 **The consent does not change commission.** It is not commission terms under PA-FAA cl. 6, and it cannot make any sale, including any sale arising from a Founding Enquiry, carry PlotArt commission.
 
-4.5 **The consent statement.** The statement shown to the artist is:
+4.5 **The consent statement.** The statement shown to the artist, with an unticked box, is:
 
-"I agree that my artworks that carry no PlotArt commission may be bought online through the PlotArt basket. I understand that each such payment is made to my own Stripe account, that Stripe will deduct its actual processing fee (and any VAT on it) from my Stripe balance, that PlotArt receives no commission or fee on these sales and does not reimburse Stripe's fee, and that I can withdraw this consent at any time and continue to sell these artworks directly."
+I agree that buyers may buy my artworks that carry no PlotArt commission through the PlotArt basket, under the Artist Basket Addendum PA-BAA-2026-11. I understand that:
+• PlotArt charges 0% commission on these sales during my agreed commission-free period, and takes no fee of any kind from them;
+• each payment goes to my own Stripe account, and Stripe deducts its actual card processing fee, and any VAT it charges on that fee, from my Stripe balance (for example about 1.5% + €0.25 for a standard EEA card; more for premium, UK and international cards). PlotArt does not reimburse it;
+• if I refund a buyer, Stripe does not return its processing fee; if a buyer disputes a payment, Stripe may also charge me its dispute fees;
+• I can withdraw this consent at any time in PlotArt Studio. My commission-free artworks are then no longer offered in the basket; baskets already being paid are completed;
+• declining or withdrawing this consent does not affect my gallery listing, enquiries, direct sales or my Founding Artist Agreement.
 
 ## 5. Delivery offers and availability
 
@@ -163,7 +170,7 @@ The carrier's limited liability alone is not accepted as transit insurance.
   (b) PlotArt shares with the artist the buyer's name and delivery address, and the buyer's email address where needed for delivery or a return. It does not tell the artist what the buyer bought from other artists;
   (c) Stripe saves the buyer's card on PlotArt's Stripe account for the basket and copies it to the artist's Stripe account for that buyer's payments to the artist (clause 6.1(a)). The card number is never seen by PlotArt or the artist.
 
-9.2 The artist's acceptance of this addendum, any processing consent and its withdrawal, each delivery offer version and each withdrawal are kept for six years after the artist leaves the basket, or for as long as any of the artist's basket orders is kept, whichever is later.
+9.2 The artist's acceptance of this addendum, their seller-information confirmation, any processing consent, each withdrawal, and each delivery offer version are kept for six years after the artist leaves the basket, or for as long as any of the artist's basket orders is kept, whichever is later.
 
 ## 10. Leaving the basket
 
@@ -179,7 +186,7 @@ The carrier's limited liability alone is not accepted as transit insurance.
 
 ## 12. Test mode and live payments
 
-12.1 PA-PAY clause 10 applies. Accepting this addendum, or any test version of it, in test mode does not authorise live payments. Before any live basket order, the artist must accept the issued live version of this addendum after it has been shown to them, give the processing consent separately if they wish to offer commission-free artworks (clause 4), and complete Stripe's live onboarding. No test-mode acceptance, consent or account becomes a live one.
+12.1 PA-PAY clause 10 applies. Accepting this addendum, or any test version of it, in test mode does not authorise live payments. Before any live basket order, the artist must accept the issued live version of this addendum after it has been shown to them, confirm their seller information (clause 2.2), give the processing consent separately if they wish to offer commission-free artworks (clause 4), and complete Stripe's live onboarding, including payouts. No test-mode acceptance, confirmation, consent or account becomes a live one.
 
 ---
-DRAFT r1, not issued, not legally reviewed.
+DRAFT r2, not issued.

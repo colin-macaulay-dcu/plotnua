@@ -76,8 +76,14 @@ if TARGET == "production":
     if basket not in ("true", "false"): sys.exit("REFUSED: ENABLE_LIVE_BASKET must be true or false")
     if basket == "true":
         if not live: sys.exit("REFUSED: the basket can be enabled only together with live checkout")
-        terms = open(os.path.join(W, "src", "basket-terms.js"), encoding="utf-8").read()
-        if re.search(r"LIVE_BASKET_DOCS\s*=\s*Object\.freeze\(\{\s*\}\)", terms): sys.exit("REFUSED: no approved LIVE basket texts are bundled (LIVE_BASKET_DOCS is empty)")
+        # issued texts: both kinds in agreements/basket-issued (fingerprints), bundled into src/basket-live-docs.js by build-assets
+        fpp = os.path.join(W, "agreements", "basket-issued", "fingerprints.json")
+        kinds = {d.get("kind") for d in json.load(open(fpp, encoding="utf-8"))["documents"].values()} if os.path.exists(fpp) else set()
+        if kinds != {"artist_basket_addendum", "buyer_basket_terms"}: sys.exit("REFUSED: no approved LIVE basket texts are issued (agreements/basket-issued needs PA-BBT and PA-BAA)")
+        bundled = open(os.path.join(W, "src", "basket-live-docs.js"), encoding="utf-8").read()
+        if re.search(r"LIVE_BASKET_TEXTS\s*=\s*\{\s*\}", bundled) or "-TEST-" in bundled: sys.exit("REFUSED: the issued LIVE basket texts are not bundled (run build-assets.mjs)")
+        if not all(os.path.exists(os.path.join(W, "migrations", m)) for m in ("0019_multi_artist_basket.sql", "0020_basket_consents.sql", "0021_basket_terms_issue.sql")):
+            sys.exit("REFUSED: the basket migrations 0019, 0020 and 0021 must be in the release")
         pk = need("CHECKOUT_LIVE_PUBLISHABLE_KEY", r"pk_live_[A-Za-z0-9]+")
         out = insert_var(out, "CHECKOUT_PILOT_ENABLED", "BASKET_ENABLED", "true", "wrangler.checkout.toml")
         out = insert_var(out, "BASKET_ENABLED", "STRIPE_PUBLISHABLE_KEY", pk, "wrangler.checkout.toml")

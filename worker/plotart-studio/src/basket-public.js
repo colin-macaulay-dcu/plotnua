@@ -53,6 +53,7 @@ h1{font-size:clamp(38px,6vw,60px);margin:.15em 0 .35em}h2{font-size:clamp(26px,3
 .item .art img{max-width:100%;max-height:100%;object-fit:contain;display:block}
 .item h3 a{color:var(--ivory);text-decoration:none}.item .by{margin:4px 0 6px;color:var(--lime)}.item .meta{font-size:14px;color:var(--stone)}
 .item .price{text-align:right;white-space:nowrap;color:var(--ivory);font-size:18px}.item .price .d{display:block;font-size:13.5px;color:var(--stone)}
+.sri{border-top:1px solid var(--line);padding:10px 0;font-size:14px;color:var(--stone)}.sri summary{cursor:pointer;color:var(--paper)}.sri summary:focus-visible{outline:2px solid var(--lime);outline-offset:2px}.sri dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;margin:10px 0 4px}.sri dt{color:var(--stone)}.sri dd{margin:0;color:var(--paper);overflow-wrap:anywhere}.sri p{margin:6px 0 0}
 .item.off{opacity:.62}.item .why{font-size:14px;color:var(--paper);margin:8px 0 0}
 @media (max-width:560px){.item{grid-template-columns:88px minmax(0,1fr)}.item .art{width:88px;height:88px}.item .price{grid-column:2;text-align:left}}
 .link{background:none;border:0;padding:0;color:var(--stone);font:inherit;font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;margin-top:10px}
@@ -99,7 +100,7 @@ const IMG = env => `^${reEsc(gallery(env))}/(plotart/artists/[a-z0-9-]{1,80}/img
 function basketPage(env) {
   const counties = B.COUNTIES.map(c => `<option>${esc(c)}</option>`).join('');
   const body = `${banner(env)}<h1 class="bh">Your Basket</h1>
-<div class="grid bk"><section aria-label="Artworks"><div id="items"><p class="empty">Loading your basket…</p></div>
+<div class="grid bk"><section aria-label="Artworks"><div id="items"><p class="empty">Loading your basket…</p></div><div id="sellers"></div>
 <noscript><p class="note">The basket needs JavaScript. You can still enquire about any artwork from its page in the gallery.</p></noscript></section>
 <aside class="panel" aria-label="Order summary"><table class="sum"><tbody>
 <tr><td>Artworks</td><td id="t-art">—</td></tr><tr><td>Delivery</td><td id="t-del">—</td></tr><tr class="tot"><td>Total</td><td id="t-tot">—</td></tr></tbody></table>
@@ -138,11 +139,20 @@ it.ok?el('p',{'class':'meta',text:it.delivery.returns}):null,
 !it.ok?el('p',{'class':'why',text:it.reason}):null,rm]);
 var price=it.ok?el('div',{'class':'price'},[document.createTextNode(eur(it.price_cents)),el('span',{'class':'d',text:'+ '+eur(it.delivery_cents)+' delivery'})]):el('div',{'class':'price'});
 box.appendChild(el('article',{'class':'item'+(it.ok?'':' off')},[art,info,price]))});
+renderSellers(data.items.filter(function(i){return i.ok}));
 var ok=data.items.filter(function(i){return i.ok}),artists={};ok.forEach(function(i){artists[i.artist]=1});
 document.getElementById('t-art').textContent=eur(data.totals.artworks_cents);document.getElementById('t-del').textContent=eur(data.totals.delivery_cents);document.getElementById('t-tot').textContent=eur(data.totals.total_cents);
 var can=data.open&&ok.length>0&&ok.length===data.items.length;form.hidden=!data.open||!ok.length;document.getElementById('closed').hidden=data.open;
 document.getElementById('pay').disabled=!can;if(data.terms){var t=document.getElementById('terms');t.href='/terms/'+data.terms.doc_id+'.html';t.textContent='purchase terms ('+data.terms.doc_id+')'}
 if(ok.length!==data.items.length&&ok.length)showErr('Remove the artworks that are no longer available to continue.');else hideErr()}
+function renderSellers(ok){var box=document.getElementById('sellers');box.textContent='';var by={},order=[];
+ok.forEach(function(i){var k=i.artist_id||i.artist;if(!by[k]){by[k]={name:i.artist,info:i.seller_info||{},works:[]};order.push(k)}by[k].works.push(i)});
+order.forEach(function(k){var g=by[k],s=g.info,dl=el('dl');
+var row=function(t,v){if(v){dl.appendChild(el('dt',{text:t}));dl.appendChild(el('dd',{text:v}))}};
+row('Seller',s.legal_name+(s.trading_name?' (trading as '+s.trading_name+')':''));row('Address',s.address);row('Returns and complaints',s.returns_address);
+row('Email',s.email);row('Telephone',s.phone);row('VAT number',s.vat_number);
+var ret=g.works.map(function(i){var r=i.returns||{};return el('p',{text:(g.works.length>1?'“'+(i.title||'Artwork')+'”: ':'Returns: ')+[r.method,r.address?'to '+r.address:'',r.arranged_by?'arranged by '+r.arranged_by:''].filter(Boolean).join(', ')+'.'})});
+box.appendChild(el('details',{'class':'sri'},[el('summary',{text:'Seller and returns information · '+(g.name||'Artist')}),dl].concat(g.works.length>1?[el('p',{text:'Returns:'})]:[]).concat(ret)))})}
 function showErr(m){var e=document.getElementById('err');e.textContent=m;e.hidden=false}function hideErr(){document.getElementById('err').hidden=true}
 function refresh(){if(!list.length){data=null;render();return}fetch('/api/basket/items?ids='+encodeURIComponent(list.map(function(x){return x.id}).join(',')),{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(j){data=j;render()}).catch(function(){showErr('Your basket could not be loaded. Please try again.')})}
 form.addEventListener('submit',function(e){e.preventDefault();hideErr();var f=form.elements;

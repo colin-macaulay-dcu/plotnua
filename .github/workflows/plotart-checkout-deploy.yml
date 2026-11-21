@@ -226,6 +226,9 @@ jobs:
           LIVE_RUNTIME_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_RUNTIME_KEY }}
           LIVE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_WEBHOOK_SECRET }}
           LIVE_RESEND_KEY: ${{ secrets.CHECKOUT_LIVE_RESEND_API_KEY }}
+          ENABLE_LIVE_BASKET: ${{ inputs.enable_live_basket && 'true' || 'false' }}
+          LIVE_BASKET_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_BASKET_KEY }}
+          LIVE_PLATFORM_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_PLATFORM_WEBHOOK_SECRET }}
         run: bash atlas-tools/release/studio/check-stripe-live-secrets.sh
       - name: PRODUCTION · build only (dry run)
         if: ${{ inputs.target == 'production' && inputs.dry_run }}
@@ -256,4 +259,5 @@ jobs:
           LIVE_RESEND_KEY: ${{ secrets.CHECKOUT_LIVE_RESEND_API_KEY }}
           ENABLE_LIVE_BASKET: ${{ inputs.enable_live_basket && 'true' || 'false' }}
           LIVE_PLATFORM_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_PLATFORM_WEBHOOK_SECRET }}
+          LIVE_BASKET_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_BASKET_KEY }}
         run: bash atlas-tools/release/studio/checkout-live-enable.sh worker/plotart-studio

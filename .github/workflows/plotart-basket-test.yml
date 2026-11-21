@@ -6,7 +6,7 @@
 #   1 Access: the TEST Studio, where the synthetic gallery is shown to the founder, must already be behind Access (checked)
 #   2 Stripe: the POC TEST key (founder approval: STRIPE_BASKET_KEY on the two TEST Workers only) is checked for the basket's
 #     calls (deliberately invalid requests; nothing created); the existing checkout key is unchanged
-#   3 TEST database: migration 0019 (new tables only) and the ADDITIVE basket seed (INSERT OR IGNORE; nothing existing changed)
+#   3 TEST database: migrations 0019 and 0020 (new tables only) and the ADDITIVE basket seed (INSERT OR IGNORE; nothing existing changed)
 #   4 both TEST Workers redeployed from this branch with the pilot, the basket and the synthetic gallery ON; outside checks;
 #     automatic rollback of both Workers if the outside checks fail
 name: PlotArt basket on TEST
@@ -74,7 +74,7 @@ jobs:
             const poc = await probe(process.env.POC); console.log("  basket key (POC TEST key) probes:", JSON.stringify(poc));
             if (poc.missing || Object.values(poc).some(s => s === 401 || s === 403)) { console.log("  FAIL  the POC TEST key does not permit every basket call"); process.exit(1); }
             console.log("  PASS  the POC TEST key permits every basket call; the existing checkout key is left unchanged");'
-      - name: 3 · TEST database · migration 0019 and the additive basket seed
+      - name: 3 · TEST database · migrations 0019, 0020 and the additive basket seed
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
         run: |
@@ -83,10 +83,10 @@ jobs:
           printf 'name = "plotart-checkout-test-db-basket"\ncompatibility_date = "2026-08-01"\n[[d1_databases]]\nbinding = "DB"\ndatabase_name = "plotart-checkout-test"\ndatabase_id = "%s"\n' "$CHECKOUT_TEST_D1_DATABASE_ID" > "$T/wrangler.toml"
           D="npx --yes wrangler@4.150.0 d1 execute plotart-checkout-test --remote --config $T/wrangler.toml"
           q() { (cd "$T" && $D --json --command "$1" 2> "$T/err.log") | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);process.stdout.write(JSON.stringify(j[0].results))})'; }
-          echo "{\"payment_accounts\": $(q 'SELECT account_id, artist_id FROM payment_accounts'), \"artists\": $(q 'SELECT id, slug, display_name, email, founding, account_status FROM artists')}" > "$T/state.json"
+          echo "{\"payment_accounts\": $(q 'SELECT account_id, artist_id FROM payment_accounts'), \"artists\": $(q 'SELECT id, slug, display_name, email, founding, account_status FROM artists'), \"seller_profiles\": $(q 'SELECT artist_id, legal_name, trading_name, address, returns_address, email, phone, vat_number FROM seller_profiles')}" > "$T/state.json"
           echo "  INFO  TEST database read: $(node -e 'const j=require(process.argv[1]);console.log(j.artists.length+" artists, "+j.payment_accounts.length+" payment accounts")' "$T/state.json")"
           node "$W/test/basket-staging-seed.mjs" --target plotart-checkout-test --state "$T/state.json" > "$T/seed.sql"
-          for f in "$W/migrations/0019_multi_artist_basket.sql" "$T/seed.sql"; do
+          for f in "$W/migrations/0019_multi_artist_basket.sql" "$W/migrations/0020_basket_consents.sql" "$T/seed.sql"; do
             (cd "$T" && $D --file "$f" -y > "$T/out.log" 2>&1) && echo "  PASS  applied $(basename "$f") to plotart-checkout-test" \
               || { python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$T/out.log"; echo "STOPPED at $(basename "$f")"; exit 1; }
           done

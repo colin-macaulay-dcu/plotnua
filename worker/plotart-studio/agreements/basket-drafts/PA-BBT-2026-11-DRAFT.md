@@ -1,12 +1,12 @@
-# PlotArt Basket Purchase Terms — PA-BBT-2026-11 (DRAFT r1, 21 November 2026)
+# PlotArt Basket Purchase Terms — PA-BBT-2026-11 (DRAFT r2, 22 November 2026)
 
-**Status: unissued draft for founder and legal review. Not shown to any buyer. Not legally reviewed.** Derived from the issued Buyer Purchase Terms PA-BPT-2026-11, which are unchanged and continue to apply to single-artwork quotes. Review points are listed in `PA-BBT-PA-BAA-r1-REVIEW-NOTES.md`. It will be issued only as fingerprinted HTML and installed by an approved migration.
+**Status: unissued draft for founder approval. Not shown to any buyer.** Derived from the issued Buyer Purchase Terms PA-BPT-2026-11, which are unchanged and continue to apply to single-artwork quotes. Review notes: `PA-BBT-PA-BAA-r2-REVIEW-NOTES.md`. Issued only as fingerprinted HTML (`agreements/build-basket.cjs`) and installed by migration 0021 with the founder's approval.
 
 These terms apply when you buy one or more original artworks together through the PlotArt basket. Each artwork in your basket is sold to you by its own artist.
 
 ## 1. Who you are buying from
 
-1.1 **Each artwork has its own seller.** Each artwork in your basket is sold to you by the artist named with it, who is the seller of that artwork. You make a separate contract of sale with each seller, for each artwork. Your basket page, before you pay, and your purchase confirmation show for each artwork:
+1.1 **Each artwork has its own seller.** Each artwork in your basket is sold to you by the artist named with it, who is the seller of that artwork. You make a separate contract of sale with each seller, for each artwork. Before you pay, the basket page shows these details for each seller under "Seller and returns information"; your purchase confirmation repeats them:
   (a) the seller's legal name and any trading name;
   (b) the geographical address at which they are established, and any different address for returns and complaints;
   (c) the seller's email and telephone number;
@@ -42,7 +42,7 @@ These terms apply when you buy one or more original artworks together through th
   (a) check the artworks, sellers, amounts, delivery and return arrangements on the basket page;
   (b) give your name, email address and delivery address;
   (c) confirm that you have read these terms;
-  (d) select "Checkout", and then enter your card on Stripe's secure page.
+  (d) select "Checkout", enter your card on Stripe's secure page and confirm there. Confirming on Stripe's page places your order, with an obligation to pay the total shown.
 
 3.2 Until you enter your card on Stripe's page and it is accepted, you can correct your details or remove artworks, and nothing is bought. Your order is an offer to buy each artwork in your basket from its seller. Each contract of sale is made when your purchase is confirmed under section 4.4.
 
@@ -77,7 +77,7 @@ These terms apply when you buy one or more original artworks together through th
 
 ## 6. Delivery and insurance
 
-6.1 Each seller delivers their own artwork. Your artworks may therefore arrive separately, from different places and at different times. For each artwork, your basket page and purchase confirmation state:
+6.1 Each seller delivers their own artwork. Your artworks may therefore arrive separately, from different places and at different times. Before you pay, the basket page shows for each artwork its delivery charge, delivery window and tracking, that the shipment is insured, and the return arrangements. Your purchase confirmation sets out in full:
   (a) who packs and who transports the artwork;
   (b) the delivery window and tracking;
   (c) whether a signed receipt and condition photographs are provided;
@@ -93,7 +93,7 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 7.1 **Each artwork separately.** You may cancel your purchase of any one or more artworks in your basket, and keep the others. Cancelling one artwork does not cancel any other.
 
-7.2 **Cancellation period.** You may cancel without giving any reason within 14 days from the day you, or someone you name other than the carrier, receive that artwork or, if later, the last artwork in your basket that you have not cancelled.
+7.2 **Cancellation period.** You may cancel without giving any reason within 14 days from the day you, or someone you name other than the carrier, receive that artwork. If you bought two or more artworks from the same seller in one basket and they arrive separately, the 14 days for each of them run from the day you receive the last of them.
 
 7.3 **How to cancel.** Tell the seller of the artwork, or PlotArt on the seller's behalf (hello@plotnua.ie), that you have decided to cancel, saying which artwork or artworks. You can use the model cancellation form in section 12 or any other clear statement, for example by email. To meet the deadline, it is enough to send your notice before the cancellation period ends.
 
@@ -170,4 +170,4 @@ Date
 [*] Delete as appropriate.
 
 ---
-DRAFT r1, not issued, not legally reviewed.
+DRAFT r2, not issued.

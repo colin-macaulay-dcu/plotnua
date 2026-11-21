@@ -1358,6 +1358,7 @@ async function route(req, env) {
       if (p === '/api/admin/checkout/digest/send' && m === 'POST') return json({ ok: true, ...(await CO.sendFounderDigest(env, me.email)) });
       if (p === '/api/admin/checkout/pause' && m === 'POST') return json({ ok: true, ...(await CO.setPause(env, me.email, await req.json().catch(() => ({})))) });
       if (p === '/api/admin/checkout/baskets' && m === 'GET') return json({ ok: true, ...(await BK.adminList(env)) });
+      if (p === '/api/admin/checkout/baskets/artists' && m === 'GET') return json({ ok: true, ...(await BK.adminArtists(env)) });
       if (p === '/api/admin/checkout/baskets/eligibility' && m === 'GET') return json({ ok: true, ...(await BK.adminEligibility(env, String(url.searchParams.get('ids') || '').split(',').filter(Boolean))) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/baskets\/(b[0-9a-z]+)(?:\/([a-z]+))?$/))) {
         if (!mm[2] && m === 'GET') return json({ ok: true, ...(await BK.adminDetail(env, mm[1])) });
@@ -1715,6 +1716,11 @@ async function route(req, env) {
     if (!b || b.doc_id !== mm[1]) return html('Not available', 404);
     return res(b.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': b.html_sha256 });
   }
+  if ((mm = p.match(/^\/basket-terms\/(PA-BAA-[0-9A-Z-]{4,20})\.html$/)) && m === 'GET') {
+    const t = (await BK.installed(env)) ? await BK.currentDoc(env, 'artist_basket_addendum') : null;
+    if (!t || t.doc_id !== mm[1]) return html('Not available', 404);
+    return res(t.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': t.html_sha256 });
+  }
   if (p.startsWith('/api/checkout')) {
     if (p === '/api/checkout' && m === 'GET') return json({ ok: true, ...(await CO.artistView(env, artist)) });
     if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not available' }, 404);
@@ -1729,6 +1735,10 @@ async function route(req, env) {
     // multi-artist basket: the artist's own opt-in and standing delivery offers (their own works only)
     if (p === '/api/checkout/basket' && m === 'GET') return json({ ok: true, ...(await BK.artistView(env, artist)) });
     if (p === '/api/checkout/basket/opt-in' && m === 'POST') return json({ ok: true, ...(await BK.artistOptIn(env, artist, b)) });
+    if (p === '/api/checkout/basket/processing-consent' && m === 'POST') return json({ ok: true, ...(await BK.artistProcessingConsent(env, artist, b)) });
+    if (p === '/api/checkout/basket/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await BK.artistWithdrawProcessingConsent(env, artist)) });
+    if (p === '/api/checkout/basket/seller-disclosure' && m === 'POST') return json({ ok: true, ...(await BK.artistSellerDisclosure(env, artist, b)) });
+    if (p === '/api/checkout/basket/seller-disclosure/withdraw' && m === 'POST') return json({ ok: true, ...(await BK.artistWithdrawSellerDisclosure(env, artist)) });
     if (p === '/api/checkout/basket/leave' && m === 'POST') return json({ ok: true, ...(await BK.artistLeave(env, artist)) });
     if ((mm = p.match(/^\/api\/checkout\/basket\/offers\/([A-Za-z0-9_-]{1,64})$/))) {
       if (m === 'PUT') return json({ ok: true, ...(await BK.setDeliveryOffer(env, artist, mm[1], b)) });

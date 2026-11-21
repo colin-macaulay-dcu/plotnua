@@ -175,6 +175,61 @@
     return h + '</section>';
   }
 
+  /* ---------------------------------------------------------------- multi-artist basket (optional; PA-BAA) */
+  let J_BASKET = null;
+  const CENTS = ['covered_value_cents', 'excess_cents', 'return_cost_cents'];
+  const label = k => k.replace(/_cents$/, ' (€)').replace(/_kg$/, ' (kg)').replace(/_cm$/, ' (cm)').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase());
+  const offerForm = (w, bj) => { const d = (w.offer && w.offer.delivery) || {}, F = bj.delivery_fields;
+    const input = (k, t) => { const id = `of-${esc(w.id)}-${k}`, v = d[k], opt = typeof t === 'string' && t.endsWith('?'), ty = typeof t === 'string' ? t.replace('?', '') : t;
+      if (Array.isArray(ty)) return field(id, label(k), `<select id="${id}" name="${k}">${ty.map(x => `<option ${v === x ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>`);
+      if (ty === 'p') return field(id, label(k), `<select id="${id}" name="${k}">${bj.parties.map(x => `<option value="${esc(x)}" ${v === x ? 'selected' : ''}>${esc(x.replace(/_/g, ' '))}</option>`).join('')}</select>`);
+      if (ty === 'b') return field(id, label(k), `<select id="${id}" name="${k}"><option value="true" ${v === true ? 'selected' : ''}>yes</option><option value="false" ${v === false ? 'selected' : ''}>no</option></select>`);
+      if (ty === 'd') return field(id, label(k), `<input id="${id}" name="${k}" type="date" value="${esc(v || '')}">`);
+      const val = CENTS.includes(k) && typeof v === 'number' ? (v / 100).toFixed(2) : (v ?? '');
+      return field(id, label(k) + (opt ? ' (optional)' : ''), `<input id="${id}" name="${k}" value="${esc(val)}" ${ty === 'n' && !CENTS.includes(k) ? 'inputmode="decimal"' : ''}>`); };
+    return step('offer', w.offer ? 'Change delivery offer…' : 'Set a delivery offer…', `<div data-id="${esc(w.id)}">
+      ${field(`of-${esc(w.id)}-charge`, 'Delivery charge to the buyer (€), anywhere in the Republic of Ireland', `<input id="of-${esc(w.id)}-charge" name="charge" value="${w.offer ? (w.offer.delivery_cents / 100).toFixed(2) : ''}" required>`)}
+      ${Object.entries(F).filter(([k]) => k !== 'destination').map(([k, t]) => input(k, t)).join('')}
+      ${tick('I will sell and deliver this artwork as described, anywhere in the Republic of Ireland, for this delivery charge, with this transit insurance and these return arrangements.')}</div>`, 'Save delivery offer'); };
+  function basketArtist(bj, j) {
+    const m = bj.membership, pc = m.processing_consent || {}, sd = m.seller_disclosure || {};
+    let h = `<section class="st-card" id="basket"><h2>Online purchase through the basket <small class="st-muted">(optional)</small></h2>
+      <p class="st-muted">Buyers can buy your available artworks online, alone or with other artists’ works. You remain the seller and each payment goes to your own Stripe account. Not taking part changes nothing for your gallery listing, enquiries or direct sales.</p>`;
+    if (!bj.addendum) return h + '<p>The basket addendum has not been issued yet.</p></section>';
+    if (!m.current) return h + `<p>Read the <a href="/basket-terms/${esc(bj.addendum.doc_id)}.html" target="_blank" rel="noopener">${esc(bj.addendum.title)}</a>.</p>
+      <form data-f="basket-optin"><label><input type="checkbox" name="accept" required> ${esc(bj.addendum.statement)}</label><button>Accept and take part</button></form></section>`;
+    h += `<p>You accepted ${esc(m.doc_id)} on ${esc(m.at)}.</p>`;
+    // 1 · seller information shown before payment
+    const si = bj.seller_info;
+    h += `<h3>Seller information shown to buyers before payment</h3>`;
+    if (!si) h += '<p class="st-warn">Complete your seller information above first.</p>';
+    else {
+      h += `<dl class="st-dl">${[['Seller', si.shown.legal_name + (si.shown.trading_name ? ` (trading as ${si.shown.trading_name})` : '')], ['Address', si.shown.address], ['Returns and complaints', si.shown.returns_address], ['Email', si.shown.email], ['Telephone', si.shown.phone], ['VAT number', si.shown.vat_number]].filter(([, v]) => v).map(([t, v]) => `<dt>${esc(t)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
+      h += sd.valid ? `<p>Confirmed on ${esc(sd.at)}. <button data-a2="withdraw-disclosure">Withdraw (stops online purchase)</button></p>`
+        : `${sd.changed_since ? '<p class="st-warn">Your seller information has changed since you confirmed it: confirm again to keep your works online.</p>' : ''}<form data-f="basket-disclosure"><label><input type="checkbox" name="accept" required> ${esc(bj.disclosure_statement)}</label><button>Confirm</button></form>`;
+    }
+    // 2 · commission-free works: the separate processing-fee consent
+    if (bj.founding) {
+      h += `<h3>Your commission-free artworks <small class="st-muted">(optional, separate consent)</small></h3>`;
+      h += pc.valid ? `<p>You agreed on ${esc(pc.at)} that your commission-free artworks may be bought online, with Stripe’s processing fees deducted from your Stripe balance and 0% PlotArt commission. <button data-a2="withdraw-basket-processing">Withdraw this consent</button></p>`
+        : `<p class="st-muted">Without this consent your commission-free artworks stay on enquiry and direct sale, as now.</p><form data-f="basket-processing"><p style="white-space:pre-line">${esc(bj.processing_statement)}</p><label><input type="checkbox" name="accept" required> I agree to the statement above.</label><button>Give this consent</button></form>`;
+    }
+    // 3 · delivery offers, per artwork
+    h += `<h3>Delivery offers</h3><p class="st-muted">An artwork can be bought online only with a delivery offer you have approved, including transit insurance for at least its price.</p><ul>`;
+    for (const w of bj.works) h += `<li data-id="${esc(w.id)}"><strong>${esc(w.title)}</strong> ${w.price_eur ? '€' + esc(w.price_eur) : '<small class="st-muted">price on request</small>'} · ${esc(w.availability)}
+      · ${w.offer ? `delivery ${eur(w.offer.delivery_cents)} (version ${esc(w.offer.version)}) <button data-withdraw-offer="${esc(w.id)}">Withdraw</button>` : '<small class="st-muted">no delivery offer</small>'}${offerForm(w, bj)}</li>`;
+    h += `</ul>` + step('basket-leave', 'Stop online purchase…', `<p class="st-muted">Your artworks are no longer offered in the basket. Baskets already paid or being paid are completed.</p>${tick('Stop online purchase of my artworks.')}`, 'Stop');
+    return h + '</section>';
+  }
+  function basketFounder(bj) {
+    return `<section class="st-card" id="basket-readiness"><h2>Basket readiness <small class="st-muted">commission-free works: ${esc(bj.commission_free_policy.replace(/_/g, ' '))}${bj.consents_installed ? '' : ' · migration 0020 not installed'}</small></h2>
+      <table class="st-table"><tr><th>Artist</th><th>Stripe</th><th>Addendum</th><th>Seller info shown</th><th>Processing-fee consent</th><th>Offers</th><th>Missing</th></tr>
+      ${bj.artists.map(a => `<tr><td>${esc(a.display_name)}${a.founding ? ' <small>(Founding)</small>' : ''}</td><td>${esc(a.stripe)}</td><td>${esc(a.basket_addendum || '—')}${a.basket_addendum && !a.basket_current ? ' (old)' : ''}</td>
+        <td>${a.seller_disclosure.valid ? 'confirmed ' + esc(a.seller_disclosure.at) : a.seller_disclosure.changed_since ? 'changed since confirmed' : '—'}</td>
+        <td>${a.founding ? (a.processing_consent.valid ? 'given ' + esc(a.processing_consent.at) + ' (' + esc(a.processing_consent.doc_id) + ')' : a.processing_consent.given ? 'given for an older addendum' : 'none') : 'not needed'}</td>
+        <td>${esc(a.delivery_offers)}</td><td>${a.missing.length ? esc(a.missing.join(', ')) : 'ready'}</td></tr>`).join('')}</table></section>`;
+  }
+
   async function load() {
     const j = await api('GET', base);
     if (!j.installed) { app.innerHTML = '<h1>Payment pilot</h1><p>The payment pilot is not installed.</p>'; return; }
@@ -254,8 +309,13 @@
             ${tick('Leave the payment pilot.')}`, 'Leave the pilot');
       }
     }
+    // multi-artist basket (separate, optional): artist controls and founder readiness
+    let bj = null;
+    try { bj = founder ? await api('GET', base + '/baskets/artists') : (j.membership && j.membership.opted_in ? await api('GET', base + '/basket') : null); } catch { bj = null; }
+    if (bj && bj.installed) h += founder ? basketFounder(bj) : basketArtist(bj, j);
     h += `<h2>Orders</h2>${j.orders.length ? j.orders.map(orderCard).join('') : '<p class="st-muted">None yet.</p>'}`;
     app.innerHTML = h;
+    J_BASKET = bj;
     wire(j);
   }
 
@@ -301,6 +361,17 @@
     on('form[data-f="fulfil"]', 'submit', async e => { const f = new FormData(e.target); await api('POST', `${base}/orders/${idOf(e.target)}/fulfilment`, Object.fromEntries(f)); say('Recorded'); load(); });
     on('form[data-f="seller"]', 'submit', async e => { const f = new FormData(e.target); await api('PUT', base + '/seller-profile', { ...Object.fromEntries(f), confirm: f.get('confirm') === 'on' }); say('Seller information saved'); load(); });
     on('form[data-f="optin"]', 'submit', async () => { await api('POST', base + '/opt-in', { accept: true, doc_id: j.addendum.doc_id, html_sha256: j.addendum.html_sha256 }); say('You joined the pilot'); load(); });
+    on('form[data-f="basket-optin"]', 'submit', async () => { const b = J_BASKET; await api('POST', base + '/basket/opt-in', { accept: true, doc_id: b.addendum.doc_id, html_sha256: b.addendum.html_sha256 }); say('You are taking part in the basket'); load(); });
+    on('form[data-f="basket-disclosure"]', 'submit', async () => { const b = J_BASKET; await api('POST', base + '/basket/seller-disclosure', { accept: true, statement: b.disclosure_statement, subject_sha256: b.seller_info.subject_sha256 }); say('Confirmed'); load(); });
+    on('form[data-f="basket-processing"]', 'submit', async () => { const b = J_BASKET; await api('POST', base + '/basket/processing-consent', { accept: true, statement: b.processing_statement }); say('Consent recorded'); load(); });
+    on('form[data-f="offer"]', 'submit', async e => { const f = new FormData(e.target), id = e.target.querySelector('[data-id]').dataset.id, F = J_BASKET.delivery_fields, d = {};
+      need(f.get('confirm') === 'on', 'Tick the box to confirm the delivery offer');
+      for (const [k, t] of Object.entries(F)) { if (k === 'destination') continue; const raw = String(f.get(k) ?? '').trim(), ty = typeof t === 'string' ? t.replace('?', '') : t;
+        if (!raw) { d[k] = null; continue; }
+        d[k] = CENTS.includes(k) ? toCents(raw, label(k)) : ty === 'n' ? Number(raw.replace(',', '.')) : ty === 'b' ? raw === 'true' : raw; }
+      await api('PUT', `${base}/basket/offers/${encodeURIComponent(id)}`, { confirm: true, delivery_cents: toCents(f.get('charge'), 'delivery charge'), delivery: d }); say('Delivery offer saved'); load(); });
+    on('button[data-withdraw-offer]', 'click', async e => { await api('DELETE', `${base}/basket/offers/${encodeURIComponent(e.target.dataset.withdrawOffer)}`); say('Delivery offer withdrawn'); load(); });
+    on('form[data-f="basket-leave"]', 'submit', async (e) => { need(new FormData(e.target).get('confirm') === 'on', 'Tick the box to confirm'); await api('POST', base + '/basket/leave', {}); say('Online purchase stopped'); load(); });
     on('form[data-f="processing"]', 'submit', async () => { await api('POST', base + '/processing-consent', { accept: true, statement: j.processing_statement }); say('Consent recorded'); load(); });
     const F = (kind, fn) => on(`form[data-f="${kind}"]`, 'submit', async e => fn(e, new FormData(e.target), e.target));
     const noteOf = (f, min, what) => { const t = String(f.get('note') || '').trim(); need(t.length >= min, what); return t; };
@@ -338,6 +409,8 @@
     app.querySelectorAll('a[data-open]').forEach(a => a.addEventListener('click', () => {
       const d = app.querySelector(`#order-${CSS.escape(a.getAttribute('href').slice(7))} details[data-step="${a.dataset.open}"]`); if (d) { d.open = true; setTimeout(() => d.querySelector('input, textarea, select')?.focus(), 0); } }));
     on('button[data-a2]', 'click', async e => { const a = e.target.dataset.a2;
+      if (a === 'withdraw-basket-processing') { await api('POST', base + '/basket/processing-consent/withdraw', {}); say('Consent withdrawn'); load(); return; }
+      if (a === 'withdraw-disclosure') { await api('POST', base + '/basket/seller-disclosure/withdraw', {}); say('Withdrawn'); load(); return; }
       if (a === 'withdraw-processing') { await api('POST', base + '/processing-consent/withdraw', {}); load(); return; }
       if (a === 'onboard') { const r = await api('POST', base + '/onboarding', {}); location.href = r.url; return; }
       if (a === 'refresh') { await api('POST', `${base}/account/refresh`, {}); load(); } });

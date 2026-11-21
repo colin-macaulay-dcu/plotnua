@@ -39,6 +39,7 @@ export async function basketE2E({ rec, KEY, accounts, runId, playwrightFrom, v1,
   let browser = null;
   try {
     for (const s of statements(readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8'))) await db.prepare(s).run();
+    for (const s of statements(readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8'))) await db.prepare(s).run();
     const ago = d => new Date(Date.now() - d * 86400_000).toISOString();
     const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
       const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* */ } return { s: r.status, j }; };
@@ -79,9 +80,13 @@ export async function basketE2E({ rec, KEY, accounts, runId, playwrightFrom, v1,
       const bd = await basketDoc('PA-BAA-TEST-01', false);
       await call('POST', '/api/checkout/basket/opt-in', e, { accept: true, doc_id: bd.doc_id, html_sha256: bd.html_sha256 });
       for (let i = 1; i <= 4; i++) await call('PUT', `/api/checkout/basket/offers/w${aid}${i}`, e, { confirm: true, delivery_cents: 1000, delivery: DELIVERY });
+      const bv = (await call('GET', '/api/checkout/basket', e)).j;   // the artist confirms their seller information may be shown before payment
+      await call('POST', '/api/checkout/basket/seller-disclosure', e, { accept: true, statement: bv.disclosure_statement, subject_sha256: bv.seller_info.subject_sha256 });
     }
     const PST = (await call('GET', '/api/checkout', FND)).j.processing_statement;
     await call('POST', '/api/checkout/processing-consent', FND, { accept: true, statement: PST });
+    const BPS = (await call('GET', '/api/checkout/basket', FND)).j.processing_statement;   // the basket's own Founding processing-fee consent (PA-BAA cl. 4)
+    await call('POST', '/api/checkout/basket/processing-consent', FND, { accept: true, statement: BPS });
     const el = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wagal1,wafnd1', FOUNDER);
     ok('BE-1', 'both works can be bought online: 15% for the Gallery Artist, 0% Founding 25 entitlement for the Founding Artist', el.j && el.j.items.every(i => i.ok) && el.j.items[0].commission_basis === 'gallery_artist_agreement' && el.j.items[1].commission_basis === 'founding_enquiry', el.j);
 

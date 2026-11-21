@@ -6,7 +6,8 @@
 //   node test/basket-staging-seed.mjs --target plotart-basket-staging --accounts acct_A,acct_B > seed.sql
 import { readFileSync } from 'node:fs';
 import { snapshot } from '../src/lib.js';
-import { basketDoc, ARTIST_STATEMENT } from '../src/basket-terms.js';
+import { createHash } from 'node:crypto';
+import { basketDoc, ARTIST_STATEMENT, PROCESSING_CONSENT_STATEMENT, SELLER_DISCLOSURE_STATEMENT } from '../src/basket-terms.js';
 import { STATEMENT, PROCESSING_STATEMENT } from '../src/checkout.js';
 
 const arg = k => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : null; };
@@ -26,6 +27,7 @@ if (accounts.length !== 2 || !accounts.every(a => /^acct_[A-Za-z0-9]+$/.test(a))
 const q = v => v === null || v === undefined ? 'NULL' : typeof v === 'number' ? String(v) : `'${String(v).replace(/'/g, "''")}'`;
 const ins = (table, o) => `INSERT ${STATE ? 'OR IGNORE ' : ''}INTO ${table} (${Object.keys(o).join(', ')}) VALUES (${Object.values(o).map(q).join(', ')});`;
 const now = new Date().toISOString(), ago = d => new Date(Date.now() - d * 86400_000).toISOString(), T0 = '2026-01-01T00:00:00Z';
+const sha = t => createHash('sha256').update(t).digest('hex');
 const out = ['-- PlotArt multi-artist basket · PRIVATE STAGING SEED (synthetic only; plotart-basket-staging only)'];
 
 // texts: the pilot's TEST placeholders and the basket's TEST placeholders (never a live text)
@@ -79,8 +81,18 @@ for (const A0 of ARTISTS) {
   out.push(ins('payment_pilot_events', { id: `pe${A.id}1`, artist_id: A.id, kind: 'opted_in', doc_id: ADD[0], doc_sha256: ADD[1].html_sha256, account_email: email, display_name: A.name, statement: STATEMENT(ADD[0]), at: ago(30) }));
   if (A.founding) out.push(ins('payment_pilot_events', { id: `pe${A.id}2`, artist_id: A.id, kind: 'processing_consent', doc_id: null, doc_sha256: null, account_email: email, display_name: A.name, statement: PROCESSING_STATEMENT, at: ago(29) }));
   if (!A.existing) out.push(ins('payment_accounts', { artist_id: A.id, account_id: A.account, country: 'IE', livemode: 0, charges_enabled: 1, payouts_enabled: 1, details_submitted: 1, requirements_due: '[]', checked_at: now, created_at: now, updated_at: now }));
-  out.push(ins('seller_profiles', { artist_id: A.id, legal_name: A.name.replace(' (synthetic)', ''), trading_name: null, address: '1 Synthetic Studio Lane, Dublin 8, Ireland', returns_address: null,
-    email: `${A.slug}+seller@example.invalid`, phone: '+353 1 555 0100', trader_status: 'trader', vat_number: null, declared_at: ago(29), declared_by: email, updated_at: ago(29) }));
+  const sp = { artist_id: A.id, legal_name: A.name.replace(' (synthetic)', ''), trading_name: null, address: '1 Synthetic Studio Lane, Dublin 8, Ireland', returns_address: null,
+    email: `${A.slug}+seller@example.invalid`, phone: '+353 1 555 0100', trader_status: 'trader', vat_number: null, declared_at: ago(29), declared_by: email, updated_at: ago(29) };
+  out.push(ins('seller_profiles', sp));
+  // the artist's basket confirmations (migration 0020), TEST only: seller information shown before payment, bound to the
+  // information actually held (an existing TEST artist's own profile when they have one), and the Founding processing consent
+  const held = (STATE && (STATE.seller_profiles || []).find(r => r.artist_id === A.id)) || sp;
+  const subject = sha(JSON.stringify(['legal_name', 'trading_name', 'address', 'returns_address', 'email', 'phone', 'vat_number'].map(k => held[k] ?? null)));
+  out.push(ins('basket_consents', { id: `bc${A.id}sd`, artist_id: A.id, topic: 'seller_disclosure', kind: 'given', doc_id: null, doc_sha256: null, subject_sha256: subject,
+    statement: SELLER_DISCLOSURE_STATEMENT, statement_sha256: sha(SELLER_DISCLOSURE_STATEMENT), account_email: email, livemode: 0, at: ago(27) }));
+  if (A.founding) { const ps = PROCESSING_CONSENT_STATEMENT(BAA.doc_id);
+    out.push(ins('basket_consents', { id: `bc${A.id}pf`, artist_id: A.id, topic: 'processing_fees', kind: 'given', doc_id: BAA.doc_id, doc_sha256: BAA.html_sha256, subject_sha256: null,
+      statement: ps, statement_sha256: sha(ps), account_email: email, livemode: 0, at: ago(27) })); }
   out.push(ins('basket_artist_events', { id: `be${A.id}1`, artist_id: A.id, kind: 'opted_in', doc_id: BAA.doc_id, doc_sha256: BAA.html_sha256, account_email: email, statement: ARTIST_STATEMENT(BAA.doc_id), at: ago(28) }));
   for (const w of works.filter(x => x.price_eur)) out.push(ins('artwork_delivery_offers', { artwork_id: w.id, artist_id: A.id, region: 'IE', delivery_cents: A.delivery * 1, delivery: JSON.stringify(DELIVERY), version: 1,
     approved_by: 'artist:' + email, approved_at: ago(28), withdrawn_at: null, created_at: ago(28), updated_at: ago(28) }));

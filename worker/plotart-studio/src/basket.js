@@ -22,7 +22,7 @@ import * as C from './checkout.js';
 import * as R from './checkout-rules.js';
 import * as S from './stripe.js';
 import { foundingAt } from './founding.js';
-import { basketDoc, ARTIST_STATEMENT, BASKET_DECISIONS } from './basket-terms.js';
+import { basketDoc, ARTIST_STATEMENT, BASKET_DECISIONS, PROCESSING_CONSENT_STATEMENT, SELLER_DISCLOSURE_STATEMENT } from './basket-terms.js';
 import { Bad } from './lib.js';
 
 export const MAX_LINES = 10;
@@ -61,23 +61,85 @@ export async function currentDoc(env, kind) {
 }
 export function commissionFreePolicy(env) {
   if (live(env)) return BASKET_DECISIONS.commission_free_lines_live;
-  return env.BASKET_COMMISSION_FREE === 'with_processing_consent' ? 'with_processing_consent' : BASKET_DECISIONS.commission_free_lines_live;
+  return env.BASKET_COMMISSION_FREE === 'with_processing_consent' ? 'with_processing_consent' : BASKET_DECISIONS.commission_free_lines_test_default;
 }
 
 /* ---------------------------------------------------------------- artist: basket opt-in and delivery offers */
 export async function artistMembership(env, artistId) {
   const ev = await one(env, 'SELECT * FROM basket_artist_events WHERE artist_id = ? ORDER BY at DESC, rowid DESC LIMIT 1', artistId);
   const doc = await currentDoc(env, 'artist_basket_addendum');
-  return { opted_in: !!ev && ev.kind === 'opted_in', doc_id: ev && ev.kind === 'opted_in' ? ev.doc_id : null, current: !!doc && !!ev && ev.kind === 'opted_in' && ev.doc_id === doc.doc_id, at: ev ? ev.at : null };
+  const m = { opted_in: !!ev && ev.kind === 'opted_in', doc_id: ev && ev.kind === 'opted_in' ? ev.doc_id : null, current: !!doc && !!ev && ev.kind === 'opted_in' && ev.doc_id === doc.doc_id, at: ev ? ev.at : null };
+  /* the separate consents (migration 0020). A consent counts only in the Stripe mode it was given in; the processing consent
+     only for the basket addendum the artist currently has accepted; the disclosure only for the seller information it saw. */
+  const lm = live(env) ? 1 : 0, last = async topic => consentsInstalled(env).then(ok => ok ? one(env, 'SELECT * FROM basket_consents WHERE artist_id = ? AND topic = ? AND livemode = ? ORDER BY at DESC, rowid DESC LIMIT 1', artistId, topic, lm) : null);
+  const pc = await last('processing_fees'), sd = await last('seller_disclosure');
+  const prof = await C.sellerProfile(env, artistId), profSha = prof ? await sellerHash(prof) : null;
+  m.processing_consent = { given: !!pc && pc.kind === 'given', id: pc && pc.kind === 'given' ? pc.id : null, doc_id: pc && pc.kind === 'given' ? pc.doc_id : null, at: pc ? pc.at : null,
+    valid: !!pc && pc.kind === 'given' && m.current && pc.doc_id === m.doc_id };
+  m.seller_disclosure = { given: !!sd && sd.kind === 'given', id: sd && sd.kind === 'given' ? sd.id : null, at: sd ? sd.at : null,
+    valid: !!sd && sd.kind === 'given' && !!profSha && sd.subject_sha256 === profSha, changed_since: !!sd && sd.kind === 'given' && sd.subject_sha256 !== profSha };
+  return m;
 }
+async function consentsInstalled(env) { try { await env.DB.prepare('SELECT 1 FROM basket_consents LIMIT 1').all(); return true; } catch { return false; } }
+/* exactly what the buyer is shown before payment; any change needs the artist to confirm again */
+const SELLER_KEYS = ['legal_name', 'trading_name', 'address', 'returns_address', 'email', 'phone', 'vat_number'];
+const sellerHash = p => sha256(JSON.stringify(SELLER_KEYS.map(k => p[k] ?? null)));
+
+/* the artist's separate consents: give and withdraw (append-only records) */
+async function consentInsert(env, artist, topic, kind, extra = {}) {
+  if (!(await consentsInstalled(env))) throw new Bad('Basket consents are not installed (migration 0020)', 409);
+  const statement = extra.statement || null;
+  await run(env, `INSERT INTO basket_consents (id, artist_id, topic, kind, doc_id, doc_sha256, subject_sha256, statement, statement_sha256, account_email, livemode, at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+    rid('bc'), artist.id, topic, kind, extra.doc_id || null, extra.doc_sha256 || null, extra.subject_sha256 || null, statement, statement ? await sha256(statement) : null, artist.email, live(env) ? 1 : 0, now());
+}
+export async function artistProcessingConsent(env, artist, b) {
+  const m = await artistMembership(env, artist.id), doc = await currentDoc(env, 'artist_basket_addendum');
+  if (!m.current || !doc) throw new Bad('Accept the current basket addendum first', 409);
+  const statement = PROCESSING_CONSENT_STATEMENT(doc.doc_id);
+  if (!b || b.accept !== true || b.statement !== statement) throw new Bad('Tick the box beside the statement shown to give this separate consent', 400);
+  if (m.processing_consent.valid) return { already: true, membership: m };
+  await consentInsert(env, artist, 'processing_fees', 'given', { doc_id: doc.doc_id, doc_sha256: doc.html_sha256, statement });
+  return { membership: await artistMembership(env, artist.id) };
+}
+export async function artistWithdrawProcessingConsent(env, artist) {
+  const m = await artistMembership(env, artist.id);
+  if (!m.processing_consent.given) return { membership: m };
+  await consentInsert(env, artist, 'processing_fees', 'withdrawn');
+  return { membership: await artistMembership(env, artist.id), note: 'Your commission-free artworks are no longer offered in the basket. Baskets already being paid are completed.' };
+}
+export async function artistSellerDisclosure(env, artist, b) {
+  const m = await artistMembership(env, artist.id);
+  if (!m.opted_in) throw new Bad('Accept the basket addendum first', 409);
+  const prof = await C.sellerProfile(env, artist.id);
+  if (!prof || C.sellerProblems(env, prof).length) throw new Bad('Complete your seller information first', 409);
+  if (!b || b.accept !== true || b.statement !== SELLER_DISCLOSURE_STATEMENT || b.subject_sha256 !== await sellerHash(prof)) throw new Bad('Tick the box to confirm the seller information shown', 400);
+  if (m.seller_disclosure.valid) return { already: true, membership: m };
+  await consentInsert(env, artist, 'seller_disclosure', 'given', { subject_sha256: await sellerHash(prof), statement: SELLER_DISCLOSURE_STATEMENT });
+  return { membership: await artistMembership(env, artist.id) };
+}
+export async function artistWithdrawSellerDisclosure(env, artist) {
+  const m = await artistMembership(env, artist.id);
+  if (!m.seller_disclosure.given) return { membership: m };
+  await consentInsert(env, artist, 'seller_disclosure', 'withdrawn');
+  return { membership: await artistMembership(env, artist.id), note: 'Your artworks are no longer offered in the basket. Baskets already being paid are completed.' };
+}
+/* what the buyer sees in "Seller and returns information": the legally required seller details only (VAT only if registered) */
+const sellerInfo = p => Object.fromEntries(Object.entries({ legal_name: p.legal_name, trading_name: p.trading_name, address: p.address,
+  returns_address: p.returns_address && p.returns_address !== p.address ? p.returns_address : null, email: p.email, phone: p.phone, vat_number: p.vat_number, trader: p.trader_status === 'trader' }).filter(([, v]) => v));
+const PARTY = { buyer: 'you', artist: 'the artist', transporter: 'the transporter' };
+const returnsInfo = d => ({ method: d.return_method, address: d.return_address, arranged_by: PARTY[d.return_arranged_by] || d.return_arranged_by,
+  cost_cents: d.return_cost_cents, cost_basis: d.return_cost_basis });
 export async function artistView(env, artist) {
   if (!(await installed(env))) return { installed: false };
   const doc = await currentDoc(env, 'artist_basket_addendum');
-  const works = await all(env, `SELECT w.id, w.title, w.price_eur, w.price_on_request, w.availability, o.delivery_cents, o.version, o.approved_at, o.withdrawn_at
+  const works = await all(env, `SELECT w.id, w.title, w.price_eur, w.price_on_request, w.availability, o.delivery_cents, o.version, o.approved_at, o.withdrawn_at, o.delivery
     FROM artworks w LEFT JOIN artwork_delivery_offers o ON o.artwork_id = w.id WHERE w.artist_id = ? AND w.archived = 0 ORDER BY w.ord`, artist.id);
   return { installed: true, enabled: enabled(env), addendum: doc ? { doc_id: doc.doc_id, title: doc.title, html_sha256: doc.html_sha256, statement: ARTIST_STATEMENT(doc.doc_id) } : null,
     membership: await artistMembership(env, artist.id), pilot: await C.membership(env, artist.id), commission_free_policy: commissionFreePolicy(env),
-    works: works.map(w => ({ ...w, offer: w.approved_at && !w.withdrawn_at ? { delivery_cents: w.delivery_cents, version: w.version, approved_at: w.approved_at } : null })) };
+    processing_statement: doc ? PROCESSING_CONSENT_STATEMENT(doc.doc_id) : null, disclosure_statement: SELLER_DISCLOSURE_STATEMENT,
+    seller_info: await C.sellerProfile(env, artist.id).then(async p => p ? { shown: sellerInfo(p), subject_sha256: await sellerHash(p) } : null),
+    founding: !!artist.founding, delivery_fields: R.DELIVERY_FIELDS, parties: R.PARTIES,
+    works: works.map(({ delivery, ...w }) => ({ ...w, offer: w.approved_at && !w.withdrawn_at ? { delivery_cents: w.delivery_cents, version: w.version, approved_at: w.approved_at, delivery: J(delivery) } : null })) };
 }
 export async function artistOptIn(env, artist, b) {
   if (!(await installed(env))) throw new Bad('Baskets are not installed (migration 0019)', 409);
@@ -147,8 +209,11 @@ async function lineFor(env, artworkId, at) {
   const mem = await C.membership(env, artist.id), bm = await artistMembership(env, artist.id);
   const add = await C.currentTerms(env, 'artist_payment_addendum');
   if (!mem.ready || !add || mem.addendum !== add.doc_id || !bm.current) return no('enquire', 'artist not ready for online purchase');
+  // completed Stripe onboarding in THIS mode (mem.ready checks the mode, charges and details): payouts too
+  if (!mem.account || !mem.account.payouts_enabled) return no('enquire', 'Stripe onboarding incomplete (payouts)');
   const prof = await C.sellerProfile(env, artist.id);
   if (C.sellerProblems(env, prof).length) return no('enquire', 'seller information incomplete');
+  if (!bm.seller_disclosure.valid) return no('enquire', bm.seller_disclosure.changed_since ? 'seller information changed since the artist confirmed it may be shown' : 'artist has not confirmed seller information may be shown before payment');
   const offer = await one(env, 'SELECT * FROM artwork_delivery_offers WHERE artwork_id = ? AND withdrawn_at IS NULL', w.id);
   if (!offer) return no('enquire', 'no delivery offer');
   const delivery = J(offer.delivery);
@@ -158,9 +223,10 @@ async function lineFor(env, artworkId, at) {
   const intro = { reference: null, route: 'online_basket', introduced_at: at, founding: f.founding, founding_year_end: f.year_end };
   const e = await R.entitlementForIntro(env, { artist, intro, at });
   if (!e.ok) return no('enquire', e.reason);
-  if (e.bp === 0 && !(commissionFreePolicy(env) === 'with_processing_consent' && mem.processing_consent)) return no('enquire', 'commission-free: direct payment (fee Model B)');
+  if (e.bp === 0 && commissionFreePolicy(env) !== 'with_processing_consent') return no('enquire', 'commission-free: direct payment (policy)');
+  if (e.bp === 0 && !bm.processing_consent.valid) return no('enquire', 'commission-free: no valid processing-fee consent');
   const money = R.amounts({ artwork_cents: artworkCents, delivery_cents: offer.delivery_cents, commission_bp: e.bp });
-  return { ok: true, artist, work: w, pw, prof, mem, offer, delivery, entitlement: e, money };
+  return { ok: true, artist, work: w, pw, prof, mem, bm, offer, delivery, entitlement: e, money };
 }
 const artworkUrl = (env, artist, w) => env.STAGING_GALLERY === 'true' && ['staging', 'test', 'local'].includes(env.ENVIRONMENT) ? `${env.STAGING_GALLERY_URL || '/gallery'}/${w.id}` : `${env.GALLERY_ORIGIN || 'https://plotnua.ie'}/plotart/artists/${artist.slug}/${w.slug}.html`;
 const deliverySummary = d => ({ window: d.delivery_window, transporter: d.transporter_name, tracking: d.tracking, cover: `${d.cover_provider}, up to €${(d.covered_value_cents / 100).toFixed(2)}`,
@@ -178,7 +244,7 @@ export async function preview(env, ids) {
       items.push({ id, ok: false, reason: l.reason, title: w ? w.title : null, artist: w ? w.display_name : null }); continue;
     }
     items.push({ id, ok: true, title: l.work.title, year: l.work.year, medium: l.work.medium, size: l.work.h_cm ? `${l.work.h_cm} × ${l.work.w_cm}${l.work.d_cm ? ' × ' + l.work.d_cm : ''} cm` : null,
-      artist: l.artist.display_name, founding_artist: !!l.artist.founding, seller: l.prof.legal_name, url: artworkUrl(env, l.artist, l.work),
+      artist: l.artist.display_name, artist_id: l.artist.id, founding_artist: !!l.artist.founding, seller: l.prof.legal_name, seller_info: sellerInfo(l.prof), returns: returnsInfo(l.delivery), url: artworkUrl(env, l.artist, l.work),
       price_cents: l.money.artwork_cents, delivery_cents: l.money.delivery_cents, total_cents: l.money.total_cents, delivery: deliverySummary(l.delivery) });
   }
   const ok = items.filter(i => i.ok);
@@ -233,7 +299,7 @@ export async function openBasket(env, b) {
 
   const id = rid('b'), token = rid('', 32) + rid('', 16), reference = `PA-B-${t.slice(2, 10).replace(/-/g, '')}-${rid('', 6).toUpperCase()}`;
   const expires = addMin(t, SETUP_MINUTES), hold = addMin(expires, HOLD_GRACE_MINUTES), lm = live(env) ? 1 : 0;
-  const basket = { id, reference, line_count: lines.length };
+  const basket = { id, reference, line_count: lines.length, total_cents: total };
   const add = await C.currentTerms(env, 'artist_payment_addendum');
   const stmts = [
     // reservations that have lapsed (and are not held by an open single-artwork checkout) give way; a live one makes the INSERT below fail
@@ -261,7 +327,8 @@ export async function openBasket(env, b) {
         VALUES (?,?,?,?,?, 'checkout_open', 'open', ?,?,?,?,?,?,?,?,?,?,?, 1, 1, ?,?,?,?,?,?,?,?,?, 'buyer:basket', ?,?)`,
         oid, oref, l.artist.id, l.work.id, reference, buyer.email, lm, JSON.stringify(art), l.money.artwork_cents, l.money.delivery_cents, l.entitlement.bp, l.money.commission_cents,
         l.entitlement.basis, JSON.stringify(l.entitlement.evidence), JSON.stringify(delivery), JSON.stringify(seller), l.offer.approved_at,
-        JSON.stringify({ basis: 'standing_delivery_offer', offer_version: l.offer.version, approved_by: l.offer.approved_by, basket_addendum: (await artistMembership(env, l.artist.id)).doc_id }),
+        JSON.stringify({ basis: 'standing_delivery_offer', offer_version: l.offer.version, approved_by: l.offer.approved_by, basket_addendum: l.bm.doc_id,
+          seller_disclosure_consent: l.bm.seller_disclosure.id, processing_fee_consent: l.entitlement.bp === 0 ? l.bm.processing_consent.id : null }),
         t, hold, snapSha, add ? add.doc_id : null, terms.doc_id, t, l.mem.account.id, t, t),
       st(env, 'INSERT INTO quote_snapshots (order_id, quote_version, snapshot, sha256, issued_at) VALUES (?,?,?,?,?)', oid, 1, snapshot, snapSha, t),
       // the reservation: the PRIMARY KEY on artwork_id makes a second concurrent purchase fail, and the whole batch with it
@@ -637,6 +704,23 @@ export async function adminEligibility(env, ids) {
   const at = now(), out = [];
   for (const id of [...new Set((ids || []).map(String))].slice(0, 50)) { const l = await lineFor(env, id, at); out.push({ id, ok: l.ok, why: l.ok ? null : l.why, commission_basis: l.ok ? l.entitlement.basis : null, total_cents: l.ok ? l.money.total_cents : null }); }
   return { items: out, commission_free_policy: commissionFreePolicy(env) };
+}
+/* Founder: every artist's basket readiness, from the records only (who can be bought, and why not). */
+export async function adminArtists(env) {
+  if (!(await installed(env))) return { installed: false, artists: [] };
+  const artists = await all(env, `SELECT id, display_name, founding, account_status FROM artists WHERE account_status = 'active' ORDER BY display_name`);
+  const out = [];
+  for (const a of artists) {
+    const bm = await artistMembership(env, a.id), mem = await C.membership(env, a.id), prof = await C.sellerProfile(env, a.id);
+    const offers = (await one(env, 'SELECT COUNT(*) AS n FROM artwork_delivery_offers WHERE artist_id = ? AND withdrawn_at IS NULL', a.id)).n;
+    const stripe = !mem.account ? 'not connected' : mem.ready && mem.account.payouts_enabled ? 'onboarded' : 'onboarding incomplete';
+    const missing = [!mem.opted_in && 'payment pilot', !bm.current && 'basket addendum', stripe !== 'onboarded' && 'Stripe onboarding',
+      (!prof || C.sellerProblems(env, prof).length) && 'seller information', !bm.seller_disclosure.valid && 'seller-information confirmation', !offers && 'delivery offers'].filter(Boolean);
+    out.push({ id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, basket_addendum: bm.doc_id, basket_current: bm.current,
+      seller_disclosure: bm.seller_disclosure, processing_consent: bm.processing_consent, missing,
+      commission_free_works: !a.founding ? 'none expected' : bm.processing_consent.valid ? 'offered (artist bears Stripe fees, 0% commission)' : 'direct payment only (no valid consent)' });
+  }
+  return { installed: true, consents_installed: await consentsInstalled(env), commission_free_policy: commissionFreePolicy(env), artists: out };
 }
 export async function adminReconcile(env, founder, id) { await coordinate(env, id, founder); return adminDetail(env, id); }
 export async function adminCancel(env, founder, id, b) {
