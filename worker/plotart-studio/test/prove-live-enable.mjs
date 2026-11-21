@@ -102,6 +102,20 @@ check('E1d secrets already present from an earlier run are all written again (no
 st = await run('enable', { args: [join(ROOT, 'does-not-exist')] });
 check('E1e a missing worker directory: refused before any command, exit 1', st.code !== 0 && st.log.length === 0, st.out);
 
+console.log('— E1B the basket: its own LIVE key on both Workers and the PlotArt-account webhook secret, only when enabled');
+const BASKET = { ENABLE_LIVE_BASKET: 'true', LIVE_BASKET_KEY: 'rk_live_b1', LIVE_PLATFORM_WEBHOOK_SECRET: 'whsec_p1' };
+st = await run('enable', { env: BASKET });
+check('E1B1 basket enabled: STRIPE_BASKET_KEY on both Workers and STRIPE_WEBHOOK_SECRET_PLATFORM on the checkout, verified before the LIVE deploy',
+  st.code === 0 && st.deployed === 'on' && st.checkout.includes('STRIPE_BASKET_KEY') && st.checkout.includes('STRIPE_WEBHOOK_SECRET_PLATFORM') && st.studio.includes('STRIPE_BASKET_KEY') && st.puts.length === 7, st.out);
+st = await run('enable', { env: { ...BASKET, LIVE_BASKET_KEY: 'rk_test_b1' } });
+check('E1B2 basket enabled with a TEST basket key: refused and recovered to OFF (no Stripe key left on the Studio)', recoveredOff(st) && !st.studio.includes('STRIPE_BASKET_KEY'), st.out);
+st = await run('enable', { env: { ...BASKET, LIVE_PLATFORM_WEBHOOK_SECRET: '' } });
+check('E1B3 basket enabled without the PlotArt-account webhook secret: recovered to OFF', recoveredOff(st), st.out);
+st = await run('enable');
+check('E1B4 basket not enabled: no basket secret is written', st.code === 0 && !st.checkout.includes('STRIPE_BASKET_KEY') && !st.studio.includes('STRIPE_BASKET_KEY') && st.puts.length === 4, st.out);
+st = await run('off', { studio: ['RESEND_API_KEY', 'STRIPE_SECRET_KEY', 'STRIPE_BASKET_KEY'] });
+check('E1B5 switching off removes the Studio’s basket key too, and confirms it is gone', st.code === 0 && !st.studio.includes('STRIPE_BASKET_KEY') && !st.studio.includes('STRIPE_SECRET_KEY') && /OFF VERIFIED:/.test(st.out), st.out);
+
 console.log('— E2 every failure after the start recovers to OFF, with evidence (the real outside check confirms OFF)');
 const cases = {
   'the OFF deployment fails (a live version may still be running)': { failOn: 'deploy:off' },

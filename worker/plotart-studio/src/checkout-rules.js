@@ -98,6 +98,13 @@ export async function entitlement(env, { artist, enquiryRef, at, exclusion = nul
   const log = rows[0];   // a correcting row, if any, is the latest statement about this introduction
   if (!log) return { ok: false, reason: `No PlotArt introduction is logged for ${enquiryRef} and this artist. Log the enquiry first (Review desk → Log enquiry).` };
   const intro = { reference: enquiryRef, log_id: log.id, introduced_at: log.introduced_at, founding: log.founding, founding_year_end: log.founding_year_end, route: log.route };
+  return entitlementForIntro(env, { artist, intro, at, exclusion, negotiationNote });
+}
+/* The same rules for an introduction that is not in the enquiry log: an online basket purchase on the PlotArt gallery,
+   where PlotArt introduces the buyer at the moment of purchase (intro.route = 'online_basket', founding fixed by
+   founding.js foundingAt at that moment). One definition of the commission rules for every route. */
+export async function entitlementForIntro(env, { artist, intro, at, exclusion = null, negotiationNote = null }) {
+  const log = intro;
   if (log.founding === 1) return { ok: true, bp: 0, basis: 'founding_enquiry', evidence: { intro, rule: 'PA-FAA-2026-11 cl. 5: Founding Enquiry, commission-free permanently' } };
   if (exclusion) {
     if (!EXCLUSIONS[exclusion]) return { ok: false, reason: 'Unknown exclusion' };

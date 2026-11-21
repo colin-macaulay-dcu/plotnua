@@ -56,7 +56,8 @@
     "assets/services/hang-it-logo.png": "9ae444a9e093585c2bf65bf542e95b32af2f9dddb936a4310bcb0e7442ce99b9",
     "services.html": "9037a412a49b34d0034335384f17b0f2cfeed8dbe67df48e1d91ad87654a2a8e",
     "assets/plotart-refine.css": "52d72700ae8bf3127bdf5586f24b203eb66d7b38a0b7fc7c78a50993d6de5c86",
-    "assets/plotart-refine.js": "d3198b7685b6d5fec4155b8b0ad83653da075e8d7052a29a2a85245e88fa3933"
+    "assets/plotart-refine.js": "d3198b7685b6d5fec4155b8b0ad83653da075e8d7052a29a2a85245e88fa3933",
+    "assets/pa-basket.js": "24c8fa17b6a91e4d2d4020683989d7a222f1dc985da4cc89cd80e8c8490a6731"
   },
   "outside_grid": {
     "gallery/index.html": "9a2640395bfe7b4acbd9f164e5c4b9ae912cc3a1e8020fb1e8f5758208dbb58e"

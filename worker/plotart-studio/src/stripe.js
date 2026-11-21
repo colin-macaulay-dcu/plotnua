@@ -18,7 +18,7 @@
        delivery).
    Secrets: STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET are Worker secrets (wrangler secret put), never in Git or in a
    browser. A LIVE key is accepted only by stripeMode's live gate (explicit, production-only); otherwise refused. */
-export class StripeError extends Error { constructor(m, status = 502, code = null) { super(m); this.status = status; this.code = code; } }
+export class StripeError extends Error { constructor(m, status = 502, code = null, extra = {}) { super(m); this.status = status; this.code = code; this.decline_code = extra.decline_code || null; this.payment_intent = extra.payment_intent || null; } }
 
 /* Which Stripe mode this Worker may use (live-mode gate, 20 Nov 2026). Exactly one of:
      test  a TEST key (sk_test_/rk_test_), outside production. The TEST environment and every local test are here, as before.
@@ -82,7 +82,9 @@ async function call(env, method, path, { body = null, account = null, idem = nul
   const r = await fetch(`${base}${path}${query}`, { method, headers, body: body ? (v2 ? JSON.stringify(body) : form(body)) : undefined });
   const t = await r.text();
   let j; try { j = JSON.parse(t); } catch { throw new StripeError('Payment provider returned an unreadable response'); }
-  if (!r.ok) throw new StripeError((j.error && j.error.message) || 'Payment provider error', r.status >= 500 ? 502 : 409, j.error && j.error.code);
+  if (!r.ok) throw new StripeError((j.error && j.error.message) || 'Payment provider error', r.status >= 500 ? 502 : 409, j.error && j.error.code,
+    { decline_code: j.error && j.error.decline_code, payment_intent: j.error && j.error.payment_intent && { id: j.error.payment_intent.id, status: j.error.payment_intent.status,
+      client_secret: j.error.payment_intent.client_secret || null, last_payment_error_pm: j.error.payment_intent.last_payment_error && j.error.payment_intent.last_payment_error.payment_method && j.error.payment_intent.last_payment_error.payment_method.id || null } });
   // every object must be of this Worker's mode: a live object in test mode, or a test object in live mode, is refused
   if (typeof j.livemode === 'boolean' && j.livemode !== k.live) throw new StripeError(`A ${j.livemode ? 'live' : 'test'}-mode object was returned to the ${k.mode}-mode pilot`, 500, 'livemode');
   return j;
@@ -145,11 +147,67 @@ export const getRefund = (env, { account, id }) => call(env, 'GET', `/v1/refunds
 export const listFeeRefunds = (env, { fee }) => call(env, 'GET', `/v1/application_fees/${encodeURIComponent(fee)}/refunds`, { query: '?limit=100' });
 export const refundFee = (env, { fee, amount, idem, metadata }) => call(env, 'POST', `/v1/application_fees/${encodeURIComponent(fee)}/refunds`, { idem, body: { amount, metadata } });
 
+/* ---------------------------------------------------------------- multi-artist basket (one card entry, a direct charge per artwork)
+   Proven in Stripe TEST mode (POC run 44930999959) and documented by Stripe ("Share payment methods across multiple
+   accounts for direct charges"):
+     1 · a Customer and a Checkout Session in SETUP mode on PlotArt's own account (no Stripe-Account header): the buyer
+         enters the card once on Stripe's hosted page, with any 3-D Secure the bank asks for;
+     2 · the saved card is CLONED to the artist's account (POST /v1/payment_methods with Stripe-Account);
+     3 · a PaymentIntent on the artist's account (direct charge: the artist is merchant of record), capture_method manual,
+         off_session, with PlotArt's commission as application_fee_amount; each clone is consumed by one charge;
+     4 · every line is authorised before ANY is captured; a failure cancels the authorisations already made.
+   Every call carries an idempotency key derived from the basket and the order, so a retry never charges twice. */
+/* The basket's own calls (platform Customer and card page, card copies, authorise / capture / cancel) may use a separate
+   restricted key, STRIPE_BASKET_KEY, so the key that serves the rest of checkout needs no new permissions. It must be of the
+   SAME mode as STRIPE_SECRET_KEY (test with test, live with live) or every basket call is refused. Without it, the main key. */
+function bk(env) {
+  if (!env.STRIPE_BASKET_KEY) return env;
+  const main = stripeMode(env), alt = stripeMode({ ...env, STRIPE_SECRET_KEY: env.STRIPE_BASKET_KEY });
+  if (!main.ok || !alt.ok || main.live !== alt.live) throw new StripeError('The basket key is not configured for this mode', 503, 'not_configured');
+  return { ...env, STRIPE_SECRET_KEY: env.STRIPE_BASKET_KEY };
+}
+export const createCustomer = (env, { idem, email, name, basket }) => call(bk(env), 'POST', '/v1/customers', { idem, body: {
+  email, name, description: `PlotArt basket ${basket.reference}`, metadata: { plotart_basket: basket.id, plotart_reference: basket.reference } } });
+export const deleteCustomer = (env, { id }) => call(bk(env), 'DELETE', `/v1/customers/${encodeURIComponent(id)}`);
+export const createSetupSession = (env, { idem, customer, basket, expiresAt, successUrl, cancelUrl }) => call(bk(env), 'POST', '/v1/checkout/sessions', { idem, body: {
+  mode: 'setup', currency: 'eur', customer, allowed_payment_method_types: ['card'],
+  // the order button (consumer law: the buyer must know the final click places an order with an obligation to pay)
+  custom_text: { submit: { message: `Selecting Save completes your purchase: you order the artworks in your basket and agree to pay €${(basket.total_cents / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} in total. Your card is saved only to take these payments.` } },
+  client_reference_id: basket.id, expires_at: Math.floor(Date.parse(expiresAt) / 1000), success_url: successUrl, cancel_url: cancelUrl,
+  setup_intent_data: { description: `PlotArt basket ${basket.reference}: card saved once for ${basket.line_count} artist payment(s)`,
+    metadata: { plotart_basket: basket.id, plotart_reference: basket.reference } },
+  metadata: { plotart_basket: basket.id, plotart_reference: basket.reference } } });
+export const getPlatformSession = (env, { id }) => call(bk(env), 'GET', `/v1/checkout/sessions/${encodeURIComponent(id)}`, { query: '?expand[]=setup_intent' });
+export const expirePlatformSession = (env, { id }) => call(bk(env), 'POST', `/v1/checkout/sessions/${encodeURIComponent(id)}/expire`);
+export const detachPaymentMethod = (env, { id }) => call(bk(env), 'POST', `/v1/payment_methods/${encodeURIComponent(id)}/detach`);
+export const clonePaymentMethod = (env, { account, idem, customer, paymentMethod }) => call(bk(env), 'POST', '/v1/payment_methods', { account, idem, body: { customer, payment_method: paymentMethod } });
+export const authorise = (env, { account, idem, amountCents, feeCents, paymentMethod, order, basket, statement }) => call(bk(env), 'POST', '/v1/payment_intents', { account, idem, body: {
+  amount: amountCents, currency: 'eur', payment_method: paymentMethod, confirm: true, off_session: true, capture_method: 'manual',
+  allowed_payment_method_types: ['card'], application_fee_amount: feeCents > 0 ? feeCents : undefined, description: statement,
+  metadata: { plotart_order: order.id, plotart_reference: order.reference, plotart_basket: basket.id, plotart_basket_reference: basket.reference } } });
+export const capture = (env, { account, idem, id }) => call(bk(env), 'POST', `/v1/payment_intents/${encodeURIComponent(id)}/capture`, { account, idem, body: {} });
+export const cancelIntent = (env, { account, idem, id }) => call(bk(env), 'POST', `/v1/payment_intents/${encodeURIComponent(id)}/cancel`, { account, idem, body: {} });
+/* A card error from confirming a PaymentIntent: Stripe returns 402 with the PaymentIntent it left behind. */
+export async function authoriseOutcome(env, args) {
+  try { const pi = await authorise(env, args); return { ok: true, pi }; }
+  catch (e) {
+    if (!(e instanceof StripeError)) throw e;
+    return { ok: false, error: e, code: e.code, decline_code: e.decline_code || null, pi: e.payment_intent || null, retryable: e.status >= 500 || e.code === 'rate_limit' || e.code === 'lock_timeout' };
+  }
+}
+
 /* Webhook signature (Stripe-Signature: t=..., v1=...). HMAC-SHA256 over `${t}.${rawBody}` with the endpoint secret;
    constant-time comparison; 5-minute tolerance. Anything else is refused before the body is parsed. */
+/* Two endpoints may deliver here: the Connect endpoint (artist accounts; STRIPE_WEBHOOK_SECRET) and, for the multi-artist
+   basket, PlotArt's own-account endpoint (its setup-mode card page; STRIPE_WEBHOOK_SECRET_PLATFORM). Each has its own secret. */
 export async function verifySignature(env, header, raw, nowSec = Math.floor(Date.now() / 1000)) {
-  const secret = String(env.STRIPE_WEBHOOK_SECRET || '');
-  if (!secret.startsWith('whsec_')) return { ok: false, reason: 'webhook secret not configured' };
+  const secrets = [env.STRIPE_WEBHOOK_SECRET, env.STRIPE_WEBHOOK_SECRET_PLATFORM].map(s => String(s || '')).filter(s => s.startsWith('whsec_'));
+  if (!secrets.length || !String(env.STRIPE_WEBHOOK_SECRET || '').startsWith('whsec_')) return { ok: false, reason: 'webhook secret not configured' };
+  let last = null;
+  for (const secret of secrets) { last = await verifyWith(secret, header, raw, nowSec); if (last.ok) return last; }
+  return last;
+}
+async function verifyWith(secret, header, raw, nowSec) {
   const parts = Object.create(null);
   for (const kv of String(header || '').split(',')) { const i = kv.indexOf('='); if (i > 0) (parts[kv.slice(0, i).trim()] ||= []).push(kv.slice(i + 1).trim()); }
   const t = Number((parts.t || [])[0]);

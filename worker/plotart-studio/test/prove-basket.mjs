@@ -1,0 +1,501 @@
+// PROVE · multi-artist basket on the managed checkout (migration 0019; src/basket.js, src/basket-public.js).
+// Local only: Miniflare D1 with the CURRENT schema plus the PROPOSED migration 0019 applied on top, the real Studio Worker
+// and the real public checkout Worker, a stateful MOCK Stripe API (every outbound call is intercepted; nothing reaches
+// Stripe), synthetic artists, and SYNTHETIC texts. Webhooks are signed here with a test secret exactly as Stripe signs them.
+//   node test/prove-basket.mjs
+import { cpSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { createHash, createHmac } from 'node:crypto';
+import { start, token, FOUNDER } from './local.mjs';
+import { seedPublished } from './seed.mjs';
+import { statements } from './sql.mjs';
+
+const HERE = new URL('..', import.meta.url).pathname;
+const results = [];
+const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(typeof d === 'string' ? d : JSON.stringify(d)).slice(0, 700)}]` : ''}`); };
+const sha = b => createHash('sha256').update(b).digest('hex');
+const ago = days => new Date(Date.now() - days * 86400_000).toISOString();
+
+const FIX = 'test/.basket-fixture/';
+rmSync(HERE + FIX, { recursive: true, force: true });
+cpSync(HERE + 'src', HERE + FIX + 'src', { recursive: true });
+const ADD = '<!DOCTYPE html><title>TEST ONLY · synthetic payment addendum</title><p>Synthetic.</p>';
+const BPT = '<!DOCTYPE html><title>TEST ONLY · synthetic buyer terms</title><p>Synthetic.</p>';
+const TERMS = { 'PA-PAY-TEST-01': { title: 'Payment Pilot Addendum (TEST)', kind: 'artist_payment_addendum', html: ADD, html_sha256: sha(ADD) },
+  'PA-BPT-TEST-01': { title: 'Buyer Purchase Terms (TEST)', kind: 'buyer_purchase_terms', html: BPT, html_sha256: sha(BPT) } };
+writeFileSync(HERE + FIX + 'src/payment-terms.js', `export const PAYMENT_TERMS = ${JSON.stringify(TERMS)};\n`);
+const { basketDoc, LIVE_BASKET_DOCS } = await import(HERE + 'src/basket-terms.js');
+const BBT = await basketDoc('PA-BBT-TEST-01', false), BAA = await basketDoc('PA-BAA-TEST-01', false);
+
+/* ---------------------------------------------------------------- mock Stripe: platform (no Stripe-Account) and connected accounts */
+const WHSEC = 'whsec_test_' + 'x'.repeat(24), WHSEC_P = 'whsec_test_platform_' + 'y'.repeat(20);
+import { M, stripe, enterCard } from './mock-stripe-basket.mjs';
+const sign = (raw, t = Math.floor(Date.now() / 1000), secret = WHSEC) => `t=${t},v1=${createHmac('sha256', secret).update(`${t}.${raw}`).digest('hex')}`;
+let EV = 0;
+const evt = (type, object, account = null) => ({ id: `evt_test_b${++EV}`, object: 'event', type, livemode: false, created: Math.floor(Date.now() / 1000), ...(account ? { account } : {}), data: { object } });
+
+let S, BR = null;
+try {
+console.log('PROVE · multi-artist basket (direct charge per artwork, authorise all before capture)');
+const ORIGIN = 'https://checkout.local';
+const ENVV = { CHECKOUT_MESSAGE_RETRY_MINUTES: '0', CHECKOUT_PILOT_ENABLED: 'true', BASKET_ENABLED: 'true', BASKET_COMMISSION_FREE: 'with_processing_consent', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_BASKET_KEY: 'rk_test_basketkey456',
+  STRIPE_PUBLISHABLE_KEY: 'pk_test_mockpublishable', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_WEBHOOK_SECRET_PLATFORM: WHSEC_P, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN, GALLERY_ORIGIN: 'https://plotnua.ie' };
+S = await start({ port: 8873, env: ENVV, script: FIX + 'src/index.js', checkout: { script: FIX + 'src/checkout-public.js', env: ENVV }, outbound: stripe });
+const { db } = S, CW = S.checkoutWorker;
+const mig = readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8');
+let migErr = null; for (const s of statements(mig)) { try { await db.prepare(s).run(); } catch (e) { migErr = e.message; } }
+check('M1 proposed migration 0019 applies cleanly on top of the current schema (0017 included)', !migErr, migErr);
+let again = null; for (const s of statements(mig)) { try { await db.prepare(s).run(); } catch (e) { again = e.message; } }
+check('M2 migration 0019 is re-runnable (IF NOT EXISTS throughout)', !again, again);
+const tablesBefore = (await db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all()).results.map(r => r.name);
+check('M3 migration 0019 is additive: only new basket tables', ['basket_terms', 'basket_artist_events', 'artwork_delivery_offers', 'checkout_baskets', 'basket_lines', 'basket_events'].every(t => tablesBefore.includes(t)));
+const mig20 = readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8');
+let m20 = null; for (let k = 0; k < 2; k++) for (const s of statements(mig20)) { try { await db.prepare(s).run(); } catch (e) { m20 = m20 || e.message; } }
+const tablesAfter20 = (await db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all()).results.map(r => r.name);
+check('M4 migration 0020 applies, is re-runnable and adds exactly one new table (basket_consents)', !m20 && tablesAfter20.filter(t => !tablesBefore.includes(t)).join() === 'basket_consents', { m20, added: tablesAfter20.filter(t => !tablesBefore.includes(t)) });
+
+const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { ...(email ? { 'Cf-Access-Jwt-Assertion': token(email) } : {}), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* html */ } return { s: r.status, j, t }; };
+const pub = async (method, path, { json = null, form = null, origin = ORIGIN, headers = {}, raw = null } = {}) => { const r = await CW.fetch(ORIGIN + path, { method, redirect: 'manual',
+  headers: { ...(json || form ? { 'Content-Type': json ? 'application/json' : 'application/x-www-form-urlencoded', Origin: origin } : {}), ...headers }, body: json ? JSON.stringify(json) : form ? new URLSearchParams(form).toString() : raw ?? undefined });
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* html */ } return { s: r.status, t, j, loc: r.headers.get('Location'), h: r.headers }; };
+const hook = async (e, secret = WHSEC) => { const body = JSON.stringify(e); const r = await pub('POST', '/v1/stripe/webhook', { raw: body, headers: { 'Stripe-Signature': sign(body, undefined, secret), 'Content-Type': 'application/json' } }); return { s: r.s, j: r.j }; };
+const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;
+const one = (sql, ...b) => db.prepare(sql).bind(...b).first();
+/* Optional staging preview: BASKET_SCREENSHOTS=<dir> renders the real pages (served by the checkout Worker above) in Chromium,
+   with SYNTHETIC artwork images (abstract gradients made here; no real artwork) standing in for the gallery's image files. */
+const SHOTS = process.env.BASKET_SCREENSHOTS || null;
+const ART = {};
+async function shot(name, path, { width = 1280, height = 900, basket = null, full = true } = {}) {
+  if (!SHOTS) return;
+  const { createRequire } = await import('node:module');
+  const pw = createRequire(process.env.PLAYWRIGHT_FROM || '/tmp/claude-0/studio-tools/package.json')('playwright');
+  if (!BR) {
+    BR = await pw.chromium.launch();
+    const p0 = await BR.newPage({ viewport: { width: 600, height: 600 } });
+    const G = { g1: 'radial-gradient(circle at 30% 35%,#d9a066,#7a3e2a 45%,#20262b 80%)', g2: 'linear-gradient(160deg,#2f4f5f,#9fb8ad 40%,#e9e2cf 55%,#c26d3a)', g3: 'conic-gradient(from 40deg at 60% 40%,#1c2833,#6c8a9b,#e4d5b7,#8c4a2f,#1c2833)', g4: 'radial-gradient(ellipse at 70% 60%,#f1e3c6,#b5893f 35%,#3a3a2e 75%)' };
+    for (const [k, g] of Object.entries(G)) { await p0.setContent(`<body style="margin:0"><div style="width:600px;height:${k === 'g2' ? 760 : 600}px;background:${g}"></div></body>`); await p0.setViewportSize({ width: 600, height: k === 'g2' ? 760 : 600 }); ART[k] = await p0.screenshot(); }
+    await p0.close();
+  }
+  const ctx = await BR.newContext({ viewport: { width, height }, deviceScaleFactor: 2 });
+  await ctx.route('**/*', async route => {
+    const u = new URL(route.request().url());
+    if (u.origin === ORIGIN) { const req = route.request(); const r = await CW.fetch(req.url(), { method: req.method(), headers: { ...req.headers(), Origin: ORIGIN }, body: req.postData() || undefined, redirect: 'manual' });
+      return route.fulfill({ status: r.status, headers: Object.fromEntries(r.headers), body: Buffer.from(await r.arrayBuffer()) }); }
+    if (u.hostname === 'plotnua.ie') { const k = (u.pathname.match(/(g\d)\.png$/) || [])[1]; return k ? route.fulfill({ status: 200, contentType: 'image/png', body: ART[k] }) : route.fulfill({ status: 404, body: '' }); }
+    if (/fonts\.(googleapis|gstatic)\.com$/.test(u.hostname)) return route.continue().catch(() => route.abort());
+    return route.abort();
+  });
+  const page = await ctx.newPage();
+  if (basket) { await page.goto(ORIGIN + '/basket?seed=1'); await page.evaluate(b => localStorage.setItem('pa-basket-v1', JSON.stringify(b)), basket); }
+  await page.goto(ORIGIN + path, { waitUntil: 'networkidle' }).catch(() => {});
+  await page.waitForTimeout(700);
+  await page.screenshot({ path: `${SHOTS}/${name}.png`, fullPage: full });
+  await ctx.close();
+}
+
+// ---- synthetic world: a Gallery Artist on 15%, a Founding Artist (0%), an artist not in baskets
+const GAL = 'gal@example.test', FND = 'fnd@example.test', NOB = 'nob@example.test';
+await seedPublished(db, { id: 'agal', slug: 'gale', email: GAL, name: 'Gale Gallery', works: 4, publishedAt: ago(30) });
+await seedPublished(db, { id: 'afnd', slug: 'fia', email: FND, name: 'Fia Founding', works: 3, number: 3, publishedAt: ago(100) });
+await seedPublished(db, { id: 'anob', slug: 'nob', email: NOB, name: 'Nóra NoBasket', works: 1, publishedAt: ago(30) });
+await db.prepare("UPDATE artists SET founding = 0 WHERE id IN ('agal','anob')").run();
+const FAKE = 'a'.repeat(64);
+await db.prepare("INSERT INTO gallery_agreement_documents (doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at, created_at) VALUES ('PA-GAA-2026-11','gallery_artist_agreement','t','fixed',?,?,'2018-01-01T00:00:00Z',?)").bind(FAKE, FAKE, ago(0)).run();
+for (const a of ['agal', 'anob']) {
+  await db.prepare(`INSERT INTO gallery_agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at, account_email, display_name, method, statement, created_at) VALUES (?,?,?,'PA-GAA-2026-11',?,?,?,?, 'x','studio_checkbox','test',?)`).bind('gaa' + a, 'ev' + a, a, FAKE, FAKE, ago(20), a + '@example.test', ago(20)).run();
+  await db.prepare("INSERT INTO artist_terms (artist_id, track, commission_bp, set_by, created_at, updated_at) VALUES (?,'gallery_artist',1500,?,?,?)").bind(a, FOUNDER, ago(20), ago(20)).run();
+}
+for (const [id, t] of Object.entries(TERMS)) await db.prepare('INSERT INTO payment_terms (doc_id, kind, title, html_sha256, effective_at, created_at) VALUES (?,?,?,?,?,?)').bind(id, t.kind, t.title, t.html_sha256, '2018-01-01T00:00:00Z', ago(0)).run();
+for (const d of [BBT, BAA]) await db.prepare('INSERT INTO basket_terms (doc_id, kind, title, html_sha256, effective_at, created_at) VALUES (?,?,?,?,?,?)').bind(d.doc_id, d.kind, d.title, d.html_sha256, '2018-01-01T00:00:00Z', ago(0)).run();
+// prices: Gale's works EUR 1,200 and 800; Fia's EUR 450; one Gale work price on request
+await db.prepare("UPDATE artworks SET price_eur = 1200 WHERE id = 'wagal1'").run(); await db.prepare("UPDATE artworks SET price_eur = 800 WHERE id = 'wagal2'").run();
+await db.prepare("UPDATE artworks SET price_eur = 450 WHERE artist_id = 'afnd'").run(); await db.prepare("UPDATE artworks SET price_on_request = 1, price_eur = NULL WHERE id = 'wagal4'").run();
+for (const a of ['agal', 'afnd']) {   // the published snapshot carries the same prices
+  const v = await one('SELECT snapshot FROM versions WHERE artist_id = ?', a); const snap = JSON.parse(v.snapshot);
+  for (const w of snap.works) { const r = await one('SELECT price_eur, price_on_request FROM artworks WHERE id = ?', w.id); w.price_eur = r.price_eur; w.price_on_request = r.price_on_request; }
+  await db.prepare('UPDATE versions SET snapshot = ? WHERE artist_id = ?').bind(JSON.stringify(snap), a).run();
+}
+const SELLER = n => ({ legal_name: n, trading_name: null, address: '1 Studio Lane, Dublin 8, Ireland', returns_address: null, email: 'seller@example.test', phone: '+353 1 555 0100', trader_status: 'trader', vat_number: null, confirm: true });
+for (const [e, n] of [[GAL, 'Gale Gallery'], [FND, 'Fia Founding'], [NOB, 'Nora NoBasket']]) {
+  await call('POST', '/api/checkout/opt-in', e, { accept: true, doc_id: 'PA-PAY-TEST-01', html_sha256: sha(ADD) });
+  await call('POST', '/api/checkout/onboarding', e, { country: 'IE' });
+  await call('PUT', '/api/checkout/seller-profile', e, SELLER(n));
+}
+for (const a of ['agal', 'afnd', 'anob']) await call('POST', `/api/admin/checkout/accounts/${a}/refresh`, FOUNDER, {});
+const ACC = Object.fromEntries((await q('SELECT artist_id, account_id FROM payment_accounts')).map(r => [r.artist_id, r.account_id]));
+const prof = await call('GET', '/api/checkout', GAL);
+check('S1 artists are in the existing payment pilot with ready Stripe accounts and seller information', prof.j.membership.ready === true && prof.j.seller_problems.length === 0 && Object.keys(ACC).length === 3, { sp: prof.j.seller_problems, acc: ACC });
+
+console.log('— artist: basket opt-in and standing delivery offers');
+let r = await call('GET', '/api/checkout/basket', GAL);
+check('A1 the artist sees the basket addendum (separate from the single-artwork addendum) and is not enrolled by default', r.j.addendum && r.j.addendum.doc_id === 'PA-BAA-TEST-01' && !r.j.membership.opted_in, r.j);
+r = await call('POST', '/api/checkout/basket/opt-in', GAL, { accept: true, doc_id: 'PA-BAA-TEST-01', html_sha256: 'b'.repeat(64) });
+check('A2 a different text fingerprint is refused', r.s === 400);
+for (const e of [GAL, FND]) r = await call('POST', '/api/checkout/basket/opt-in', e, { accept: true, doc_id: BAA.doc_id, html_sha256: BAA.html_sha256 });
+check('A3 artists opt in to baskets themselves (append-only record with the statement and fingerprint)', r.s === 200 && (await q("SELECT * FROM basket_artist_events WHERE kind='opted_in'")).length === 2
+  && !!(await db.prepare("UPDATE basket_artist_events SET kind='left'").run().catch(e => e)).message);
+const DELIVERY = { collection_county: 'Dublin', unpacked_cm: '60 × 50 × 3', packed_cm: '75 × 65 × 12', weight_kg: 6, medium: 'Oil on board', framing: 'Framed, oak', glazing: 'None',
+  condition: 'Excellent', access_notes: null, organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist',
+  transporter_name: 'Synthetic Art Couriers', installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting (SIMULATED)', covered_value_cents: 150000,
+  insured_party: 'transporter', cover_confirmation_ref: 'SIM-COVER-0001', cover_confirmed_by: 'Synthetic Underwriting', cover_confirmed_on: '2026-11-16', valuation_basis: 'Sale price', excess_cents: 0, exclusions: null,
+  cover_period: 'Collection to signed delivery', claims_contact: 'claims@example.test', delivery_window: '5–8 working days', tracking: 'Tracked, signature on delivery', signed_receipt: true, condition_photos: true,
+  return_method: 'Same courier, insured', return_address: '1 Studio Lane, Dublin 8', return_cost_cents: 6000, return_cost_basis: 'estimated_maximum', return_arranged_by: 'buyer',
+  shipment_confirmation_ref: 'SAC-RATE-2026', shipment_confirmed_by: 'Synthetic Art Couriers', shipment_confirmed_on: '2026-11-16' };
+r = await call('PUT', '/api/checkout/basket/offers/wagal1', GAL, { delivery_cents: 4500, delivery: DELIVERY });
+check('A4 a delivery offer needs the artist’s explicit confirmation', r.s === 400);
+r = await call('PUT', '/api/checkout/basket/offers/wagal1', GAL, { confirm: true, delivery_cents: 4500, delivery: { ...DELIVERY, covered_value_cents: 50000 } });
+check('A5 transit insurance must cover at least the artwork price (pilot rule reused)', r.s === 409 && /cover at least/.test(r.j.error), r.j);
+r = await call('PUT', '/api/checkout/basket/offers/wafnd1', GAL, { confirm: true, delivery_cents: 4500, delivery: DELIVERY });
+check('A6 an artist can never set an offer on another artist’s work', r.s === 404);
+for (const [e, w, c] of [[GAL, 'wagal1', 4500], [GAL, 'wagal2', 4500], [GAL, 'wagal3', 4500], [FND, 'wafnd1', 3000], [FND, 'wafnd2', 3000], [FND, 'wafnd3', 3000]]) r = await call('PUT', `/api/checkout/basket/offers/${w}`, e, { confirm: true, delivery_cents: c, delivery: DELIVERY });
+check('A7 standing delivery offers recorded per artwork, approved by the artist (destination completed per order)', r.s === 200 && (await q('SELECT * FROM artwork_delivery_offers')).length === 6
+  && JSON.parse((await one("SELECT delivery FROM artwork_delivery_offers WHERE artwork_id='wagal1'")).delivery).destination.includes('Republic of Ireland'));
+// seller information shown BEFORE payment needs the artist's own confirmation (bound to that information)
+r = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wagal1', FOUNDER);
+check('D1 without the artist’s confirmation that their seller information may be shown before payment, the work is not offered', !r.j.items[0].ok && /seller information may be shown/.test(r.j.items[0].why), r.j.items);
+let BV = (await call('GET', '/api/checkout/basket', GAL)).j;
+check('D2 the artist sees exactly the seller details buyers will see (no VAT line when not registered) and the statement', BV.seller_info.shown.address === '1 Studio Lane, Dublin 8, Ireland' && !('vat_number' in BV.seller_info.shown) && /address at which I am established/.test(BV.disclosure_statement), BV.seller_info);
+r = await call('POST', '/api/checkout/basket/seller-disclosure', GAL, { accept: true, statement: BV.disclosure_statement, subject_sha256: 'c'.repeat(64) });
+check('D3 a confirmation of different seller information is refused', r.s === 400);
+for (const e of [GAL, FND]) { const v = (await call('GET', '/api/checkout/basket', e)).j; r = await call('POST', '/api/checkout/basket/seller-disclosure', e, { accept: true, statement: v.disclosure_statement, subject_sha256: v.seller_info.subject_sha256 }); }
+const sd = await one("SELECT * FROM basket_consents WHERE artist_id = 'agal' AND topic = 'seller_disclosure'");
+check('D4 the confirmation is recorded: artist, account, statement and its fingerprint, the information fingerprint, Stripe mode, time; append-only',
+  r.s === 200 && sd && sd.kind === 'given' && sd.account_email === GAL && sd.statement_sha256.length === 64 && sd.subject_sha256 === BV.seller_info.subject_sha256 && sd.livemode === 0
+  && !!(await db.prepare("UPDATE basket_consents SET kind = 'withdrawn'").run().catch(e => e)).message, sd);
+await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER('Gale Gallery'), phone: '+353 1 555 0199' });
+r = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wagal1', FOUNDER);
+check('D5 changing the seller information withdraws the work until the artist confirms again', !r.j.items[0].ok && /changed since/.test(r.j.items[0].why), r.j.items);
+await call('PUT', '/api/checkout/seller-profile', GAL, SELLER('Gale Gallery'));
+r = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wagal1,wafnd1,wagal4,wanob1', FOUNDER);
+const el0 = Object.fromEntries(r.j.items.map(i => [i.id, i]));
+check('A8 founder eligibility view: Gallery Artist work ready; Founding work refused without the separate processing consent (fee Model B); price-on-request and non-basket artists refused',
+  el0.wagal1.ok && el0.wagal1.commission_basis === 'gallery_artist_agreement' && !el0.wafnd1.ok && /no valid processing-fee consent/.test(el0.wafnd1.why) && /price on request/.test(el0.wagal4.why) && /not ready/.test(el0.wanob1.why), r.j.items);
+const PSTAT = (await call('GET', '/api/checkout', FND)).j.processing_statement;
+r = await call('POST', '/api/checkout/processing-consent', FND, { accept: true, statement: PSTAT });
+r = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wafnd1', FOUNDER);
+const BT = await import(HERE + 'src/basket-terms.js');
+check('C0 founder decision applied: in LIVE mode commission-free works are offered only with the separate processing consent (TEST default stays direct payment)', BT.BASKET_DECISIONS.commission_free_lines_live === 'with_processing_consent' && BT.BASKET_DECISIONS.commission_free_lines_test_default === 'direct_payment_only');
+check('C1 the older single-quote pilot consent does not count for the basket (no document version)', !r.j.items[0].ok && /processing-fee consent/.test(r.j.items[0].why), r.j.items);
+const FV = (await call('GET', '/api/checkout/basket', FND)).j, BST = FV.processing_statement;
+check('C2 the Founding Artist sees the consent: 0% commission, actual Stripe fees, refunds and disputes, withdrawal, no effect on gallery or enquiries',
+  FV.founding && /0% commission/.test(BST) && /agreed commission-free period/.test(BST) && /actual card processing fee/.test(BST) && /refund a buyer, Stripe does not return/.test(BST) && /dispute fees/.test(BST)
+  && /withdraw this consent at any time/.test(BST) && /does not affect my gallery listing, enquiries, direct sales/.test(BST) && BST.includes(BAA.doc_id), BST);
+r = await call('POST', '/api/checkout/basket/processing-consent', FND, { accept: true, statement: BST.replace('0%', '5%') });
+check('C3 a consent to any other wording is refused', r.s === 400);
+r = await call('POST', '/api/checkout/basket/processing-consent', GAL, { accept: false, statement: BST });
+check('C4 consent needs the explicit tick', r.s === 400);
+r = await call('POST', '/api/checkout/basket/processing-consent', FND, { accept: true, statement: BST });
+const pc = await one("SELECT * FROM basket_consents WHERE artist_id = 'afnd' AND topic = 'processing_fees'");
+check('C5 the consent is recorded: artist, account, accepted document version and fingerprint, statement fingerprint, Stripe mode, time',
+  r.s === 200 && pc.kind === 'given' && pc.doc_id === BAA.doc_id && pc.doc_sha256 === BAA.html_sha256 && pc.account_email === FND && pc.statement === BST && pc.livemode === 0 && r.j.membership.processing_consent.valid, pc);
+check('C6 the database refuses a consent naming a document that is not an installed basket addendum', !!(await db.prepare("INSERT INTO basket_consents (id, artist_id, topic, kind, doc_id, doc_sha256, statement, statement_sha256, account_email, livemode, at) VALUES ('bcx','afnd','processing_fees','given','PA-BBT-TEST-01',?, 'x', ?, 'x', 0, ?)").bind('d'.repeat(64), 'e'.repeat(64), new Date().toISOString()).run().catch(e => e)).message);
+r = await call('POST', '/api/checkout/basket/processing-consent/withdraw', FND, {});
+const r2 = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wafnd1', FOUNDER);
+check('C7 withdrawing the consent takes commission-free works out of the basket at once (recorded as a new row)', r.s === 200 && !r.j.membership.processing_consent.valid && !r2.j.items[0].ok
+  && (await q("SELECT kind FROM basket_consents WHERE artist_id = 'afnd' AND topic = 'processing_fees' ORDER BY at, rowid")).map(x => x.kind).join() === 'given,withdrawn');
+r = await call('POST', '/api/checkout/basket/processing-consent', FND, { accept: true, statement: BST });
+r = await call('GET', '/api/admin/checkout/baskets/artists', FOUNDER);
+const ra = Object.fromEntries(r.j.artists.map(a => [a.id, a]));
+check('C8 founder readiness view: consent, document version, seller-information confirmation and what is missing, per artist',
+  ra.afnd.processing_consent.valid && ra.afnd.processing_consent.doc_id === BAA.doc_id && ra.afnd.seller_disclosure.valid && !ra.afnd.missing.length && ra.agal.processing_consent && !ra.agal.missing.length
+  && ra.anob.missing.includes('basket addendum') && /0% commission/.test(ra.afnd.commission_free_works), r.j.artists);
+r = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wafnd1', FOUNDER);
+check('A9 with the Founding Artist’s own processing consent (and the TEST policy switch), their work is offered at 0% commission (Founding 25 entitlement kept)', r.j.items[0].ok && r.j.items[0].commission_basis === 'founding_enquiry', r.j.items);
+
+console.log('— buyer: the basket page and live preview');
+r = await pub('GET', '/basket');
+check('B1 the basket page is served with a strict policy (nonce scripts only, no third-party scripts, no framing)', r.s === 200 && /<h1 class="bh">Your Basket<\/h1>/.test(r.t) && !/Original works|one secure checkout|Summary<\/h2>|secure payment page/.test(r.t) && (r.t.match(/<h1/g) || []).length === 1 && />Buy now<\/button>/.test(r.t) && /select <strong>Save<\/strong> there to complete your purchase/.test(r.t) && /script-src 'nonce-[0-9a-f]{32}'(;| )/.test(r.h.get('Content-Security-Policy'))
+  && !/js\.stripe\.com/.test(r.h.get('Content-Security-Policy')) && r.h.get('X-Frame-Options') === 'DENY' && /Test mode/.test(r.t), r.h.get('Content-Security-Policy'));
+const bp = r.t;
+const BP = await import(HERE + FIX + 'src/basket-public.js');
+const live = await BP.page({ ENVIRONMENT: 'production', CHECKOUT_LIVE: 'true', STRIPE_SECRET_KEY: 'sk_live_notused', STAGING_GALLERY: 'true', CHECKOUT_ORIGIN: 'https://x' }, 'Your basket', '<h1>Your Basket</h1>').text();
+const stagingNote = await BP.page({ ENVIRONMENT: 'test', STRIPE_SECRET_KEY: 'sk_test_x', STAGING_GALLERY: 'true', CHECKOUT_ORIGIN: 'https://x' }, 'Your basket', '<h1>Your Basket</h1>').text();
+check('B1c the TEST/staging notice appears only in Stripe TEST mode, never in live production', !/Test mode|Private staging|staging/i.test(live) && /Private staging/.test(stagingNote));
+check('B1b the basket page carries no payment-arrangement detail (separate payments, paid directly, Stripe processing, number of transactions)', !/separate (card )?payments?|paid directly|directly to the artist|each artist(’|')s payment|Stripe emails|transactions?\\b/i.test(bp.replace(/<footer>[\s\S]*<\/footer>/, '').replace(/<p class="note test">[\s\S]*?<\/p>/, '')) && /Each artwork is sold by its artist/.test(bp));
+check('B1a the page carries PlotArt’s identity (Instrument Serif, Hanken Grotesk, anthracite) and is responsive', /Instrument\+Serif/.test(r.t) && /Hanken\+Grotesk/.test(r.t) && /#27282A/.test(r.t) && /@media \(max-width:560px\)/.test(r.t) && /name="viewport"/.test(r.t));
+r = await pub('GET', '/api/basket/items?ids=wagal1,wafnd1,wagal4,wanob1,nonexistent');
+const it = Object.fromEntries(r.j.items.map(i => [i.id, i]));
+check('B2 live preview: price, seller and delivery for eligible works, from the records', it.wagal1.ok && it.wagal1.price_cents === 120000 && it.wagal1.delivery_cents === 4500 && it.wagal1.artist === 'Gale Gallery' && /5–8 working days/.test(it.wagal1.delivery.window)
+  && it.wafnd1.ok && it.wafnd1.price_cents === 45000 && r.j.open === true && r.j.terms.doc_id === 'PA-BBT-TEST-01', r.j);
+check('B2a before payment, each work carries its seller’s legally required details (VAT only if registered) and its return arrangements',
+  it.wagal1.seller_info.legal_name === 'Gale Gallery' && it.wagal1.seller_info.address && it.wagal1.seller_info.email && it.wagal1.seller_info.phone && it.wagal1.seller_info.trader === true && !('vat_number' in it.wagal1.seller_info)
+  && it.wagal1.returns.method && it.wagal1.returns.address && it.wagal1.returns.arranged_by === 'you' && !('seller_info' in it.wagal4), it.wagal1);
+check('B3 ineligible works are refused with a buyer-friendly reason and never priced (price on request; artist not in baskets; unknown)', !it.wagal4.ok && /enquire/i.test(it.wagal4.reason) && !it.wanob1.ok && !it.nonexistent.ok
+  && !('price_cents' in it.wagal4) && !/Model B|commission|opted/i.test(JSON.stringify(r.j.items.filter(i => !i.ok))), r.j.items);
+check('B4 the gallery (plotnua.ie) may read eligibility cross-origin; nothing else is exposed', r.h.get('Access-Control-Allow-Origin') === 'https://plotnua.ie');
+
+console.log('— buyer: open a basket (two artists, one card entry)');
+const BUYER = { name: 'Bríd Buyer', email: 'brid@example.test', address_line1: '7 Harbour Road', address_line2: '', town: 'Kinsale', county: 'Cork', eircode: 'P17 XY12', phone: '+353 21 555 0199' };
+const basketReq = (artworks, extra = {}) => ({ artworks, accept_terms: 'PA-BBT-TEST-01', ...BUYER, ...extra });
+const SEEDB = [{ id: 'wagal1', img: 'https://plotnua.ie/plotart/artists/gale/img/g1.png' }, { id: 'wafnd1', img: 'https://plotnua.ie/plotart/artists/fia/img/g2.png' }, { id: 'wagal2', img: 'https://plotnua.ie/plotart/artists/gale/img/g3.png' }];
+await shot('1-basket-desktop', '/basket', { basket: SEEDB });
+await shot('2-basket-mobile', '/basket', { basket: SEEDB, width: 390, height: 844 });
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal1', 'wafnd1']), origin: 'https://evil.example' });
+check('B5 another origin cannot open a basket', r.s === 403);
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal1', 'wafnd1'], { accept_terms: '' }) });
+check('B6 the purchase terms must be accepted', r.s === 400 && /terms/.test(r.j.error));
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal1', 'wafnd1'], { county: 'Antrim' }) });
+check('B7 delivery is to the Republic of Ireland only (county checked)', r.s === 400 && /Republic of Ireland/.test(r.j.error));
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal1', 'wafnd1'], { expected_total_cents: 1 }) });
+check('B8 a total that differs from the server’s price is refused (the browser never sets an amount)', r.s === 409 && /changed/.test(r.j.error) && !(await q('SELECT * FROM checkout_baskets')).length);
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal1', 'wafnd1', 'wagal4']) });
+check('B9 a basket with an ineligible work is refused as a whole, naming the work', r.s === 409 && r.j.artwork === 'wagal4' && !(await q('SELECT * FROM checkout_orders')).length);
+const callsBefore = M.calls.length;
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal1', 'wafnd1'], { expected_total_cents: 120000 + 4500 + 45000 + 3000 }) });
+const B1 = await one('SELECT * FROM checkout_baskets ORDER BY created_at DESC LIMIT 1');
+const sess1 = Object.values(M.sessions).at(-1);
+const L1 = await q('SELECT * FROM basket_lines WHERE basket_id = ? ORDER BY line_no', B1.id);
+const O1 = await q('SELECT o.* FROM checkout_orders o JOIN basket_lines l ON l.order_id = o.id WHERE l.basket_id = ? ORDER BY l.line_no', B1.id);
+check('B10 the buyer is sent to Stripe’s hosted card page (setup mode, on PlotArt’s own account, card only, no amount on it)', r.s === 200 && r.j.url === sess1.url && sess1._f.mode === 'setup'
+  && !M.calls.slice(callsBefore).find(c => c.path === '/v1/checkout/sessions').acct && sess1._f['allowed_payment_method_types[0]'] === 'card' && !('amount' in sess1._f) && sess1._f.customer, r.j);
+check('B10a the card page’s confirm button carries the order wording with the basket total (obligation to pay)', /^Selecting Save completes your purchase: you order the artworks in your basket and agree to pay €[0-9,]+\.[0-9]{2} in total\. Your card is saved only to take these payments\.$/.test(sess1._f['custom_text[submit][message]'] || '')
+  && sess1._f['custom_text[submit][message]'].includes((B1.total_cents / 100).toLocaleString('en-IE', { minimumFractionDigits: 2 })), sess1._f['custom_text[submit][message]']);
+check('B11 one ordinary order per artwork, priced from the records: 15% on the Gallery Artist’s work, 0% (Founding 25) on the Founding Artist’s', O1.length === 2
+  && O1[0].artwork_cents === 120000 && O1[0].delivery_cents === 4500 && O1[0].commission_bp === 1500 && O1[0].commission_cents === 18000 && O1[0].commission_basis === 'gallery_artist_agreement'
+  && O1[1].artwork_cents === 45000 && O1[1].commission_cents === 0 && O1[1].commission_basis === 'founding_enquiry' && O1.every(o => o.status === 'checkout_open' && o.enquiry_ref === B1.reference), O1);
+check('B12 commission is never charged on delivery; the line amount is artwork + delivery and the fee is the commission only', L1[0].amount_cents === 124500 && L1[0].fee_cents === 18000 && L1[1].amount_cents === 48000 && L1[1].fee_cents === 0, L1);
+check('B13 every artwork is reserved in the same transaction; each order keeps the seller, delivery to the buyer’s address and a fingerprinted snapshot', (await q('SELECT * FROM artwork_reservations WHERE order_id IN (?,?)', O1[0].id, O1[1].id)).length === 2
+  && JSON.parse(O1[0].delivery).destination.includes('Kinsale') && JSON.parse(O1[0].seller).name === 'Gale Gallery' && (await q('SELECT * FROM quote_snapshots WHERE order_id IN (?,?)', O1[0].id, O1[1].id)).length === 2);
+check('B14 the buyer link is stored only as a hash; the basket and its history are recorded', B1.buyer_token_hash.length === 64 && B1.status === 'open' && (await q('SELECT * FROM basket_events WHERE basket_id = ?', B1.id)).length >= 2);
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal2', 'wafnd1'], { email: 'other@example.test' }) });
+check('B15 a second buyer cannot buy a work that is in someone’s open basket (nothing of theirs is created)', r.s === 409 && /someone else/i.test(r.j.error) && (await q("SELECT * FROM checkout_orders WHERE buyer_email = 'other@example.test'")).length === 0, r.j);
+r = await pub('GET', '/api/basket/items?ids=wafnd1');
+check('B16 the preview shows a reserved work as being bought by someone else', r.j.items[0].ok === false && /someone else/i.test(r.j.items[0].reason));
+
+console.log('— paying: authorise every artist’s payment, then capture');
+const token1 = new URL(sess1._f.success_url).pathname.split('/')[2];
+r = await pub('GET', `/b/${token1}`);
+check('P1 before the card is entered the status page says so; a return from Stripe is never proof of payment', r.s === 200 && /Waiting for your card details/.test(r.t));
+await shot('3-waiting', `/b/${token1}`);
+enterCard(sess1.id, {});
+const cBefore = M.calls.length;
+r = await hook(evt('checkout.session.completed', M.sessions[sess1.id]), 'whsec_test_wrong_' + 'z'.repeat(20));
+check('P1a an event signed with an unknown secret is refused before anything is read', r.s === 400 && (await one('SELECT status FROM checkout_baskets WHERE id = ?', B1.id)).status === 'open');
+r = await hook(evt('checkout.session.completed', M.sessions[sess1.id]), WHSEC_P);
+const B1p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B1.id);
+const newCalls = M.calls.slice(cBefore);
+const clones = newCalls.filter(c => c.path === '/v1/payment_methods'), auths = newCalls.filter(c => c.path === '/v1/payment_intents' && c.method === 'POST'), caps = newCalls.filter(c => /\/capture$/.test(c.path));
+check('P2 an event signed by PlotArt’s own-account endpoint (its own secret) completes the card page; the coordinator runs', r.s === 200 && B1p.status === 'paid', { r, status: B1p.status, res: B1p.resolution });
+check('P3 the saved card is cloned to EACH artist’s own account (no second card entry)', clones.length === 2 && clones[0].acct === ACC.agal && clones[1].acct === ACC.afnd && clones.every(c => c.f.customer === B1p.platform_customer));
+check('P4 each artist’s payment is a DIRECT charge on their own account, authorised first (manual capture, off-session, card only)', auths.length === 2 && auths.every(c => c.f.capture_method === 'manual' && c.f.off_session === 'true' && c.f.confirm === 'true' && c.f['allowed_payment_method_types[0]'] === 'card')
+  && auths[0].acct === ACC.agal && auths[1].acct === ACC.afnd);
+check('P5 PlotArt’s commission is the application fee: EUR 180 on the Gallery Artist’s charge, none on the Founding Artist’s', auths[0].f.application_fee_amount === '18000' && !('application_fee_amount' in auths[1].f) && auths[0].f.amount === '124500' && auths[1].f.amount === '48000');
+const firstCap = newCalls.findIndex(c => /\/capture$/.test(c.path)), lastAuth = newCalls.map(c => c.path === '/v1/payment_intents' && c.method === 'POST').lastIndexOf(true);
+check('P6 nothing is captured until EVERY artist’s payment is authorised', caps.length === 2 && firstCap > lastAuth);
+check('P7 every Stripe call that moves money carries an idempotency key derived from the basket and the order', [...clones, ...auths, ...caps].every(c => c.idem && c.idem.includes(B1.id)));
+const O1p = await q('SELECT o.* FROM checkout_orders o JOIN basket_lines l ON l.order_id = o.id WHERE l.basket_id = ? ORDER BY l.line_no', B1.id);
+check('P8 each captured charge completes its own order through the single-artwork path: paid, sold, reservation released', O1p.every(o => o.status === 'paid' && o.payment_status === 'paid' && o.payment_intent)
+  && (await q('SELECT * FROM artwork_sales WHERE order_id IN (?,?)', O1[0].id, O1[1].id)).length === 2 && !(await q('SELECT * FROM artwork_reservations WHERE order_id IN (?,?)', O1[0].id, O1[1].id)).length
+  && (await one("SELECT availability FROM artworks WHERE id='wagal1'")).availability === 'sold', O1p.map(o => [o.status, o.needs_resolution]));
+const led = await q('SELECT order_id, kind, amount_cents FROM order_ledger WHERE order_id IN (?,?) ORDER BY order_id, kind', O1[0].id, O1[1].id);
+const L = (o, k) => (led.find(x => x.order_id === o && x.kind === k) || {}).amount_cents;
+check('P9 the ledger books each payment exactly: charge, commission (15% of the artwork only) and the artist’s allocations', L(O1[0].id, 'charge') === 124500 && L(O1[0].id, 'commission') === 18000 && L(O1[0].id, 'artist_artwork') === 102000 && L(O1[0].id, 'delivery_allocation') === 4500
+  && L(O1[1].id, 'charge') === 48000 && L(O1[1].id, 'commission') === undefined && L(O1[1].id, 'artist_artwork') === 45000, led);
+check('P10 the buyer gets one purchase confirmation per artwork, naming the artist as seller and the basket', (await q("SELECT * FROM order_messages WHERE kind='buyer_confirmation' AND order_id IN (?,?)", O1[0].id, O1[1].id)).length === 2
+  && /Part of basket PA-B-/.test((await one("SELECT body FROM order_messages WHERE kind='buyer_confirmation' AND order_id = ?", O1[1].id)).body) && /TEST ONLY · Basket purchase terms/.test((await one("SELECT body FROM order_messages WHERE kind='buyer_confirmation' AND order_id = ?", O1[1].id)).body));
+check('P11 the buyer’s saved card is not kept: the platform Customer is deleted once the basket ends', M.customers[B1p.platform_customer].deleted === true && !!B1p.card_released_at);
+r = await pub('GET', `/b/${token1}`);
+await shot('4-paid', `/b/${token1}`, { width: 1280 }); await shot('4b-paid-mobile', `/b/${token1}`, { width: 390, height: 844 });
+check('P12 the confirmation: “Thank you for your purchase”, “Order confirmed”, the agreed message; titles, artists (once each), prices, delivery and total; one simple confirmation link per artwork; no payment-arrangement detail',
+  /Thank you for your purchase/.test(r.t) && /Order confirmed/.test(r.t) && /Your order has been successfully placed\./.test(r.t) && /Your artwork will be prepared for delivery to your nominated address\. You’ll receive confirmation of your purchase, and we’ll be in touch with any delivery updates\./.test(r.t)
+  && (r.t.match(/View confirmation/g) || []).length === 2 && /by Gale Gallery/.test(r.t) && !/Gale Gallery \(/.test(r.t) && /€1,245\.00/.test(r.t) && /€1,725\.00/.test(r.t) && /delivered in 5–8 working days/.test(r.t)
+  && !/separate (card )?payments?|paid directly|directly to the artist|each artist(’|')s payment|Stripe emails|transactions?\\b/i.test(r.t.replace(/<footer>[\s\S]*<\/footer>/, '')), r.t.slice(0, 400));
+r = await pub('GET', `/b/${token1}/confirmation/${O1p[0].reference}`);
+check('P13 the confirmation for one artwork is reachable only through this basket’s link', r.s === 200 && /PURCHASE CONFIRMATION/.test(r.t) && (await pub('GET', `/b/${'z'.repeat(48)}/confirmation/${O1p[0].reference}`)).s === 404);
+const cAfter = M.calls.length;
+r = await hook(evt('checkout.session.completed', M.sessions[sess1.id]));
+await hook(evt('payment_intent.amount_capturable_updated', M.pis[O1p[0].payment_intent] && { id: O1p[0].payment_intent, object: 'payment_intent', metadata: { plotart_basket: B1.id, plotart_order: O1[0].id } }, ACC.agal));
+check('P14 repeated or late events change nothing: no second authorisation or capture', M.calls.slice(cAfter).filter(c => c.method === 'POST').length === 0 && (await one('SELECT status FROM checkout_baskets WHERE id = ?', B1.id)).status === 'paid');
+r = await hook(evt('payment_intent.amount_capturable_updated', { id: O1p[0].payment_intent, object: 'payment_intent', metadata: { plotart_basket: B1.id, plotart_order: O1[0].id } }, ACC.afnd));
+check('P15 an event naming the wrong artist account is refused (not applied)', r.s === 500);
+
+console.log('— one artist’s payment is declined: nothing is bought');
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal2', 'wafnd2'], { email: 'dee@example.test' }) });
+const B2 = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'dee@example.test'"), s2 = Object.values(M.sessions).at(-1);
+enterCard(s2.id, { [ACC.afnd]: 'decline' });
+await hook(evt('checkout.session.completed', M.sessions[s2.id]));
+const B2p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B2.id), L2 = await q('SELECT * FROM basket_lines WHERE basket_id = ? ORDER BY line_no', B2.id);
+const O2 = await q('SELECT o.* FROM checkout_orders o JOIN basket_lines l ON l.order_id = o.id WHERE l.basket_id = ? ORDER BY l.line_no', B2.id);
+check('D1 the second artist’s card decline fails the basket', B2p.status === 'failed' && L2[1].state === 'declined' && L2[1].decline_code === 'generic_decline', { B2p, L2 });
+check('D2 the first artist’s authorisation is CANCELLED: nothing is captured, nothing taken', L2[0].state === 'cancelled' && M.pis[L2[0].payment_intent].status === 'canceled' && !M.calls.some(c => c.path === `/v1/payment_intents/${L2[0].payment_intent}/capture`));
+check('D3 both orders end unpaid, the artworks are released and stay available, the card is not kept', O2.every(o => o.status === 'cancelled' && o.payment_status !== 'paid') && !(await q('SELECT * FROM artwork_reservations WHERE order_id IN (?,?)', O2[0].id, O2[1].id)).length
+  && !(await q('SELECT * FROM artwork_sales WHERE order_id IN (?,?)', O2[0].id, O2[1].id)).length && (await one("SELECT availability FROM artworks WHERE id='wagal2'")).availability === 'available' && M.customers[B2p.platform_customer].deleted);
+r = await pub('GET', `/b/${new URL(s2._f.success_url).pathname.split('/')[2]}`);
+await shot('6-declined', `/b/${new URL(s2._f.success_url).pathname.split('/')[2]}`);
+check('D4 the buyer is told plainly: payment not completed, card declined, nothing charged (no artist or payment detail)', /Payment not completed/.test(r.t) && /Your card was declined\./.test(r.t) && /Nothing was charged/.test(r.t) && !/Fia Founding/.test(r.t.split('<section>')[0]), r.t.slice(0, 600));
+check('D5 no ledger entry exists for a failed basket', !(await q('SELECT * FROM order_ledger WHERE order_id IN (?,?)', O2[0].id, O2[1].id)).length);
+
+console.log('— extra bank authentication for one artist’s payment');
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal2', 'wafnd2'], { email: 'ena@example.test' }) });
+const B3 = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'ena@example.test'"), s3 = Object.values(M.sessions).at(-1), token3 = new URL(s3._f.success_url).pathname.split('/')[2];
+enterCard(s3.id, { [ACC.afnd]: 'auth' });
+r = await pub('GET', `/b/${token3}/return`);
+let B3p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B3.id); const L3 = await q('SELECT * FROM basket_lines WHERE basket_id = ? ORDER BY line_no', B3.id);
+check('X1 the buyer’s return from Stripe runs the coordinator (no need to wait for the webhook)', r.s === 303 && r.loc === `/b/${token3}`);
+check('X2 a bank asking for authentication pauses the basket: the other artist stays authorised, nothing is captured', B3p.status === 'action_required' && L3[0].state === 'authorised' && L3[1].state === 'action_required'
+  && !M.calls.some(c => c.path.endsWith('/capture') && [L3[0].payment_intent, L3[1].payment_intent].some(p => c.path.includes(p))) && !!B3p.action_deadline);
+r = await pub('GET', `/b/${token3}`);
+const ref3 = (await one('SELECT reference FROM checkout_orders WHERE id = ?', L3[1].order_id)).reference;
+await shot('5-bank-check', `/b/${token3}`);
+check('X3 the status page asks the buyer to confirm their payment, with a deadline (no per-artist payment wording)', /Confirm your payment/.test(r.t) && /Confirm payment</.test(r.t) && /otherwise your order is cancelled and nothing is charged/.test(r.t) && !/separate (card )?payments?|paid directly|directly to the artist|each artist(’|')s payment|Stripe emails|transactions?\\b/i.test(r.t.replace(/<footer>[\s\S]*<\/footer>/, '')), r.t.slice(0, 500));
+r = await pub('GET', `/b/${token3}/authenticate/${ref3}`);
+check('X4 the confirmation page runs Stripe.js on THAT artist’s account with the payment’s own secret; only then is Stripe.js allowed', r.s === 200 && r.t.includes(`stripeAccount:"${ACC.afnd}"`) && r.t.includes('pk_test_mockpublishable') && r.t.includes(M.pis[L3[1].payment_intent].client_secret)
+  && /script-src 'nonce-[0-9a-f]+' https:\/\/js\.stripe\.com/.test(r.h.get('Content-Security-Policy')), r.t.slice(0, 300));
+M.pis[L3[1].payment_intent].status = 'requires_capture';   // the buyer completes their bank's check in the browser (Stripe.js)
+r = await pub('POST', `/b/${token3}/continue`, { form: {} });
+B3p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B3.id);
+check('X5 once confirmed, every payment is captured and the basket is paid', r.s === 303 && B3p.status === 'paid' && (await q("SELECT * FROM basket_lines WHERE basket_id = ? AND state = 'captured'", B3.id)).length === 2, B3p);
+
+console.log('— authentication not completed in time: everything is cancelled');
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal3', 'wafnd3'], { email: 'fin@example.test' }) });
+const B4 = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'fin@example.test'"), s4 = Object.values(M.sessions).at(-1);
+enterCard(s4.id, { [ACC.afnd]: 'auth' });
+await hook(evt('checkout.session.completed', M.sessions[s4.id]));
+await db.prepare('UPDATE checkout_baskets SET action_deadline = ? WHERE id = ?').bind(ago(0.01), B4.id).run();
+await CW.scheduled({ scheduledTime: Date.now(), cron: '*/5 * * * *' });
+const B4p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B4.id), L4 = await q('SELECT * FROM basket_lines WHERE basket_id = ? ORDER BY line_no', B4.id);
+check('T1 the scheduled sweep cancels every authorisation when the deadline passes; nothing is bought', B4p.status === 'failed' && L4.every(l => l.state === 'cancelled') && L4.every(l => M.pis[l.payment_intent].status === 'canceled')
+  && (await one("SELECT availability FROM artworks WHERE id='wagal3'")).availability === 'available', { B4p, L4 });
+
+console.log('— the buyer never enters a card: the page expires');
+await db.prepare("DELETE FROM artwork_reservations").run();
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal3'], { email: 'gus@example.test' }) });
+const B5 = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'gus@example.test'"), s5 = Object.values(M.sessions).at(-1);
+M.sessions[s5.id].status = 'expired';
+await db.prepare('UPDATE checkout_baskets SET expires_at = ? WHERE id = ?').bind(ago(0.01), B5.id).run();
+await CW.scheduled({ scheduledTime: Date.now(), cron: '*/5 * * * *' });
+const B5p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B5.id);
+check('E1 an unused card page expires the basket, releases the artwork and charges nothing', B5p.status === 'expired' && !(await q('SELECT * FROM artwork_reservations WHERE artwork_id = ?', 'wagal3')).length
+  && !Object.values(M.pis).some(p => p.metadata.plotart_basket === B5.id), B5p);
+
+console.log('— a temporary Stripe error while authorising: retried safely');
+r = await pub('POST', '/basket/checkout', { json: basketReq(['wagal3', 'wafnd3'], { email: 'hal@example.test' }) });
+const B6 = await one("SELECT * FROM checkout_baskets WHERE buyer_email = 'hal@example.test'"), s6 = Object.values(M.sessions).at(-1);
+enterCard(s6.id, {}); M.fail500 = 1;
+await hook(evt('checkout.session.completed', M.sessions[s6.id]));
+let B6p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B6.id);
+const st6 = B6p.status;
+await db.prepare('UPDATE checkout_baskets SET updated_at = ? WHERE id = ?').bind(ago(0.01), B6.id).run();
+await CW.scheduled({ scheduledTime: Date.now(), cron: '*/5 * * * *' });
+B6p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B6.id);
+const pis6 = Object.values(M.pis).filter(p => p.metadata.plotart_basket === B6.id);
+check('R1 a transient error leaves the basket authorising; the sweep resumes it and it completes', st6 === 'authorising' && B6p.status === 'paid', { st6, B6p });
+check('R2 the retry made exactly one charge per artwork (same idempotency keys; never charged twice)', pis6.length === 2 && pis6.every(p => p.status === 'succeeded'));
+
+console.log('— refunds and commission reversal on a basket order (existing order refund path)');
+r = await call('POST', `/api/admin/checkout/orders/${O1[0].id}/refund`, FOUNDER, { artwork_cents: 120000, delivery_cents: 4500, reason: 'Buyer cancelled within 14 days' });
+const rf = M.refunds.at(-1);
+const ledR = await q("SELECT kind, amount_cents FROM order_ledger WHERE order_id = ? AND kind IN ('artwork_refund','delivery_refund','commission_refund')", O1[0].id);
+check('F1 a basket order is refunded on its artist’s account through the existing refund action (one artist only)', r.s === 200 && rf && rf._acct === ACC.agal && rf.amount === 124500 && rf._f.refund_application_fee === 'false', { r: r.j, rf });
+const owedF = await q("SELECT kind, cents FROM checkout_owed WHERE order_id = ?", O1[0].id);
+const viaStripe = -(ledR.find(x => x.kind === 'commission_refund') || {}).amount_cents || 0, owedC = owedF.filter(x => x.kind === 'commission_shortfall').reduce((a, x) => a + x.cents, 0);
+check('F2 PlotArt returns its exact commission on the refunded artwork (EUR 180 in total: through Stripe, plus any part already used to reimburse Stripe’s fee owed by bank transfer, fee Model B), and only on that order',
+  viaStripe + owedC === 18000 && viaStripe > 0 && !(await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind LIKE '%refund%'", O1[1].id)).length, { ledR, owedF });
+
+console.log('— founder desk and switches');
+r = await call('GET', '/api/admin/checkout/baskets', FOUNDER);
+check('G1 the founder sees every basket with its status', r.s === 200 && r.j.baskets.length >= 6 && r.j.baskets.some(b => b.status === 'failed') && r.j.decisions.charge_granularity === 'per_artwork');
+r = await call('GET', `/api/admin/checkout/baskets/${B2.id}`, FOUNDER);
+check('G2 basket detail: lines, orders and the append-only history (no buyer token)', r.s === 200 && r.j.lines.length === 2 && r.j.events.length >= 3 && !('buyer_token_hash' in r.j.basket && r.j.basket.buyer_token_hash) && !!(await db.prepare('UPDATE basket_events SET action = 1').run().catch(e => e)).message);
+r = await call('GET', '/api/admin/checkout/baskets', GAL);
+check('G3 an artist cannot reach the founder’s basket desk', r.s === 403 || r.s === 401);
+const FPI = JSON.parse(readFileSync(HERE + 'agreements/basket-issued/fingerprints.json', 'utf8')).documents;
+const LB = await basketDoc('PA-BBT-2026-11', true), LA = await basketDoc('PA-BAA-2026-11', true);
+check('G4 live mode: only the two ISSUED texts exist, fingerprints match the issued files, no TEST placeholder is live and no live text is offered in TEST mode',
+  Object.keys(LIVE_BASKET_DOCS).sort().join() === 'PA-BAA-2026-11,PA-BBT-2026-11' && LB.html_sha256 === FPI['PA-BBT-2026-11'].html_sha256 && LA.html_sha256 === FPI['PA-BAA-2026-11'].html_sha256
+  && (await basketDoc('PA-BBT-TEST-01', true)) === null && (await basketDoc('PA-BBT-2026-11', false)) === null && !/DRAFT|TEST ONLY/.test(LB.html + LA.html));
+const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const mig21 = readFileSync(HERE + 'migrations/0021_basket_terms_issue.sql', 'utf8');
+check('G4a the issued addendum carries, word for word, the processing-fee consent and seller-information statements the Studio records; migration 0021 installs exactly the issued fingerprints',
+  BT.PROCESSING_CONSENT_STATEMENT('PA-BAA-2026-11').split('\n').every(l => LA.html.includes(esc(l))) && LA.html.includes(esc(BT.SELLER_DISCLOSURE_STATEMENT))
+  && mig21.includes(FPI['PA-BBT-2026-11'].html_sha256) && mig21.includes(FPI['PA-BAA-2026-11'].html_sha256) && (mig21.match(/\('PA-B/g) || []).length === 2);
+check('G5 only TEST keys were presented to the provider', M.calls.every(c => ['Bearer sk_test_mockkey123', 'Bearer rk_test_basketkey456'].includes(c.auth)));
+const basketPaths = c => (c.path === '/v1/customers' || /^\/v1\/customers\/cus_/.test(c.path) && c.method === 'DELETE' || c.path === '/v1/checkout/sessions' || c.path === '/v1/payment_methods'
+  || (c.path === '/v1/payment_intents' && c.method === 'POST') || /\/(capture|cancel)$/.test(c.path));
+check('G7 the basket’s own calls use the separate basket key; refunds, reads and everything else keep the main key',
+  M.calls.filter(basketPaths).length > 10 && M.calls.filter(basketPaths).every(c => c.auth === 'Bearer rk_test_basketkey456')
+  && M.calls.filter(c => c.path === '/v1/refunds' && c.method === 'POST').every(c => c.auth === 'Bearer sk_test_mockkey123') && M.calls.some(c => c.path === '/v1/refunds'));
+const SS = await import(HERE + 'src/stripe.js');
+const mism = await (async () => SS.createCustomer({ STRIPE_SECRET_KEY: 'sk_test_x1', STRIPE_BASKET_KEY: 'rk_live_x2', STRIPE_API_BASE: 'https://stripe.mock', ENVIRONMENT: 'local' }, { idem: 'x', email: 'a@b.c', name: 'x', basket: { id: 'b', reference: 'PA-B-x' } }))().then(() => 'called', e => e.code);
+check('G8 a basket key of the other mode (live with test) is refused before any request', mism === 'not_configured', mism);
+r = await pub('GET', `/b/${'q'.repeat(48)}`);
+check('G6 an unknown basket link reveals nothing', r.s === 404 && !/PA-B-/.test(r.t));
+
+console.log('— in a real browser: the artist’s and founder’s basket controls, and the buyer’s seller and returns information');
+{
+  const { createRequire } = await import('node:module');
+  let pw = null; try { pw = createRequire(process.env.PLAYWRIGHT_FROM || '/tmp/claude-0/studio-tools/package.json')('playwright'); } catch { pw = null; }
+  check('U0 a real browser is available for the screen checks', !!pw);
+  if (pw) {
+    BR = BR || await pw.chromium.launch();
+    const UISHOT = process.env.BASKET_UI_SHOTS || null;
+    // artist (Founding): consent, seller information and delivery offers on the Studio page
+    const ac = await BR.newContext({ viewport: { width: 1200, height: 900 } }), ap = await ac.newPage();
+    await ap.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FND) }); await ap.goto(S.url + '/checkout-pilot', { waitUntil: 'load' });
+    await ap.waitForSelector('#basket', { timeout: 20000 });
+    let txt = await ap.textContent('#basket');
+    check('U1 artist page: the basket section shows the seller information buyers will see, its confirmation, and the Founding processing-fee consent as given',
+      /Seller information shown to buyers before payment/.test(txt) && /1 Studio Lane, Dublin 8/.test(txt) && /Confirmed on/.test(txt) && /You agreed on .* 0% PlotArt commission/.test(txt) && !/VAT number/.test(txt), txt.slice(0, 800));
+    await ap.click('button[data-a2="withdraw-basket-processing"]'); await ap.waitForSelector('form[data-f="basket-processing"]', { timeout: 10000 });
+    txt = await ap.textContent('#basket');
+    check('U2 artist withdraws the consent on screen; the full statement and an unticked box are then offered again', /0% commission/.test(txt) && /dispute fees/.test(txt) && !(await ap.isChecked('form[data-f="basket-processing"] input[name="accept"]'))
+      && (await one("SELECT kind FROM basket_consents WHERE artist_id = 'afnd' AND topic = 'processing_fees' ORDER BY at DESC, rowid DESC LIMIT 1")).kind === 'withdrawn');
+    await ap.check('form[data-f="basket-processing"] input[name="accept"]'); await ap.click('form[data-f="basket-processing"] button'); await ap.waitForSelector('button[data-a2="withdraw-basket-processing"]', { timeout: 10000 });
+    check('U3 artist gives the consent again by ticking the box: recorded against the current addendum', (await one("SELECT * FROM basket_consents WHERE artist_id = 'afnd' AND topic = 'processing_fees' ORDER BY at DESC, rowid DESC LIMIT 1")).doc_id === BAA.doc_id);
+    const before = await one("SELECT delivery_cents, version FROM artwork_delivery_offers WHERE artwork_id = 'wafnd3'");
+    const li = ap.locator('li[data-id="wafnd3"]'); await li.locator('summary').click();
+    await li.locator('input[name="charge"]').fill('35.00'); await li.locator('input[name="confirm"]').check(); await li.locator('button[type="submit"]').click();
+    await ap.waitForFunction(() => /€35\.00/.test(document.querySelector('li[data-id="wafnd3"]')?.textContent || ''), null, { timeout: 10000 }).catch(() => {});
+    const after = await one("SELECT delivery_cents, version FROM artwork_delivery_offers WHERE artwork_id = 'wafnd3'");
+    check('U4 artist changes a delivery offer on screen (the form is prefilled with the current offer): a new version at the new charge', after.delivery_cents === 3500 && after.version === before.version + 1, { before, after });
+    if (UISHOT) await ap.screenshot({ path: `${UISHOT}/artist-basket.png`, fullPage: true });
+    await ac.close();
+    // founder: readiness per artist
+    const fc = await BR.newContext({ viewport: { width: 1280, height: 900 } }), fp = await fc.newPage();
+    await fp.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) }); await fp.goto(S.url + '/admin/checkout', { waitUntil: 'load' });
+    await fp.waitForSelector('#basket-readiness', { timeout: 20000 }); txt = await fp.textContent('#basket-readiness');
+    check('U5 founder page: basket readiness per artist (consent and its document version, seller information confirmation, what is missing)', /Fia Founding \(Founding\)/.test(txt) && /given .*PA-BAA-TEST-01/.test(txt) && /confirmed /.test(txt) && /basket addendum/.test(txt), txt.slice(0, 600));
+    if (UISHOT) await fp.locator('#basket-readiness').screenshot({ path: `${UISHOT}/founder-readiness.png` });
+    await fc.close();
+    // buyer: a discreet, collapsed "Seller and returns information" per artist, desktop and phone
+    // every earlier work has been sold by now: three fresh synthetic works (one Gallery, two Founding), published, with offers
+    for (const [src, id] of [['wagal1', 'wagal9'], ['wafnd1', 'wafnd8'], ['wafnd1', 'wafnd9']]) {
+      await db.prepare(`INSERT INTO artworks (id, artist_id, slug, title, year, medium, materials, h_cm, w_cm, d_cm, price_eur, price_on_request, availability, description, ord, ai_involvement, ai_note, archived, created_at, updated_at)
+        SELECT ?, artist_id, ?, title || ' II', year, medium, materials, h_cm, w_cm, d_cm, price_eur, 0, 'available', description, ord + 50, ai_involvement, ai_note, 0, created_at, updated_at FROM artworks WHERE id = ?`).bind(id, id, src).run();
+      const w = await one('SELECT * FROM artworks WHERE id = ?', id), v = await one('SELECT version, snapshot FROM versions WHERE artist_id = ? ORDER BY version DESC LIMIT 1', w.artist_id), snap = JSON.parse(v.snapshot);
+      snap.works.push({ ...snap.works.find(x => x.id === src), id, slug: id, title: w.title, availability: 'available' });
+      await db.prepare('UPDATE versions SET snapshot = ? WHERE artist_id = ? AND version = ?').bind(JSON.stringify(snap), w.artist_id, v.version).run();
+      await call('PUT', `/api/checkout/basket/offers/${id}`, w.artist_id === 'agal' ? GAL : FND, { confirm: true, delivery_cents: 3000, delivery: DELIVERY });
+    }
+    const avail = (await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wagal9,wafnd8,wafnd9', FOUNDER)).j.items.filter(i => i.ok).map(i => i.id);
+    const pick = avail;
+    for (const [vw, vh, name] of [[1280, 900, 'desktop'], [390, 844, 'phone']]) {
+      const bc = await BR.newContext({ viewport: { width: vw, height: vh } });
+      await bc.route('**/*', async route => { const u = new URL(route.request().url()); if (u.origin !== ORIGIN) return route.fulfill({ status: 404, body: '' });
+        const req = route.request(); const rr = await CW.fetch(req.url(), { method: req.method(), headers: { ...req.headers(), Origin: ORIGIN }, body: req.postData() || undefined, redirect: 'manual' });
+        return route.fulfill({ status: rr.status, headers: Object.fromEntries(rr.headers), body: Buffer.from(await rr.arrayBuffer()) }); });
+      const bp2 = await bc.newPage();
+      await bp2.goto(ORIGIN + '/basket'); await bp2.evaluate(b => localStorage.setItem('pa-basket-v1', JSON.stringify(b)), pick.map(id => ({ id, img: null })));
+      await bp2.goto(ORIGIN + '/basket', { waitUntil: 'load' }); await bp2.waitForSelector('details.sri', { timeout: 15000 });
+      const n = await bp2.locator('details.sri').count(), open0 = await bp2.locator('details.sri[open]').count(), sum = await bp2.locator('details.sri summary').allTextContents();
+      await bp2.locator('details.sri summary').first().click();
+      const body = await bp2.locator('details.sri').first().textContent(), wide = await bp2.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+      const vat = await bp2.locator('details.sri dt', { hasText: 'VAT number' }).count();
+      const btnTxt = (await bp2.locator('#pay').textContent()).trim(), tot = (await bp2.locator('#t-tot').textContent()).trim();
+      check(`U7 buyer basket (${name}): the button reads “Buy now · <total> total” and the next step (Stripe’s Save completes the purchase) is stated`, btnTxt === `Buy now · ${tot} total` && /select Save there to complete your purchase/.test(await bp2.locator('.nx').textContent()), { btnTxt, tot });
+      check(`U6 buyer basket (${name}): one collapsed “Seller and returns information” per artist (${pick.length} works, 2 artists), with seller, address, email, telephone and returns; no VAT line when not registered; no sideways scroll`,
+        pick.length === 3 && n === 2 && open0 === 0 && sum.every(t => /^Seller and returns information · /.test(t)) && /Seller/.test(body) && /Address/.test(body) && /Email/.test(body) && /Telephone/.test(body) && /Same courier, insured/.test(body) && vat === 0 && !wide,
+        { n, open0, sum, body: body.slice(0, 400), wide, pick });
+      if (UISHOT) await bp2.screenshot({ path: `${UISHOT}/basket-${name}.png`, fullPage: true });
+      await bc.close();
+    }
+  }
+}
+
+console.log(`\nMULTI-ARTIST BASKET · ${results.length} checks, ${results.filter(Boolean).length} passed, ${results.filter(x => !x).length} failed`);
+process.exitCode = results.every(Boolean) ? 0 : 1;
+} finally {
+  if (BR) await BR.close().catch(() => {});
+  if (S) await S.mf.dispose();
+  rmSync(HERE + FIX, { recursive: true, force: true });
+}

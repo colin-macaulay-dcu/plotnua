@@ -11,7 +11,8 @@ run-name: "Stripe test-mode checks (${{ github.ref_name }})"
 
 on:
   push:
-    branches: [plotart/managed-checkout-pilot]
+    # plotart/multi-artist-basket: the multi-artist basket on the managed checkout (founder instruction 21 Nov 2026: test against the Stripe sandbox)
+    branches: [plotart/managed-checkout-pilot, plotart/multi-artist-basket]
     paths: [worker/plotart-studio/test/stripe-test-run.json]
   workflow_dispatch:
 
@@ -36,6 +37,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Basket TEST credential is a TEST key (value never printed; phase basket_e2e only)
+        if: contains(github.ref_name, 'multi-artist-basket')
+        env:
+          STRIPE_POC_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
+        run: |
+          [[ "${STRIPE_POC_KEY:-}" =~ ^(sk|rk)_test_[A-Za-z0-9]+$ ]] && echo "PASS  basket TEST key present" || { echo "FAIL  CHECKOUT_TEST_STRIPE_POC_KEY missing or not a TEST key"; exit 1; }
       - name: Stripe credential is a TEST key (value never printed)
         env:
           STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
@@ -60,6 +67,8 @@ jobs:
         working-directory: worker/plotart-studio
         env:
           STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          # the isolated restricted TEST key proven by the basket POC (founder, 21 Nov 2026); read by phase basket_e2e alone
+          STRIPE_POC_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
           CHECKOUT_TEST_ACCOUNT: ${{ vars.CHECKOUT_TEST_CONNECTED_ACCOUNT }}
           # optional: a NARROWER restricted TEST key used only by the public checkout Worker (runtime), to verify the proposal
           STRIPE_RUNTIME_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_RUNTIME_KEY }}

@@ -43,6 +43,11 @@ CONFIG = json.load(open(os.path.join(HERE, "release", "plotart-gallery-config.js
 ENDPOINT = CONFIG.get("enquiry_endpoint")
 if ENDPOINT and not re.match(r"^https://[a-z0-9.-]+\.workers\.dev/v1/enquiry$|^http://(127\.0\.0\.1|localhost):\d{2,5}/v1/enquiry$", ENDPOINT):
     sys.exit("REFUSED: enquiry_endpoint must be the PlotArt enquiry relay route")
+# Multi-artist basket (21 Nov 2026): null/absent = artwork pages are written exactly as before. Set to the checkout Worker's
+# origin only with the founder's activation approval.
+BASKET = CONFIG.get("basket_origin")
+if BASKET and not re.match(r"^https://[a-z0-9.-]+\.(workers\.dev|plotnua\.ie)$|^http://(127\.0\.0\.1|localhost):\d{2,5}$", BASKET):
+    sys.exit("REFUSED: basket_origin must be the PlotArt checkout Worker's origin")
 # Art for Hire (Stage 3B-6): artist pages carry the fourth gallery tab only once the founder has switched the hire page on;
 # until then the shell writes them byte-for-byte as before. The hire page itself is never written by this pipeline.
 S.HIRE_NAV = json.load(open(os.path.join(HERE, "release", "plotart-launch-switches.json"), encoding="utf-8")).get("art_for_hire_page") is True
@@ -99,7 +104,7 @@ def write_gallery(pkg, img_src):
     # a published gallery with no works on show and no portrait has no images at all (founder decision 1 Nov 2026)
     for f in (sorted(os.listdir(img_src)) if os.path.isdir(img_src) else []):
         shutil.copyfile(os.path.join(img_src, f), os.path.join(d, "img", f))
-    for path, doc in P.gallery_pages(pkg, S.artist_page, enquiry_endpoint=ENDPOINT):
+    for path, doc in P.gallery_pages(pkg, S.artist_page, enquiry_endpoint=ENDPOINT, basket_origin=BASKET):
         open(os.path.join(ROOT, "plotart", path), "w", encoding="utf-8").write(doc)
     public = {k: pkg[k] for k in ("schema", "artist", "works", "publication", "provenance_sources")}
     json.dump(public, open(os.path.join(d, "gallery.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False, sort_keys=True)

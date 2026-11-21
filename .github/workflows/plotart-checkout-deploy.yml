@@ -54,6 +54,11 @@ on:
         required: false
         type: string
         default: ""
+      enable_live_basket:
+        description: "PRODUCTION + live only: also open the multi-artist basket (refused unless approved LIVE basket texts are bundled)"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -205,11 +210,13 @@ jobs:
           ENABLE_TEST_PILOT: "false"
           ENABLE_LIVE_PILOT: ${{ inputs.enable_live_pilot && 'true' || 'false' }}
           LIVE_CONFIRMATION: ${{ inputs.live_confirmation }}
+          ENABLE_LIVE_BASKET: ${{ inputs.enable_live_basket && 'true' || 'false' }}
+          CHECKOUT_LIVE_PUBLISHABLE_KEY: ${{ vars.CHECKOUT_LIVE_PUBLISHABLE_KEY }}
         run: |
           set -euo pipefail
           # always render the OFF configuration first and keep it: the live path deploys it before any secret is written,
           # and every recovery redeploys it
-          ENABLE_LIVE_PILOT=false LIVE_CONFIRMATION= python3 atlas-tools/release/studio/render-checkout-config.py worker/plotart-studio production
+          ENABLE_LIVE_PILOT=false LIVE_CONFIRMATION= ENABLE_LIVE_BASKET=false python3 atlas-tools/release/studio/render-checkout-config.py worker/plotart-studio production
           cp worker/plotart-studio/wrangler.checkout.production.toml worker/plotart-studio/wrangler.checkout.production.off.toml
           python3 atlas-tools/release/studio/render-checkout-config.py worker/plotart-studio production
       - name: PRODUCTION · LIVE credentials are LIVE credentials, never the TEST ones (values never printed)
@@ -219,6 +226,9 @@ jobs:
           LIVE_RUNTIME_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_RUNTIME_KEY }}
           LIVE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_WEBHOOK_SECRET }}
           LIVE_RESEND_KEY: ${{ secrets.CHECKOUT_LIVE_RESEND_API_KEY }}
+          ENABLE_LIVE_BASKET: ${{ inputs.enable_live_basket && 'true' || 'false' }}
+          LIVE_BASKET_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_BASKET_KEY }}
+          LIVE_PLATFORM_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_PLATFORM_WEBHOOK_SECRET }}
         run: bash atlas-tools/release/studio/check-stripe-live-secrets.sh
       - name: PRODUCTION · build only (dry run)
         if: ${{ inputs.target == 'production' && inputs.dry_run }}
@@ -247,4 +257,7 @@ jobs:
           LIVE_RUNTIME_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_RUNTIME_KEY }}
           LIVE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_WEBHOOK_SECRET }}
           LIVE_RESEND_KEY: ${{ secrets.CHECKOUT_LIVE_RESEND_API_KEY }}
+          ENABLE_LIVE_BASKET: ${{ inputs.enable_live_basket && 'true' || 'false' }}
+          LIVE_PLATFORM_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_PLATFORM_WEBHOOK_SECRET }}
+          LIVE_BASKET_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_BASKET_KEY }}
         run: bash atlas-tools/release/studio/checkout-live-enable.sh worker/plotart-studio

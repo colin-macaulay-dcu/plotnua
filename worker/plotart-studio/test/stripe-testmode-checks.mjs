@@ -470,6 +470,12 @@ if (PHASES.includes('basket_split')) {
     runnerKey: KEY, balanceKey: process.env.STRIPE_BALANCE_KEY || '',
     v1: S.V1_API_VERSION, v2: S.V2_API_VERSION, rec, runId: process.env.GITHUB_RUN_ID || RUN });
 }
+if (PHASES.includes('basket_e2e')) {   // multi-artist basket (21 Nov 2026): the basket's own Workers against real Stripe TEST mode, with the isolated POC key
+  const config = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8'));
+  const { basketE2E } = await import('./stripe-testmode-basket-e2e.mjs');
+  await basketE2E({ rec, KEY: process.env.STRIPE_POC_KEY || '', accounts: [config.reuse_account, config.unfunded_account], runId: process.env.GITHUB_RUN_ID || RUN,
+    playwrightFrom: process.env.MINIFLARE_FROM, v1: S.V1_API_VERSION });
+}
 if (PHASES.includes('buyer_checkout')) {
   const { checkBuyerCheckout } = await import('./stripe-testmode-buyer.mjs');
   await checkBuyerCheckout(KEY, rec);

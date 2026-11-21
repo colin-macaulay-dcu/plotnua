@@ -12,6 +12,7 @@
 import * as C from './checkout.js';
 import { PAYMENT_TERMS } from './payment-terms.js';
 import * as S from './stripe.js';
+import * as BP from './basket-public.js';   // multi-artist basket pages (development 21 Nov 2026): test mode only, off by default
 
 // Referrer-Policy is same-origin, not no-referrer (20 Nov 2026, first deployed TEST purchase): under no-referrer a browser
 // sends "Origin: null" on the quote page's own form, so the Origin check below refused every real buyer. same-origin still
@@ -77,6 +78,8 @@ export default {
       // switch state only (no counts, no identifiers): lets the deploy workflow verify from outside that the pilot is on or off
       if (p === '/v1/status' && m === 'GET') return new Response(JSON.stringify({ installed: await C.installed(env), pilot_enabled: C.switches(env).enabled, mode: C.switches(env).mode }),
         { headers: { 'Content-Type': 'application/json', ...SEC } });
+      const basketRes = await BP.handle(req, env, url);
+      if (basketRes) return basketRes;
       let mm;
       if ((mm = p.match(/^\/terms\/(PA-BPT-[0-9A-Z-]{4,20})\.html$/)) && m === 'GET') {
         const t = await C.currentTerms(env, 'buyer_purchase_terms');

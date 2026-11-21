@@ -16,6 +16,8 @@ import { PAYMENT_TERMS } from './payment-terms.js';
 
 import { Bad } from './lib.js';
 import { send } from './mailer.js';
+import * as B from './basket.js';
+import { basketDoc } from './basket-terms.js';
 export { Bad };
 const now = () => new Date().toISOString();
 const rid = (p = '', n = 12) => p + [...crypto.getRandomValues(new Uint8Array(n))].map(b => (b % 36).toString(36)).join('');
@@ -160,7 +162,7 @@ export const TRADER_QUESTION = {
   review_note: 'Draft wording for the sandbox pilot, to be reviewed professionally before live use.',
   unavailable: 'Managed checkout is not available for your sales, because you have not confirmed that you sell as a trader. Your gallery listing, enquiries and direct sales continue as before. You can change your answer at any time.',
 };
-function sellerProblems(env, p) {
+export function sellerProblems(env, p) {
   if (!p) return ['the artist has not given their seller information (Payment pilot page)'];
   const out = Object.entries(SELLER_FIELDS).filter(([k, [, , req]]) => req && !p[k]).map(([k]) => k.replace(/_/g, ' '));
   if (p.trader_status !== 'trader') out.push(p.trader_status === 'unsure' ? 'the artist has not confirmed that they sell as a trader (answered “not sure”); managed checkout is open only to artists who do (founder decision F2)' : 'the artist declared they do not sell as a trader; managed checkout is open only to artists who do (founder decision F2)');
@@ -258,7 +260,7 @@ async function event(env, orderId, actor, action, prior, next, detail) {
   await run(env, 'INSERT INTO order_events (order_id, at, actor, action, prior_status, new_status, detail) VALUES (?,?,?,?,?,?,?)',
     orderId, now(), actor, action, prior || null, next || null, detail ? JSON.stringify(detail).slice(0, 4000) : null);
 }
-const evSt = (env, orderId, actor, action, prior, next, detail) => st(env, 'INSERT INTO order_events (order_id, at, actor, action, prior_status, new_status, detail) VALUES (?,?,?,?,?,?,?)',
+export const evSt = (env, orderId, actor, action, prior, next, detail) => st(env, 'INSERT INTO order_events (order_id, at, actor, action, prior_status, new_status, detail) VALUES (?,?,?,?,?,?,?)',
   orderId, now(), actor, action, prior || null, next || null, detail ? JSON.stringify(detail).slice(0, 4000) : null);
 /* Optimistic: the row moves only if it is still in the status we read. */
 async function move(env, order, to, actor, action, sets = {}, detail = null) {
@@ -685,7 +687,7 @@ export async function recordExternalRepayment(env, founder, id, b) {
 }
 
 /* ---------------------------------------------------------------- founder: create and edit */
-async function publishedWork(env, artistId, artworkId) {
+export async function publishedWork(env, artistId, artworkId) {
   const q = await one(env, "SELECT version FROM publish_queue WHERE artist_id = ? AND status = 'published' ORDER BY version DESC LIMIT 1", artistId);
   if (!q) return null;
   const v = await one(env, 'SELECT snapshot FROM versions WHERE artist_id = ? AND version = ?', artistId, q.version);
@@ -901,7 +903,7 @@ async function byToken(env, token) {
   return one(env, 'SELECT * FROM checkout_orders WHERE buyer_token_hash = ?', await sha256(token));
 }
 /* What the buyer sees: the delivery, cover and return arrangements, never internal notes or confirmation references of who checked. */
-function buyerDelivery(d) {
+export function buyerDelivery(d) {
   return { collection_county: d.collection_county, destination: d.destination, packed_cm: d.packed_cm, framing: d.framing, glazing: d.glazing, condition: d.condition,
     organiser: d.organiser, packer: d.packer, transport_contracting_party: d.transport_contracting_party, transporter_name: d.transporter_name, installation: d.installation, import_costs: d.import_costs,
     cover_type: d.cover_type, cover_provider: d.cover_provider, insured_party: d.insured_party, cover_confirmation_ref: d.cover_confirmation_ref, covered_value_cents: d.covered_value_cents, valuation_basis: d.valuation_basis, excess_cents: d.excess_cents,
@@ -1031,6 +1033,8 @@ async function orderForPI(env, ev, pi) {
 }
 
 async function apply(env, ev, obj) {
+  // a multi-artist basket's card page (PlotArt's account) and its per-artist authorisations: the basket coordinator
+  if (B.isBasketEvent(ev, obj) && await B.installed(env)) return B.onEvent(env, ev, obj);
   switch (ev.type) {
     case 'account.updated': {
       const a = await one(env, 'SELECT artist_id FROM payment_accounts WHERE account_id = ?', obj.id);
@@ -1151,12 +1155,16 @@ function startClock(o, eventId, eventCreated) {
 /* A verified completed payment. The sale, the order, the session, the reservation release, the Studio "sold" mark and
    the ledger are written in ONE transaction. If the original has already been sold (to another order), nothing is sold
    twice: the payment is booked and the order is flagged for a refund. */
-async function recordPaid(env, o, s, eventId, eventCreated = null) {
+/* A basket line (basket.js) is recorded here too, once its charge has been captured on the artist's account: `s` is then
+   { id: null, basket, amount_total, currency, payment_intent, application_fee_cents } read from the captured PaymentIntent. */
+export async function recordPaid(env, o, s, eventId, eventCreated = null) {
   if (o.payment_status === 'paid' || ['paid', 'dispatched', 'delivered', 'closed', 'refunded', 'disputed'].includes(o.status)) return 'already recorded';
   const t = now(), pi = typeof s.payment_intent === 'string' ? s.payment_intent : s.payment_intent && s.payment_intent.id;
   const expected = o.artwork_cents + o.delivery_cents;
-  const sessRow = await one(env, 'SELECT * FROM checkout_sessions WHERE id = ?', s.id);
+  const sessRow = s.id ? await one(env, 'SELECT * FROM checkout_sessions WHERE id = ?', s.id) : null;
+  const paidFee = sessRow ? sessRow.application_fee_cents : (s.basket ? s.application_fee_cents : null);
   const problems = [];
+  if (s.basket && paidFee !== o.commission_cents) problems.push('application fee differs from the order commission');
   if (s.amount_total !== expected) problems.push(`amount ${s.amount_total} ≠ quoted ${expected}`);
   if (String(s.currency).toLowerCase() !== 'eur') problems.push('currency is not EUR');
   if (sessRow && sessRow.quote_version !== o.quote_version) problems.push(`paid quote version ${sessRow.quote_version} ≠ current ${o.quote_version}`);
@@ -1164,8 +1172,8 @@ async function recordPaid(env, o, s, eventId, eventCreated = null) {
   const late = !['checkout_open', 'quoted', 'payment_failed'].includes(o.status) || (sessRow && sessRow.status !== 'open');
   // the payment and the commission the provider took are booked in every case (money was received)
   const books = [
-    ledgerSt(env, o.id, 'charge', s.amount_total, pi, `checkout ${s.id}`),
-    ...(sessRow && sessRow.application_fee_cents > 0 ? [ledgerSt(env, o.id, 'commission', sessRow.application_fee_cents, pi, o.commission_basis)] : []),
+    ledgerSt(env, o.id, 'charge', s.amount_total, pi, s.basket ? `basket ${s.basket}` : `checkout ${s.id}`),
+    ...(paidFee > 0 ? [ledgerSt(env, o.id, 'commission', paidFee, pi, o.commission_basis)] : []),
   ];
   const sold = await one(env, 'SELECT order_id FROM artwork_sales WHERE artwork_id = ? AND released_at IS NULL AND order_id <> ?', o.artwork_id, o.id);
   if (sold) problems.push(`this original was already sold through another order (${(await getOrder(env, sold.order_id)).reference})`);
@@ -2046,7 +2054,8 @@ export function confirmationText(q, o, terms, origin) {
   const trader = s.trader_status === 'trader';
   const L = [];
   L.push('PURCHASE CONFIRMATION', 'TEST MODE: this is a PlotArt payment-pilot test. No real payment was taken and no artwork was sold.', '');
-  L.push(`Order reference: ${o.reference}`, `Payment confirmed by Stripe: ${o.paid_at}`, `Quote version ${q.quote_version}, fingerprint ${o.quote_sha256}`, '');
+  L.push(`Order reference: ${o.reference}`, ...(q.basket ? [`Part of basket ${q.basket}: each artwork in your basket is a separate purchase from its own artist, with its own confirmation.`] : []),
+    `Payment confirmed by Stripe: ${o.paid_at}`, `${q.basket ? 'Basket price' : 'Quote version ' + q.quote_version}, fingerprint ${o.quote_sha256}`, '');
   L.push('THE SELLER (your contract of sale is with the artist)', `${s.legal_name}${s.trading_name ? ` trading as ${s.trading_name}` : ''} (${s.name})`, `Address: ${s.address}`,
     ...(s.returns_address && s.returns_address !== s.address ? [`Returns and complaints: ${s.returns_address}`] : []), `Email: ${s.email}`, `Telephone: ${s.phone}`,
     ...(s.vat_number ? [`VAT number: ${s.vat_number}`] : []), trader ? `Seller's declaration: ${BUYER_TRADER_SENTENCE}` : 'Seller’s declaration: the seller has not declared that they sell as a trader.',
@@ -2113,8 +2122,13 @@ export async function prepareConfirmation(env, o) {
   if (have) return have;
   if (!(await one(env, 'SELECT 1 AS x FROM artwork_sales WHERE order_id = ?', o.id))) return null;   // only a completed sale is confirmed
   const q = await quoteSnapshot(env, o);
-  const terms = o.buyer_terms_doc_id && await one(env, 'SELECT * FROM payment_terms WHERE doc_id = ?', o.buyer_terms_doc_id);
-  const full = terms && PAYMENT_TERMS[terms.doc_id];
+  let terms = o.buyer_terms_doc_id && await one(env, 'SELECT * FROM payment_terms WHERE doc_id = ?', o.buyer_terms_doc_id);
+  let full = terms && PAYMENT_TERMS[terms.doc_id];
+  if (!terms && o.buyer_terms_doc_id && q && q.basket) {   // a basket order: the basket purchase terms the buyer accepted
+    terms = await one(env, 'SELECT * FROM basket_terms WHERE doc_id = ?', o.buyer_terms_doc_id).catch(() => null);
+    const d = terms && await basketDoc(terms.doc_id, o.livemode === 1);
+    full = d && d.html_sha256 === terms.html_sha256 ? d : null;
+  }
   if (!q || !terms || !full) { await event(env, o.id, 'system', 'confirmation_not_prepared', o.status, o.status, { reason: !q ? 'no quote snapshot' : 'terms text unavailable' }); return null; }
   const body = confirmationText(q, o, { ...terms, html: full.html }, env.CHECKOUT_ORIGIN || '');
   return prepareMessage(env, o, { kind: 'buyer_confirmation', subject: `Purchase confirmation · ${(q.artwork && q.artwork.title) || 'Original artwork'} · ${o.reference}`, body });
@@ -2174,7 +2188,9 @@ export async function sweep(env) {
   try { refunds_reversed = await recheckSucceededRefunds(env); } catch { /* next sweep */ }
   let refunds = null;
   try { refunds = await pollPendingRefunds(env); } catch (e) { refunds = { error: String(e.message || e).slice(0, 120) }; }
-  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, processing_reconciled, confirmations, messages_retried, dispute_fees_rechecked, owed_reminders, ...refunds, ...(await retention(env)) };
+  let baskets = null;
+  try { baskets = await B.sweep(env); } catch (e) { baskets = { error: String(e.message || e).slice(0, 120) }; }
+  return { baskets, reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, processing_reconciled, confirmations, messages_retried, dispute_fees_rechecked, owed_reminders, ...refunds, ...(await retention(env)) };
 }
 
 /* Retention (spec "Records and retention"). Each period has a stated basis and a fixed start; nothing is ever deleted

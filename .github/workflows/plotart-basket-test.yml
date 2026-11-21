@@ -1,0 +1,153 @@
+# PlotArt · multi-artist basket on the EXISTING TEST environment (21 Nov 2026). Stripe TEST mode only. NEVER production.
+# Reuses what exists: Workers plotart-checkout-test and plotart-studio-test, TEST database plotart-checkout-test, the
+# checkout-test credentials. Started ONLY by a change to worker/plotart-studio/test/basket-test-request.json on
+# plotart/multi-artist-basket; waits for the founder's Approve on "checkout-test". One run does, in order, and stops at the
+# first failure:
+#   1 Access: the TEST Studio, where the synthetic gallery is shown to the founder, must already be behind Access (checked)
+#   2 Stripe: the POC TEST key (founder approval: STRIPE_BASKET_KEY on the two TEST Workers only) is checked for the basket's
+#     calls (deliberately invalid requests; nothing created); the existing checkout key is unchanged
+#   3 TEST database: migrations 0019 and 0020 (new tables only) and the ADDITIVE basket seed (INSERT OR IGNORE; nothing existing changed)
+#   4 both TEST Workers redeployed from this branch with the pilot, the basket and the synthetic gallery ON; outside checks;
+#     automatic rollback of both Workers if the outside checks fail
+name: PlotArt basket on TEST
+run-name: "Basket on TEST · ${{ github.sha }}"
+on:
+  push:
+    branches: [plotart/multi-artist-basket]
+    paths: [worker/plotart-studio/test/basket-test-request.json]
+permissions:
+  contents: read
+concurrency:
+  group: plotart-checkout-test
+  cancel-in-progress: false
+jobs:
+  basket-test:
+    runs-on: ubuntu-latest
+    environment: checkout-test
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+      CHECKOUT_TEST_ACCESS_AUD: ${{ vars.CHECKOUT_TEST_ACCESS_AUD }}
+      CHECKOUT_TEST_ACCESS_TEAM: ${{ vars.CHECKOUT_TEST_ACCESS_TEAM }}
+      CHECKOUT_TEST_ORIGIN: ${{ vars.CHECKOUT_TEST_ORIGIN }}
+      CHECKOUT_TEST_FOUNDER_EMAILS: ${{ secrets.CHECKOUT_TEST_FOUNDER_EMAILS }}
+      BASKET_STAGING_TESTER_EMAILS: ${{ secrets.BASKET_STAGING_TESTER_EMAILS }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guards
+        run: |
+          set -euo pipefail
+          [ "${{ github.ref }}" = refs/heads/plotart/multi-artist-basket ] || { echo "REFUSED: runs only from plotart/multi-artist-basket"; exit 1; }
+          [[ "$CHECKOUT_TEST_ORIGIN" =~ ^https://plotart-checkout-test\.[a-z0-9-]+\.workers\.dev/?$ ]] || { echo "REFUSED: CHECKOUT_TEST_ORIGIN is not the TEST checkout Worker"; exit 1; }
+          [[ "$CHECKOUT_TEST_D1_DATABASE_ID" =~ ^[0-9a-f-]{36}$ ]] || { echo "REFUSED: CHECKOUT_TEST_D1_DATABASE_ID"; exit 1; }
+          echo "### Basket on TEST" >> "$GITHUB_STEP_SUMMARY"
+      - name: 1 · The TEST Studio (where the synthetic gallery lives) is behind Access
+        run: |
+          set -euo pipefail
+          SO="${CHECKOUT_TEST_ORIGIN%/}"; SO="${SO/plotart-checkout-test./plotart-studio-test.}"
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$SO/admin/checkout")
+          [[ "$code" =~ ^(302|403)$ ]] && echo "  PASS  $SO is behind Access ($code)" || { echo "  FAIL  $SO answered $code without Access: STOPPED before anything changed"; exit 1; }
+      - name: 2 · Stripe TEST keys for the basket (deliberately invalid requests; nothing is created)
+        env:
+          MAIN: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          POC: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
+        working-directory: worker/plotart-studio
+        run: |
+          set -euo pipefail
+          # Founder approval 21 Nov 2026: the POC TEST key is used as STRIPE_BASKET_KEY on the two TEST Workers only, for the
+          # basket's own calls; the existing checkout key stays unchanged and serves everything else.
+          node --input-type=module -e '
+            const { readFileSync } = await import("node:fs"), A = JSON.parse(readFileSync("test/stripe-test-run.json", "utf8")).reuse_account;
+            const probe = async KEY => { if (!/^(sk|rk)_test_[A-Za-z0-9]+$/.test(KEY || "")) return { missing: true };
+              const h = { Authorization: "Bearer " + KEY, "Stripe-Version": "2026-10-28.endive", "Content-Type": "application/x-www-form-urlencoded" };
+              const p = async (m, u, acct) => (await fetch("https://api.stripe.com" + u, { method: m, headers: { ...h, ...(acct ? { "Stripe-Account": acct } : {}) }, body: m === "POST" ? "plotart_permission_probe=1" : undefined })).status;
+              return { customers: await p("POST", "/v1/customers"), setup_page: await p("POST", "/v1/checkout/sessions"), clone_card: await p("POST", "/v1/payment_methods", A),
+                authorise: await p("POST", "/v1/payment_intents", A), capture: await p("POST", "/v1/payment_intents/pi_probe/capture", A), cancel: await p("POST", "/v1/payment_intents/pi_probe/cancel", A),
+                delete_customer: await p("DELETE", "/v1/customers/cus_probe") }; };
+            if (!/^(sk|rk)_test_/.test(process.env.MAIN || "")) { console.log("  FAIL  the existing checkout key is not a TEST key"); process.exit(1); }
+            const poc = await probe(process.env.POC); console.log("  basket key (POC TEST key) probes:", JSON.stringify(poc));
+            if (poc.missing || Object.values(poc).some(s => s === 401 || s === 403)) { console.log("  FAIL  the POC TEST key does not permit every basket call"); process.exit(1); }
+            console.log("  PASS  the POC TEST key permits every basket call; the existing checkout key is left unchanged");'
+      - name: 3 · TEST database · migrations 0019, 0020 and the additive basket seed
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+        run: |
+          set -euo pipefail
+          W="$GITHUB_WORKSPACE/worker/plotart-studio"; T="$RUNNER_TEMP/db"; mkdir -p "$T"
+          printf 'name = "plotart-checkout-test-db-basket"\ncompatibility_date = "2026-08-01"\n[[d1_databases]]\nbinding = "DB"\ndatabase_name = "plotart-checkout-test"\ndatabase_id = "%s"\n' "$CHECKOUT_TEST_D1_DATABASE_ID" > "$T/wrangler.toml"
+          D="npx --yes wrangler@4.150.0 d1 execute plotart-checkout-test --remote --config $T/wrangler.toml"
+          q() { (cd "$T" && $D --json --command "$1" 2> "$T/err.log") | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);process.stdout.write(JSON.stringify(j[0].results))})'; }
+          echo "{\"payment_accounts\": $(q 'SELECT account_id, artist_id FROM payment_accounts'), \"artists\": $(q 'SELECT id, slug, display_name, email, founding, account_status FROM artists'), \"seller_profiles\": $(q 'SELECT artist_id, legal_name, trading_name, address, returns_address, email, phone, vat_number FROM seller_profiles')}" > "$T/state.json"
+          echo "  INFO  TEST database read: $(node -e 'const j=require(process.argv[1]);console.log(j.artists.length+" artists, "+j.payment_accounts.length+" payment accounts")' "$T/state.json")"
+          node "$W/test/basket-staging-seed.mjs" --target plotart-checkout-test --state "$T/state.json" > "$T/seed.sql"
+          for f in "$W/migrations/0019_multi_artist_basket.sql" "$W/migrations/0020_basket_consents.sql" "$T/seed.sql"; do
+            (cd "$T" && $D --file "$f" -y > "$T/out.log" 2>&1) && echo "  PASS  applied $(basename "$f") to plotart-checkout-test" \
+              || { python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$T/out.log"; echo "STOPPED at $(basename "$f")"; exit 1; }
+          done
+          echo "  INFO  basket tables: $(q "SELECT COUNT(*) AS n FROM sqlite_master WHERE name IN ('checkout_baskets','basket_lines','artwork_delivery_offers','basket_terms')")"
+      - name: 4 · Redeploy both TEST Workers with the basket on; outside checks; rollback on failure
+        id: deploy
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET }}
+          POC_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_POC_KEY }}
+          PK: ${{ vars.BASKET_STAGING_STRIPE_PUBLISHABLE_KEY }}
+          CHECKOUT_TARGET: test
+          PAYMENT_TERMS_DIR: agreements/payment-test
+          ENABLE_TEST_PILOT: "true"
+        run: |
+          set -euo pipefail
+          node build-assets.mjs > /dev/null && grep -q PA-PAY-TEST-01 src/payment-terms.js || { echo "REFUSED: not built with the TEST texts"; exit 1; }
+          python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/render-checkout-config.py" . test
+          O="${CHECKOUT_TEST_ORIGIN%/}"
+          add() { sed -i -E "0,/^CHECKOUT_PILOT_ENABLED = .*/s##&\n$2#" "$1"; }
+          SO="${O/plotart-checkout-test./plotart-studio-test.}"; GL="$SO/admin/basket-gallery"
+          # the synthetic gallery is a founder page in the TEST Studio (behind Access); the checkout Worker serves the basket and the images
+          add wrangler.checkout.test.toml 'BASKET_ENABLED = "true"\nBASKET_COMMISSION_FREE = "with_processing_consent"\nSTAGING_GALLERY = "true"\nGALLERY_ORIGIN = "'"$O"'"\nSTAGING_GALLERY_URL = "'"$GL"'"'
+          add wrangler.studio.test.toml 'BASKET_ENABLED = "true"\nBASKET_COMMISSION_FREE = "with_processing_consent"\nSTAGING_GALLERY = "true"\nGALLERY_ORIGIN = "'"$O"'"\nSTAGING_GALLERY_URL = "'"$GL"'"'
+          [[ "$PK" =~ ^pk_test_[A-Za-z0-9]+$ ]] && add wrangler.checkout.test.toml 'STRIPE_PUBLISHABLE_KEY = "'"$PK"'"' || echo "  INFO  no pk_test_ publishable key stored: the bank-check confirmation page will say it is not configured (everything else works)"
+          sed -i -E 's#^crons = .*#crons = ["*/5 * * * *"]#' wrangler.checkout.test.toml
+          python3 - <<'PY'
+          import tomllib
+          for f, name in (("wrangler.checkout.test.toml", "plotart-checkout-test"), ("wrangler.studio.test.toml", "plotart-studio-test")):
+              c = tomllib.load(open(f, "rb")); v = c["vars"]
+              assert c["name"] == name and v["ENVIRONMENT"] == "test" and c["d1_databases"][0]["database_name"] == "plotart-checkout-test" and "CHECKOUT_LIVE" not in v and v["BASKET_ENABLED"] == "true", f
+          print("  PASS  rendered TEST configurations name only the TEST Workers and database; live switch absent")
+          PY
+          W="npx --yes wrangler@4.150.0"
+          for c in wrangler.studio.test.toml wrangler.checkout.test.toml; do
+            $W deploy --config "$c" > "$RUNNER_TEMP/w.log" 2>&1 || { python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$RUNNER_TEMP/w.log"; exit 1; }
+            echo "  PASS  deployed $c"
+          done
+          printf '%s' "$STRIPE_SECRET_KEY" | $W secret put STRIPE_SECRET_KEY --config wrangler.studio.test.toml > /dev/null
+          printf '%s' "$CHECKOUT_TEST_FOUNDER_EMAILS" | $W secret put FOUNDER_EMAILS --config wrangler.studio.test.toml > /dev/null
+          printf '%s' "$STRIPE_SECRET_KEY" | $W secret put STRIPE_SECRET_KEY --config wrangler.checkout.test.toml > /dev/null
+          printf '%s' "$STRIPE_WEBHOOK_SECRET" | $W secret put STRIPE_WEBHOOK_SECRET --config wrangler.checkout.test.toml > /dev/null
+          [[ "$POC_KEY" =~ ^(sk|rk)_test_[A-Za-z0-9]+$ ]] || { echo "REFUSED: the basket key is not a TEST key"; exit 1; }
+          for c in wrangler.studio.test.toml wrangler.checkout.test.toml; do printf '%s' "$POC_KEY" | $W secret put STRIPE_BASKET_KEY --config "$c" > /dev/null; done
+          echo "  PASS  STRIPE_BASKET_KEY (the POC TEST key) written to the two TEST Workers only; basket calls only" 
+          echo "  PASS  secrets rewritten with the same TEST values (never printed)"
+          sleep 5
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$GL"); [[ "$code" =~ ^(302|403)$ ]] || { echo "  FAIL  $GL answered $code without Access"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$O/gallery"); [ "$code" = 404 ] || { echo "  FAIL  the checkout Worker serves /gallery ($code)"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$O/basket"); [ "$code" = 200 ] || { echo "  FAIL  $O/basket answered $code"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$O/v1/stripe/webhook" -d '{}'); [ "$code" = 400 ] || { echo "  FAIL  webhook answered $code"; exit 1; }
+          echo "  PASS  the gallery is behind the Studio's Access; the checkout Worker serves the basket (not the gallery); webhooks still refuse unsigned posts"
+          echo "**Open:** $GL (sign in with your founder email)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Roll back both TEST Workers if the deployment or its checks failed
+        if: ${{ failure() && steps.deploy.outcome == 'failure' }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+        run: |
+          for c in wrangler.checkout.test.toml wrangler.studio.test.toml; do
+            [ -f "$c" ] && npx --yes wrangler@4.150.0 rollback --config "$c" --message "basket TEST rollback (run ${{ github.run_id }})" -y > /dev/null 2>&1 && echo "rolled back $c" || echo "rollback of $c not needed or failed"
+          done

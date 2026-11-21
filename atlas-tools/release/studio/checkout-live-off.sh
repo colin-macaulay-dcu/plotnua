@@ -24,8 +24,9 @@ else
   echo "  off: $OFF is missing or not an OFF configuration; nothing deployed"; ok=0
 fi
 printf 'y\n' | $W secret delete STRIPE_SECRET_KEY --name plotart-studio > /dev/null 2>&1 && echo "  off: the Studio's Stripe key removed" || echo "  off: the Studio's Stripe key was not removed (absent, or the removal failed; checked next)"
+printf 'y\n' | $W secret delete STRIPE_BASKET_KEY --name plotart-studio > /dev/null 2>&1 && echo "  off: the Studio's basket key removed" || true
 if L=$($W secret list --name plotart-studio 2> /dev/null) && N=$(printf '%s' "$L" | python3 -c 'import json,sys; print(" ".join(x["name"] for x in json.load(sys.stdin)))' 2> /dev/null); then
-  if [[ " $N " == *" STRIPE_SECRET_KEY "* ]]; then echo "  off: the Studio STILL holds a Stripe key"; ok=0; else echo "  off: confirmed: the Studio holds no Stripe key"; fi
+  if [[ " $N " == *" STRIPE_SECRET_KEY "* || " $N " == *" STRIPE_BASKET_KEY "* ]]; then echo "  off: the Studio STILL holds a Stripe key"; ok=0; else echo "  off: confirmed: the Studio holds no Stripe key"; fi
 else
   echo "  off: the Studio's secret list could not be read, so the key's removal is NOT confirmed"; ok=0
 fi

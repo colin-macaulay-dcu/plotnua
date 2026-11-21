@@ -70,14 +70,33 @@ if TARGET == "production":
         notify = need("CHECKOUT_LIVE_NOTIFY_EMAIL", r"[a-z0-9._+-]+@plotnua\.ie")
         for k, v in (("CHECKOUT_MAIL", "resend"), ("CHECKOUT_MAIL_APPROVED", "true"), ("CHECKOUT_MAIL_FROM", mail_from), ("CHECKOUT_NOTIFY_EMAIL", notify)):
             out = insert_var(out, "CHECKOUT_LIVE", k, v, "wrangler.checkout.toml")
+    # Multi-artist basket (21 Nov 2026): ONLY with live checkout, the explicit basket switch, approved LIVE basket texts bundled
+    # (src/basket-terms.js LIVE_BASKET_DOCS not empty) and a LIVE publishable key. The synthetic staging gallery never.
+    basket = os.environ.get("ENABLE_LIVE_BASKET", "false")
+    if basket not in ("true", "false"): sys.exit("REFUSED: ENABLE_LIVE_BASKET must be true or false")
+    if basket == "true":
+        if not live: sys.exit("REFUSED: the basket can be enabled only together with live checkout")
+        # issued texts: both kinds in agreements/basket-issued (fingerprints), bundled into src/basket-live-docs.js by build-assets
+        fpp = os.path.join(W, "agreements", "basket-issued", "fingerprints.json")
+        kinds = {d.get("kind") for d in json.load(open(fpp, encoding="utf-8"))["documents"].values()} if os.path.exists(fpp) else set()
+        if kinds != {"artist_basket_addendum", "buyer_basket_terms"}: sys.exit("REFUSED: no approved LIVE basket texts are issued (agreements/basket-issued needs PA-BBT and PA-BAA)")
+        bundled = open(os.path.join(W, "src", "basket-live-docs.js"), encoding="utf-8").read()
+        if re.search(r"LIVE_BASKET_TEXTS\s*=\s*\{\s*\}", bundled) or "-TEST-" in bundled: sys.exit("REFUSED: the issued LIVE basket texts are not bundled (run build-assets.mjs)")
+        if not all(os.path.exists(os.path.join(W, "migrations", m)) for m in ("0019_multi_artist_basket.sql", "0020_basket_consents.sql", "0021_basket_terms_issue.sql")):
+            sys.exit("REFUSED: the basket migrations 0019, 0020 and 0021 must be in the release")
+        pk = need("CHECKOUT_LIVE_PUBLISHABLE_KEY", r"pk_live_[A-Za-z0-9]+")
+        out = insert_var(out, "CHECKOUT_PILOT_ENABLED", "BASKET_ENABLED", "true", "wrangler.checkout.toml")
+        out = insert_var(out, "BASKET_ENABLED", "STRIPE_PUBLISHABLE_KEY", pk, "wrangler.checkout.toml")
     cfg = tomllib.loads(out)
     v = cfg["vars"]
+    assert "STAGING_GALLERY" not in v and "BASKET_COMMISSION_FREE" not in v and "STRIPE_API_BASE" not in v, "no staging or test-only switch in production"
+    assert v.get("BASKET_ENABLED", "false") == ("true" if basket == "true" else "false")
     assert cfg["name"] == "plotart-checkout" and v["ENVIRONMENT"] == "production" and "SANDBOX" not in v
     assert cfg["d1_databases"][0]["database_name"] == "plotart-studio" and "STRIPE_API_BASE" not in v
     assert v["CHECKOUT_PILOT_ENABLED"] == ("true" if live else "false") and v.get("CHECKOUT_LIVE", "false") == ("true" if live else "false")
     assert "CHECKOUT_MAIL_TEST_RECIPIENTS" not in v and "CHECKOUT_MAIL_SANDBOX_TEST" not in v
     open(os.path.join(W, "wrangler.checkout.production.toml"), "w").write(out)
-    print("production checkout configuration rendered (plotart-checkout, %s)" % ("LIVE checkout ENABLED" if live else "CHECKOUT_PILOT_ENABLED=false"))
+    print("production checkout configuration rendered (plotart-checkout, %s%s)" % ("LIVE checkout ENABLED" if live else "CHECKOUT_PILOT_ENABLED=false", ", BASKET ENABLED" if basket == "true" else ""))
 
 elif TARGET == "test":
     db = need("CHECKOUT_TEST_D1_DATABASE_ID", UUID)

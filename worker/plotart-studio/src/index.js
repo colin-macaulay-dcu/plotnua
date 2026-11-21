@@ -14,6 +14,9 @@ import * as AG from './agreement.js';
 import * as GAR from './gallery-application-review.js';
 import { REVIEW_JS } from './application-review-ui.js';
 import * as H from './hire.js';
+import * as BK from './basket.js';
+import * as BP from './basket-public.js';
+import * as BG from './basket-staging-gallery.js';     // multi-artist basket on the same checkout (development 21 Nov 2026): test mode only, off by default
 import * as CO from './checkout.js';   // managed checkout pilot (development 16 Nov 2026): test mode only, off by default
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
@@ -1344,12 +1347,24 @@ async function route(req, env) {
     }
     /* Managed checkout pilot (test mode; off by default). Separate from the gallery, its publishing and the agreements. */
     if (p === '/admin/checkout') return html(A.CHECKOUT_HTML);
+    // TEST only: the synthetic basket gallery for the founder's inspection (behind this Studio's Access; never in production)
+    if ((p === '/admin/basket-gallery' || /^\/admin\/basket-gallery\/[A-Za-z0-9_-]{1,64}$/.test(p)) && m === 'GET' && BP.stagingGallery(env) && ['test', 'local'].includes(env.ENVIRONMENT)) {
+      const r = await BG.route(env, url, { page: BP.page, esc: BP.esc, eur: BP.eur }, 'studio'); if (r) return r;
+    }
     if (p.startsWith('/api/admin/checkout')) {
       if (p === '/api/admin/checkout' && m === 'GET') return json({ ok: true, ...(await CO.adminView(env)) });
       if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not installed' }, 409);
       if (p === '/api/admin/checkout/orders' && m === 'POST') return json({ ok: true, ...(await CO.createOrder(env, me.email, await req.json())) });
       if (p === '/api/admin/checkout/digest/send' && m === 'POST') return json({ ok: true, ...(await CO.sendFounderDigest(env, me.email)) });
       if (p === '/api/admin/checkout/pause' && m === 'POST') return json({ ok: true, ...(await CO.setPause(env, me.email, await req.json().catch(() => ({})))) });
+      if (p === '/api/admin/checkout/baskets' && m === 'GET') return json({ ok: true, ...(await BK.adminList(env)) });
+      if (p === '/api/admin/checkout/baskets/artists' && m === 'GET') return json({ ok: true, ...(await BK.adminArtists(env)) });
+      if (p === '/api/admin/checkout/baskets/eligibility' && m === 'GET') return json({ ok: true, ...(await BK.adminEligibility(env, String(url.searchParams.get('ids') || '').split(',').filter(Boolean))) });
+      if ((mm = p.match(/^\/api\/admin\/checkout\/baskets\/(b[0-9a-z]+)(?:\/([a-z]+))?$/))) {
+        if (!mm[2] && m === 'GET') return json({ ok: true, ...(await BK.adminDetail(env, mm[1])) });
+        if (mm[2] === 'reconcile' && m === 'POST') return json({ ok: true, ...(await BK.adminReconcile(env, me.email, mm[1])) });
+        if (mm[2] === 'cancel' && m === 'POST') return json({ ok: true, ...(await BK.adminCancel(env, me.email, mm[1], await req.json().catch(() => ({})))) });
+      }
       if ((mm = p.match(/^\/api\/admin\/checkout\/alerts\/(\d+)$/)) && m === 'POST') return json({ ok: true, founder_alerts: await CO.setFounderAlert(env, me.email, mm[1], await req.json().catch(() => ({}))) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/holds\/(h[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await CO.reviewHold(env, me.email, mm[1], await req.json())) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/accounts\/([0-9a-z]+)\/refresh$/)) && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, mm[1])) });
@@ -1701,6 +1716,11 @@ async function route(req, env) {
     if (!b || b.doc_id !== mm[1]) return html('Not available', 404);
     return res(b.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': b.html_sha256 });
   }
+  if ((mm = p.match(/^\/basket-terms\/(PA-BAA-[0-9A-Z-]{4,20})\.html$/)) && m === 'GET') {
+    const t = (await BK.installed(env)) ? await BK.currentDoc(env, 'artist_basket_addendum') : null;
+    if (!t || t.doc_id !== mm[1]) return html('Not available', 404);
+    return res(t.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': t.html_sha256 });
+  }
   if (p.startsWith('/api/checkout')) {
     if (p === '/api/checkout' && m === 'GET') return json({ ok: true, ...(await CO.artistView(env, artist)) });
     if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not available' }, 404);
@@ -1712,6 +1732,18 @@ async function route(req, env) {
     if (p === '/api/checkout/seller-profile' && m === 'PUT') return json({ ok: true, ...(await CO.saveSellerProfile(env, artist, b)) });
     if (p === '/api/checkout/onboarding' && m === 'POST') return json({ ok: true, ...(await CO.onboarding(env, artist, url.origin, b)) });
     if (p === '/api/checkout/account/refresh' && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, artist.id)) });
+    // multi-artist basket: the artist's own opt-in and standing delivery offers (their own works only)
+    if (p === '/api/checkout/basket' && m === 'GET') return json({ ok: true, ...(await BK.artistView(env, artist)) });
+    if (p === '/api/checkout/basket/opt-in' && m === 'POST') return json({ ok: true, ...(await BK.artistOptIn(env, artist, b)) });
+    if (p === '/api/checkout/basket/processing-consent' && m === 'POST') return json({ ok: true, ...(await BK.artistProcessingConsent(env, artist, b)) });
+    if (p === '/api/checkout/basket/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await BK.artistWithdrawProcessingConsent(env, artist)) });
+    if (p === '/api/checkout/basket/seller-disclosure' && m === 'POST') return json({ ok: true, ...(await BK.artistSellerDisclosure(env, artist, b)) });
+    if (p === '/api/checkout/basket/seller-disclosure/withdraw' && m === 'POST') return json({ ok: true, ...(await BK.artistWithdrawSellerDisclosure(env, artist)) });
+    if (p === '/api/checkout/basket/leave' && m === 'POST') return json({ ok: true, ...(await BK.artistLeave(env, artist)) });
+    if ((mm = p.match(/^\/api\/checkout\/basket\/offers\/([A-Za-z0-9_-]{1,64})$/))) {
+      if (m === 'PUT') return json({ ok: true, ...(await BK.setDeliveryOffer(env, artist, mm[1], b)) });
+      if (m === 'DELETE') return json({ ok: true, ...(await BK.withdrawDeliveryOffer(env, artist, mm[1])) });
+    }
     if ((mm = p.match(/^\/api\/checkout\/orders\/(o[0-9a-z]+)(?:\/([a-z]+))?$/))) {
       const o = await one(env, 'SELECT * FROM checkout_orders WHERE id = ? AND artist_id = ?', mm[1], artist.id);   // never another artist's order
       if (!o) return json({ ok: false, error: 'Not found' }, 404);
