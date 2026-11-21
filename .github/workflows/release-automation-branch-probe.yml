@@ -1,0 +1,23 @@
+# READ-ONLY SECURITY PROBE (founder authorisation 21 Nov 2026). Pushed ONLY on probe/release-automation-branch-policy,
+# never merged. Question: does GitHub enforce release-automation's main-only deployment branch rule for a job that uses
+# "deployment: false" (as the production workflows do)?
+#   PASS     GitHub refuses the job ("Branch ... is not allowed to deploy to release-automation"); the step never runs.
+#   FINDING  the step below runs and prints PROBE-JOB-EXECUTED: the branch rule does not protect deployment: false jobs.
+# Deliberately contains NO secrets, NO vars, NO checkout, NO token use, NO network calls and NO write permissions.
+# Secrets and environment variables are only given to a job that names them, and this job names none.
+name: release-automation branch probe (read-only)
+on:
+  push:
+    branches: [probe/release-automation-branch-policy]
+    paths: [.github/workflows/release-automation-branch-probe.yml]
+permissions: {}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    environment:
+      name: release-automation
+      deployment: false
+    steps:
+      - name: Report that the environment-protected job was allowed to run
+        run: echo "PROBE-JOB-EXECUTED on ${GITHUB_REF} (no secret or variable is referenced by this job)"
