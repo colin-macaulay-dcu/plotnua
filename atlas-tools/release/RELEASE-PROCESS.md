@@ -71,8 +71,11 @@ The scripts push nothing when any of these is true:
    - "Release to production" promotes `release/auto/*` branches, except the publishers that promote their own releases and rollbacks: `plotart-`, `garden-` and `ideas-`.
    - Atlas stats, Atlas Match and Claude-session releases are promoted by "Release to production".
 3. **Where the key lives.** The App key is the environment secret `RELEASE_APP_KEY` of the environment **`release-automation`** (deployment branches: `main` only), alongside the variable `RELEASE_APP_ID`.
-   - Only the releasing jobs use that environment, with `deployment: false`, so no deployment records are created.
+   - Only the releasing jobs use that environment, with `deployment: false`, so no deployment records are created. The one exception is the read-only Atlas dry run (`atlas-match-qualification-dry-run.yml`), which uses it only for the Airtable token and never references the key.
    - The key is never stored in the repository or in any report.
+   - **The Airtable token lives here too** (founder decision 21 Nov 2026). `AIRTABLE_TOKEN` is an environment secret of `release-automation`, no longer a repository secret. It is a read-only token (`data.records:read`, Atlas Core `appoLZFWesvoPhZGR` only), used by Atlas stats, the Atlas Match refresh and the Atlas dry run.
+     - The main-only branch rule holds for `deployment: false` jobs: probe run 44889398808 (21 Nov 2026), where a development branch was refused before the job started.
+     - The Cloudflare Workers keep their own Airtable tokens as Worker secrets; this one is for GitHub Actions only.
 4. **Automatic rollback.**
    - The revert is pushed to `release/auto/rollback-<topic>` with the App token, gated on its push, and released.
    - **Releases that changed `.github/workflows/` cannot be reverted by the App**, by design. The run stops with **"FOUNDER ROLLBACK REQUIRED"**, and the founder runs `rollback-<name>.sh`.

@@ -16,8 +16,10 @@
 #   purpose, deliberately.
 #
 # THE TOKEN.
-#   ${{ secrets.AIRTABLE_TOKEN }} is the repository secret already proven by
-#   atlas-stats.yml. It is passed to one step as an environment variable and
+#   ${{ secrets.AIRTABLE_TOKEN }} is the environment secret of the
+#   release-automation environment (deployment branches: main only; moved from
+#   repository level, founder decision 21 Nov 2026), shared with atlas-stats.yml.
+#   This job therefore runs only from main. It is passed to one step as an environment variable and
 #   exists nowhere else: not in a file, not in an argument, not in the output,
 #   not in the artefacts. GitHub masks it in logs, and the script additionally
 #   redacts anything token-shaped before printing. Airtable access is
@@ -40,6 +42,9 @@ jobs:
   qualify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    environment:
+      name: release-automation   # holds the read-only AIRTABLE_TOKEN; deployment branches: main only
+      deployment: false          # the secret is available, no deployment record is created
 
     steps:
       - name: Check out the repository

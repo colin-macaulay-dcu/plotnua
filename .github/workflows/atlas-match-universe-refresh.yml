@@ -20,8 +20,9 @@
 #   the commit this workflow makes cannot start it again.
 #
 # THE TOKEN.
-#   ${{ secrets.AIRTABLE_TOKEN }} — the same repository secret atlas-stats.yml
-#   has used since launch. It is handed to one step as an environment variable,
+#   ${{ secrets.AIRTABLE_TOKEN }} — the read-only Atlas token, an environment
+#   secret of release-automation (main only; moved from repository level, founder
+#   decision 21 Nov 2026), shared with atlas-stats.yml. It is handed to one step as an environment variable,
 #   is never written to a file or an argument, and never reaches the artefact.
 #   Airtable access is read-only: the generator issues GET requests only.
 name: Atlas Match universe refresh
