@@ -133,8 +133,9 @@ jobs:
       # Fail closed: the website-production environment must require the founder, and this run must carry his approval.
       - name: Founder approval recorded on this run (refuse otherwise)
         run: bash "$RUNNER_TEMP/release-tools/verify-founder-approval.sh" "${{ github.run_id }}"
-      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only). Used for ONE thing:
-      # pushing an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows permission).
+      # promote.sh pushes main and its prod/ tag with it, in one atomic push (Stage 2, 21 Nov 2026: main is only ever moved
+      # as the App), and an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
       - name: Release push token (PlotNua Release App)
         id: app
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
@@ -213,8 +214,9 @@ jobs:
           ACTOR: ${{ github.event.workflow_run.actor.login }}
           EVENT: ${{ github.event.workflow_run.event }}
         run: bash "$RUNNER_TEMP/release-tools/verify-atlas-refresh.sh" "$SHA" "$BRANCH" "$ACTOR" "$EVENT"
-      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only). Used for ONE thing:
-      # pushing an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows permission).
+      # promote.sh pushes main and its prod/ tag with it, in one atomic push (Stage 2, 21 Nov 2026: main is only ever moved
+      # as the App), and an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
       - name: Release push token (PlotNua Release App)
         id: app
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0

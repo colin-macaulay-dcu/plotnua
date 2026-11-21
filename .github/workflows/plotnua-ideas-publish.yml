@@ -138,8 +138,9 @@ jobs:
       - name: Trusted copy of the release tooling (from main)
         run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
       # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows
-      # permission), from the release-automation environment (main only). Used only to push release/auto/ branches,
-      # so that the Image rights gate starts on a PUSH: the only gate main's required check counts (Stage 1, 10 Nov 2026).
+      # permission), from the release-automation environment (main only). It pushes the release/auto/ branches, so that
+      # the Image rights gate starts on a PUSH (Stage 1, 10 Nov 2026), and, through promote.sh, main and its prod/ tag in
+      # one atomic push: main is only ever moved as the App, never with the built-in GITHUB_TOKEN (Stage 2, 21 Nov 2026).
       - name: Release push token (PlotNua Release App)
         id: app
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
