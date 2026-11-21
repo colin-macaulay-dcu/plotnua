@@ -42,8 +42,9 @@ jobs:
 
       - name: Read Atlas and update the homepage figures
         env:
-          # The only secret this workflow touches. It is never printed, never
-          # written to a file, and never reaches the public site.
+          # The read-only Atlas token: an environment secret of release-automation
+          # (main only) since 21 Nov 2026, no longer a repository secret. It is never
+          # printed, never written to a file, and never reaches the public site.
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
         run: python .github/scripts/atlas_stats.py
 
