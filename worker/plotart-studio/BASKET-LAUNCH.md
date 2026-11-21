@@ -9,8 +9,8 @@ founder's action or approval; nothing merges, migrates production or takes a liv
   (shown only after each artist confirms it, bound to the exact details), the Founding 25 processing-fee consent (0% PlotArt
   commission; artist bears Stripe's actual fees; separate, recorded, revocable), Studio screens for artists and the founder.
 - Migrations: `0019_multi_artist_basket.sql`, `0020_basket_consents.sql` (new tables only; triggers ⇒ migration-check class
-  "destructive": backup first). `0021_basket_terms_issue.sql` is generated when the texts are issued.
-- Texts: `agreements/basket-drafts/` PA-BBT-2026-11 r2, PA-BAA-2026-11 r2, privacy V18 basket addition (all DRAFT).
+  "destructive": backup first). `0021_basket_terms_issue.sql` installs the issued texts.
+- Texts: issued 21 Nov 2026 in `agreements/basket-issued/` (PA-BBT-2026-11, PA-BAA-2026-11); Privacy V18 in `atlas-tools/privacy_v18_layer.py`.
 - Live safeguards: the production config refuses the basket unless live checkout is on, both texts are issued and bundled,
   0019–0021 are in the release, and a `pk_live_` key is set. Live enablement writes the basket key and platform webhook secret
   only when the basket is enabled, verifies them before the live deploy, and recovers to OFF on any failure.
