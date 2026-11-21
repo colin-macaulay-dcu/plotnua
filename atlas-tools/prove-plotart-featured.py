@@ -26,8 +26,10 @@ FA9  the launch guard (L11, L20, L6) passes the real page and refuses the same t
 FA10 in a browser at 1440, 820 and 390 px: images load whole (never cropped), no sideways scrolling, no script errors,
      every link resolves (--shots saves previews)
 FA11 the published galleries were only read
-FA12 Browse All Artworks (21 Nov 2026): one link beside the heading to All Artworks, with that page's own counts, which follow
-     publications; no available work -> no link
+FA12 Browse All Artworks (21 Nov 2026): one link under the opening artworks to All Artworks, with that page's own counts,
+     which follow publications; no available work -> no link
+FA13 the opening artworks (artwork first, 21 Nov 2026): the curated three from published galleries, never repeating a
+     featured artwork; anything withdrawn, sold or unpublished drops out
 Real artist data is only READ (and changed only inside throwaway copies); nothing is written to the live tree.
 """
 import copy, functools, glob, http.server, json, os, re, shutil, subprocess, sys, tempfile, threading
@@ -100,8 +102,9 @@ by = {p["artist"]["slug"]: p for p in PK}
 coll = lambda d: d[slice(*P.vg_region(d))]
 
 print("PROVE · PlotArt Artists' Gallery · Featured Artists")
-check("FA1 no selection: the region is empty, every published artist is on the wall, and nothing else on the page differs",
-      FEAT.selection_in(DOC) == [] and FEAT.update(DOC, [], PK) == DOC and FEAT.outside(DOC) == DOC and FEAT.content([], PK) == ""
+check("FA1 no selection: no Featured Artists section (the region holds only the opening artworks, 21 Nov 2026), every published artist is on the wall, and nothing else on the page differs",
+      FEAT.selection_in(DOC) == [] and FEAT.update(DOC, [], PK) == DOC and "pa-fa" not in FEAT.content([], PK) and FEAT.content([], PK).startswith('<section class="pa-op"')
+      and FEAT.content([], []) == ""
       and sorted(wall(DOC)) == sorted(p["artist"]["slug"] for p in PK) and both_out(DOC) == both_out(LIVE_DOC) and index(DOC) == index(LIVE_DOC))
 
 new = build(DOC, SEL, PK)
@@ -200,29 +203,53 @@ check("FA7 introductions are verbatim published biography text: whole sentences 
 import plotart_search_content as C       # noqa: E402
 def _counts(pk):
     region = FEAT.content(SEL, pk)
-    m = re.search(r'<p class="pa-fa-browse"><a class="pa-btn pa-btn--ghost" href="\.\./artworks/" data-pa-track="gallery_browse_artworks">'
-                  r'Browse All Artworks <span aria-hidden="true">&rarr;</span></a><span class="pa-fa-browse-n">Explore (\d+) original works? by (\d+) artists?\.</span></p>', region)
+    m = re.search(r'<p class="pa-op-browse"><a class="pa-btn pa-btn--ghost" href="\.\./artworks/" data-pa-track="gallery_browse_artworks">'
+                  r'Browse All Artworks <span aria-hidden="true">&rarr;</span></a><span class="pa-op-browse-n">Explore (\d+) original works? by (\d+) artists?\.</span></p>', region)
     coll = re.search(r'>(\d+) original works? by (\d+) artists?<', C.collection(pk))
     return (m and (int(m.group(1)), int(m.group(2)))), (coll and (int(coll.group(1)), int(coll.group(2)))), region
 now, coll, reg = _counts(PK)
 fewer = copy.deepcopy(PK)
-gone = next(p for p in fewer if p["artist"]["slug"] not in [x["artist"] for x in SEL])   # an unfeatured artist's gallery is removed
+gone = next(p for p in fewer if p["artist"]["slug"] not in [x["artist"] for x in SEL] + [o[0] for o in FEAT.OPENING])   # an unfeatured artist's gallery is removed
 fewer.remove(gone)
 one = copy.deepcopy(PK)
-next(w for w in by["karen-ebbs"]["works"] if w["availability"] == "available")       # sanity: Karen has available work
 for p in one:
     if p["artist"]["slug"] == "karen-ebbs":
         next(w for w in p["works"] if w["availability"] == "available")["availability"] = "sold"
 n2, c2, _ = _counts(fewer)
 n3, c3, _ = _counts(one)
-check("FA12 Browse All Artworks sits in the Featured Artists heading, links to the All Artworks page, and its counts equal that page's own (%s)" % (now,),
-      now is not None and now == coll and reg.count('href="../artworks/"') == 1 and reg.index("pa-fa-browse") < reg.index("pa-fa-list")
-      and 'class="pa-fa-head pa-fa-head--browse"' in reg and "pa-rf" not in reg, (now, coll))
+check("FA12 Browse All Artworks sits directly under the opening artworks (artwork first, 21 Nov 2026), above Featured Artists, links to the All Artworks page, and its counts equal that page's own (%s)" % (now,),
+      now is not None and now == coll and reg.count('href="../artworks/"') == 1 and reg.index("pa-op-row") < reg.index("pa-op-browse") < reg.index('class="pa-sec pa-fa"')
+      and 'class="pa-fa-head"' in reg and "pa-fa-browse" not in reg and "pa-rf" not in reg, (now, coll))
 check("FA12b the counts follow publications: a removed gallery and a work no longer available change them, always agreeing with All Artworks (%s -> %s, %s)" % (now, n2, n3),
       n2 == c2 and n3 == c3 and n2[1] == now[1] - 1 and n2[0] < now[0] and n3 == (now[0] - 1, now[1]), (n2, c2, n3, c3))
 _empty = [dict(copy.deepcopy(p), works=[dict(w, availability="sold") for w in p["works"]]) for p in PK]
-check("FA12c with no available work there is no Browse link (and the heading keeps its usual layout)", "pa-fa-browse" not in FEAT.content(SEL, _empty)
-      and 'class="pa-fa-head"' in FEAT.content(SEL, _empty))
+check("FA12c with no available work there is no Browse link and no opening row (Featured Artists, which shows sold work too, stays)",
+      "pa-op" not in FEAT.content(SEL, _empty) and 'class="pa-fa-head"' in FEAT.content(SEL, _empty))
+
+# FA13 the opening artworks (artwork first, 21 Nov 2026): the three curated works, from their published galleries, uncropped,
+# with title and artist linking to the existing pages; never an artwork featured below; withdrawn/sold/unpublished drop out
+op = re.findall(r'<li class="pa-op-item" data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)">(.*?)</li>', reg)
+def _op_ok(slug, wid, body):
+    pkg = by[slug]; w = next(x for x in pkg["works"] if x["id"] == wid); im = FEAT._main(w)
+    return (w["availability"] == "available" and 'alt="%s"' % FEAT.E(im["alt"]) in body and 'src="../artists/%s/img/' % slug in body
+            and 'href="../artists/%s/%s.html"' % (slug, w["slug"]) in body and ">%s</a>" % FEAT.E(w["title"]) in body
+            and 'href="../artists/%s/"' % slug in body and ">%s</a>" % FEAT.E(pkg["artist"]["display_name"]) in body
+            and os.path.exists(os.path.join(ROOT, "plotart", "artists", slug, "%s.html" % w["slug"])))
+check("FA13 the opening row shows the three curated published works, in order, each from its own gallery with its approved alt text, title and artist, linking to the existing artwork and gallery pages",
+      [(a, b) for a, b, _ in op] == FEAT.OPENING and all(_op_ok(a, b, body) for a, b, body in op) and 'class="pa-op-row n-3"' in reg, op)
+_w0 = FEAT.OPENING[0]
+_feat_dup = [A(_w0[0], _w0[1])] + [x for x in SEL if x["artist"] != _w0[0]][:5]
+_wd = copy.deepcopy(PK)
+for p in _wd:
+    if p["artist"]["slug"] == FEAT.OPENING[1][0]:
+        next(w for w in p["works"] if w["id"] == FEAT.OPENING[1][1])["availability"] = "withdrawn"
+check("FA13b an opening work that is featured below is not repeated; a withdrawn opening work drops out (nothing substituted); an unpublished gallery drops out",
+      [(a, b) for a, b, _ in re.findall(r'data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)"()', FEAT.content(_feat_dup, PK))] == FEAT.OPENING[1:]
+      and [tuple(x) for x in re.findall(r'data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)"', FEAT.content(SEL, _wd))] == [FEAT.OPENING[0], FEAT.OPENING[2]]
+      and [tuple(x) for x in re.findall(r'data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)"', FEAT.content(SEL, [p for p in PK if p["artist"]["slug"] != FEAT.OPENING[2][0]]))] == FEAT.OPENING[:2])
+check("FA13c no opening work repeats a Featured Artists artwork on the live page, and the opening row sits directly after the introduction",
+      not ({(a, b) for a, b, _ in re.findall(r'data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)"()', LIVE_DOC)} & {(x["artist"], x["work"]) for x in FEAT.selection_in(LIVE_DOC)})
+      and re.search(r'</div></section>\n\n<!-- pa-featured-artists:begin -->\n<section class="pa-op"', LIVE_DOC) is not None)
 
 print("— FA8/FA9 the content boundary and the launch guard (throwaway worktree)")
 wt = tempfile.mkdtemp(prefix="pa-feat-wt-")

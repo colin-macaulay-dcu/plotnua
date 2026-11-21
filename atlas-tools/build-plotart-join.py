@@ -363,15 +363,16 @@ def f25_page(s):
 
 GB, GE = "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->"
 G_JOIN_CSS_LINK = '\n<link rel="stylesheet" href="../assets/plotart-join.css">'   # earlier releases linked it; never now
-G_ANCHOR = '<p class="pa-vg2-sub">Discover original Irish art and the artists behind it.</p></div>'
+# Artwork first (founder brief 21 Nov 2026): the application link moved from the introduction to the closing section, as a
+# discreet text link after "Visit the Living Gallery", so the page opens with the heading and then the artwork.
+G_ANCHOR = '<a href="../living-gallery.html" data-pa-track="vg_living">Visit the Living Gallery <span aria-hidden="true">→</span></a>'
 JOIN_ANCHOR = "your-gallery"   # Join PlotArt: the "A gallery of your own." section (founder decision 16 Nov 2026)
 
 
 def gallery_band():
-    # The Artists' Gallery application button (founder decisions 16 Nov 2026): one discreet button inside the compact
-    # introduction, beside the heading, so the artwork stays above the fold. Built only in the "open" state.
-    return (GB + '\n  <p class="pa-vg2-act"><a class="pa-btn pa-btn--ghost" href="../join.html#%s" data-pa-track="gallery_join">'
-            'Artist submissions →</a></p>\n' + GE) % JOIN_ANCHOR
+    # The Artists' Gallery application link (founder decisions 16 Nov 2026; moved 21 Nov 2026): one discreet text link in the
+    # closing section, beside the other onward links. Built only in the "open" state.
+    return (GB + '<a href="../join.html#%s" data-pa-track="gallery_join">Artist submissions <span aria-hidden="true">→</span></a>' + GE) % JOIN_ANCHOR
 
 
 def gallery_page(s):
@@ -379,14 +380,14 @@ def gallery_page(s):
     s = s.replace(G_JOIN_CSS_LINK, "")
     if GB in s:
         a, b = s.index(GB), s.index(GE) + len(GE)
-        if s[a - 1:a] != "\n":
-            raise SystemExit("gallery/index.html: unexpected text before the application markers")
-        s = s[:a - 1] + s[b:]
+        if s[a - 1:a] == "\n":           # the earlier placement in the introduction sat on its own line
+            a -= 1
+        s = s[:a] + s[b:]
     if not OPEN:
         return s
     if s.count(G_ANCHOR) != 1:
-        raise SystemExit("gallery/index.html: the introduction sentence not found exactly once")
-    return s.replace(G_ANCHOR, G_ANCHOR + "\n" + gallery_band())
+        raise SystemExit("gallery/index.html: the closing 'Visit the Living Gallery' link not found exactly once")
+    return s.replace(G_ANCHOR, G_ANCHOR + gallery_band())
 
 
 LB, LE = "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->"

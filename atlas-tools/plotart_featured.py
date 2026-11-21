@@ -128,20 +128,69 @@ def _item(pkg, w, im, base):
         E(gallery), E(a["display_name"]))
 
 
+# Artwork first (founder brief 21 Nov 2026, "Artists' Gallery redesign, option 1"): directly under the introduction, a row of
+# three published artworks, then Browse All Artworks, then Featured Artists as a second section. The three are a fixed,
+# curated choice (artist gallery address, artwork id), chosen to sit well together: Night Garden (Carmel Marrinan),
+# Foxgloves and Gorse (Daniel Chester) and Energetic Labyrinths 12 (Clare O'Connor). Like Featured Artists, a
+# work appears only while it is shown and available in its published gallery with a main photograph, and never when the
+# same artwork is featured below; anything withdrawn, sold or unpublished simply drops out (nothing is substituted).
+OPENING = [("carmel-marrinan", "wg1by72jg3b"), ("daniel-chester", "wfhtcyurvgf"), ("clare-o-connor", "w226r60hfsh")]
+OPEN_ITEM = re.compile(r'data-pa-opening="([a-z0-9-]+):([a-z0-9]+)"')
+
+
+def opening_items(selection, packages, choice=OPENING):
+    by = {p["artist"]["slug"]: p for p in packages}
+    featured = {(x["artist"], x["work"]) for x in check_selection(selection)}
+    out = []
+    for slug, wid in choice:
+        pkg = by.get(slug)
+        if not pkg or (slug, wid) in featured:
+            continue
+        w = next((x for x in P.shown(pkg) if x.get("id") == wid and x.get("availability") == "available" and _main(x)), None)
+        if w:
+            out.append((pkg, w, _main(w)))
+    return out
+
+
+def _opening_item(pkg, w, im, base):
+    a = pkg["artist"]
+    slug = a["slug"]
+    d = P.pick(im, 1200)
+    gallery = "%sartists/%s/" % (base, slug)
+    page = "%s%s.html" % (gallery, w["slug"])
+    return ('\n    <li class="pa-op-item" data-pa-opening="%s:%s"><figure class="pa-op-fig">'
+            '<a class="pa-op-art" href="%s" data-pa-track="gallery_opening_artwork" tabindex="-1" aria-hidden="true">'
+            '<img src="%simg/%s" srcset="%s" sizes="(max-width:639px) 78vw, 31vw" width="%d" height="%d" alt="%s" decoding="async"></a>'
+            '<figcaption class="pa-op-cap"><a class="pa-op-title" href="%s" data-pa-track="gallery_opening_work">%s</a>'
+            '<a class="pa-op-artist" href="%s" data-pa-track="gallery_opening_artist">%s</a></figcaption></figure></li>') % (
+        slug, w["id"], E(page), E(gallery), E(d["file"]), E(P.srcset(im, gallery + "img/")), d["pixels"][0], d["pixels"][1],
+        E(im["alt"]), E(page), E(w["title"]), E(gallery), E(a["display_name"]))
+
+
+def opening(selection, packages, base=BASE):
+    items = opening_items(selection, packages)
+    more = browse(packages, base)
+    if not items and not more:
+        return ""
+    row = ('\n  <ol class="pa-op-row n-%d" aria-label="Selected artworks">%s\n  </ol>' % (
+        len(items), "".join(_opening_item(p, w, im, base) for p, w, im in items))) if items else ""
+    return '<section class="pa-op" aria-label="Selected artworks"><div class="pa-wrap">%s\n  %s\n</div></section>' % (row, more)
+
+
 def content(selection, packages, base=BASE):
     items = resolve(selection, packages)
-    if not items:
-        return ""
-    more = browse(packages, base)
-    return ('<section class="pa-sec pa-fa" aria-labelledby="featArtH"><div class="pa-wrap">\n'
-            '  <div class="pa-fa-head%s"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2>'
-            '<p class="pa-fa-lede">A changing selection of artists and their work.</p>%s</div>\n'
+    first = opening(selection, packages, base)
+    feat = ('<section class="pa-sec pa-fa" aria-labelledby="featArtH"><div class="pa-wrap">\n'
+            '  <div class="pa-fa-head"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2>'
+            '<p class="pa-fa-lede">A changing selection of artists and their work.</p></div>\n'
             '  <ol class="pa-fa-list n-%d">%s\n  </ol>\n'
-            '</div></section>') % (" pa-fa-head--browse" if more else "", more, len(items), "".join(_item(p, w, im, base) for p, w, im in items))
+            '</div></section>') % (len(items), "".join(_item(p, w, im, base) for p, w, im in items)) if items else ""
+    return "\n".join(x for x in (first, feat) if x)
 
 
 def browse(packages, base=BASE):
-    """Browse All Artworks (founder brief 21 Nov 2026): a clear way from the Featured Artists heading into the complete
+    """Browse All Artworks (founder brief 21 Nov 2026; under the opening artworks since the artwork-first redesign): a
+    clear way into the complete
     All Artworks collection and its Refine filters. The counts are taken from exactly the rows that page lists
     (plotart_search_content.collection_order with its own rule), from the same published galleries, so they always
     agree with it and change with every publication that re-renders this region. No published work: no link."""
@@ -149,9 +198,9 @@ def browse(packages, base=BASE):
     if not rows:
         return ""
     works, artists = len(rows), len({pkg["artist"]["slug"] for pkg, _ in rows})
-    return ('<p class="pa-fa-browse"><a class="pa-btn pa-btn--ghost" href="%sartworks/" data-pa-track="gallery_browse_artworks">'
+    return ('<p class="pa-op-browse"><a class="pa-btn pa-btn--ghost" href="%sartworks/" data-pa-track="gallery_browse_artworks">'
             'Browse All Artworks <span aria-hidden="true">&rarr;</span></a>'
-            '<span class="pa-fa-browse-n">Explore %d original %s by %d %s.</span></p>') % (
+            '<span class="pa-op-browse-n">Explore %d original %s by %d %s.</span></p>') % (
         base, works, "work" if works == 1 else "works", artists, "artist" if artists == 1 else "artists")
 
 
