@@ -1,13 +1,10 @@
 {
-  "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-19T20:41:52.000Z",
+  "_note": "Changing this file on plotart/managed-checkout-pilot or plotart/multi-artist-basket requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
+  "requested": "2026-11-21T18:08:24.000Z",
   "phases": [
-    "provider",
-    "privacy",
-    "e2e",
-    "buyer_checkout"
+    "basket_e2e"
   ],
-  "reason": "Full Stripe test-mode regression after the TEST Workers were deployed with the pilot on (19 Nov 2026): provider, privacy, end-to-end with signed webhooks, hosted buyer payment.",
+  "reason": "Multi-artist basket on the managed checkout (branch plotart/multi-artist-basket, 21 Nov 2026): the basket Workers against real Stripe TEST mode with the isolated POC key and the two existing TEST artist accounts. One card entry on the hosted page; a direct charge per artwork, all authorised before any is captured; decline, authentication deadline, refund; everything cleaned up and verified.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,

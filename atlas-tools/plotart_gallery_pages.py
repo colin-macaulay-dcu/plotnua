@@ -247,7 +247,17 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
        E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint))
 
 
-def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
+def basket_block(w, origin):
+    """Multi-artist basket (21 Nov 2026; off unless the founder sets basket_origin in plotart-gallery-config.json). Hidden
+    until pa-basket.js confirms with the checkout Worker that this work can be bought online right now; otherwise the page
+    is exactly the enquiry page it was. Without JavaScript nothing is shown."""
+    return ('<div class="pa-basket" data-pa-basket-origin="%s" data-pa-artwork="%s" hidden>'
+            '<a class="pa-btn pa-btn--ghost" href="%s/basket?add=%s" data-pa-track="artwork_basket_add">Add to basket</a>'
+            '<p class="pa-aw-cta-note">Or buy online: one secure card payment for works from several artists. Each artist is the seller.</p></div>') % (
+        E(origin), E(w["id"]), E(origin), E(w["id"]))
+
+
+def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, basket_origin=None):
     a = pkg["artist"]
     imgs = w["images"]
     im = imgs[0]
@@ -273,6 +283,8 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
             E(enquiry_href(pkg, w)), " data-pa-enquire" if enquiry_endpoint else "",
             "Enquire about this work" if avail == "available" else "Ask to be told if it becomes available", E(a["display_name"]),
             enquiry_form(pkg, w, enquiry_endpoint))
+        if basket_origin and avail == "available":
+            cta += basket_block(w, basket_origin)
     else:
         cta = '<a class="pa-btn pa-btn--ghost" href="%s" data-pa-track="artwork_enquiry_other"%s>Ask about %s\'s other work</a>%s' % (
             E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", E(a["display_name"]), enquiry_form(pkg, None, enquiry_endpoint))
@@ -437,12 +449,13 @@ def gallery_order(pkgs):
     return sorted(pkgs, key=lambda p: (p["publication"].get("approved_at") or "9999", p["artist"]["display_name"]))
 
 
-def gallery_pages(pkg, page, enquiry_endpoint=None):
+def gallery_pages(pkg, page, enquiry_endpoint=None, basket_origin=None):
     """Every page of one artist's gallery: [(path under plotart/, html)]. `page` is the page shell
     (plotart_shell.artist_page in production, build-plotart's page() in the builder)."""
     a = pkg["artist"]
     base = "artists/%s/" % a["slug"]
     scripts = ("plotart.js", "pa-enquiry.js") if enquiry_endpoint else ("plotart.js",)
+    art_scripts = scripts + ("pa-basket.js",) if basket_origin else scripts
     out = [page(base + "index.html", "%s | Original Art | PlotArt" % a["display_name"],
                 ("Explore original work by %s. View artworks, published prices and the artist biography, and enquire through PlotArt." % a["display_name"]),
                 artist_body(pkg, enquiry_endpoint=enquiry_endpoint), scripts)]
@@ -450,5 +463,5 @@ def gallery_pages(pkg, page, enquiry_endpoint=None):
     for i, w in enumerate(ws):
         out.append(page(base + w["slug"] + ".html", "%s by %s | PlotArt" % (w["title"], a["display_name"]),
                         "%s by %s. %s, %s." % (w["title"], a["display_name"], w["medium"], size_line(w)[0]),
-                        artwork_body(pkg, w, ws[i - 1] if i else None, ws[i + 1] if i + 1 < len(ws) else None, enquiry_endpoint=enquiry_endpoint), scripts))
+                        artwork_body(pkg, w, ws[i - 1] if i else None, ws[i + 1] if i + 1 < len(ws) else None, enquiry_endpoint=enquiry_endpoint, basket_origin=basket_origin), art_scripts))
     return [(path, SEO.enrich_artist(path, doc, pkg)) for path, doc in out]
