@@ -108,9 +108,18 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       await fill('#payment-expiryInput,#cardExpiry,input[autocomplete="cc-exp"]', '12 / 34');
       await fill('#payment-cvcInput,#cardCvc,input[autocomplete="cc-csc"]', '123');
       await fill('#billingName,input[autocomplete="cc-name"]', 'Test Buyer', 3000, false);
+      // billing country as Stripe shows it (GitHub runners are often geolocated to the US); postcode and mobile in that
+      // country's TEST format (fictional numbers reserved for drama/testing; no real person)
       const country = await field('#billingCountry,select[autocomplete="country"]', 1000);
-      if (country) await country.selectOption('IE').catch(() => {});
-      await fill('#billingPostalCode,input[autocomplete="postal-code"]', 'D02 X285', 1500, false);
+      let cc = country ? String(await country.inputValue().catch(() => '')).toUpperCase() : '';
+      if (!cc) cc = (await field('text=/ZIP code/i', 500)) ? 'US' : 'IE';
+      const TEST_FORMAT = { US: { postal: '10001', phone: '2015550123' }, GB: { postal: 'SW1A 1AA', phone: '7700900123' },
+        IE: { postal: 'D02 X285', phone: '851234567' }, CA: { postal: 'K1A 0B1', phone: '6135550123' } };
+      const fmt = TEST_FORMAT[cc] || TEST_FORMAT.US;
+      diag.billing_country = cc || 'unknown';
+      await fill('#billingPostalCode,input[autocomplete="postal-code"]', fmt.postal, 1500, false);
+      // Stripe Link's mobile field (appears after the email): complete it in the same country's test format
+      await fill('#phoneNumber,#linkMobilePhoneInput,input[type="tel"],input[autocomplete="tel"],input[autocomplete="tel-national"]', fmt.phone, 1500, false);
       stage = 'submit';
       const submit = await firstOf(['#payment-form-submit-button', '[data-testid="payment-form-submit-button"]', '[data-testid="hosted-payment-submit-button"]',
         'button[type="submit"]:text-matches("^(Pay|Save|Set up|Continue|Confirm)(\\s|$)","i")', 'button.SubmitButton'], 8000);
