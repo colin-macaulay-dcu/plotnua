@@ -4,7 +4,7 @@
 
 ## 0. How this addendum relates to the artist's agreement
 
-0.1 **This addendum is optional.** It applies only to basket orders: purchases of the artist's artworks made by a buyer through the PlotArt basket, alone or together with other artists' works. It sits beside the artist's PlotArt agreement (PA-FAA-2026-11 Founding Artist Agreement or PA-GAA-2026-11 Gallery Artist Agreement), the Gallery Publication and Image Licence PA-GPIL-2026-11 and, if the artist has accepted it, the Payment Pilot Addendum PA-PAY-2026-11. An artist who does not accept it loses nothing: their gallery listing, enquiries, direct sales and any quote under PA-PAY continue exactly as before.
+0.1 **This addendum is optional.** It applies only to basket orders: purchases of the artist's artworks made by a buyer through the PlotArt basket, alone or together with other artists' works. It sits beside the artist's PlotArt agreement (PA-FAA-2026-11 Founding Artist Agreement or PA-GAA-2026-11 Gallery Artist Agreement), the Gallery Publication and Image Licence PA-GPIL-2026-11 and the Payment Pilot Addendum PA-PAY-2026-11. An artist who does not accept it loses nothing: their gallery listing, enquiries, direct sales and any quote under PA-PAY continue exactly as before.
 
 0.2 **Nothing in this addendum reduces any right the artist has under their agreement.** In particular:
   (a) **Founding Artists.** Every Founding Enquiry stays commission-free permanently, and commission can arise only under separate commission terms that the artist has expressly accepted (PA-FAA cl. 3, 5 and 6). This addendum is not such terms. **PlotArt charges no commission and no fee of any kind on a basket order that carries no commission under the artist's agreement.** The only cost on such an order is Stripe's own processing fee, which applies only if the artist gives the separate processing consent in clause 4 and which the artist can avoid at any time by withdrawing it;
@@ -16,7 +16,7 @@
   (a) For a Gallery Artist, this addendum is a written variation under PA-GAA clause 13, applying only to basket orders. For those orders only: PA-GAA clause 4.2 applies as modified by clauses 2, 5 and 6 of this addendum; PlotArt's commission is collected under clause 3.2 instead of being reported and invoiced under PA-GAA clauses 8.1 to 8.4; and commission is returned under clause 7, within the period in PA-GAA clause 9. PA-GAA continues to apply in full to every other sale, and to basket orders in every respect not changed here.
   (b) For a Founding Artist, this addendum changes nothing in PA-FAA. It introduces no commission and no compulsory fee (PA-FAA cl. 3 and 13.2). Taking part, and giving the processing consent, are the artist's free choice and can be withdrawn at any time.
 
-0.4 **PA-PAY clauses that apply to basket orders.** The following clauses of PA-PAY-2026-11 apply to every basket order as if it were a pilot order, with the changes made in this addendum, whether or not the artist has accepted PA-PAY. By accepting this addendum, an artist who has not accepted PA-PAY accepts them for basket orders only:
+0.4 **PA-PAY clauses that apply to basket orders.** To take part in the basket, the artist must also have joined the payment pilot under PA-PAY-2026-11, which provides the artist's Stripe account, seller information and records. The following clauses of PA-PAY apply to every basket order as if it were a pilot order, with the changes made in this addendum:
   (a) clause 2 (the artist is the seller; seller information; trader declaration; the artist's Stripe account; receiving notices);
   (b) clauses 3.2 to 3.9 (collection of commission, Stripe processing fees and their reimbursement on commission orders, VAT, the artist's statement, tax);
   (c) clause 5.2 (payouts);
@@ -34,7 +34,7 @@ PA-PAY clause 1.3, which excludes multi-artwork orders and sales that carry no c
 
 1.3 **Scope.** The basket covers existing original artworks priced from EUR 1.00 to EUR 9,999.99, sold in euro, for delivery in the Republic of Ireland. It does not cover prints, commissions of new work, hire, discounts, gift cards or instalments. PlotArt will not accept a basket that would bring a buyer's apparently linked purchases through PlotArt to EUR 10,000 or more in twelve months (PA-PAY 1.4 applies). These are limits on the scope of the basket, not a statement about anyone's legal obligations.
 
-1.4 **Taking part is optional.** The artist joins by accepting this addendum in PlotArt Studio and can leave at any time there (clause 10).
+1.4 **Taking part is optional.** An artist who has joined the payment pilot (clause 0.4) joins the basket by accepting this addendum in PlotArt Studio, and can leave at any time there (clause 10). For a Founding Artist, joining the payment pilot changes nothing in PA-FAA (PA-PAY 0.4(b)).
 
 ## 2. The artist is the seller
 
@@ -186,7 +186,7 @@ The carrier's limited liability alone is not accepted as transit insurance.
 
 ## 12. Test mode and live payments
 
-12.1 PA-PAY clause 10 applies. Accepting this addendum, or any test version of it, in test mode does not authorise live payments. Before any live basket order, the artist must accept the issued live version of this addendum after it has been shown to them, confirm their seller information (clause 2.2), give the processing consent separately if they wish to offer commission-free artworks (clause 4), and complete Stripe's live onboarding, including payouts. No test-mode acceptance, confirmation, consent or account becomes a live one.
+12.1 PA-PAY clause 10 applies. Accepting this addendum, or any test version of it, in test mode does not authorise live payments. Before any live basket order, the artist must have joined the live payment pilot (PA-PAY), accept the issued live version of this addendum after it has been shown to them, confirm their seller information (clause 2.2), give the processing consent separately if they wish to offer commission-free artworks (clause 4), and complete Stripe's live onboarding, including payouts. No test-mode acceptance, confirmation, consent or account becomes a live one.
 
 ---
 DRAFT r2, not issued.

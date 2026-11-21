@@ -18,6 +18,7 @@ Not part of either text. No solicitor-review stage (founder decision, 22 Nov 202
 | PA-BAA 2.2: seller details shown on the basket page | Basket page is open to anyone; a home address could be exposed without the artist's informed choice | Separate recorded confirmation, bound to the exact information; withdrawn automatically if it changes |
 | PA-BAA 4.5: short consent wording | Did not cover refunds, disputes, gallery/enquiries | Replaced with the exact statement the code records (also C2 test) |
 | PA-BAA 4.1: consent recording | Did not say what is recorded | Artist, account, addendum version and fingerprint, statement, time, given/withdrawn, mode |
+| PA-BAA 0.1, 0.4, 1.4: applied PA-PAY clauses "whether or not the artist has accepted PA-PAY" | The code requires the artist to have joined the payment pilot (Stripe account, seller information) | Joining the pilot is a stated condition; for Founding Artists it changes nothing in PA-FAA (PA-PAY 0.4(b)) |
 | PA-BAA 12.1 | Onboarding wording | Adds seller-information confirmation and payouts enabled (both enforced in code) |
 
 Checked and consistent: amounts and limits (10 works, €9,999.99, €10,000 linked over 12 months), hold times (31 + 15 min; +30 min for bank confirmation), delivery region (ROI), per-artwork charges, all-or-nothing authorisation, refunds/pending/reversed refunds (PA-PAY 7.5–7.6), records (PA-PAY 8), data shared (PA-PAY 9), fresh live acceptance (PA-PAY 10).
