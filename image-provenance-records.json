@@ -22826,6 +22826,998 @@
       "source_sha256": "88f1ff26410c8bebb4fdcab7e82d5b061da9bb20ee418c19de7867b221c7ef97",
       "subject": "artwork",
       "work_slug": "the-creation-of-adam"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/portrait-600.webp",
+      "bytes": 37692,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        398,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d9cb4e6e9768a34e5e5bdae160d7e0b2abe7a28212cb3a2c2c22b6e09744429b",
+      "source_sha256": "de95798f9ea1be08c7bda66052e65db307d122a780042e47da00d31e4d011414",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-8-1-600.webp",
+      "bytes": 17778,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "44dd1330f35c721ec090aa82547baf19cffa2bfa9cfcf25b7bb4f86ea09c1fe9",
+      "source_sha256": "9ed88e95e7ac858ffe95c0a23998286074e19d04017c6e56c29cb00f6e8cada9",
+      "subject": "artwork",
+      "work_slug": "coastal-series-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-8-1-1200.webp",
+      "bytes": 60996,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        900,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "37200917f29b0255811d989d70c2b913b78ea8324a10491aed493d5414c8a98c",
+      "source_sha256": "9ed88e95e7ac858ffe95c0a23998286074e19d04017c6e56c29cb00f6e8cada9",
+      "subject": "artwork",
+      "work_slug": "coastal-series-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-8-1-2000.webp",
+      "bytes": 119220,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1ee3341359dc970d837187d83996968df0a55a6933d57d8882257852c9f65cb4",
+      "source_sha256": "9ed88e95e7ac858ffe95c0a23998286074e19d04017c6e56c29cb00f6e8cada9",
+      "subject": "artwork",
+      "work_slug": "coastal-series-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-8-2-600.webp",
+      "bytes": 24322,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        480,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ee438a391932dc20878b6c36227303553399cdc34d64a1b46c22f03bf4a10346",
+      "source_sha256": "c4083810d01d8148001ba8298abc7f36d8550e8d1c1c719990da78aa3a33f4db",
+      "subject": "artwork",
+      "work_slug": "coastal-series-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-8-2-2000.webp",
+      "bytes": 119156,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1601,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9f864ee9acc83a4d212e120d60d847bb732f72e95176595c4e35358ceeeebfce",
+      "source_sha256": "c4083810d01d8148001ba8298abc7f36d8550e8d1c1c719990da78aa3a33f4db",
+      "subject": "artwork",
+      "work_slug": "coastal-series-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-8-3-600.webp",
+      "bytes": 29124,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2a52fa61335b2453fa93fa50b8e88fa261cb03ac2fbcf444eab547638c45d24e",
+      "source_sha256": "b446af4eccb46a2970ac724878b9a4076932dfe766a7fdb603d45e2789374854",
+      "subject": "artwork",
+      "work_slug": "coastal-series-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-8-3-2000.webp",
+      "bytes": 198230,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6240ca86f05ed1c99f77bb8ea78348e9a968e5a18cfb6b14413f9c85cb18bbcd",
+      "source_sha256": "b446af4eccb46a2970ac724878b9a4076932dfe766a7fdb603d45e2789374854",
+      "subject": "artwork",
+      "work_slug": "coastal-series-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-6-1-600.webp",
+      "bytes": 45056,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        595
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "eec128909405ac4da44cee09eb6d11be7e40882949f4a84b71b9091d2f2858c8",
+      "source_sha256": "d7c83399966fc1febd464879ec4971656d53a86edbcd23a4c4cd5d440d9bc81b",
+      "subject": "artwork",
+      "work_slug": "coastal-series-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-6-1-1200.webp",
+      "bytes": 137110,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1190
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "64dd437676374da8aaa88e236b9fc7f3032d8146ef1f5ea868e45a725656ffa5",
+      "source_sha256": "d7c83399966fc1febd464879ec4971656d53a86edbcd23a4c4cd5d440d9bc81b",
+      "subject": "artwork",
+      "work_slug": "coastal-series-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-6-1-2000.webp",
+      "bytes": 247314,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1983
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "172f3b1b0282f4b84e0ec59b9fa274342eef6c7e87f621b12ad2ce1fb31f42dc",
+      "source_sha256": "d7c83399966fc1febd464879ec4971656d53a86edbcd23a4c4cd5d440d9bc81b",
+      "subject": "artwork",
+      "work_slug": "coastal-series-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-6-2-600.webp",
+      "bytes": 40856,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4e18c41945e08f42ff2f0bed3d7da73fb399ce9f46699bf6e6c4864057b08b7b",
+      "source_sha256": "706dbc8d06d293d16f3c3598bb1746776ddae8e4a1e13c165ab2b6853e3c39f7",
+      "subject": "artwork",
+      "work_slug": "coastal-series-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-6-2-2000.webp",
+      "bytes": 211460,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f91885c4c74ccaccf01db208392a3c1cf41b0e161c98f1b70263ca9105345ad2",
+      "source_sha256": "706dbc8d06d293d16f3c3598bb1746776ddae8e4a1e13c165ab2b6853e3c39f7",
+      "subject": "artwork",
+      "work_slug": "coastal-series-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-6-3-600.webp",
+      "bytes": 39588,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1f8fc9885b37289886748cf533f2c8a108382d5687cc5114fcce7e474c629012",
+      "source_sha256": "351f9d4315d9f452abdc57869579278d322ad4ae62b068810fb28a122342129d",
+      "subject": "artwork",
+      "work_slug": "coastal-series-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-6-3-2000.webp",
+      "bytes": 199844,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e926ccf1c0d332178ed89a71951996040a870c14b2ff1c9acbd260a8c47be40a",
+      "source_sha256": "351f9d4315d9f452abdc57869579278d322ad4ae62b068810fb28a122342129d",
+      "subject": "artwork",
+      "work_slug": "coastal-series-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-4-1-600.webp",
+      "bytes": 23764,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b1975f67c65bc9813ae2e72690d0c55d1c6df53c9e33636aca62a99618be7014",
+      "source_sha256": "d28fe088e778c8b6751a665ef059a28b429b932bf37529ebff999a3774b5abd0",
+      "subject": "artwork",
+      "work_slug": "coastal-series-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-4-1-1200.webp",
+      "bytes": 86480,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        900,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bc090134a053bddd667e1b31a5b296a3ee253a4e90a11e83d99fb0cb6efde428",
+      "source_sha256": "d28fe088e778c8b6751a665ef059a28b429b932bf37529ebff999a3774b5abd0",
+      "subject": "artwork",
+      "work_slug": "coastal-series-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-4-1-2000.webp",
+      "bytes": 171424,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8039b643708059644dc0aad7aeebfb3339750b5544d128b1b3f129657ef31911",
+      "source_sha256": "d28fe088e778c8b6751a665ef059a28b429b932bf37529ebff999a3774b5abd0",
+      "subject": "artwork",
+      "work_slug": "coastal-series-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-4-2-600.webp",
+      "bytes": 25772,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        480,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6c1e783745a083f45c91aaaec090c21f89084d95c3d9d34f4ac5214afd592671",
+      "source_sha256": "3bca8edb9c55829bd0669cb8ebcb4ee2fc3ab1b5bc80764aa0c58bec56ade832",
+      "subject": "artwork",
+      "work_slug": "coastal-series-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-4-2-2000.webp",
+      "bytes": 139174,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1601,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a7029d6cb3a553013ef2d0b48e2dfb1133540a151845ff0aaf714c11220d6fec",
+      "source_sha256": "3bca8edb9c55829bd0669cb8ebcb4ee2fc3ab1b5bc80764aa0c58bec56ade832",
+      "subject": "artwork",
+      "work_slug": "coastal-series-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-4-3-600.webp",
+      "bytes": 25300,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8fc0f787480f4632f1fd1d8f503eba297b2e9e82d8f0bb016011c4ea3a0b3963",
+      "source_sha256": "b51c7492c1dd5bd640518506d38901f7b9626e47b573ae9f05b12f0080ba05ee",
+      "subject": "artwork",
+      "work_slug": "coastal-series-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-4-3-2000.webp",
+      "bytes": 218096,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a66e8ee8f4fe4928e934ed100db95a71fbb825b93b56d5597f77541d7f69646b",
+      "source_sha256": "b51c7492c1dd5bd640518506d38901f7b9626e47b573ae9f05b12f0080ba05ee",
+      "subject": "artwork",
+      "work_slug": "coastal-series-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-5-1-600.webp",
+      "bytes": 22020,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "83383b6d3c0f714eb72253a250d506aa2a547031e2baaf16ba0988e80b7ba6a8",
+      "source_sha256": "370d07dccc97c8b4d1e39836a60b5dae51a7aaa203a123589b3a0b7203e0db1f",
+      "subject": "artwork",
+      "work_slug": "coastal-series-5"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-5-1-1200.webp",
+      "bytes": 70644,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        900,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0928385dfe2bdc76f000427aa90414cef4a7ce926d47fd7f4ea205de85aa6deb",
+      "source_sha256": "370d07dccc97c8b4d1e39836a60b5dae51a7aaa203a123589b3a0b7203e0db1f",
+      "subject": "artwork",
+      "work_slug": "coastal-series-5"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-5-1-2000.webp",
+      "bytes": 140036,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8f15c4817317996705d1b0b5159203ba78bea8e5480af2eb94b6cb275657c0b0",
+      "source_sha256": "370d07dccc97c8b4d1e39836a60b5dae51a7aaa203a123589b3a0b7203e0db1f",
+      "subject": "artwork",
+      "work_slug": "coastal-series-5"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-5-2-600.webp",
+      "bytes": 26532,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        480,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "84321481b93576c3fceea0489beae2e6f5cce123317df9b259d5875fd19f0844",
+      "source_sha256": "646309a9af25a712c675ac801e003c09a6d823598ad5de8518e75d649417aaec",
+      "subject": "artwork",
+      "work_slug": "coastal-series-5"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-5-2-2000.webp",
+      "bytes": 138616,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1601,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4ad7045b97710288cbfc8e197d48d4cec9fa9f6d22bc6f20ed034665eba7e93e",
+      "source_sha256": "646309a9af25a712c675ac801e003c09a6d823598ad5de8518e75d649417aaec",
+      "subject": "artwork",
+      "work_slug": "coastal-series-5"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-5-3-600.webp",
+      "bytes": 46018,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1d06e069f57c1ebd14e17f965d4b9a5dbeb1d9ef6d9767de69d8a44acd540ee9",
+      "source_sha256": "89635914d1b29e57f7e4a7e0d679617e7002e92f411e930a18a1807a6aa0cb22",
+      "subject": "artwork",
+      "work_slug": "coastal-series-5"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-5-3-2000.webp",
+      "bytes": 348120,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "59c6f61494a2f10d01ca1740f3dce94f8c808e0e5b63d95d67abb3f8718ae69a",
+      "source_sha256": "89635914d1b29e57f7e4a7e0d679617e7002e92f411e930a18a1807a6aa0cb22",
+      "subject": "artwork",
+      "work_slug": "coastal-series-5"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-7-1-600.webp",
+      "bytes": 25082,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "69e71601497a9e67fde705a400ed155e9f9a1eb7940dff02761cf640002630a0",
+      "source_sha256": "207648828a07478dbcdeba699993807efaf70d4e0f53881a2466f517b07532c7",
+      "subject": "artwork",
+      "work_slug": "coastal-series-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-7-1-1200.webp",
+      "bytes": 87498,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        900,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6ee5ac65520ac0fa72ba6e55db2ed78de37aeeb5bfe1e4398324c075ba56c9c9",
+      "source_sha256": "207648828a07478dbcdeba699993807efaf70d4e0f53881a2466f517b07532c7",
+      "subject": "artwork",
+      "work_slug": "coastal-series-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "carolyn-walsh",
+      "asset": "plotart/artists/carolyn-walsh/img/coastal-series-7-1-2000.webp",
+      "bytes": 175604,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aap04vxwkxr",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4249832c04f74b4370e534b7a53b23fa5c0c828166b1e675ea7636d48b98d591",
+      "source_sha256": "207648828a07478dbcdeba699993807efaf70d4e0f53881a2466f517b07532c7",
+      "subject": "artwork",
+      "work_slug": "coastal-series-7"
     }
   ],
   "legacy_undeclared": [
