@@ -473,7 +473,8 @@ if (PHASES.includes('basket_split')) {
 if (PHASES.includes('basket_direct')) {   // POC (founder approval 21 Nov 2026): one card entry, a DIRECT charge on each of two artists
   const config = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8'));
   const { proveBasketDirect } = await import('./stripe-testmode-basket-direct.mjs');
-  await proveBasketDirect({ KEY, accounts: [config.reuse_account, config.unfunded_account], rec, v1: S.V1_API_VERSION,
+  // the isolated POC uses ONLY its own restricted TEST key (CHECKOUT_TEST_STRIPE_POC_KEY), never the shared pilot key
+  await proveBasketDirect({ KEY: process.env.STRIPE_POC_KEY || '', accounts: [config.reuse_account, config.unfunded_account], rec, v1: S.V1_API_VERSION,
     runId: process.env.GITHUB_RUN_ID || RUN, playwrightFrom: process.env.MINIFLARE_FROM });
 }
 if (PHASES.includes('buyer_checkout')) {
