@@ -934,7 +934,10 @@ if os.path.exists(_gp):
             need(os.path.exists(os.path.join(PA, "artists", _s, "img", _f)), "L20 gallery/index.html: a featured image is not a published file: %s/%s" % (_s, _f))
         for _h in re.findall(r'href="\.\./(artists/[^"]+)"', _reg):
             need(os.path.exists(os.path.join(PA, _h + ("index.html" if _h.endswith("/") else ""))), "L20 gallery/index.html: a featured link goes nowhere: " + _h)
-        need(not re.findall(r'href="(?!\.\./artists/)[^"]*"', _reg), "L20 gallery/index.html: Featured Artists links outside the artists' galleries")
+        # Browse All Artworks (21 Nov 2026): besides the artists' galleries, exactly one link, to the All Artworks page
+        _out = re.findall(r'href="(?!\.\./artists/)[^"]*"', _reg)
+        need(_out in ([], ['href="../artworks/"']) and (not _out or os.path.exists(os.path.join(PA, "artworks", "index.html"))),
+             "L20 gallery/index.html: Featured Artists links outside the artists' galleries (only Browse All Artworks may)")
         need(len(re.findall(r'class="pa-fa-item"', _reg)) <= FEAT.MAX, "L20 gallery/index.html: more than %d featured artists" % FEAT.MAX)
         _fs = [x["artist"] for x in _sel]
         need(len(_fs) == len(set(_fs)), "L20 gallery/index.html: an artist is featured more than once")

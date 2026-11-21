@@ -6,6 +6,14 @@ body.pa .pa-fa-head{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0
 body.pa .pa-fa-head .pa-eyebrow{ grid-column:1 / -1; margin:0; }
 body.pa .pa-fa-head h2{ margin:0; font-size:clamp(38px, 4.2vw, 62px); }
 body.pa .pa-fa-lede{ margin:0; justify-self:end; max-width:28em; color:var(--stone); font-size:17px; line-height:1.55; }
+/* Browse All Artworks (21 Nov 2026): the heading's right-hand side leads into the full collection and its Refine
+   filters. With it, the short introduction moves under the heading on the left. */
+body.pa .pa-fa-head--browse{ grid-template-columns:minmax(0, 1fr) auto; row-gap:12px; }
+body.pa .pa-fa-head--browse h2{ grid-column:1; grid-row:2; }
+body.pa .pa-fa-head--browse .pa-fa-lede{ grid-column:1; grid-row:3; justify-self:start; }
+body.pa .pa-fa-browse{ grid-column:2; grid-row:2 / 4; align-self:end; justify-self:end; display:flex; flex-direction:column; align-items:flex-end; gap:12px; margin:0; }
+body.pa .pa-fa-browse .pa-btn{ white-space:nowrap; }
+body.pa .pa-fa-browse-n{ color:var(--stone); font-size:14.5px; line-height:1.45; text-align:right; }
 body.pa .pa-fa-list{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(44px, 4.4vw, 64px) clamp(22px, 2.6vw, 40px); margin:0; padding:0; list-style:none; }
 body.pa .pa-fa-list.n-1{ grid-template-columns:minmax(0, 560px); justify-content:center; }
 body.pa .pa-fa-list.n-2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
@@ -33,6 +41,9 @@ body.pa .pa-fa-cta:focus-visible{ outline:2px solid var(--ivory); outline-offset
 @media (max-width:639px){
   body.pa .pa-fa-head{ grid-template-columns:1fr; }
   body.pa .pa-fa-lede{ justify-self:start; }
+  body.pa .pa-fa-head--browse{ grid-template-columns:1fr; }
+  body.pa .pa-fa-browse{ grid-column:1; grid-row:auto; justify-self:start; align-items:flex-start; margin-top:14px; }
+  body.pa .pa-fa-browse-n{ text-align:left; }
   body.pa .pa-fa-list, body.pa .pa-fa-list.n-1, body.pa .pa-fa-list.n-2{ grid-template-columns:1fr; gap:48px; }
   /* phones: the artwork at its own proportions, full width, never cropped */
   body.pa .pa-fa-art{ aspect-ratio:auto; padding:22px; }

@@ -98,7 +98,7 @@ LARGE_BODY = '''
 <h1>Large original artworks for sale in Ireland.</h1>
 <p class="pa-lede">Original paintings and works of 100 cm or more on their longest side, by artists based or working in Ireland. A large work can hold a whole wall: above a sofa, at the end of a hallway, in a reception area or a meeting room. It is seen from across the room and changes the space around it.</p>
 <p class="pa-coll-how">Every work is shown whole, with the artist’s own dimensions and asking price. PlotArt introduces you to the artist. It doesn’t sell, deliver or install artwork: the artist is the seller and arranges any sale with you directly.</p>
-<div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../artworks/">All available artworks →</a></div>
+<div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../artworks/">Browse All Artworks →</a></div>
 </div></section>
 <section class="pa-coll-wall" aria-labelledby="collH"><div class="pa-wrap">
 <h2 id="collH" class="pa-sr">Available large original artworks</h2>

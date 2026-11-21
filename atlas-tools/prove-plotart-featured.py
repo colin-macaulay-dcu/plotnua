@@ -26,6 +26,8 @@ FA9  the launch guard (L11, L20, L6) passes the real page and refuses the same t
 FA10 in a browser at 1440, 820 and 390 px: images load whole (never cropped), no sideways scrolling, no script errors,
      every link resolves (--shots saves previews)
 FA11 the published galleries were only read
+FA12 Browse All Artworks (21 Nov 2026): one link beside the heading to All Artworks, with that page's own counts, which follow
+     publications; no available work -> no link
 Real artist data is only READ (and changed only inside throwaway copies); nothing is written to the live tree.
 """
 import copy, functools, glob, http.server, json, os, re, shutil, subprocess, sys, tempfile, threading
@@ -190,6 +192,35 @@ check("FA7 introductions are verbatim published biography text: whole sentences 
       and not intros["karen-ebbs"].startswith("Statement") and intros["karen-ebbs"].startswith("My name is Karen Ebbs")
       and FEAT.intro(None) == "" and FEAT.intro("  ") == "" and FEAT.intro("word " * 80).endswith("…") and len(FEAT.intro("word " * 80)) <= FEAT.INTRO_MAX + 1,
       intros)
+
+# FA12 Browse All Artworks (21 Nov 2026): beside the heading, one link to the All Artworks page, its counts exactly that
+# page's own (same rows, same published galleries), changing with publications; no published work -> no link
+import plotart_search_content as C       # noqa: E402
+def _counts(pk):
+    region = FEAT.content(SEL, pk)
+    m = re.search(r'<p class="pa-fa-browse"><a class="pa-btn pa-btn--ghost" href="\.\./artworks/" data-pa-track="gallery_browse_artworks">'
+                  r'Browse All Artworks <span aria-hidden="true">&rarr;</span></a><span class="pa-fa-browse-n">Explore (\d+) original works? by (\d+) artists?\.</span></p>', region)
+    coll = re.search(r'>(\d+) original works? by (\d+) artists?<', C.collection(pk))
+    return (m and (int(m.group(1)), int(m.group(2)))), (coll and (int(coll.group(1)), int(coll.group(2)))), region
+now, coll, reg = _counts(PK)
+fewer = copy.deepcopy(PK)
+gone = next(p for p in fewer if p["artist"]["slug"] not in [x["artist"] for x in SEL])   # an unfeatured artist's gallery is removed
+fewer.remove(gone)
+one = copy.deepcopy(PK)
+next(w for w in by["karen-ebbs"]["works"] if w["availability"] == "available")       # sanity: Karen has available work
+for p in one:
+    if p["artist"]["slug"] == "karen-ebbs":
+        next(w for w in p["works"] if w["availability"] == "available")["availability"] = "sold"
+n2, c2, _ = _counts(fewer)
+n3, c3, _ = _counts(one)
+check("FA12 Browse All Artworks sits in the Featured Artists heading, links to the All Artworks page, and its counts equal that page's own (%s)" % (now,),
+      now is not None and now == coll and reg.count('href="../artworks/"') == 1 and reg.index("pa-fa-browse") < reg.index("pa-fa-list")
+      and 'class="pa-fa-head pa-fa-head--browse"' in reg and "pa-rf" not in reg, (now, coll))
+check("FA12b the counts follow publications: a removed gallery and a work no longer available change them, always agreeing with All Artworks (%s -> %s, %s)" % (now, n2, n3),
+      n2 == c2 and n3 == c3 and n2[1] == now[1] - 1 and n2[0] < now[0] and n3 == (now[0] - 1, now[1]), (n2, c2, n3, c3))
+_empty = [dict(copy.deepcopy(p), works=[dict(w, availability="sold") for w in p["works"]]) for p in PK]
+check("FA12c with no available work there is no Browse link (and the heading keeps its usual layout)", "pa-fa-browse" not in FEAT.content(SEL, _empty)
+      and 'class="pa-fa-head"' in FEAT.content(SEL, _empty))
 
 print("— FA8/FA9 the content boundary and the launch guard (throwaway worktree)")
 wt = tempfile.mkdtemp(prefix="pa-feat-wt-")

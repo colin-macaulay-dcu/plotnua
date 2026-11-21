@@ -52,6 +52,45 @@ const future = () => new Date(Date.now() + 10 * 60 * 1000).toISOString();
   await d.keyboard.press('Escape');
   check('K3 keyboard: Escape closes the menu and returns focus to "Price"', await d.isHidden('#rf-price') && await d.evaluate(() => document.activeElement.closest('[data-rf-group]')?.dataset.rfGroup) === 'price');
   check('B4 the choice is kept in the address (shareable)', new URL(d.url()).searchParams.get('price') === '0-1000');
+  // mouse (fix 21 Nov 2026): real pointer clicks on the option text, exactly as a visitor does. The keyboard and
+  // address checks above passed while every mouse choice was lost (the menu closed on mouse-down).
+  const indep = (pg) => pg.evaluate(() => {   // an independent count from the cards' own published values
+    const ch = n => [...document.querySelectorAll(`input[name="${n}"]:checked`)].map(i => i.value);
+    const band = (v, bs) => !bs.length || (v !== 'request' && bs.some(b => { const [lo, hi] = b.split('-'); return +v >= +lo && (hi === '' || +v < +hi); }));
+    const p = ch('price'), s = ch('size'), a = ch('artist'), c = ch('county');
+    return [...document.querySelectorAll('.pa-coll-work')].filter(w => band(w.dataset.price, p) && band(w.dataset.long, s) &&
+      (!a.length || a.includes(w.dataset.artist)) && (!c.length || c.includes(w.dataset.county))).length;
+  });
+  const visible = pg => pg.evaluate(() => [...document.querySelectorAll('.pa-coll-work')].filter(c => c.getBoundingClientRect().height > 0).length);
+  const tap = sel => d.click(sel, { timeout: 3000 }).catch(() => {});   // a lost click is a failed check, not a hang
+  await d.goto(PAGE, { waitUntil: 'networkidle' });
+  await tap('[data-rf-group="artist"] .pa-rf-trig');
+  await tap('#rf-artist .pa-rf-opt >> nth=0');
+  const a1 = await indep(d);
+  check(`D1 mouse: clicking an artist ticks it, the menu stays open, the wall changes at once (${await visible(d)} visible, independent ${a1})`,
+    await d.isChecked('#rf-artist input >> nth=0') && await d.isVisible('#rf-artist') && await visible(d) === a1 && a1 < total &&
+    (await d.textContent('[data-rf-count]')).startsWith(`${a1} of ${total}`));
+  await tap('#rf-artist .pa-rf-opt >> nth=1');
+  const a2 = await indep(d);
+  check(`D2 mouse: a second artist adds to the first (${await visible(d)} visible, independent ${a2})`, await visible(d) === a2 && a2 > a1);
+  await tap('[data-rf-group="price"] .pa-rf-trig');
+  check('D3 mouse: opening "Price" closes "Artist"', await d.isVisible('#rf-price') && await d.isHidden('#rf-artist'));
+  await tap('[data-rf-group="artist"] .pa-rf-trig'); await tap('#rf-artist .pa-rf-opt >> nth=0'); await tap('#rf-artist .pa-rf-opt >> nth=1');   // untick both
+  await tap('[data-rf-group="price"] .pa-rf-trig'); await tap('#rf-price .pa-rf-opt:has(input[value="1000-2500"])');
+  await tap('[data-rf-group="size"] .pa-rf-trig'); await tap('#rf-size .pa-rf-opt:has(input[value="100-150"])');
+  const pick = await d.evaluate(() => { const c = [...document.querySelectorAll('.pa-coll-work:not([data-rf-out])')].find(w => w.dataset.county); return c && { a: c.dataset.artist, c: c.dataset.county }; });
+  if (pick) {
+    await tap('[data-rf-group="artist"] .pa-rf-trig'); await tap(`#rf-artist .pa-rf-opt:has(input[value="${pick.a}"])`);
+    await tap('[data-rf-group="county"] .pa-rf-trig'); await tap(`#rf-county .pa-rf-opt:has(input[value="${pick.c}"])`);
+  }
+  const a3 = await indep(d), q3 = new URL(d.url()).searchParams;
+  check(`D4 mouse: price + size + artist + location combine (${await visible(d)} visible, independent ${a3}); the address records all four`,
+    !!pick && a3 > 0 && await visible(d) === a3 && ['artist', 'price', 'size', 'county'].every(k => q3.get(k)));
+  await d.mouse.click(5, 880);
+  check('D5 a click elsewhere closes the menu and keeps the choices', await d.isHidden('#rf-county') && a3 > 0 && await visible(d) === a3);
+  await tap('.pa-rf-clear--line');
+  check('D6 mouse: "Clear" restores the full collection, the count and the address', await visible(d) === total &&
+    (await d.textContent('[data-rf-count]')).trim() === expected.count && !new URL(d.url()).search);
   for (const [k, v] of Object.entries(expected.cases)) {
     await d.goto(PAGE + '?' + v.q, { waitUntil: 'networkidle' });
     check(`C  ${k}: ${await shown(d)} shown, independent count ${v.n}`, await shown(d) === v.n, await d.textContent('[data-rf-count]'));

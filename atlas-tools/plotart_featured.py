@@ -28,6 +28,7 @@ import html
 import re
 
 import plotart_gallery_pages as P
+import plotart_search_content as C   # the All Artworks collection, so the counts below are exactly that page's
 
 FEAT_BEGIN, FEAT_END = "<!-- pa-featured-artists:begin -->", "<!-- pa-featured-artists:end -->"
 REGION = re.compile(re.escape(FEAT_BEGIN) + r".*?" + re.escape(FEAT_END), re.S)
@@ -131,11 +132,27 @@ def content(selection, packages, base=BASE):
     items = resolve(selection, packages)
     if not items:
         return ""
+    more = browse(packages, base)
     return ('<section class="pa-sec pa-fa" aria-labelledby="featArtH"><div class="pa-wrap">\n'
-            '  <div class="pa-fa-head"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2>'
-            '<p class="pa-fa-lede">A changing selection of artists and their work.</p></div>\n'
+            '  <div class="pa-fa-head%s"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2>'
+            '<p class="pa-fa-lede">A changing selection of artists and their work.</p>%s</div>\n'
             '  <ol class="pa-fa-list n-%d">%s\n  </ol>\n'
-            '</div></section>') % (len(items), "".join(_item(p, w, im, base) for p, w, im in items))
+            '</div></section>') % (" pa-fa-head--browse" if more else "", more, len(items), "".join(_item(p, w, im, base) for p, w, im in items))
+
+
+def browse(packages, base=BASE):
+    """Browse All Artworks (founder brief 21 Nov 2026): a clear way from the Featured Artists heading into the complete
+    All Artworks collection and its Refine filters. The counts are taken from exactly the rows that page lists
+    (plotart_search_content.collection_order with its own rule), from the same published galleries, so they always
+    agree with it and change with every publication that re-renders this region. No published work: no link."""
+    rows = C.collection_order(packages, C.COLLECTIONS["artworks/index.html"]["keep"])
+    if not rows:
+        return ""
+    works, artists = len(rows), len({pkg["artist"]["slug"] for pkg, _ in rows})
+    return ('<p class="pa-fa-browse"><a class="pa-btn pa-btn--ghost" href="%sartworks/" data-pa-track="gallery_browse_artworks">'
+            'Browse All Artworks <span aria-hidden="true">&rarr;</span></a>'
+            '<span class="pa-fa-browse-n">Explore %d original %s by %d %s.</span></p>') % (
+        base, works, "work" if works == 1 else "works", artists, "artist" if artists == 1 else "artists")
 
 
 def region(doc):

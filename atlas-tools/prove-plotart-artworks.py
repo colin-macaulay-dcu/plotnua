@@ -243,7 +243,7 @@ check("A10 works alternate between artists (no artist twice in a row while anoth
 
 # A11 (development review only: needs the main commit to compare with, so it runs only when given one)
 LINKS = {"plotart/index.html": '\n  <p style="font-size:15px;margin:0">Or <a href="artworks/" data-pa-track="home_artworks">browse all available artworks <span aria-hidden="true">→</span></a></p>',
-         "plotart/gallery/index.html": '<a href="../artworks/" data-pa-track="vg_artworks">All available artworks →</a>',
+         "plotart/gallery/index.html": '<a href="../artworks/" data-pa-track="vg_artworks">Browse All Artworks →</a>',
          "plotart/buy-original-art-ireland.html": ' To see every work currently on offer in one place, browse <a href="artworks/">all available artworks</a>.'}
 LATER = {"plotart/buy-original-art-ireland.html": ['\n<p>Looking for a statement piece? Browse <a href="large-artworks/">large original artworks</a> of 100 cm or more.</p>']}
 if "--against" in sys.argv:

@@ -118,7 +118,10 @@
   // a desktop menu closes when you click elsewhere or tab out of it
   document.addEventListener('click', guard(function (e) { if (!mobile.matches && !e.target.closest('[data-rf]')) closeMenus(); }));
   root.addEventListener('focusout', guard(function (e) {
-    if (mobile.matches) return;
+    // Fix 21 Nov 2026: a mouse press on an option's text moves focus to nowhere (relatedTarget null), which closed the
+    // menu before the click could tick the box, so mouse choices never applied. Only keyboard moves (Tab, with a
+    // relatedTarget) close it here; clicks elsewhere are handled by the document click above.
+    if (mobile.matches || !e.relatedTarget) return;
     var g = e.target.closest('[data-rf-group]');
     if (g && !(e.relatedTarget && g.contains(e.relatedTarget))) { var t = g.querySelector('.pa-rf-trig'); if (t && t.getAttribute('aria-expanded') === 'true') setOpen(t, false); }
   }));
