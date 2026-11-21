@@ -70,6 +70,13 @@ The scripts push nothing when any of these is true:
 2. **Gate and promotion.** The gate starts on that push. Nothing dispatches it any more.
    - "Release to production" promotes `release/auto/*` branches, except the publishers that promote their own releases and rollbacks: `plotart-`, `garden-` and `ideas-`.
    - Atlas stats, Atlas Match and Claude-session releases are promoted by "Release to production".
+   - **Moving `main` (Stage 2, 21 Nov 2026).** `promote.sh` pushes `main` and its `prod/` tag **as the PlotNua Release App**, in **one atomic push**: GitHub applies both or neither. Before this, `main` was moved with the workflow's built-in `GITHUB_TOKEN` (`github-actions[bot]`).
+     - In GitHub Actions, `promote.sh` **refuses before doing anything** if the App token is missing.
+     - If the push reports an error, `promote.sh` re-reads `main`. If GitHub did apply it, the release still gets its live check and, if needed, its automatic rollback, so a release is never left unverified. If `main` cannot be re-read at all, the run stops with **"FOUNDER ATTENTION"** (exit 2, so the failure alert fires) and never claims that nothing was released.
+     - The token is never printed: git's output is redacted.
+     - An App push, unlike a `GITHUB_TOKEN` push, starts the read-only `push: main` checks (the Image rights gate and the evidence checks). "Release to production" ignores `main`, as it already does for the founder's pull-request merges.
+     - This is what lets main's planned **"Restrict updates"** ruleset admit the App alone (it is not active yet; it needs separate founder approval).
+     - **Workflow-file changes** cannot be pushed by the App (no Workflows permission). They reach `main` only by a pull request that the founder merges.
 3. **Where the key lives.** The App key is the environment secret `RELEASE_APP_KEY` of the environment **`release-automation`** (deployment branches: `main` only), alongside the variable `RELEASE_APP_ID`.
    - Only the releasing jobs use that environment, with `deployment: false`, so no deployment records are created. The one exception is the read-only Atlas dry run (`atlas-match-qualification-dry-run.yml`), which uses it only for the Airtable token and never references the key.
    - The key is never stored in the repository or in any report.
@@ -80,8 +87,8 @@ The scripts push nothing when any of these is true:
    - The revert is pushed to `release/auto/rollback-<topic>` with the App token, gated on its push, and released.
    - **Releases that changed `.github/workflows/` cannot be reverted by the App**, by design. The run stops with **"FOUNDER ROLLBACK REQUIRED"**, and the founder runs `rollback-<name>.sh`.
 5. **Proofs (run in the gate):**
-   - `prove-release-app-push.py` (A1–A8, with a planted-fault self-test);
-   - `prove-release-promote.sh` (local throw-away repositories).
+   - `prove-release-app-push.py` (A1–A11, with a planted-fault self-test; A11 is the Stage 2 App push of `main` and `prod/` tags);
+   - `prove-release-promote.sh` (local throw-away repositories; section 6 covers the Stage 2 atomic App push, with per-ref ruleset refusals, token redaction and the rollback in Actions mode).
 
 ## Founder approval before every website release (`website-production`)
 

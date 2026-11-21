@@ -15,9 +15,9 @@ name: PlotArt content publishing
 #
 # Secrets: STUDIO_ACCESS_CLIENT_ID / STUDIO_ACCESS_CLIENT_SECRET (a Cloudflare Access service token for the Studio),
 # STUDIO_URL (the Studio Worker's address), STUDIO_PIPELINE_TOKEN (the same value as the Worker's
-# PIPELINE_TOKEN secret). The default GITHUB_TOKEN pushes; its permission is limited to this repository's contents.
-# A push made by this workflow does not start other workflows, so it runs the image-rights and provenance checks
-# itself before pushing.
+# PIPELINE_TOKEN secret). The default GITHUB_TOKEN pushes only the content/ audit branches; release/auto/ branches, main
+# and prod/ tags are pushed as the PlotNua Release App (Stage 2, 21 Nov 2026). The workflow runs the image-rights and
+# provenance checks itself before pushing.
 on:
   schedule:
     - cron: '7,17,27,37,47,57 * * * *'
@@ -68,8 +68,9 @@ jobs:
       - name: Trusted copy of the release tooling (from main)
         run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
       # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows
-      # permission), from the release-automation environment (main only). Used only to push release/auto/ branches,
-      # so that the Image rights gate starts on a PUSH: the only gate main's required check counts (Stage 1, 10 Nov 2026).
+      # permission), from the release-automation environment (main only). It pushes the release/auto/ branches, so that
+      # the Image rights gate starts on a PUSH (Stage 1, 10 Nov 2026), and, through promote.sh, main and its prod/ tag in
+      # one atomic push: main is only ever moved as the App, never with the built-in GITHUB_TOKEN (Stage 2, 21 Nov 2026).
       - name: Release push token (PlotNua Release App)
         id: app
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
@@ -90,8 +91,8 @@ jobs:
           git config user.name "PlotArt content pipeline"
           git config user.email "hello@plotnua.ie"
           python3 atlas-tools/plotart-gallery-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push
-      # Commits pushed with GITHUB_TOKEN do not trigger a GitHub Pages build (GitHub documentation), so the pipeline
-      # requests one itself, and only when it actually moved main.
+      # The pipeline requests the GitHub Pages build itself, and only when it actually moved main (a GITHUB_TOKEN push
+      # never triggered one; an App push may also start one, and the duplicate is superseded as usual).
       - name: Request the GitHub Pages build when main moved
         env:
           GH_TOKEN: ${{ github.token }}
