@@ -185,6 +185,25 @@ console.log('— R/N1 a reduction made before payout, restored after its refund 
   check('N1i a restoration for a refund that has NOT failed is refused', (await trIns(D, { id: 'rs3', basket: 'b2', artist: 'arowan', kind: 'restoration', cause: 'r3', amount: 1 })) !== true);
   check('N1j a restoration without a written reason is refused', (await trIns(D, { id: 'rs4', basket: 'b2', artist: 'arowan', kind: 'restoration', cause: 'r2', attempt: 3, amount: 1, reason: '' })) !== true);
 }
+{
+  // isolation of the restoration cap: the first restoration FAILED (so nothing is in flight) and a reversal for another
+  // refund lowered the net paid, so neither the one-in-flight rule nor the net cap refuses an over-restoration
+  const D = mk(await freshDb()); await CO.claimsOn({ DB: D.db });
+  await basket(D, 'b3', [{ line: 'l1', artist: 'arowan', work: 'w1', cents: 100000 }]);
+  await basketHold(D, 'b3', 'w1'); await pay(D, 'b3'); await basketSell(D, 'b3', 'w1'); await settle(D, 'b3');
+  await rfIns(D, { id: 'r2', basket: 'b3', amount: 30000, comm: 4500 }); await partIns(D, { refund: 'r2', ref: 'l1', artist: 'arowan', amount: 30000, comm: 4500 });
+  await adj(D, { id: 'j1', basket: 'b3', artist: 'arowan', kind: 'pending_reduction', cause: 'r2', amount: 25500 });
+  await release(D, 'b3', 'arowan'); await trIns(D, { id: 't1', basket: 'b3', artist: 'arowan', amount: 59500 }); await trMade(D, 't1');
+  await D.run("UPDATE basket_refunds SET status = 'failed' WHERE id = 'r2'");
+  await adj(D, { id: 'j2', basket: 'b3', artist: 'arowan', kind: 'pending_restored', cause: 'r2', amount: 25500 });
+  await trIns(D, { id: 'rs1', basket: 'b3', artist: 'arowan', kind: 'restoration', cause: 'r2', amount: 25500 });
+  await D.run("UPDATE basket_transfers SET status = 'failed', failure = 'platform balance' WHERE id = 'rs1'");
+  await rfIns(D, { id: 'r4', basket: 'b3', amount: 1000, comm: 150 }); await partIns(D, { refund: 'r4', ref: 'l1', artist: 'arowan', amount: 1000, comm: 150 });
+  await rvIns(D, { id: 'v4', transfer: 't1', cause: 'r4', amount: 850 }); await D.run("UPDATE basket_transfer_reversals SET status = 'created', stripe_reversal_id = 'trr_4' WHERE id = 'v4'");
+  const over = await trIns(D, { id: 'rs2', basket: 'b3', artist: 'arowan', kind: 'restoration', cause: 'r2', attempt: 2, amount: 25501 });
+  check('N1k [N1] isolation: a retried restoration above what was restored is refused by the restoration cap itself', over !== true && /repays only a reduction restored/.test(over), over);
+  check('N1l [N1] …and the exact restored amount is accepted on retry (new attempt, new key)', (await trIns(D, { id: 'rs3', basket: 'b3', artist: 'arowan', kind: 'restoration', cause: 'r2', attempt: 3, amount: 25500 })) === true);
+}
 
 /* ---------------------------------------------------------------- S · strict status machine (N2) */
 console.log('— S strict basket status machine: no paid inserts, no reopening, no skipped reconciliation [N2]');
@@ -236,7 +255,21 @@ console.log('— C one original across both checkouts: checkout.js\'s OWN statem
   check('C11 the single checkout sells its held work: its hold claim becomes the sale claim', await singleSale(env, o3) === 'sold' && (await D.q("SELECT kind FROM artwork_claims WHERE artwork_id = 'wfree'").first()).kind === 'sale');
   check('C12 [H1] a sale claim cannot be released while the sale is active', await D.refused("DELETE FROM artwork_claims WHERE artwork_id = 'wfree'", [], /released only after the sale/) === true);
   await order(D, 'oq', 'wq', 'quoted', future);
-  check('C13 [M1] a basket cannot claim a work with an OPEN single-artist quote', await basketHold(D, 'b1', 'wq') !== true);
+  await basket(D, 'b4', [{ line: 'q', artist: 'a1', work: 'wq', cents: 10000 }]);   // an OPEN basket: only the quote can refuse it
+  const c13 = await basketHold(D, 'b4', 'wq');
+  check('C13 [M1] a basket cannot claim a work with an OPEN single-artist quote (refused for that reason)', c13 !== true && /quoted through the single-artist checkout/.test(c13), c13);
+  // isolation: a single-artist sale written by pre-claims code has no claim; only the claims guard can see it
+  await order(D, 'oorph', 'worph', 'paid'); await D.run("INSERT INTO artwork_sales (order_id, artwork_id, sold_at) VALUES ('oorph','worph',?)", t);
+  await basket(D, 'b5', [{ line: 'o', artist: 'a1', work: 'worph', cents: 10000 }]);
+  const corph = await D.accepted("INSERT INTO artwork_claims (artwork_id, holder_kind, holder_id, kind, expires_at, claimed_at) VALUES ('worph','basket','b5','hold',?,?)", future, t);
+  check('C13b [H1] a single-artist sale with NO claim (written before the claims-aware checkout) still blocks a basket claim', corph !== true && /sold, held or quoted through the single-artist/.test(corph), corph);
+  // isolation: a basket claim without its reservation row; only the assertion stops the single checkout's no-op upsert
+  await basket(D, 'b6', [{ line: 'n', artist: 'a1', work: 'wnr', cents: 10000 }]);
+  await D.run("INSERT INTO artwork_claims (artwork_id, holder_kind, holder_id, kind, expires_at, claimed_at) VALUES ('wnr','basket','b6','hold',?,?)", future, t);
+  await order(D, 'onr', 'wnr');
+  const cnr = await singleHold(env, { id: 'onr', artwork_id: 'wnr' });
+  check('C13c [H1] the claim assertion alone stops the single checkout when a basket holds only the claim', cnr !== 'held' && /claimed through the other checkout/.test(cnr)
+    && (await D.q("SELECT COUNT(*) n FROM artwork_reservations WHERE artwork_id = 'wnr'").first()).n === 0, cnr);
   await order(D, 'ox', 'wx', 'quoted', past);
   await basket(D, 'b3', [{ line: 'x', artist: 'a1', work: 'wx', cents: 10000 }]);
   check('C14 an EXPIRED single-artist quote no longer blocks a basket', await basketHold(D, 'b3', 'wx') === true);
