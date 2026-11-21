@@ -105,7 +105,7 @@ HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
 CAMPAIGN_IMAGES = {"assets/campaigns/one-painting-three-rooms-840.webp", "assets/campaigns/one-painting-three-rooms-1672.webp"}
-ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-artworks.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set()) | ({"assets/pa-apply.js", "assets/plotart-join.css"} if launch.get("gallery_application_state") == "open" else set())
+ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-artworks.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", "assets/pa-basket.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set()) | ({"assets/pa-apply.js", "assets/plotart-join.css"} if launch.get("gallery_application_state") == "open" else set())
 # Join PlotArt (Phase 3, 13 Nov 2026): the application page and the curatorial policy; the script ships only in "open".
 GA_STATE = launch.get("gallery_application_state")
 GA_EP = launch.get("gallery_application_endpoint")
