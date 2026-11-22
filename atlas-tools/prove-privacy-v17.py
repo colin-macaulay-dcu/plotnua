@@ -10,10 +10,11 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "atlas-tools"))
 import privacy_v17_layer as V  # noqa: E402
 import privacy_v16_layer as V16  # noqa: E402
+import privacy_v18_layer as V18  # noqa: E402  (V18 sits on top once published: the V17 checks read the page beneath it)
 
 bad = []
 ok = lambda c, m: None if c else bad.append(m)
-priv = (ROOT / "privacy.html").read_text(encoding="utf-8")
+priv = V18.without_v18((ROOT / "privacy.html").read_text(encoding="utf-8"))
 APPLIED = V.MARKER in priv
 if not APPLIED:
     try:

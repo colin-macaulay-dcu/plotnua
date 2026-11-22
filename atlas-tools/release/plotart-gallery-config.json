@@ -1,5 +1,6 @@
 {
   "schema": "plotnua.plotart.gallery-config.v1",
-  "status": "Founder-controlled switches for the PlotArt content pipeline. enquiry_endpoint null = artwork pages offer the pilot email link only; set to the approved relay route only with the founder's activation approval.",
-  "enquiry_endpoint": "https://plotart-enquiry.colin-a41.workers.dev/v1/enquiry"
+  "status": "Founder-controlled switches for the PlotArt content pipeline. enquiry_endpoint null = artwork pages offer the pilot email link only; set to the approved relay route only with the founder's activation approval. basket_origin = the live PlotArt checkout Worker (founder approval, Steps 5 and 6, 22 Nov 2026): available artworks show a hidden basket button that appears only when the checkout confirms the work can be bought online.",
+  "enquiry_endpoint": "https://plotart-enquiry.colin-a41.workers.dev/v1/enquiry",
+  "basket_origin": "https://plotart-checkout.colin-a41.workers.dev"
 }
