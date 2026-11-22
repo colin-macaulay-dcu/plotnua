@@ -716,7 +716,16 @@ export async function adminArtists(env) {
     const stripe = !mem.account ? 'not connected' : mem.ready && mem.account.payouts_enabled ? 'onboarded' : 'onboarding incomplete';
     const missing = [!mem.opted_in && 'payment pilot', !bm.current && 'basket addendum', stripe !== 'onboarded' && 'Stripe onboarding',
       (!prof || C.sellerProblems(env, prof).length) && 'seller information', !bm.seller_disclosure.valid && 'seller-information confirmation', !offers && 'delivery offers'].filter(Boolean);
-    out.push({ id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, basket_addendum: bm.doc_id, basket_current: bm.current,
+    // Online purchase: how many of the artist's available artworks the basket would accept right now (the same check the
+    // public basket and the gallery button use). An artist with something missing cannot sell any, so only a ready
+    // artist's works are checked one by one (this keeps the page to a few queries per artist).
+    const avail = await all(env, `SELECT id FROM artworks WHERE artist_id = ? AND archived = 0 AND availability = 'available' ORDER BY ord`, a.id);
+    const online = { available: avail.length, purchasable: 0, not_purchasable: {} };
+    if (!missing.length) for (const w of avail) {
+      const l = await lineFor(env, w.id, now());
+      if (l.ok) online.purchasable++; else online.not_purchasable[l.why] = (online.not_purchasable[l.why] || 0) + 1;
+    } else if (avail.length) online.not_purchasable['artist not ready'] = avail.length;
+    out.push({ id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, basket_addendum: bm.doc_id, basket_current: bm.current, online,
       seller_disclosure: bm.seller_disclosure, processing_consent: bm.processing_consent, missing,
       commission_free_works: !a.founding ? 'none expected' : bm.processing_consent.valid ? 'offered (artist bears Stripe fees, 0% commission)' : 'direct payment only (no valid consent)' });
   }

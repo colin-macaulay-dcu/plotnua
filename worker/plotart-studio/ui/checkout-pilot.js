@@ -221,13 +221,28 @@
     h += `</ul>` + step('basket-leave', 'Stop online purchase…', `<p class="st-muted">Your artworks are no longer offered in the basket. Baskets already paid or being paid are completed.</p>${tick('Stop online purchase of my artworks.')}`, 'Stop');
     return h + '</section>';
   }
-  function basketFounder(bj) {
-    return `<section class="st-card" id="basket-readiness"><h2>Basket readiness <small class="st-muted">commission-free works: ${esc(bj.commission_free_policy.replace(/_/g, ' '))}${bj.consents_installed ? '' : ' · migration 0020 not installed'}</small></h2>
-      <table class="st-table"><tr><th>Artist</th><th>Stripe</th><th>Addendum</th><th>Seller info shown</th><th>Processing-fee consent</th><th>Offers</th><th>Missing</th></tr>
+  function basketFounder(bj, own) {   // own: the Review desk tab, where the page heading already names it
+    const on = a => a.online || { available: 0, purchasable: 0, not_purchasable: {} };
+    const ready = bj.artists.filter(a => !a.missing.length).length, tot = bj.artists.reduce((n, a) => n + on(a).available, 0), buy = bj.artists.reduce((n, a) => n + on(a).purchasable, 0);
+    const why = o => Object.entries(o.not_purchasable).map(([k, n]) => `${n} ${esc(k)}`).join('<br>');
+    const policy = `commission-free works: ${esc(bj.commission_free_policy.replace(/_/g, ' '))}${bj.consents_installed ? '' : ' · migration 0020 not installed'}`;
+    return `<section class="st-card" id="basket-readiness">${own ? `<p class="st-muted">${policy}</p>` : `<h2>Basket readiness <small class="st-muted">${policy}</small></h2>`}
+      <p>${ready} of ${bj.artists.length} artists ready · ${buy} of ${tot} available artworks can be bought online. <span class="st-muted">Every other artwork stays enquiry-only; its Add to basket button appears by itself once its artist is ready.</span></p>
+      <div class="st-scroll"><table class="st-table"><tr><th>Artist</th><th>Stripe</th><th>Addendum</th><th>Seller info shown</th><th>Processing-fee consent</th><th>Offers</th><th>Missing</th><th>Online purchase</th></tr>
       ${bj.artists.map(a => `<tr><td>${esc(a.display_name)}${a.founding ? ' <small>(Founding)</small>' : ''}</td><td>${esc(a.stripe)}</td><td>${esc(a.basket_addendum || '—')}${a.basket_addendum && !a.basket_current ? ' (old)' : ''}</td>
         <td>${a.seller_disclosure.valid ? 'confirmed ' + esc(a.seller_disclosure.at) : a.seller_disclosure.changed_since ? 'changed since confirmed' : '—'}</td>
         <td>${a.founding ? (a.processing_consent.valid ? 'given ' + esc(a.processing_consent.at) + ' (' + esc(a.processing_consent.doc_id) + ')' : a.processing_consent.given ? 'given for an older addendum' : 'none') : 'not needed'}</td>
-        <td>${esc(a.delivery_offers)}</td><td>${a.missing.length ? esc(a.missing.join(', ')) : 'ready'}</td></tr>`).join('')}</table></section>`;
+        <td>${esc(a.delivery_offers)}</td><td>${a.missing.length ? esc(a.missing.join(', ')) : 'ready'}</td>
+        <td><strong>${on(a).purchasable} of ${on(a).available}</strong> artworks${on(a).purchasable < on(a).available ? `<br><small class="st-muted">${why(on(a))}</small>` : ''}</td></tr>`).join('')}</table></div></section>`;
+  }
+
+  /* /admin/baskets: the Review desk's "Basket readiness" tab shows this same founder section on its own (22 Nov 2026). */
+  async function loadReadiness() {
+    document.querySelector('.st-tabs a[aria-current]')?.scrollIntoView({ block: 'nearest', inline: 'center' });   // the tab bar scrolls: show this tab
+    let bj = null, err = '';
+    try { bj = await api('GET', base + '/baskets/artists'); } catch (e) { err = e.message; }
+    app.innerHTML = `<h1 class="st-h1">Basket readiness</h1><p class="st-muted">Each artist completes these steps themselves in Studio → Payment pilot. <a href="/admin/checkout">Open the Payment pilot page</a></p>`
+      + (bj && bj.installed ? basketFounder(bj, true) : `<p class="st-err" role="alert">${esc(err || 'The multi-artist basket is not installed.')}</p>`);
   }
 
   async function load() {
@@ -416,5 +431,6 @@
       if (a === 'refresh') { await api('POST', `${base}/account/refresh`, {}); load(); } });
     on('button[data-refresh]', 'click', async e => { await api('POST', `${base}/accounts/${e.target.dataset.refresh}/refresh`, {}); load(); });
   }
+  if (location.pathname === '/admin/baskets') { loadReadiness(); return; }
   load().catch(e => { app.innerHTML = `<p>${esc(e.message)}</p>`; });
 })();

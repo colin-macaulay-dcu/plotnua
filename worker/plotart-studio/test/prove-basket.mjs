@@ -199,6 +199,9 @@ const ra = Object.fromEntries(r.j.artists.map(a => [a.id, a]));
 check('C8 founder readiness view: consent, document version, seller-information confirmation and what is missing, per artist',
   ra.afnd.processing_consent.valid && ra.afnd.processing_consent.doc_id === BAA.doc_id && ra.afnd.seller_disclosure.valid && !ra.afnd.missing.length && ra.agal.processing_consent && !ra.agal.missing.length
   && ra.anob.missing.includes('basket addendum') && /0% commission/.test(ra.afnd.commission_free_works), r.j.artists);
+check('C8a founder readiness: each artist’s available artworks and how many can be bought online now (a not-ready artist: none, “artist not ready”)',
+  ra.anob.online && ra.anob.online.purchasable === 0 && (ra.anob.online.available === 0 || ra.anob.online.not_purchasable['artist not ready'] === ra.anob.online.available)
+  && ra.agal.online.purchasable + Object.values(ra.agal.online.not_purchasable).reduce((n, x) => n + x, 0) === ra.agal.online.available && ra.agal.online.purchasable > 0, Object.values(ra).map(a => [a.id, a.online]));
 r = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wafnd1', FOUNDER);
 check('A9 with the Founding Artist’s own processing consent (and the TEST policy switch), their work is offered at 0% commission (Founding 25 entitlement kept)', r.j.items[0].ok && r.j.items[0].commission_basis === 'founding_enquiry', r.j.items);
 
@@ -456,6 +459,17 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
     await fp.waitForSelector('#basket-readiness', { timeout: 20000 }); txt = await fp.textContent('#basket-readiness');
     check('U5 founder page: basket readiness per artist (consent and its document version, seller information confirmation, what is missing)', /Fia Founding \(Founding\)/.test(txt) && /given .*PA-BAA-TEST-01/.test(txt) && /confirmed /.test(txt) && /basket addendum/.test(txt), txt.slice(0, 600));
     if (UISHOT) await fp.locator('#basket-readiness').screenshot({ path: `${UISHOT}/founder-readiness.png` });
+    // the Review desk's Basket readiness tab: the same section, inside the Review desk header and tabs (22 Nov 2026)
+    await fp.goto(S.url + '/admin/baskets', { waitUntil: 'load' }); await fp.waitForSelector('#basket-readiness', { timeout: 20000 });
+    const tabs = await fp.$$eval('.st-tabs a', as => as.map(a => [a.textContent, a.getAttribute('aria-current')]));
+    txt = await fp.textContent('#basket-readiness');
+    check('U5a Review desk "Basket readiness" tab: every Review desk tab kept, this one current; the same readiness table with online purchase per artist; one dashboard (no second copy)',
+      tabs.length === 11 && tabs[0][0] === 'Review desk' && tabs[10][0] === 'Basket readiness' && tabs[10][1] === 'page' && tabs.filter(t => t[1]).length === 1
+      && /Fia Founding \(Founding\)/.test(txt) && /Online purchase/.test(txt) && /of \d+ available artworks can be bought online/.test(txt) && (await fp.$$('#basket-readiness')).length === 1
+      && /Open the Payment pilot page/.test(await fp.textContent('#app')), { tabs, txt: txt.slice(0, 600) });
+    if (UISHOT) { await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab.png`, fullPage: true }); await fp.setViewportSize({ width: 390, height: 844 }); await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab-phone.png`, fullPage: true }); await fp.setViewportSize({ width: 1280, height: 900 }); }
+    const dk = await fp.goto(S.url + '/admin', { waitUntil: 'load' }).then(() => fp.$$eval('.st-tabs a', as => as.map(a => [a.textContent, a.getAttribute('href')])));
+    check('U5b the Review desk itself shows the Basket readiness tab, after Opportunities', dk.length === 11 && dk[9][0] === 'Opportunities' && dk[10][0] === 'Basket readiness' && dk[10][1] === '/admin/baskets', dk);
     await fc.close();
     // buyer: a discreet, collapsed "Seller and returns information" per artist, desktop and phone
     // every earlier work has been sold by now: three fresh synthetic works (one Gallery, two Founding), published, with offers
