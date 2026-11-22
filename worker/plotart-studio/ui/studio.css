@@ -412,3 +412,42 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-diff-key{ font-size:13px; margin:12px 0 0; } .st-diff-key del, .st-diff-key ins{ margin:0 4px; }
 .st-diff-key del{ color:#F5B7A3; } .st-diff-key ins{ color:#D3E8C9; text-decoration:none; }
 .st-pending{ color:var(--stone); font-size:14.5px; } .st-pending b{ color:#F2EBE0; }
+
+/* Online sales (22 Nov 2026): the optional card on the Studio home page and the artist's steps on the Online sales page */
+.st-os-opt{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--stone); border:1px solid var(--line-2, rgba(242,235,224,.18)); border-radius:999px; padding:3px 10px; }
+.st-os-state{ margin:10px 0 2px; color:var(--ivory); font-size:15px; }
+.st-os-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:9px; vertical-align:middle; background:var(--stone); }
+.st-os-dot.on{ background:#8DBE7C; }
+.st-os-bar{ height:4px; border-radius:999px; background:rgba(242,235,224,.08); margin:14px 0 4px; overflow:hidden; }
+.st-os-bar span{ display:block; height:100%; background:var(--terra-text); border-radius:inherit; }
+.st-os-lead{ max-width:62ch; margin:0 0 18px; }
+.st-os-list{ list-style:none; margin:12px 0 4px; padding:0; }
+.st-os-list li + li{ border-top:1px solid rgba(242,235,224,.06); }
+.st-os-list a{ display:grid; grid-template-columns:28px minmax(0,1fr) auto; column-gap:12px; align-items:center; min-height:48px; padding:9px 4px; color:var(--lime); text-decoration:none; border-radius:10px; font-size:14.5px; line-height:1.45; }
+.st-os-list a:hover{ background:rgba(242,235,224,.04); } .st-os-list a:focus-visible{ outline:2px solid var(--terra-text); outline-offset:2px; }
+.st-os-list small{ display:block; color:var(--stone); font-size:13px; }
+.st-os-n{ width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-size:12.5px; color:var(--stone); border:1px solid rgba(242,235,224,.16); }
+.st-os-s{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--stone); }
+.st-os-list li.done a{ color:var(--stone); } .st-os-list li.done .st-os-n{ color:#1B1C1E; background:#8DBE7C; border-color:#8DBE7C; } .st-os-list li.done .st-os-s{ color:#8DBE7C; }
+.st-os-list li.next .st-os-n{ color:var(--ivory); border-color:var(--terra-text); } .st-os-list li.next .st-os-s{ color:#F2C9B8; } .st-os-list li.next a{ color:var(--ivory); }
+.st-os-steps .st-os-h3{ margin:22px 0 0; font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--mute, #9a948b); }
+.st-os-why{ list-style:none; margin:4px 0 0; padding:0; color:var(--stone); font-size:14px; } .st-os-why li{ padding:3px 0; }
+.st-os-note{ margin:12px 0 0; font-size:13.5px; }
+/* The artist's Online sales page only (body.st-osp): its existing forms in the Studio's own style. The founder's Payment
+   pilot page is not affected. */
+.st-osp #app h2{ margin:0 0 6px; } .st-osp #app h3{ margin:20px 0 6px; }
+.st-osp #app section.st-card{ margin-bottom:16px; }
+.st-osp #app button{ display:inline-flex; align-items:center; justify-content:center; min-height:40px; padding:0 16px; margin:8px 8px 0 0; border-radius:999px; font:600 14px var(--sans);
+  border:1px solid var(--line-2); background:transparent; color:var(--ivory); cursor:pointer; }
+.st-osp #app button:hover{ border-color:var(--ivory); } .st-osp #app button[disabled]{ opacity:.45; cursor:not-allowed; }
+.st-osp #app form button:last-child, .st-osp #app button[data-a2="onboard"]{ background:var(--terra); border-color:var(--terra); color:#1B1C1E; }
+.st-osp #app form button:last-child:hover, .st-osp #app button[data-a2="onboard"]:hover{ background:var(--terra-hover); border-color:var(--terra-hover); }
+.st-osp #app form{ margin:10px 0 0; } .st-osp #app form label{ display:block; margin:10px 0; color:var(--lime); font-size:14.5px; line-height:1.5; }
+.st-osp #app form label:has(input[type=checkbox]), .st-osp #app form label:has(input[type=radio]){ display:flex; gap:10px; align-items:flex-start; }
+.st-osp #app input[type=checkbox], .st-osp #app input[type=radio]{ accent-color:var(--terra); width:18px; height:18px; margin:3px 0 0; flex:0 0 auto; }
+.st-osp #app input:not([type=checkbox]):not([type=radio]), .st-osp #app select, .st-osp #app textarea{ display:block; width:100%; box-sizing:border-box; min-height:44px; margin-top:6px; padding:10px 12px;
+  font:15px var(--sans); color:var(--ivory); background:#1F2022; border:1px solid var(--line-2); border-radius:12px; }
+.st-osp #app fieldset{ border:1px solid rgba(242,235,224,.09); border-radius:12px; padding:12px 14px; margin:12px 0; } .st-osp #app legend{ color:var(--ivory); padding:0 6px; }
+.st-osp #app details{ border-top:1px solid rgba(242,235,224,.06); padding:4px 0; } .st-osp #app details > summary{ min-height:44px; display:flex; align-items:center; cursor:pointer; color:var(--ivory); }
+.st-osp #app ul{ padding-left:18px; } .st-osp #app li{ margin:6px 0; }
+.st-osp #app .st-os-list, .st-osp #app .st-os-why{ padding-left:0; } .st-osp #app .st-os-list li{ margin:0; } .st-osp #app .st-os-why li{ margin:0; }

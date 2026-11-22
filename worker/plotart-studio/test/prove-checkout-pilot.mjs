@@ -1527,11 +1527,11 @@ console.log('— founder forms in a real browser (no dialogs)');
     const fd = acard.locator('form[data-f="decline"]'); await fd.getByLabel(/What should change/).fill('Please correct the packed size (SIMULATED)'); await fd.getByRole('button', { name: 'Ask for changes' }).click(); await settle();
     check('UI25 the artist asks for changes with an on-page form: the quote goes back to a draft with the note recorded, as before',
       (await order(oa2.id)).status === 'draft' && (await q("SELECT detail FROM order_events WHERE order_id = ? AND action = 'artist_declined'", oa2.id))[0].detail.includes('packed size'));
-    await ap.locator('summary', { hasText: 'Leave the payment pilot…' }).click();
-    const fl = ap.locator('form[data-f="leave"]'); await fl.getByRole('button', { name: 'Leave the pilot' }).click();
+    await ap.locator('summary', { hasText: 'Stop online sales…' }).click();
+    const fl = ap.locator('form[data-f="leave"]'); await fl.getByRole('button', { name: 'Stop online sales' }).click();
     const vE = await (async () => { await ap.waitForFunction(() => /Tick the box/.test(document.querySelector('form[data-f="leave"] [data-err]')?.textContent || ''), null, { timeout: 15000 }); return fl.locator('[data-err]').innerText(); })();
     const stillIn = (await call('GET', '/api/checkout', GAL)).j.membership.opted_in;
-    await fl.getByLabel('Leave the payment pilot.', { exact: false }).check(); await fl.getByRole('button', { name: 'Leave the pilot' }).click(); await settle();
+    await fl.getByLabel('Stop online sales.', { exact: false }).check(); await fl.getByRole('button', { name: 'Stop online sales' }).click(); await settle();
     const after = (await call('GET', '/api/checkout', GAL)).j.membership;
     check('UI26 leaving needs the tick (refused on the page without it, still in the pilot); with it the artist leaves, unpaid quotes are cancelled and paid orders continue, as before',
       /Tick the box/.test(vE) && stillIn === true && after.opted_in === false && (await order(oa2.id)).status === 'cancelled' && (await order(ou.id)).payment_intent

@@ -705,31 +705,64 @@ export async function adminEligibility(env, ids) {
   for (const id of [...new Set((ids || []).map(String))].slice(0, 50)) { const l = await lineFor(env, id, at); out.push({ id, ok: l.ok, why: l.ok ? null : l.why, commission_basis: l.ok ? l.entitlement.basis : null, total_cents: l.ok ? l.money.total_cents : null }); }
   return { items: out, commission_free_policy: commissionFreePolicy(env) };
 }
-/* Founder: every artist's basket readiness, from the records only (who can be bought, and why not). */
+/* Online sales readiness: ONE definition, used by the founder's Basket readiness tab and by the artist's own Studio card
+   and payment-page steps (22 Nov 2026), so both always see the same answer. Records only; nothing is changed here. The
+   steps follow the order of the artist's payment page. "online" counts the artist's available artworks that the basket
+   would accept right now, with the same check the public basket and the gallery button use (lineFor); an artist with a
+   step still to do cannot sell any, so only a ready artist's works are checked one by one. */
+const ARTIST_REASON = {
+  'artist not ready': 'online sales set-up not finished', 'price on request': 'price on request (add a price to sell online)',
+  'above the pilot price limit': 'above the online price limit', 'no delivery offer': 'no delivery offer yet',
+  'delivery cover below the price': 'transit insurance below the price', 'return arrangements missing': 'return arrangements missing from the delivery offer',
+  'commission-free: no valid processing-fee consent': 'commission-free work: needs the optional processing-fee consent',
+  'commission-free: direct payment (policy)': 'commission-free work: enquiry and direct sale only', 'sold': 'sold',
+  'reserved': 'reserved for a buyer just now', 'published price differs from the Studio': 'new price not yet published',
+  'not published as available': 'not yet published as available',
+};
+export async function artistReadiness(env, a) {
+  const bm = await artistMembership(env, a.id), mem = await C.membership(env, a.id), prof = await C.sellerProfile(env, a.id);
+  const pay = await C.currentTerms(env, 'artist_payment_addendum');
+  const offers = (await one(env, 'SELECT COUNT(*) AS n FROM artwork_delivery_offers WHERE artist_id = ? AND withdrawn_at IS NULL', a.id)).n;
+  const stripe = !mem.account ? 'not connected' : mem.ready && mem.account.payouts_enabled ? 'onboarded' : 'onboarding incomplete';
+  const steps = [
+    { key: 'join', label: 'Join online sales (payment addendum)', founder: 'payment pilot', done: !!(mem.opted_in && pay && mem.addendum === pay.doc_id) },
+    { key: 'seller', label: 'Add your seller information', founder: 'seller information', done: !!(prof && !C.sellerProblems(env, prof).length) },
+    { key: 'stripe', label: 'Connect Stripe and complete its checks', founder: 'Stripe onboarding', done: stripe === 'onboarded' },
+    { key: 'basket', label: 'Accept the basket addendum', founder: 'basket addendum', done: !!bm.current },
+    { key: 'disclosure', label: 'Confirm what buyers see about you as the seller', founder: 'seller-information confirmation', done: !!bm.seller_disclosure.valid },
+    { key: 'delivery', label: 'Set a delivery offer for each artwork', founder: 'delivery offers', done: offers > 0 },
+  ];
+  const missing = steps.filter(x => !x.done).map(x => x.founder);
+  const avail = await all(env, `SELECT id FROM artworks WHERE artist_id = ? AND archived = 0 AND availability = 'available' ORDER BY ord`, a.id);
+  const online = { available: avail.length, purchasable: 0, not_purchasable: {} };
+  if (!missing.length) for (const w of avail) {
+    const l = await lineFor(env, w.id, now());
+    if (l.ok) online.purchasable++; else online.not_purchasable[l.why] = (online.not_purchasable[l.why] || 0) + 1;
+  } else if (avail.length) online.not_purchasable['artist not ready'] = avail.length;
+  const artist_reasons = {};
+  for (const [k, n] of Object.entries(online.not_purchasable)) { const t = ARTIST_REASON[k] || 'not available online just now'; artist_reasons[t] = (artist_reasons[t] || 0) + n; }
+  return { id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, basket_addendum: bm.doc_id, basket_current: bm.current, online,
+    seller_disclosure: bm.seller_disclosure, processing_consent: bm.processing_consent, missing, steps: steps.map(({ founder, ...x }) => x), artist_reasons,
+    commission_free_works: !a.founding ? 'none expected' : bm.processing_consent.valid ? 'offered (artist bears Stripe fees, 0% commission)' : 'direct payment only (no valid consent)' };
+}
+/* Founder: every artist's basket readiness. */
 export async function adminArtists(env) {
   if (!(await installed(env))) return { installed: false, artists: [] };
   const artists = await all(env, `SELECT id, display_name, founding, account_status FROM artists WHERE account_status = 'active' ORDER BY display_name`);
   const out = [];
-  for (const a of artists) {
-    const bm = await artistMembership(env, a.id), mem = await C.membership(env, a.id), prof = await C.sellerProfile(env, a.id);
-    const offers = (await one(env, 'SELECT COUNT(*) AS n FROM artwork_delivery_offers WHERE artist_id = ? AND withdrawn_at IS NULL', a.id)).n;
-    const stripe = !mem.account ? 'not connected' : mem.ready && mem.account.payouts_enabled ? 'onboarded' : 'onboarding incomplete';
-    const missing = [!mem.opted_in && 'payment pilot', !bm.current && 'basket addendum', stripe !== 'onboarded' && 'Stripe onboarding',
-      (!prof || C.sellerProblems(env, prof).length) && 'seller information', !bm.seller_disclosure.valid && 'seller-information confirmation', !offers && 'delivery offers'].filter(Boolean);
-    // Online purchase: how many of the artist's available artworks the basket would accept right now (the same check the
-    // public basket and the gallery button use). An artist with something missing cannot sell any, so only a ready
-    // artist's works are checked one by one (this keeps the page to a few queries per artist).
-    const avail = await all(env, `SELECT id FROM artworks WHERE artist_id = ? AND archived = 0 AND availability = 'available' ORDER BY ord`, a.id);
-    const online = { available: avail.length, purchasable: 0, not_purchasable: {} };
-    if (!missing.length) for (const w of avail) {
-      const l = await lineFor(env, w.id, now());
-      if (l.ok) online.purchasable++; else online.not_purchasable[l.why] = (online.not_purchasable[l.why] || 0) + 1;
-    } else if (avail.length) online.not_purchasable['artist not ready'] = avail.length;
-    out.push({ id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, basket_addendum: bm.doc_id, basket_current: bm.current, online,
-      seller_disclosure: bm.seller_disclosure, processing_consent: bm.processing_consent, missing,
-      commission_free_works: !a.founding ? 'none expected' : bm.processing_consent.valid ? 'offered (artist bears Stripe fees, 0% commission)' : 'direct payment only (no valid consent)' });
-  }
+  for (const a of artists) out.push(await artistReadiness(env, a));
   return { installed: true, consents_installed: await consentsInstalled(env), commission_free_policy: commissionFreePolicy(env), artists: out };
+}
+/* Artist: their own readiness (Studio home card, payment-page steps). Nothing internal: founder labels and internal
+   reasons are left out. Not installed: { installed: false } and the Studio shows no card. */
+export async function artistReadinessView(env, artist) {
+  if (!(await installed(env)) || !(await C.installed(env))) return { installed: false };
+  const r = await artistReadiness(env, artist);
+  const done = r.steps.filter(x => x.done).length, next = r.steps.find(x => !x.done) || null;
+  const sw = C.switches(env);
+  return { installed: true, enabled: !!sw.enabled, live: !!sw.live, steps: r.steps, done, total: r.steps.length, next: next && next.key,
+    ready: !next, founding: r.founding, processing_consent: !!r.processing_consent.valid,
+    online: { available: r.online.available, purchasable: r.online.purchasable, reasons: r.artist_reasons }, started: r.steps.some(x => x.done) };
 }
 export async function adminReconcile(env, founder, id) { await coordinate(env, id, founder); return adminDetail(env, id); }
 export async function adminCancel(env, founder, id, b) {

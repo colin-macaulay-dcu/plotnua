@@ -201,7 +201,7 @@
     h += `<p>You accepted ${esc(m.doc_id)} on ${esc(m.at)}.</p>`;
     // 1 · seller information shown before payment
     const si = bj.seller_info;
-    h += `<h3>Seller information shown to buyers before payment</h3>`;
+    h += `<h3 id="pay-disclosure">Seller information shown to buyers before payment</h3>`;
     if (!si) h += '<p class="st-warn">Complete your seller information above first.</p>';
     else {
       h += `<dl class="st-dl">${[['Seller', si.shown.legal_name + (si.shown.trading_name ? ` (trading as ${si.shown.trading_name})` : '')], ['Address', si.shown.address], ['Returns and complaints', si.shown.returns_address], ['Email', si.shown.email], ['Telephone', si.shown.phone], ['VAT number', si.shown.vat_number]].filter(([, v]) => v).map(([t, v]) => `<dt>${esc(t)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
@@ -215,7 +215,7 @@
         : `<p class="st-muted">Without this consent your commission-free artworks stay on enquiry and direct sale, as now.</p><form data-f="basket-processing"><p style="white-space:pre-line">${esc(bj.processing_statement)}</p><label><input type="checkbox" name="accept" required> I agree to the statement above.</label><button>Give this consent</button></form>`;
     }
     // 3 · delivery offers, per artwork
-    h += `<h3>Delivery offers</h3><p class="st-muted">An artwork can be bought online only with a delivery offer you have approved, including transit insurance for at least its price.</p><ul>`;
+    h += `<h3 id="pay-delivery">Delivery offers</h3><p class="st-muted">An artwork can be bought online only with a delivery offer you have approved, including transit insurance for at least its price.</p><ul>`;
     for (const w of bj.works) h += `<li data-id="${esc(w.id)}"><strong>${esc(w.title)}</strong> ${w.price_eur ? '€' + esc(w.price_eur) : '<small class="st-muted">price on request</small>'} · ${esc(w.availability)}
       · ${w.offer ? `delivery ${eur(w.offer.delivery_cents)} (version ${esc(w.offer.version)}) <button data-withdraw-offer="${esc(w.id)}">Withdraw</button>` : '<small class="st-muted">no delivery offer</small>'}${offerForm(w, bj)}</li>`;
     h += `</ul>` + step('basket-leave', 'Stop online purchase…', `<p class="st-muted">Your artworks are no longer offered in the basket. Baskets already paid or being paid are completed.</p>${tick('Stop online purchase of my artworks.')}`, 'Stop');
@@ -245,12 +245,36 @@
       + (bj && bj.installed ? basketFounder(bj, true) : `<p class="st-err" role="alert">${esc(err || 'The multi-artist basket is not installed.')}</p>`);
   }
 
+  /* The artist's steps (22 Nov 2026), from the same readiness check as the founder's Basket readiness tab. Each step
+     jumps to its section below; nothing here changes anything. */
+  const STEP_AT = { join: '#pay-join', seller: '#pay-seller', stripe: '#pay-stripe', basket: '#basket', disclosure: '#pay-disclosure', delivery: '#pay-delivery' };
+  function stepsCard(r) {
+    const o = r.online, why = Object.entries(o.reasons || {}).sort((a, b) => b[1] - a[1]);
+    return `<section class="st-card st-os-steps" aria-labelledby="os-steps-h"><div class="st-ck-top"><h2 id="os-steps-h">Your steps</h2><span class="st-ck-count">${r.done} of ${r.total} done</span></div>
+      <div class="st-os-bar" aria-hidden="true"><span style="width:${Math.round(100 * r.done / r.total)}%"></span></div>
+      <ol class="st-os-list">${r.steps.map((x, i) => `<li class="${x.done ? 'done' : x.key === r.next ? 'next' : ''}"><a href="${STEP_AT[x.key]}" data-step="${x.key}"><span class="st-os-n" aria-hidden="true">${x.done ? '✓' : i + 1}</span><span>${esc(x.label)}${x.key === 'delivery' ? '<small>Including transit insurance for at least the price</small>' : ''}</span><span class="st-os-s">${x.done ? 'Done' : x.key === r.next ? 'Next' : 'To do'}</span></a></li>`).join('')}</ol>
+      ${r.founding ? `<p class="st-muted st-os-note">Founding Artist: your commission-free artworks can also be bought online if you give the separate, optional processing-fee consent in the basket section${r.processing_consent ? ' (given)' : ''}.</p>` : ''}
+      <h3 class="st-os-h3">Your artworks</h3>
+      <p class="st-os-state">${o.available ? `${o.purchasable} of ${o.available} available ${o.available === 1 ? 'artwork' : 'artworks'} can be bought online` : 'No available artworks yet'}</p>
+      ${why.length ? `<ul class="st-os-why">${why.map(([t, n]) => `<li>${n} ${esc(t)}</li>`).join('')}</ul>` : ''}
+      <p class="st-muted st-os-note">Artworks that can’t be bought online stay on enquiry, as now.</p></section>`;
+  }
+
   async function load() {
     const j = await api('GET', base);
     if (!j.installed) { app.innerHTML = '<h1>Payment pilot</h1><p>The payment pilot is not installed.</p>'; return; }
-    let h = `<h1>Payment pilot <small class="st-muted">(${j.switches && j.switches.live ? 'LIVE: real payments' : 'Stripe test mode'})</small></h1><p id="page-error" class="st-err" role="alert" tabindex="-1" hidden></p>`;
     const sw = j.switches;
-    h += `<p class="st-muted">Pilot ${sw.enabled ? (sw.live ? 'switched ON (LIVE: real card payments)' : 'switched ON (test mode)') : 'switched OFF'}${founder && sw.key_problem ? ' · ' + esc(sw.key_problem) : ''}.${sw.live ? '' : ' No live payment can be taken.'}</p>`;
+    let h;
+    if (founder) {
+      h = `<h1>Payment pilot <small class="st-muted">(${sw && sw.live ? 'LIVE: real payments' : 'Stripe test mode'})</small></h1><p id="page-error" class="st-err" role="alert" tabindex="-1" hidden></p>`;
+      h += `<p class="st-muted">Pilot ${sw.enabled ? (sw.live ? 'switched ON (LIVE: real card payments)' : 'switched ON (test mode)') : 'switched OFF'}${sw.key_problem ? ' · ' + esc(sw.key_problem) : ''}.${sw.live ? '' : ' No live payment can be taken.'}</p>`;
+    } else {
+      // the artist's Online sales page (22 Nov 2026): what it is, then their steps and which artworks can be bought online
+      h = `<p class="st-muted">Optional</p><h1 class="st-h1">Online sales</h1><p id="page-error" class="st-err" role="alert" tabindex="-1" hidden></p>
+        <p class="st-muted st-os-lead">Buyers can buy your available artworks online with one secure card payment, alone or with other artists’ works. You remain the seller and are paid into your own Stripe account. Your gallery, enquiries and direct sales work exactly as now whether or not you set this up.${sw.enabled ? (sw.live ? '' : ' <strong>Test mode: no real payment can be taken.</strong>') : ' <strong>Online sales are not open at the moment.</strong>'}</p>`;
+      let rd = null; try { rd = await api('GET', base + '/basket/readiness'); } catch { rd = null; }
+      if (rd && rd.installed) h += stepsCard(rd);
+    }
     if (founder) {
       const pz = j.pause || { paused: false }, ab = j.absence || { items: [], open_sessions: [], quotes_awaiting_payment: [] };
       h += `<section id="pause-control" class="st-card ${pz.paused ? 'st-paused' : ''}"><h2>${esc(pz.label || 'Pause new quotes and payments')} <span class="st-badge">${pz.paused ? 'PAUSED' : 'Not paused'}</span></h2>
@@ -303,13 +327,14 @@
       if (j.unprocessed_events.length) h += `<h2>Provider events waiting</h2><ul>${j.unprocessed_events.map(e => `<li>${esc(e.type)} · ${esc(e.status)} · ${esc(e.detail || '')}</li>`).join('')}</ul>`;
     } else {
       const m = j.membership;
-      if (!m.opted_in) h += j.addendum ? `<h2>Join the payment pilot (optional)</h2><p>Read the <a href="/payment-terms/${esc(j.addendum.doc_id)}.html" target="_blank" rel="noopener">${esc(j.addendum.title)}</a>.</p>
-        <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label><button>Join the pilot</button></form>` : '<p>The payment addendum has not been issued yet.</p>';
+      h += '<section class="st-card st-os-sec">';   // the artist's payment set-up in one card (22 Nov 2026)
+      if (!m.opted_in) h += j.addendum ? `<h2 id="pay-join">Join online sales</h2><p>Read the <a href="/payment-terms/${esc(j.addendum.doc_id)}.html" target="_blank" rel="noopener">${esc(j.addendum.title)}</a>.</p>
+        <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label><button>Set up online sales</button></form>` : '<p id="pay-join">The payment addendum has not been issued yet.</p>';
       else {
-        h += `<p class="st-muted">${esc(j.direct_payment_note)}</p>`;
+        h += `<h2>Payments and Stripe</h2><p class="st-muted">${esc(j.direct_payment_note)}</p>`;
         if (j.seller_profile && !j.checkout_available) h += `<p class="st-warn">${esc(j.trader_question.unavailable)}</p>`;
         const sp = j.seller_profile || {};
-        h += `<details ${j.seller_problems.length ? 'open' : ''}><summary>Seller information for managed checkout${j.seller_problems.length ? ' — needed before any managed-checkout quote' : ''}</summary><p>${esc(j.trader_question.direct)}</p><form data-f="seller">
+        h += `<p id="pay-join" class="st-muted">You joined on ${esc(m.opted_in_at)} (${esc(m.addendum)}).</p><details id="pay-seller" ${j.seller_problems.length ? 'open' : ''}><summary>Seller information for managed checkout${j.seller_problems.length ? ' — needed before any managed-checkout quote' : ''}</summary><p>${esc(j.trader_question.direct)}</p><form data-f="seller">
           ${[['legal_name', 'Legal name'], ['trading_name', 'Trading name (optional)'], ['address', 'Address where you are established'], ['returns_address', 'Returns and complaints address, if different (optional)'], ['email', 'Email for buyers'], ['phone', 'Telephone for buyers'], ['vat_number', 'VAT number, if registered (optional)']]
             .map(([k, t]) => `<label>${t} <input name="${k}" value="${esc(sp[k] || '')}"></label>`).join('')}
           <fieldset><legend>${esc(j.trader_question.question)}</legend><p class="st-muted"><em>${esc(j.trader_question.review_note)}</em></p><p class="st-muted">${esc(j.trader_question.intro)}</p><p class="st-muted">${esc(j.trader_question.explain)}</p>
@@ -318,11 +343,12 @@
         if (j.pending_refunds.length) h += `<h2>A refund is waiting for your Stripe balance</h2>${j.pending_refunds.map(r => `<p class="st-warn">${esc(r.reference)}: ${eur(r.amount_cents)}, waiting ${r.days_pending} days. Stripe cancels it on ${esc(r.stripe_fails_it_by)} if still unfunded.</p>`).join('')}<ol>${j.pending_refunds[0].what_to_do.map(x => `<li>${esc(x)}</li>`).join('')}</ol>`;
         h += m.processing_consent ? `<p>You have agreed that Stripe’s processing fees may be deducted on commission-free pilot orders (${esc(m.processing_consent_at)}). <button data-a2="withdraw-processing">Withdraw this consent</button></p>`
           : `<details><summary>Commission-free sales through the pilot (optional, separate consent)</summary><form data-f="processing"><label><input type="checkbox" name="accept" required> ${esc(j.processing_statement)}</label><button>Give this consent</button></form></details>`;
-        h += `<p>You joined the pilot on ${esc(m.opted_in_at)} (${esc(m.addendum)}). Stripe: ${m.account ? (m.ready ? (j.switches && j.switches.live ? 'ready to take payments' : 'ready to take test payments') : 'onboarding incomplete' + (m.account.requirements_due.length ? ' — Stripe still needs: ' + esc(m.account.requirements_due.join(', ')) : '')) : 'not connected yet'}.</p>
+        h += `<p id="pay-stripe">Stripe: ${m.account ? (m.ready ? (j.switches && j.switches.live ? 'ready to take payments' : 'ready to take test payments') : 'onboarding incomplete' + (m.account.requirements_due.length ? ' — Stripe still needs: ' + esc(m.account.requirements_due.join(', ')) : '')) : 'not connected yet'}.</p>
           <p><button data-a2="onboard">${m.account ? 'Continue Stripe onboarding' : 'Connect a Stripe account'}</button> ${m.account ? '<button data-a2="refresh">Refresh status</button>' : ''}</p>`
-          + step('leave', 'Leave the payment pilot…', `<p class="st-muted">Unpaid quotes are cancelled; paid orders continue to completion. Your seller information is removed (each issued quote keeps its own copy). You keep selling directly, as now, and can join again later.</p>
-            ${tick('Leave the payment pilot.')}`, 'Leave the pilot');
+          + step('leave', 'Stop online sales…', `<p class="st-muted">Unpaid quotes are cancelled; paid orders continue to completion. Your seller information is removed (each issued quote keeps its own copy). You keep selling directly, as now, and can join again later.</p>
+            ${tick('Stop online sales.')}`, 'Stop online sales');
       }
+      h += '</section>';
     }
     // multi-artist basket (separate, optional): artist controls and founder readiness
     let bj = null;
@@ -330,6 +356,9 @@
     if (bj && bj.installed) h += founder ? basketFounder(bj) : basketArtist(bj, j);
     h += `<h2>Orders</h2>${j.orders.length ? j.orders.map(orderCard).join('') : '<p class="st-muted">None yet.</p>'}`;
     app.innerHTML = h;
+    // a step whose section is not on the page yet (it appears once the basket addendum is accepted) opens the basket section
+    app.querySelectorAll('a[data-step]').forEach(a => a.addEventListener('click', e => { const t = app.querySelector(a.getAttribute('href')) || app.querySelector('#basket') || app.querySelector('#pay-join');
+      if (t) { e.preventDefault(); if (t.tagName === 'DETAILS') t.open = true; t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }));
     J_BASKET = bj;
     wire(j);
   }
@@ -432,5 +461,6 @@
     on('button[data-refresh]', 'click', async e => { await api('POST', `${base}/accounts/${e.target.dataset.refresh}/refresh`, {}); load(); });
   }
   if (location.pathname === '/admin/baskets') { loadReadiness(); return; }
+  document.querySelector('.st-tabs a[aria-current]')?.scrollIntoView({ block: 'nearest', inline: 'center' });   // Online sales tab in view on phones
   load().catch(e => { app.innerHTML = `<p>${esc(e.message)}</p>`; });
 })();
