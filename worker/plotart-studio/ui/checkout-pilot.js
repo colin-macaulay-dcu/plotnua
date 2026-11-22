@@ -329,7 +329,7 @@
       const m = j.membership;
       h += '<section class="st-card st-os-sec">';   // the artist's payment set-up in one card (22 Nov 2026)
       if (!m.opted_in) h += j.addendum ? `<h2 id="pay-join">Join online sales</h2><p>Read the <a href="/payment-terms/${esc(j.addendum.doc_id)}.html" target="_blank" rel="noopener">${esc(j.addendum.title)}</a>.</p>
-        <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label><button>Join the pilot</button></form>` : '<p id="pay-join">The payment addendum has not been issued yet.</p>';
+        <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label><button>Set up online sales</button></form>` : '<p id="pay-join">The payment addendum has not been issued yet.</p>';
       else {
         h += `<h2>Payments and Stripe</h2><p class="st-muted">${esc(j.direct_payment_note)}</p>`;
         if (j.seller_profile && !j.checkout_available) h += `<p class="st-warn">${esc(j.trader_question.unavailable)}</p>`;
@@ -345,8 +345,8 @@
           : `<details><summary>Commission-free sales through the pilot (optional, separate consent)</summary><form data-f="processing"><label><input type="checkbox" name="accept" required> ${esc(j.processing_statement)}</label><button>Give this consent</button></form></details>`;
         h += `<p id="pay-stripe">Stripe: ${m.account ? (m.ready ? (j.switches && j.switches.live ? 'ready to take payments' : 'ready to take test payments') : 'onboarding incomplete' + (m.account.requirements_due.length ? ' — Stripe still needs: ' + esc(m.account.requirements_due.join(', ')) : '')) : 'not connected yet'}.</p>
           <p><button data-a2="onboard">${m.account ? 'Continue Stripe onboarding' : 'Connect a Stripe account'}</button> ${m.account ? '<button data-a2="refresh">Refresh status</button>' : ''}</p>`
-          + step('leave', 'Leave the payment pilot…', `<p class="st-muted">Unpaid quotes are cancelled; paid orders continue to completion. Your seller information is removed (each issued quote keeps its own copy). You keep selling directly, as now, and can join again later.</p>
-            ${tick('Leave the payment pilot.')}`, 'Leave the pilot');
+          + step('leave', 'Stop online sales…', `<p class="st-muted">Unpaid quotes are cancelled; paid orders continue to completion. Your seller information is removed (each issued quote keeps its own copy). You keep selling directly, as now, and can join again later.</p>
+            ${tick('Stop online sales.')}`, 'Stop online sales');
       }
       h += '</section>';
     }
