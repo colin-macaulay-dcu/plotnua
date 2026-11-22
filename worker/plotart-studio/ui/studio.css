@@ -451,3 +451,5 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-osp #app details{ border-top:1px solid rgba(242,235,224,.06); padding:4px 0; } .st-osp #app details > summary{ min-height:44px; display:flex; align-items:center; cursor:pointer; color:var(--ivory); }
 .st-osp #app ul{ padding-left:18px; } .st-osp #app li{ margin:6px 0; }
 .st-osp #app .st-os-list, .st-osp #app .st-os-why{ padding-left:0; } .st-osp #app .st-os-list li{ margin:0; } .st-osp #app .st-os-why li{ margin:0; }
+.st-os-msg{ margin:12px 0 0; padding:12px 14px; border-radius:12px; border:1px solid rgba(207,133,102,.45); background:rgba(207,133,102,.08); color:var(--ivory); font-size:14.5px; line-height:1.5; }
+.st-os-msg a{ color:#F2C9B8; white-space:nowrap; } .st-os-msg:focus{ outline:2px solid var(--terra-text); outline-offset:2px; }
