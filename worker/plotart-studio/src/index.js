@@ -1347,6 +1347,7 @@ async function route(req, env) {
     }
     /* Managed checkout pilot (test mode; off by default). Separate from the gallery, its publishing and the agreements. */
     if (p === '/admin/checkout') return html(A.CHECKOUT_HTML);
+    if (p === '/admin/baskets') return html(A.BASKETS_HTML);   // the Review desk's Basket readiness tab
     // TEST only: the synthetic basket gallery for the founder's inspection (behind this Studio's Access; never in production)
     if ((p === '/admin/basket-gallery' || /^\/admin\/basket-gallery\/[A-Za-z0-9_-]{1,64}$/.test(p)) && m === 'GET' && BP.stagingGallery(env) && ['test', 'local'].includes(env.ENVIRONMENT)) {
       const r = await BG.route(env, url, { page: BP.page, esc: BP.esc, eur: BP.eur }, 'studio'); if (r) return r;
