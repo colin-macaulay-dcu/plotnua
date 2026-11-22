@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on plotart/managed-checkout-pilot or plotart/multi-artist-basket requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-21T18:38:30.000Z",
+  "requested": "2026-11-22T15:45:00.000Z",
   "phases": [
     "basket_e2e"
   ],
-  "reason": "Multi-artist basket on the managed checkout (branch plotart/multi-artist-basket, 21 Nov 2026): the basket Workers against real Stripe TEST mode with the isolated POC key and the two existing TEST artist accounts. One card entry on the hosted page; a direct charge per artwork, all authorised before any is captured; decline, authentication deadline, refund; everything cleaned up and verified.",
+  "reason": "Delivery safety (branch plotart/delivery-safety, 22 Nov 2026): founder-approved delivery offers, deadlines and the island answer, run through the basket Workers against real Stripe TEST mode with the isolated POC key and the two existing TEST artist accounts (founder approval 22 Nov 2026). Run from plotart/multi-artist-basket, the branch the checkout-test environment allows.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
