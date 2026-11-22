@@ -25185,6 +25185,161 @@
       "source_sha256": "b0c8b04221e1e0ef71380aae93fe05090bbcf8fe04917211668b10148cd5353a",
       "subject": "artwork",
       "work_slug": "a-room-with-a-view"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/be-here-now-1-600.webp",
+      "bytes": 51698,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        507
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a8a281f2097d172ff06a98fb4f94d3620fba6d6fba956cc4997c578b6e127390",
+      "source_sha256": "7aebcae47cd7ae1292db3402d3a790c568cc5251c9884d5c67a332946ec26aa8",
+      "subject": "artwork",
+      "work_slug": "be-here-now"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/be-here-now-1-1200.webp",
+      "bytes": 198278,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1015
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "13690891443dcd64283f9e4e16f4aa2328a601fb1a16ce3faee715c675400588",
+      "source_sha256": "7aebcae47cd7ae1292db3402d3a790c568cc5251c9884d5c67a332946ec26aa8",
+      "subject": "artwork",
+      "work_slug": "be-here-now"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/be-here-now-1-2000.webp",
+      "bytes": 476350,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1691
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "da802e0ab922cb606367bebd4d723a54444cfa61552848aefbc62f7674d1e3ae",
+      "source_sha256": "7aebcae47cd7ae1292db3402d3a790c568cc5251c9884d5c67a332946ec26aa8",
+      "subject": "artwork",
+      "work_slug": "be-here-now"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/be-here-now-2-600.webp",
+      "bytes": 32458,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        498
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "67d125e26bcb5a49eb620012f3b6cf67cdbd8da2cb6295e3cd06a6784e413c82",
+      "source_sha256": "40da07b682a1193acbd159ada47f0177a09202e1ec8700b86c65fc5c0f050771",
+      "subject": "artwork",
+      "work_slug": "be-here-now"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/be-here-now-2-2000.webp",
+      "bytes": 248686,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1659
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2e08c9cad93a4ccb1d45a037bf7a4d84ed6f6e41ac210269746f62110ee4b35e",
+      "source_sha256": "40da07b682a1193acbd159ada47f0177a09202e1ec8700b86c65fc5c0f050771",
+      "subject": "artwork",
+      "work_slug": "be-here-now"
     }
   ],
   "legacy_undeclared": [
