@@ -24005,6 +24005,688 @@
       "source_sha256": "a632e012d45cb0e646ecf565f7693ce9dec5665e941e1d06ccb749080b0b4ee3",
       "subject": "artwork",
       "work_slug": "i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/portrait-600.webp",
+      "bytes": 46170,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        564
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "239ee4a2cd2653e7008122a5de9fb6f4c2aa1cd92642a1f3b869613748ed197b",
+      "source_sha256": "0027b61f3f37a204f6c6255872efa70d31bc4e660535830ca8e88d72ff6b2a9b",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/somersault-1-600.webp",
+      "bytes": 20186,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        598,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c8d78ea7deb43338762a24a6c25cb7b91d2b1b9a5cb4d92354f67747f5283505",
+      "source_sha256": "842b1da047dcaca13779146d09ba5add3e22bb53d3b797c3cf68b080aaaa3234",
+      "subject": "artwork",
+      "work_slug": "somersault"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/somersault-1-1200.webp",
+      "bytes": 68716,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1195,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "69b37fabf7b2d497a3c993af7e1878b84eac4d111df1605aa5d80f83165b3400",
+      "source_sha256": "842b1da047dcaca13779146d09ba5add3e22bb53d3b797c3cf68b080aaaa3234",
+      "subject": "artwork",
+      "work_slug": "somersault"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/somersault-1-2000.webp",
+      "bytes": 223168,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1992,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6bef35963971ce04315ca7eb2148a85faaa3bb3291b252d7473c3a92d53689f6",
+      "source_sha256": "842b1da047dcaca13779146d09ba5add3e22bb53d3b797c3cf68b080aaaa3234",
+      "subject": "artwork",
+      "work_slug": "somersault"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/portal-2-1-600.webp",
+      "bytes": 34918,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        493
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7ce77ea71b431bfe173326f5633c262147cddb8f95830cd373286ea21137788a",
+      "source_sha256": "7d22347bda173aa942d2cfda852db027c720ef456809d940328a93bafb6d7458",
+      "subject": "artwork",
+      "work_slug": "portal-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/portal-2-1-1200.webp",
+      "bytes": 178784,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        986
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3afd3f1c398449c3fbe3b778ece33904d5e59112e341828f3932f1537932513b",
+      "source_sha256": "7d22347bda173aa942d2cfda852db027c720ef456809d940328a93bafb6d7458",
+      "subject": "artwork",
+      "work_slug": "portal-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/portal-2-1-2000.webp",
+      "bytes": 568878,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1643
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fcaaf500f88156e67455aa9fbe2d1e4003995fbcad285a745ad7b926583e36ba",
+      "source_sha256": "7d22347bda173aa942d2cfda852db027c720ef456809d940328a93bafb6d7458",
+      "subject": "artwork",
+      "work_slug": "portal-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/pandora-s-box-1-600.webp",
+      "bytes": 24598,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        599,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c8787580f009a2b6695c4a163a5db2d95209c6599797cb86b2c430644ef281ad",
+      "source_sha256": "fa6532ce8aa3ceb274211a10ae24a757028a109fa79de461b62eb53f7b991bd1",
+      "subject": "artwork",
+      "work_slug": "pandora-s-box"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/pandora-s-box-1-1200.webp",
+      "bytes": 101392,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1199,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "84c926db9471ad71b17cc6d8e46ab6e2334821928accf648abf3967685889e86",
+      "source_sha256": "fa6532ce8aa3ceb274211a10ae24a757028a109fa79de461b62eb53f7b991bd1",
+      "subject": "artwork",
+      "work_slug": "pandora-s-box"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/pandora-s-box-1-2000.webp",
+      "bytes": 249084,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1998,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f329c905cb92912e00895c8121d14e37a0e3c4fc3e5d5443089ca0350e9e68a4",
+      "source_sha256": "fa6532ce8aa3ceb274211a10ae24a757028a109fa79de461b62eb53f7b991bd1",
+      "subject": "artwork",
+      "work_slug": "pandora-s-box"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/sleeping-acrobat-1-600.webp",
+      "bytes": 44332,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        590,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e5f77e52833139290377687e07c55fe178969bee3f671b7a4b4e88c6d9a1e202",
+      "source_sha256": "10f0d649663345e0e65d872683fa6138d3a493f48cdd327cd5e874526a8f8583",
+      "subject": "artwork",
+      "work_slug": "sleeping-acrobat"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/sleeping-acrobat-1-1200.webp",
+      "bytes": 215764,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1179,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "19913c6c59ad2cfb4f469fc1bf27c76b574e49c1ac1469747d582a4c0eede4e3",
+      "source_sha256": "10f0d649663345e0e65d872683fa6138d3a493f48cdd327cd5e874526a8f8583",
+      "subject": "artwork",
+      "work_slug": "sleeping-acrobat"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/sleeping-acrobat-1-2000.webp",
+      "bytes": 556072,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1966,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "dfc13f77d9cfe2a3e5addc1487b6254f1ed7eda8448e09f9fd066eeb4e7be527",
+      "source_sha256": "10f0d649663345e0e65d872683fa6138d3a493f48cdd327cd5e874526a8f8583",
+      "subject": "artwork",
+      "work_slug": "sleeping-acrobat"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/seek-1-600.webp",
+      "bytes": 36722,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        597,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "54162473661456401bd83caba4a937c210a79a7408068aca31663a561b1537a1",
+      "source_sha256": "0383aed9d36284c467919529338b840a4399f3e33b27c1c566b60274593366b7",
+      "subject": "artwork",
+      "work_slug": "seek"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/seek-1-1200.webp",
+      "bytes": 137962,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1194,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "745611c33bf8e801d2e1f3244b0f3b936fff742298671b9cac0579fc25e1a2d8",
+      "source_sha256": "0383aed9d36284c467919529338b840a4399f3e33b27c1c566b60274593366b7",
+      "subject": "artwork",
+      "work_slug": "seek"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/seek-1-2000.webp",
+      "bytes": 316800,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1991,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "42417bc3fa8eb292e223b8a0a0faa6b0c01cbcb07371a93c30504ae487fe1674",
+      "source_sha256": "0383aed9d36284c467919529338b840a4399f3e33b27c1c566b60274593366b7",
+      "subject": "artwork",
+      "work_slug": "seek"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/drift-1-600.webp",
+      "bytes": 26072,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        491
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "dafa8497e3320bc9d9be4606d6f054bf3bcdc3a13672b03e603cdf2b8f168e4d",
+      "source_sha256": "a553e703e1a2fe33e01f8d87139da26885c368c818b3fefe9ac1498fbd794f5c",
+      "subject": "artwork",
+      "work_slug": "drift"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/drift-1-1200.webp",
+      "bytes": 146036,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        982
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "28d348f49f08cc7d60db0f6ca5871f9e4affcee8031b2388afc64ec45af819b9",
+      "source_sha256": "a553e703e1a2fe33e01f8d87139da26885c368c818b3fefe9ac1498fbd794f5c",
+      "subject": "artwork",
+      "work_slug": "drift"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/drift-1-2000.webp",
+      "bytes": 485804,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1637
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4b844c400f1b9415c7ae7b90f4f11c1c1cb15d8b1951c6d42a636e030d650651",
+      "source_sha256": "a553e703e1a2fe33e01f8d87139da26885c368c818b3fefe9ac1498fbd794f5c",
+      "subject": "artwork",
+      "work_slug": "drift"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/peacock-1-600.webp",
+      "bytes": 21278,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        482
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "aa30715cb6b300f8d6f3a57427543fa1fde08ce6e407e29de5efdfdf23b86b02",
+      "source_sha256": "4047fedf6e7cea6d5d100e5d4d1c1cc967a14afe938164feb08c009f4a25c6ed",
+      "subject": "artwork",
+      "work_slug": "peacock"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/peacock-1-1200.webp",
+      "bytes": 73020,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        963
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7664e8a7b4a0f5f8718d2221c823e10f40a135f0b709d4b46fa89e941826998f",
+      "source_sha256": "4047fedf6e7cea6d5d100e5d4d1c1cc967a14afe938164feb08c009f4a25c6ed",
+      "subject": "artwork",
+      "work_slug": "peacock"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/peacock-1-2000.webp",
+      "bytes": 180946,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1605
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "eee0854b92a232e399ba034ddfda5cd2f1ce88b0bf1ca05a056d7187b8451258",
+      "source_sha256": "4047fedf6e7cea6d5d100e5d4d1c1cc967a14afe938164feb08c009f4a25c6ed",
+      "subject": "artwork",
+      "work_slug": "peacock"
     }
   ],
   "legacy_undeclared": [
