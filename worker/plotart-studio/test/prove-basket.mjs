@@ -468,6 +468,22 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
       && /Fia Founding \(Founding\)/.test(txt) && /Online purchase/.test(txt) && /of \d+ available artworks can be bought online/.test(txt) && (await fp.$$('#basket-readiness')).length === 1
       && /Open the Payment pilot page/.test(await fp.textContent('#app')), { tabs, txt: txt.slice(0, 600) });
     if (UISHOT) { await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab.png`, fullPage: true }); await fp.setViewportSize({ width: 390, height: 844 }); await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab-phone.png`, fullPage: true }); await fp.setViewportSize({ width: 1280, height: 900 }); }
+    // Review desk tabs wrap from tablet width up: every tab fully inside the bar, no sideways scrolling; phones keep one scrolling row
+    const fit = [];
+    for (const w of [1920, 1440, 1280, 1024, 768, 480]) {
+      await fp.setViewportSize({ width: w, height: 900 }); await fp.goto(S.url + '/admin/baskets', { waitUntil: 'load' }); await fp.waitForSelector('#basket-readiness', { timeout: 20000 });
+      fit.push(await fp.evaluate(w => { const n = document.querySelector('.st-tabs'), r = n.getBoundingClientRect(), as = [...n.querySelectorAll('a')];
+        const rows = new Set(as.map(a => Math.round(a.getBoundingClientRect().top))).size;
+        return { w, inside: as.every(a => { const b = a.getBoundingClientRect(); return b.left >= r.left - 0.5 && b.right <= r.right + 0.5; }), scroll: n.scrollWidth > n.clientWidth + 1,
+          page: document.documentElement.scrollWidth > innerWidth + 1, rows, font: getComputedStyle(as[0]).fontSize }; }, w));
+      if (UISHOT && [1280, 768].includes(w)) await fp.screenshot({ path: `${UISHOT}/review-desk-tabs-${w}.png`, clip: { x: 0, y: 0, width: w, height: 260 } });
+    }
+    await fp.setViewportSize({ width: 390, height: 844 }); await fp.goto(S.url + '/admin', { waitUntil: 'load' });
+    const ph = await fp.evaluate(() => { const n = document.querySelector('.st-tabs'); return { scroll: n.scrollWidth > n.clientWidth + 1, wrap: getComputedStyle(n).flexWrap, page: document.documentElement.scrollWidth > innerWidth + 1 }; });
+    const st = await fp.goto(S.url + '/admin', { waitUntil: 'load' }).then(() => fp.evaluate(() => getComputedStyle(document.querySelector('.st-tabs a')).fontSize));
+    check('U5c Review desk tabs: from 480 to 1920 px every tab (incl. Basket readiness) is fully visible, wrapping to a second row when needed, no sideways scrolling, same 14px labels; phones keep the one scrolling row',
+      fit.every(f => f.inside && !f.scroll && !f.page && f.font === '14px') && fit.find(f => f.w === 768).rows >= 2 && ph.wrap === 'nowrap' && ph.scroll && !ph.page && st === '13.5px', { fit, ph, st });
+    await fp.setViewportSize({ width: 1280, height: 900 });
     const dk = await fp.goto(S.url + '/admin', { waitUntil: 'load' }).then(() => fp.$$eval('.st-tabs a', as => as.map(a => [a.textContent, a.getAttribute('href')])));
     check('U5b the Review desk itself shows the Basket readiness tab, after Opportunities', dk.length === 11 && dk[9][0] === 'Opportunities' && dk[10][0] === 'Basket readiness' && dk[10][1] === '/admin/baskets', dk);
     await fc.close();
