@@ -24937,6 +24937,254 @@
       },
       "supplier_label": "Photograph",
       "source": "FastLane Couriers' photograph of its branded van, supplied by the owner (Joseph Collins) for this listing, 22 Nov 2026 (sha256 b7827905f92c49a8…, 1077 × 1077); PlotNua web copy: cropped to 3:2 around the van, resized and recompressed, metadata stripped."
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/portrait-600.webp",
+      "bytes": 15668,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        450
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b2d64564406259288c8ea829cb3bb5043135783a432363ee4d8c4eb1e5b91e14",
+      "source_sha256": "7c8f7d4b475d270f489adf7092eaebf5afd61a496ac0d9bbcccb557dd5a22211",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/a-room-with-a-view-1-600.webp",
+      "bytes": 84908,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        595,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f0596586a7cf8a3e667caa78bce0b8a120c03ab905b6cfa57e4f634c7dc0ac02",
+      "source_sha256": "0352430c95391ca9d68488d2859f7c416ddfb483d4feee2775524730c379add6",
+      "subject": "artwork",
+      "work_slug": "a-room-with-a-view"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/a-room-with-a-view-1-1200.webp",
+      "bytes": 289480,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1189,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "81a266ce8a3975defe959747a028183045049029f6d69a58208ecb5cba49be78",
+      "source_sha256": "0352430c95391ca9d68488d2859f7c416ddfb483d4feee2775524730c379add6",
+      "subject": "artwork",
+      "work_slug": "a-room-with-a-view"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/a-room-with-a-view-1-2000.webp",
+      "bytes": 587592,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1982,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9d7efeb728994bd995155b9a7ebfa8fe129838ce80b873ecf82feed183b9d93b",
+      "source_sha256": "0352430c95391ca9d68488d2859f7c416ddfb483d4feee2775524730c379add6",
+      "subject": "artwork",
+      "work_slug": "a-room-with-a-view"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/a-room-with-a-view-2-600.webp",
+      "bytes": 45892,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        586
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1a623d7b453b00552acc62ee1f987a8cd3c129fd4423b8db37b9f403dc22578f",
+      "source_sha256": "a41fdda2e6170f1912ebccb2350dfe09b46e32bb60275eeaeeec590cb6a908b3",
+      "subject": "artwork",
+      "work_slug": "a-room-with-a-view"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/a-room-with-a-view-2-2000.webp",
+      "bytes": 469930,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1954
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c99422a47dd5dd9698408ad6c38f89f908980edf44a8a36a4b1bc2ffbbe59e23",
+      "source_sha256": "a41fdda2e6170f1912ebccb2350dfe09b46e32bb60275eeaeeec590cb6a908b3",
+      "subject": "artwork",
+      "work_slug": "a-room-with-a-view"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/a-room-with-a-view-3-600.webp",
+      "bytes": 32410,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b8d5890bfd60e33a803789430615f1c1bd314e3c4beb933126be2a758b42bff4",
+      "source_sha256": "b0c8b04221e1e0ef71380aae93fe05090bbcf8fe04917211668b10148cd5353a",
+      "subject": "artwork",
+      "work_slug": "a-room-with-a-view"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "louise-shearer",
+      "asset": "plotart/artists/louise-shearer/img/a-room-with-a-view-3-2000.webp",
+      "bytes": 251990,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aoek4ojec3r",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e6418072fc27b75fa4c08a1557531c115ebbcfc5bacc057b12ee32d947611a2e",
+      "source_sha256": "b0c8b04221e1e0ef71380aae93fe05090bbcf8fe04917211668b10148cd5353a",
+      "subject": "artwork",
+      "work_slug": "a-room-with-a-view"
     }
   ],
   "legacy_undeclared": [
