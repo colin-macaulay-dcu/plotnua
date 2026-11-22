@@ -214,7 +214,9 @@ export async function offerReview(env, o) {
   const current = r.offer_version === o.version && r.offer_sha256 === await offerSha(o);
   if (!current) return { approved: false, state: 'awaiting_review', previous: { decision: r.decision, version: r.offer_version, at: r.reviewed_at } };
   if (r.decision === 'returned') return { approved: false, state: 'returned', note: r.note, at: r.reviewed_at, by: r.reviewed_by, id: r.id };
-  if (live(env) && !r.livemode) return { approved: false, state: 'awaiting_review' };   // a test-mode review never opens live purchase
+  // a review recorded outside the production database never opens live purchase. "livemode" on a review means the production
+  // database: the founder reviews in the Studio Worker, which never runs in Stripe live mode itself (only the checkout Worker does)
+  if (live(env) && !r.livemode) return { approved: false, state: 'awaiting_review' };
   return { approved: true, state: 'approved', at: r.reviewed_at, by: r.reviewed_by, id: r.id, note: r.note };
 }
 const artistReviewView = r => ({ state: r.state, at: r.at || null, note: r.state === 'returned' ? r.note : null,
@@ -265,7 +267,7 @@ export async function reviewOffer(env, founder, artworkId, b) {
   }
   const id = rid('dr');
   await run(env, `INSERT INTO delivery_offer_reviews (id, artwork_id, artist_id, offer_version, offer_sha256, decision, note, reviewed_by, reviewed_at, livemode) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-    id, o.artwork_id, o.artist_id, o.version, b.sha256, decision, note || null, 'founder:' + founder, now(), live(env) ? 1 : 0);
+    id, o.artwork_id, o.artist_id, o.version, b.sha256, decision, note || null, 'founder:' + founder, now(), env.ENVIRONMENT === 'production' ? 1 : 0);
   return { id, artwork_id: o.artwork_id, version: o.version, decision, ...(await adminOffers(env)) };
 }
 

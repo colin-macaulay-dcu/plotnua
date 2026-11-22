@@ -724,6 +724,18 @@ console.log('— delivery safety: founder review of delivery offers, deadlines, 
   const st3 = C2.overdueState({ status: 'refunded', fulfilment_status: 'none', paid_at: ago(60), delivery: JSON.stringify({ dispatch_days: 5, delivery_days: 10 }) });
   check('DS26 deadline rules: a dispatched order is only delivery-overdue; an order with no agreed days uses the labelled defaults (14/30); refunded orders are not monitored',
     !st.dispatch.overdue && st.delivery.overdue && st2.basis === 'default' && st2.dispatch.overdue && !st2.delivery.overdue && !st3.dispatch.overdue && !st3.delivery.overdue, { st, st2, st3 });
+  { // production: the founder reviews in the Studio Worker (never in Stripe live mode itself); the live checkout Worker must honour it
+    const BK = await import(HERE + FIX + 'src/basket.js');
+    const LIVE = { DB: db, ENVIRONMENT: 'production', CHECKOUT_LIVE: 'true', STRIPE_SECRET_KEY: 'rk_live_' + 'x'.repeat(24) };
+    const off = await one("SELECT * FROM artwork_delivery_offers WHERE artwork_id = 'wds3'");
+    const before = await BK.offerReview(LIVE, off);
+    await db.prepare("INSERT INTO delivery_offer_reviews (id, artwork_id, artist_id, offer_version, offer_sha256, decision, note, reviewed_by, reviewed_at, livemode) VALUES ('drprod','wds3',?,?,?, 'approved', NULL, 'founder:prod', ?, 1)")
+      .bind(off.artist_id, off.version, await BK.offerSha(off), new Date().toISOString()).run();
+    const after = await BK.offerReview(LIVE, off);
+    const src = readFileSync(HERE + 'src/basket.js', 'utf8');
+    check('DS27 live checkout honours a review recorded on the production database (as the Studio records it) and ignores one recorded elsewhere',
+      !before.approved && after.approved && /'founder:' \+ founder, now\(\), env\.ENVIRONMENT === 'production' \? 1 : 0\)/.test(src), { before, after });
+  }
   if (SHOTS) {   // review screenshots (BASKET_SCREENSHOTS=dir): the buyer basket with the Ireland-only notice, and the founder's review section
     await fresh('wagal1', 'wds4'); await call('PUT', '/api/checkout/basket/offers/wds4', GAL, { confirm: true, delivery_cents: 4500, delivery: DELIVERY }); await approveOffers(['wds4']);
     await shot('ds-basket-desktop', '/basket', { basket: [{ id: 'wds4', img: 'https://plotnua.ie/plotart/artists/gale/img/g1.png' }] });
