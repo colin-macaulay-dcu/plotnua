@@ -108,13 +108,36 @@
         ${left ? `<p class="st-muted st-ck-intro">Complete these to submit your gallery. Each one opens the right place.</p>${checklistHTML(s.checklist)}`
           : `<ul class="st-list ok"><li>Everything needed is in place${s.unsubmitted.length ? `: submit your changes for ${pendingTier}` : ''}.</li></ul>`}
       </section>
+      <section class="st-card st-os" id="os-card" aria-labelledby="os-h" hidden></section>
       ${ME.opportunities === 'confirm' ? `<section class="st-card st-opp-ask" id="opp-confirm-home" aria-labelledby="opp-cf-h"><p class="st-muted" style="margin:0">Loading…</p></section>` : ''}
       ${ME.opportunities === 'unanswered' ? `<section class="st-card st-opp-ask" aria-labelledby="opp-ask-h"><h3 id="opp-ask-h">Opportunities &amp; delivery</h3>
         <p class="st-muted" style="margin:0">Let us know which future opportunities you’d like to hear about and how your work could travel. It takes a couple of minutes and doesn’t commit you to anything.</p>
         <div class="st-actions"><a class="st-btn st-btn--small" href="#/opportunities">Add your preferences</a></div></section>` : ''}`;
     $('[data-act=add]', app)?.addEventListener('click', addWork);
+    onlineSalesCard($('#os-card', app));
     const cf = $('#opp-confirm-home', app);
     if (cf) api('GET', '/api/opportunities').then(d => oppConfirm(cf, d, () => dashboard())).catch(() => { cf.remove(); });
+  }
+
+  /* ------------------------------------------------------------- Online sales (optional; 22 Nov 2026)
+     A separate, optional card after the gallery checklist: online sales never affect the gallery, its checklist or its
+     publication. Its progress comes from the same readiness check the founder's Basket readiness tab uses. Shown only
+     when online sales are switched on; on any error the card simply stays hidden. */
+  async function onlineSalesCard(box) {
+    if (!box) return;
+    let r; try { r = await api('GET', '/api/checkout/basket/readiness'); } catch { return; }
+    if (!r || !r.installed || !r.enabled || !box.isConnected) return;
+    const LBL = Object.fromEntries(r.steps.map(x => [x.key, x.label]));
+    const o = r.online, top = Object.entries(o.reasons || {}).sort((a, b) => b[1] - a[1])[0];
+    let body;
+    if (r.ready) body = `<p class="st-os-state"><span class="st-os-dot on" aria-hidden="true"></span>Online sales are set up</p>
+      <p class="st-muted" style="margin:0">${o.purchasable} of ${plural(o.available, 'available artwork', 'available artworks')} can be bought online${top && o.purchasable < o.available ? `; ${top[1]} ${E(top[0])}` : ''}.</p>`;
+    else if (r.started) body = `<div class="st-os-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${r.total}" aria-valuenow="${r.done}" aria-label="Online sales set-up"><span style="width:${Math.round(100 * r.done / r.total)}%"></span></div>
+      <p class="st-os-state">${r.done} of ${r.total} steps done</p><p class="st-muted" style="margin:0">Next: ${E(LBL[r.next])}</p>`;
+    else body = `<p class="st-muted" style="margin:0">Let buyers buy your available artworks online, with one secure card payment. You remain the seller and are paid into your own Stripe account. Your gallery and enquiries work exactly as now whether or not you set this up.</p>`;
+    box.innerHTML = `<div class="st-ck-top"><h3 id="os-h">Online sales</h3><span class="st-os-opt">Optional</span></div>${body}
+      <div class="st-actions"><a class="st-btn${r.ready ? '' : ' st-btn--solid'}" href="/checkout-pilot">${r.ready ? 'Manage online sales' : r.started ? 'Continue set-up' : 'Set up online sales'}</a></div>`;
+    box.hidden = false;
   }
 
   /* ------------------------------------------------------------- opportunities shown publicly (migration 0015)

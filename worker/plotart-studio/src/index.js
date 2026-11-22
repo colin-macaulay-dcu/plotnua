@@ -1710,7 +1710,7 @@ async function route(req, env) {
       : res(Uint8Array.from(atob(d.pdf_b64), c => c.charCodeAt(0)), 'application/pdf', 200, { 'Content-Disposition': `inline; filename="${mm[1]}.pdf"`, 'X-Document-SHA256': d.pdf_sha256 });
   }
   /* Managed checkout pilot: the artist's own opt-in, Stripe onboarding, their own orders only (test mode; off by default) */
-  if (p === '/checkout-pilot') return html(A.CHECKOUT_HTML);
+  if (p === '/checkout-pilot') return html(A.CHECKOUT_ARTIST_HTML);   // the artist's Online sales page (Studio tabs)
   if ((mm = p.match(/^\/payment-terms\/(PA-(?:PAY|BPT)-[0-9A-Z-]{4,20})\.html$/)) && m === 'GET') {
     const t = (await CO.installed(env)) ? (await CO.currentTerms(env, 'artist_payment_addendum')) : null;
     const b = t && t.doc_id === mm[1] ? t : (await CO.installed(env)) ? await CO.currentTerms(env, 'buyer_purchase_terms') : null;
@@ -1735,6 +1735,7 @@ async function route(req, env) {
     if (p === '/api/checkout/account/refresh' && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, artist.id)) });
     // multi-artist basket: the artist's own opt-in and standing delivery offers (their own works only)
     if (p === '/api/checkout/basket' && m === 'GET') return json({ ok: true, ...(await BK.artistView(env, artist)) });
+    if (p === '/api/checkout/basket/readiness' && m === 'GET') return json({ ok: true, ...(await BK.artistReadinessView(env, artist)) });   // Studio home card and payment-page steps
     if (p === '/api/checkout/basket/opt-in' && m === 'POST') return json({ ok: true, ...(await BK.artistOptIn(env, artist, b)) });
     if (p === '/api/checkout/basket/processing-consent' && m === 'POST') return json({ ok: true, ...(await BK.artistProcessingConsent(env, artist, b)) });
     if (p === '/api/checkout/basket/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await BK.artistWithdrawProcessingConsent(env, artist)) });

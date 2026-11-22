@@ -522,6 +522,72 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
   }
 }
 
+console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 2026)');
+{
+  // a Gallery Artist who completed the original gallery set-up and has not started online sales
+  const NEW = 'new@example.test';
+  await seedPublished(db, { id: 'anew', slug: 'nia', email: NEW, name: 'Nia New', works: 2, publishedAt: ago(10) });
+  await db.prepare("UPDATE artists SET founding = 0 WHERE id = 'anew'").run();
+  const statusBefore = (await call('GET', '/api/me', NEW)).j;
+  const rn = (await call('GET', '/api/checkout/basket/readiness', NEW)).j, rg = (await call('GET', '/api/checkout/basket/readiness', GAL)).j, rb = (await call('GET', '/api/checkout/basket/readiness', NOB)).j;
+  const fa = Object.fromEntries((await call('GET', '/api/admin/checkout/baskets/artists', FOUNDER)).j.artists.map(a => [a.id, a]));
+  const same = (r, f) => r.steps.filter(x => !x.done).length === f.missing.length && r.online.available === f.online.available && r.online.purchasable === f.online.purchasable && r.ready === !f.missing.length;
+  check('OS1 artist readiness: six steps in page order, next step, artworks online; an artist who has not started has nothing done and nothing on sale',
+    rn.installed && rn.steps.map(x => x.key).join() === 'join,seller,stripe,basket,disclosure,delivery' && rn.done === 0 && !rn.started && rn.next === 'join' && rn.online.purchasable === 0 && rn.online.available === 2
+    && rn.online.reasons['online sales set-up not finished'] === 2 && rg.ready && rg.done === 6, { rn, rg });
+  check('OS2 the artist and the founder see the same answer (one readiness check): steps left = founder’s “missing”, same artworks online, for every artist',
+    same(rn, fa.anew) && same(rg, fa.agal) && same(rb, fa.anob), { rn: rn.steps, fan: fa.anew.missing, rb: rb.steps, fab: fa.anob.missing });
+  check('OS3 nothing internal reaches the artist: no founder labels, no internal reasons, no other artist',
+    !JSON.stringify(rg).includes('founder') && !/artist not ready|no valid processing-fee consent|policy\)/.test(JSON.stringify([rn, rg, rb])) && !JSON.stringify(rn).includes('agal'));
+  const statusAfter = (await call('GET', '/api/me', NEW)).j;
+  check('OS4 the gallery checklist and publication state are untouched by online sales (an enquiry-only gallery stays complete and live)',
+    JSON.stringify(statusBefore.status.checklist) === JSON.stringify(statusAfter.status.checklist) && statusAfter.status.state === statusBefore.status.state && statusAfter.status.state === 'live'
+    && !JSON.stringify(statusAfter.status.checklist).toLowerCase().includes('stripe'), { b: statusBefore.status, a: statusAfter.status.state });
+  if (BR) {
+    const UISHOT = process.env.BASKET_UI_SHOTS || null;
+    const page = async (email, w = 1200) => { const c = await BR.newContext({ viewport: { width: w, height: 900 } }), pg = await c.newPage(); await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(email) }); return [c, pg]; };
+    // Studio home: the card after the gallery checklist, for not started / in progress / set up
+    const homes = {};
+    for (const [k, e] of [['new', NEW], ['nob', NOB], ['gal', GAL]]) {
+      const [c, pg] = await page(e); await pg.goto(S.url + '/', { waitUntil: 'load' });
+      await pg.waitForSelector('#os-card:not([hidden])', { timeout: 20000 }).catch(() => {});
+      homes[k] = await pg.evaluate(() => { const card = document.querySelector('#os-card'), ck = document.querySelector('#ck-h');
+        return { text: card && !card.hidden ? card.textContent.replace(/\s+/g, ' ').trim() : null, after: !!(ck && card && (ck.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING)),
+          tabs: [...document.querySelectorAll('.st-tabs a')].map(a => a.textContent), btn: card && card.querySelector('.st-actions a')?.getAttribute('href') }; });
+      if (UISHOT) await pg.locator('#os-card').screenshot({ path: `${UISHOT}/studio-card-${k}.png` }).catch(() => {});
+      if (UISHOT && k === 'new') await pg.screenshot({ path: `${UISHOT}/studio-home-new.png`, fullPage: true });
+      await c.close();
+    }
+    check('OS5 Studio home: an optional “Online sales” card after the gallery checklist; not started → “Set up online sales”, in progress → steps done and the next step, set up → artworks online',
+      homes.new.after && /Online sales\s*Optional/.test(homes.new.text) && /Set up online sales/.test(homes.new.text) && /work exactly as now/.test(homes.new.text)
+      && /\d of 6 steps done/.test(homes.nob.text) && /Next: /.test(homes.nob.text) && /Continue set-up/.test(homes.nob.text)
+      && /Online sales are set up/.test(homes.gal.text) && /can be bought online/.test(homes.gal.text) && /Manage online sales/.test(homes.gal.text) && homes.gal.btn === '/checkout-pilot', homes);
+    check('OS6 Studio tabs: “Online sales” after Enquiries; every earlier tab kept', homes.new.tabs.join('|') === 'Gallery|Works|Profile|Opportunities|Enquiries|Online sales|Agreement|Preview ↗', homes.new.tabs);
+    // the Online sales page: Studio tabs, the steps, the artworks line
+    const pages = {};
+    for (const [k, e, w] of [['new', NEW, 1200], ['gal', GAL, 1200], ['new-phone', NEW, 390]]) {
+      const [c, pg] = await page(e, w); await pg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); await pg.waitForSelector('.st-os-steps', { timeout: 20000 });
+      pages[k] = await pg.evaluate(() => ({ tabs: [...document.querySelectorAll('.st-tabs a')].map(a => [a.textContent, a.getAttribute('href'), a.getAttribute('aria-current')]),
+        steps: [...document.querySelectorAll('.st-os-list li')].map(li => li.className + ':' + li.querySelector('.st-os-s').textContent),
+        text: document.querySelector('.st-os-steps').textContent.replace(/\s+/g, ' '), h1: document.querySelector('h1').textContent, wide: document.documentElement.scrollWidth > innerWidth + 1 }));
+      if (UISHOT) await pg.screenshot({ path: `${UISHOT}/online-sales-${k}.png`, fullPage: true });
+      if (k === 'new') { await pg.click('a[data-step="join"]'); await pg.waitForFunction(() => { const t = document.querySelector('#pay-join').getBoundingClientRect(); return t.top >= 0 && t.top < innerHeight / 2; }, null, { timeout: 5000 }).catch(() => {}); pages.jump = await pg.evaluate(() => { const t = document.querySelector('#pay-join').getBoundingClientRect(); return t.top < innerHeight && t.bottom > 0; }); }
+      await c.close();
+    }
+    check('OS7 Online sales page: the Studio tabs with “Online sales” current (others lead back to the Studio); the heading says it is optional',
+      pages.new.tabs.length === 8 && pages.new.tabs.find(t => t[0] === 'Online sales')[2] === 'page' && pages.new.tabs.find(t => t[0] === 'Works')[1] === '/#/works' && pages.new.h1 === 'Online sales', pages.new.tabs);
+    check('OS8 “Your steps”: six steps, the first marked Next for a new artist, all Done when set up; each jumps to its section',
+      pages.new.steps.length === 6 && pages.new.steps[0] === 'next:Next' && pages.new.steps.slice(1).every(x => x === ':To do') && pages.gal.steps.every(x => x === 'done:Done') && pages.jump, pages);
+    check('OS9 artwork eligibility on the page: how many available artworks can be bought online and why not, in plain words',
+      /0 of 2 available artworks can be bought online/.test(pages.new.text) && /2 online sales set-up not finished/.test(pages.new.text) && /stay on enquiry/.test(pages.new.text)
+      && /of \d available artworks can be bought online/.test(pages.gal.text) && /price on request \(add a price to sell online\)/.test(pages.gal.text) && !pages['new-phone'].wide, { n: pages.new.text, g: pages.gal.text });
+    const [fc, fp] = await page(FOUNDER, 1280); await fp.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await fp.waitForSelector('#basket-readiness', { timeout: 20000 });
+    const fh = await fp.evaluate(() => ({ h1: document.querySelector('h1').textContent, tabs: [...document.querySelectorAll('.st-tabs a')].map(a => a.textContent) }));
+    check('OS10 the founder’s Payment pilot page is unchanged (its own heading and navigation)', /^Payment pilot/.test(fh.h1) && fh.tabs.join() === 'Studio', fh);
+    await fc.close();
+  }
+}
+
 console.log(`\nMULTI-ARTIST BASKET · ${results.length} checks, ${results.filter(Boolean).length} passed, ${results.filter(x => !x).length} failed`);
 process.exitCode = results.every(Boolean) ? 0 : 1;
 } finally {
