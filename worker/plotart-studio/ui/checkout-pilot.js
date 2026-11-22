@@ -177,6 +177,7 @@
 
   /* ---------------------------------------------------------------- multi-artist basket (optional; PA-BAA) */
   let J_BASKET = null;
+  let RD = null;   // the artist's readiness (steps), for the step links
   const CENTS = ['covered_value_cents', 'excess_cents', 'return_cost_cents'];
   const LABELS = { dispatch_days: 'Dispatch within (days after payment)', delivery_days: 'Delivered within (days after payment)', offshore_islands: 'Also deliver to offshore islands (no road connection) at this charge' };
   const REQUIRED_HERE = ['dispatch_days', 'delivery_days'];   // optional in quotes, required in a basket delivery offer
@@ -290,11 +291,47 @@
   /* The artist's steps (22 Nov 2026), from the same readiness check as the founder's Basket readiness tab. Each step
      jumps to its section below; nothing here changes anything. */
   const STEP_AT = { join: '#pay-join', seller: '#pay-seller', stripe: '#pay-stripe', basket: '#basket', disclosure: '#pay-disclosure', delivery: '#pay-delivery' };
+  /* Step links (fixed 22 Nov 2026, mobile report). A step's section appears on the page only once the step it depends on
+     is done (the server decides; nothing is unlocked here). Tapping such a step now SAYS which step to complete first,
+     beside the list, instead of silently jumping to step 1. An available step scrolls to its section BELOW the sticky
+     Studio header (which hid the heading on phones) and opens it if it is folded. */
+  const STEP_NEEDS = { seller: 'join', stripe: 'join', basket: 'join', disclosure: 'basket', delivery: 'basket' };
+  function goTo(t) {
+    if (t.tagName === 'DETAILS') t.open = true;
+    const hdr = document.querySelector('.st-top'), off = (hdr ? hdr.getBoundingClientRect().bottom : 0) + 12;
+    window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - off), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    const f = t.matches('h2, h3, p, details') ? (t.tagName === 'DETAILS' ? t.querySelector('summary') : t) : null;
+    if (f) { if (!f.hasAttribute('tabindex') && f.tagName !== 'SUMMARY') f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: true }); }
+  }
+  function wireSteps() {
+    const msg = app.querySelector('[data-step-msg]');
+    app.querySelectorAll('a[data-step]').forEach(a => a.addEventListener('click', e => {
+      e.preventDefault();
+      const k = a.dataset.step, t = app.querySelector(a.getAttribute('href'));
+      if (msg) { msg.hidden = true; msg.textContent = ''; }
+      if (t) { goTo(t); return; }
+      // not on the page yet: name the step to complete first (from the server's own list), and offer to go there
+      const steps = (RD && RD.steps) || [], at = x => steps.indexOf(x) + 1, me = steps.find(x => x.key === k), by = key => steps.find(x => x.key === key);
+      // the earliest unfinished step this one depends on (step 5 needs step 4, which needs step 1)
+      let first = null; for (let q = STEP_NEEDS[k]; q; q = STEP_NEEDS[q]) { const x = by(q); if (x && !x.done) first = x; }
+      if (!first) first = steps.find(x => !x.done && x.key !== k);
+      if (!msg) return;
+      msg.innerHTML = first ? `Step ${at(me)} opens once step ${at(first)} is complete: <strong>${esc(first.label)}</strong>. <a href="${STEP_AT[first.key]}" data-step-go="${esc(first.key)}">Go to step ${at(first)}</a>`
+        : 'This step is not available just now. Please refresh the page.';
+      msg.hidden = false;
+      const go = msg.querySelector('[data-step-go]');
+      if (go) go.addEventListener('click', ev => { ev.preventDefault(); const g = app.querySelector(go.getAttribute('href')); if (g) goTo(g); });
+      msg.focus({ preventScroll: true });
+      msg.scrollIntoView({ block: 'nearest' });
+    }));
+  }
+
   function stepsCard(r) {
     const o = r.online, why = Object.entries(o.reasons || {}).sort((a, b) => b[1] - a[1]);
     return `<section class="st-card st-os-steps" aria-labelledby="os-steps-h"><div class="st-ck-top"><h2 id="os-steps-h">Your steps</h2><span class="st-ck-count">${r.done} of ${r.total} done</span></div>
       <div class="st-os-bar" aria-hidden="true"><span style="width:${Math.round(100 * r.done / r.total)}%"></span></div>
       <ol class="st-os-list">${r.steps.map((x, i) => `<li class="${x.done ? 'done' : x.key === r.next ? 'next' : ''}"><a href="${STEP_AT[x.key]}" data-step="${x.key}"><span class="st-os-n" aria-hidden="true">${x.done ? '✓' : i + 1}</span><span>${esc(x.label)}${x.key === 'delivery' ? '<small>Including transit insurance for at least the price</small>' : ''}</span><span class="st-os-s">${x.done ? 'Done' : x.key === r.next ? 'Next' : 'To do'}</span></a></li>`).join('')}</ol>
+      <p class="st-os-msg" data-step-msg role="status" aria-live="polite" tabindex="-1" hidden></p>
       ${r.founding ? `<p class="st-muted st-os-note">Founding Artist: your commission-free artworks can also be bought online if you give the separate, optional processing-fee consent in the basket section${r.processing_consent ? ' (given)' : ''}.</p>` : ''}
       <h3 class="st-os-h3">Your artworks</h3>
       <p class="st-os-state">${o.available ? `${o.purchasable} of ${o.available} available ${o.available === 1 ? 'artwork' : 'artworks'} can be bought online` : 'No available artworks yet'}</p>
@@ -315,6 +352,7 @@
       h = `<p class="st-muted">Optional</p><h1 class="st-h1">Online sales</h1><p id="page-error" class="st-err" role="alert" tabindex="-1" hidden></p>
         <p class="st-muted st-os-lead">Buyers can buy your available artworks online with one secure card payment, alone or with other artists’ works. You remain the seller and are paid into your own Stripe account. Your gallery, enquiries and direct sales work exactly as now whether or not you set this up.${sw.enabled ? (sw.live ? '' : ' <strong>Test mode: no real payment can be taken.</strong>') : ' <strong>Online sales are not open at the moment.</strong>'}</p>`;
       let rd = null; try { rd = await api('GET', base + '/basket/readiness'); } catch { rd = null; }
+      RD = rd && rd.installed ? rd : null;
       if (rd && rd.installed) h += stepsCard(rd);
     }
     if (founder) {
@@ -398,9 +436,7 @@
     if (bj && bj.installed) h += founder ? basketFounder(bj) : basketArtist(bj, j);
     h += `<h2>Orders</h2>${j.orders.length ? j.orders.map(orderCard).join('') : '<p class="st-muted">None yet.</p>'}`;
     app.innerHTML = h;
-    // a step whose section is not on the page yet (it appears once the basket addendum is accepted) opens the basket section
-    app.querySelectorAll('a[data-step]').forEach(a => a.addEventListener('click', e => { const t = app.querySelector(a.getAttribute('href')) || app.querySelector('#basket') || app.querySelector('#pay-join');
-      if (t) { e.preventDefault(); if (t.tagName === 'DETAILS') t.open = true; t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }));
+    wireSteps();
     J_BASKET = bj;
     wire(j);
   }

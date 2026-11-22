@@ -592,6 +592,83 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
     check('OS9 artwork eligibility on the page: how many available artworks can be bought online and why not, in plain words',
       /0 of 2 available artworks can be bought online/.test(pages.new.text) && /2 online sales set-up not finished/.test(pages.new.text) && /stay on enquiry/.test(pages.new.text)
       && /of \d available artworks can be bought online/.test(pages.gal.text) && /price on request \(add a price to sell online\)/.test(pages.gal.text) && !pages['new-phone'].wide, { n: pages.new.text, g: pages.gal.text });
+    // ---- the full Online sales sequence by a new Gallery Artist, on a phone (touch) and on desktop (mobile report, 22 Nov 2026)
+    const walk = async (id, email, slug, vp) => {
+      await seedPublished(db, { id, slug, email, name: 'Walk ' + id, works: 2, publishedAt: ago(5) });
+      await db.prepare('UPDATE artists SET founding = 0 WHERE id = ?').bind(id).run();
+      await db.prepare(`INSERT INTO gallery_agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at, account_email, display_name, method, statement, created_at) VALUES (?,?,?,'PA-GAA-2026-11',?,?,?,?, 'x','studio_checkbox','test',?)`).bind('gaa' + id, 'ev' + id, id, FAKE, FAKE, ago(20), email, ago(20)).run();
+      await db.prepare("INSERT INTO artist_terms (artist_id, track, commission_bp, set_by, created_at, updated_at) VALUES (?,'gallery_artist',1500,?,?,?)").bind(id, FOUNDER, ago(20), ago(20)).run();
+      await db.prepare('UPDATE artworks SET price_eur = 900, price_on_request = 0 WHERE artist_id = ?').bind(id).run();
+      { const v = await one('SELECT snapshot FROM versions WHERE artist_id = ?', id), snap = JSON.parse(v.snapshot); for (const w of snap.works) { w.price_eur = 900; w.price_on_request = 0; } await db.prepare('UPDATE versions SET snapshot = ? WHERE artist_id = ?').bind(JSON.stringify(snap), id).run(); }
+      const c = await BR.newContext(vp), pg = await c.newPage(), errs = [];
+      pg.on('pageerror', e => errs.push(String(e)));
+      await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(email) });
+      const touch = !!vp.hasTouch, press = sel => touch ? pg.tap(sel) : pg.click(sel);
+      const open = async () => { await pg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); await pg.waitForSelector('.st-os-steps', { timeout: 20000 }); };
+      const steps = () => pg.$$eval('.st-os-list li', ls => ls.map(l => l.querySelector('.st-os-s').textContent));
+      // where a tap lands: the section's top just below the sticky header, in the upper part of the screen
+      const landed = async sel => {   // wait until scrolling has stopped, then: the section's top just below the sticky header
+        let last = -1; for (let n = 0; n < 40; n++) { const y = await pg.evaluate(() => scrollY); if (y === last) break; last = y; await pg.waitForTimeout(150); }
+        return pg.evaluate(sel => { const t = document.querySelector(sel), h = document.querySelector('.st-top').getBoundingClientRect().bottom; if (!t) return false;
+          const r = t.getBoundingClientRect(), end = scrollY + innerHeight >= document.documentElement.scrollHeight - 2; return r.top >= h - 1 && (r.top <= h + 60 || (end && r.bottom <= innerHeight)); }, sel); };
+      const tapStep = async k => { await pg.evaluate(() => scrollTo(0, 0)); await press(`a[data-step="${k}"]`); await pg.waitForTimeout(150); };
+      const msgText = () => pg.evaluate(() => { const m = document.querySelector('[data-step-msg]'); return !m || m.hidden ? null : m.textContent.replace(/\s+/g, ' ').trim(); });
+      const out = { vp: vp.viewport.width };
+      await open();
+      // before step 1: steps 2-6 explain that step 1 comes first, and do not jump to step 1
+      out.locked = [];
+      for (const k of ['seller', 'stripe', 'basket', 'disclosure', 'delivery']) { await tapStep(k); out.locked.push([k, await msgText(), await pg.evaluate(() => Math.round(scrollY))]); }
+      if (process.env.BASKET_UI_SHOTS && touch) { await tapStep('seller'); await pg.screenshot({ path: `${process.env.BASKET_UI_SHOTS}/online-sales-step-locked-phone.png` }); }
+      out.goToStep1 = (await pg.$('[data-step-msg] a[data-step-go]')) ? (await press('[data-step-msg] a[data-step-go]'), true) : false; out.goToStep1 = out.goToStep1 && await landed('#pay-join');
+      // step 1 through the form; it persists across a reload
+      await press('form[data-f="optin"] input[name="accept"]'); await press('form[data-f="optin"] button');
+      await pg.waitForSelector('#pay-seller', { timeout: 10000 }); await open();
+      out.afterJoin = await steps();
+      // step 2: the tap lands on the seller form below the header; fill and save it there
+      await tapStep('seller'); out.sellerLanded = await landed('#pay-seller');
+      const f = 'form[data-f="seller"]';
+      for (const [n, v] of [['legal_name', 'Walk ' + id], ['address', '2 Studio Lane, Cork, Ireland'], ['email', 'walk@example.test'], ['phone', '+353 21 555 0100']]) await pg.fill(`${f} input[name="${n}"]`, v);
+      await press(`${f} input[name="trader_status"][value="trader"]`); await press(`${f} input[name="confirm"]`); await press(`${f} button`);
+      await pg.waitForTimeout(600); await open(); out.afterSeller = await steps();
+      // step 3: the tap lands on Stripe; onboarding itself happens on Stripe's site (simulated: account created and refreshed)
+      await tapStep('stripe'); out.stripeLanded = await landed('#pay-stripe');
+      await call('POST', '/api/checkout/onboarding', email, { country: 'IE' }); await call('POST', `/api/admin/checkout/accounts/${id}/refresh`, FOUNDER, {});
+      await open(); out.afterStripe = await steps();
+      // steps 5 and 6 before step 4: they name step 4
+      await tapStep('disclosure'); out.needs4 = await msgText();
+      // step 4 through the basket form
+      await tapStep('basket'); out.basketLanded = await landed('#basket');
+      await press('form[data-f="basket-optin"] input[name="accept"]'); await press('form[data-f="basket-optin"] button'); await pg.waitForSelector('#pay-disclosure', { timeout: 10000 });
+      await open(); out.afterBasket = await steps();
+      // step 5 through its form
+      await tapStep('disclosure'); out.disclosureLanded = await landed('#pay-disclosure');
+      await press('form[data-f="basket-disclosure"] input[name="accept"]'); await press('form[data-f="basket-disclosure"] button'); await pg.waitForTimeout(600);
+      await open(); out.afterDisclosure = await steps();
+      // step 6: the tap lands on delivery offers; an offer is saved (API: the long offer form is covered by U4) and PlotArt approves it
+      await tapStep('delivery'); out.deliveryLanded = await landed('#pay-delivery');
+      const wid = (await one("SELECT id FROM artworks WHERE artist_id = ? ORDER BY ord LIMIT 1", id)).id;
+      out.offer = (await call('PUT', `/api/checkout/basket/offers/${wid}`, email, { confirm: true, delivery_cents: 4000, delivery: DELIVERY })).s;
+      out.approved = await approveOffers([wid]);
+      await open(); out.final = await steps(); out.text = await pg.$eval('.st-os-steps', e => e.textContent.replace(/\s+/g, ' '));
+      out.wide = await pg.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
+      if (process.env.BASKET_UI_SHOTS && touch) { await pg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); }
+      out.errs = errs;
+      await c.close();
+      return out;
+    };
+    const ph = await walk('awph', 'walkphone@example.test', 'wph', { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const dt = await walk('awdt', 'walkdesk@example.test', 'wdt', { viewport: { width: 1280, height: 900 } });
+    for (const [n, o] of [['phone', ph], ['desktop', dt]]) {
+      check(`OS11 ${n}: before step 1, tapping steps 2–6 says step 1 must be completed first (naming it) and does not jump to step 1; “Go to step 1” lands below the header`,
+        o.locked.every(([k, m, y]) => m && /opens once step 1 is complete: Join online sales/.test(m) && y < 600) && o.goToStep1, o.locked);
+      check(`OS12 ${n}: step 1 completed on screen is saved and persists after reloading`, o.afterJoin[0] === 'Done' && o.afterJoin[1] === 'Next', o.afterJoin);
+      check(`OS13 ${n}: steps 2–6 each open their own section, visible below the sticky header (not step 1)`,
+        o.sellerLanded && o.stripeLanded && o.basketLanded && o.disclosureLanded && o.deliveryLanded, o);
+      check(`OS14 ${n}: steps 5–6 before step 4 name step 4 (the basket addendum) as the step to complete first`, /opens once step 4 is complete: Accept the basket addendum/.test(o.needs4 || ''), o.needs4);
+      check(`OS15 ${n}: the whole sequence completes through the real forms (seller information, Stripe, basket addendum, seller confirmation, an approved delivery offer): six steps done and an artwork can be bought online`,
+        o.afterSeller[1] === 'Done' && o.afterStripe[2] === 'Done' && o.afterBasket[3] === 'Done' && o.afterDisclosure[4] === 'Done' && o.offer === 200 && o.approved === 1
+        && o.final.every(x => x === 'Done') && /1 of 2 available artworks can be bought online/.test(o.text) && !o.wide && !o.errs.length, o);
+    }
     const [fc, fp] = await page(FOUNDER, 1280); await fp.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await fp.waitForSelector('#basket-readiness', { timeout: 20000 });
     const fh = await fp.evaluate(() => ({ h1: document.querySelector('h1').textContent, tabs: [...document.querySelectorAll('.st-tabs a')].map(a => a.textContent) }));
     check('OS10 the founder’s Payment pilot page is unchanged (its own heading and navigation)', /^Payment pilot/.test(fh.h1) && fh.tabs.join() === 'Studio', fh);
