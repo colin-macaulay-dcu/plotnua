@@ -31,7 +31,7 @@ CSS_OUT = ROOT / "plotart" / "assets" / "plotart-services.css"
 
 PATH = "services.html"
 TITLE = "Art Services & Providers | PlotArt"
-DESC = ("Independent art handling and picture hanging providers in Ireland: specialist art transport, delivery and "
+DESC = ("Independent art service providers in Ireland: specialist art transport, artwork collection and delivery, "
         "installation, and professional artwork hanging. Contact each provider directly.")
 
 # Providers, in page order. "publish": False keeps a provider's listing in the source but off the page. A provider shows
@@ -77,8 +77,7 @@ PROVIDERS = [
      "accent": "#E8772E",
      "facts": [("Area", "Throughout Dublin. Nationwide deliveries by arrangement."),
                ("Enquiries", "Welcomes enquiries from artists, galleries and art buyers seeking flexible transport."),
-               ("Quotations", "Contact FastLane Couriers directly for a quotation."),
-               ("Bookings", "Arranged and paid directly with FastLane Couriers. PlotArt doesn’t process transport bookings or payments.")],
+               ("Quotations", "Contact FastLane Couriers directly for a quotation.")],
      "links": [("https://www.fastlanecouriers.com", "Visit Website / Request a Quote", "services_fastlane_web", True),
                ("mailto:info@fastlanecouriers.com", "Email info@fastlanecouriers.com", "services_fastlane_email", False),
                ("tel:+35319081167", "Call 01 908 1167", "services_fastlane_phone", False),
