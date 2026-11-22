@@ -34,12 +34,17 @@ TITLE = "Art Services & Providers | PlotArt"
 DESC = ("Independent art handling and picture hanging providers in Ireland: specialist art transport, delivery and "
         "installation, and professional artwork hanging. Contact each provider directly.")
 
-# Providers, in page order. "publish": False keeps a provider's listing in the source but off the page (Maurice Ward,
-# 19 Nov 2026: amendments outstanding). No prices appear on this page (Hang-It asked for its pricing to be removed,
+# Providers, in page order. "publish": False keeps a provider's listing in the source but off the page. A provider shows
+# its own photograph and logo only with written image permission ("photo"/"logo"); otherwise a plain panel ("placeholder").
+# More providers: add an entry here; the grid takes any number (two across, one on narrow screens). No prices appear on this page (Hang-It asked for its pricing to be removed,
 # 19 Nov 2026); the launch guard refuses any euro price here.
 IMG = ROOT / "atlas-tools" / "plotart-services" / "images"
 PROVIDERS = [
-    {"key": "mw", "publish": False, "name": "Maurice Ward Art Handling",
+    # Maurice Ward, restored 22 Nov 2026 (founder brief): text-only. Listing agreed in writing 19 Nov 2026 (Nicola Carragher,
+    # with the email address and website to use); the company declined the use of its photograph the same day, so no
+    # Maurice Ward photograph or logo is used. "placeholder": a plain PlotArt panel in place of an image (no provider imagery).
+    {"key": "mw", "publish": True, "name": "Maurice Ward Art Handling",
+     "placeholder": "Art transport and installation",
      "what": "Specialist art transport, delivery, unpacking and installation.",
      "facts": [("Quotations", "Each job is quoted individually."),
                ("Insurance", "Transit insurance is arranged separately, by you.")],
@@ -87,6 +92,10 @@ def card(p):
                  '<source type="image/webp" srcset="%(b)s-800.webp 800w, %(b)s-1600.webp 1600w" sizes="(max-width:900px) 100vw, 46vw">'
                  '<img src="%(b)s-1600.jpg" width="%(w)d" height="%(h)d" alt="%(alt)s" data-kind="Photograph" loading="lazy" decoding="async"></picture>'
                  '<figcaption>%(credit)s</figcaption></figure>') % dict(b=base, w=ph["w"], h=ph["h"], alt=ph["alt"], credit=ph["credit"])
+    elif "placeholder" in p:
+        # a provider without image permission: a quiet anthracite panel with the kind of service in the PlotArt serif;
+        # decorative (the provider's name is the card heading), never a photograph, logo or stock image
+        media = ('\n    <div class="pa-sv-media pa-sv-media--plain" aria-hidden="true"><span>%s</span></div>' % p["placeholder"])
     logo = ""
     if "logo" in p:
         lg = p["logo"]

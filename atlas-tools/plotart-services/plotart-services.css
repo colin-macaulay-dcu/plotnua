@@ -39,3 +39,10 @@ body.pa .pa-sv-what::after{ content:""; position:absolute; left:0; bottom:0; wid
 @media (max-width:560px){ body.pa .pa-sv-media{ aspect-ratio:3 / 2; } body.pa .pa-sv-logo--dark img{ height:34px; }
   body.pa .pa-sv-media figcaption{ top:10px; bottom:auto; padding:2px 8px; border-radius:999px; background:rgba(27,28,30,.62); } }
 body.pa .pa-sv-hero + .pa-sv-sec{ padding-top:clamp(32px, 3.8vw, 56px); }   /* the first provider sooner; later sections unchanged (20 Nov 2026) */
+/* A provider without image permission (Maurice Ward, 22 Nov 2026): the same 16:9 space as a photograph, as a quiet
+   anthracite panel with the kind of service in the PlotArt serif. Never provider imagery. */
+body.pa .pa-sv-media--plain{ display:flex; align-items:center; justify-content:center; padding:24px; background:var(--well);
+  background-image:radial-gradient(120% 100% at 50% 0%, rgba(237,235,231,.05), transparent 65%); border-bottom:1px solid var(--line); }
+body.pa .pa-sv-media--plain::after{ display:none; }
+body.pa .pa-sv-media--plain span{ position:relative; font-family:var(--serif); font-style:italic; font-size:clamp(22px, 2.2vw, 30px); line-height:1.2; color:var(--stone); text-align:center; max-width:16em; }
+body.pa .pa-sv-card--media .pa-sv-media--plain + .pa-sv-body{ padding-top:clamp(22px, 2.6vw, 32px); }
