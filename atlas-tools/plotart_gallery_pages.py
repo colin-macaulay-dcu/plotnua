@@ -253,7 +253,8 @@ def basket_block(w, origin):
     is exactly the enquiry page it was. Without JavaScript nothing is shown."""
     return ('<div class="pa-basket" data-pa-basket-origin="%s" data-pa-artwork="%s" hidden>'
             '<a class="pa-btn pa-btn--ghost" href="%s/basket?add=%s" data-pa-track="artwork_basket_add">Add to basket</a>'
-            '<p class="pa-aw-cta-note">Or buy online: one secure card payment for works from several artists. Each artist is the seller.</p></div>') % (
+            '<p class="pa-aw-cta-note">Or buy online: one secure card payment for works from several artists. Each artist is the seller. '
+            'Online purchase delivers in the Republic of Ireland only; for delivery elsewhere, please enquire.</p></div>') % (
         E(origin), E(w["id"]), E(origin), E(w["id"]))
 
 

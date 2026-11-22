@@ -1360,6 +1360,9 @@ async function route(req, env) {
       if (p === '/api/admin/checkout/pause' && m === 'POST') return json({ ok: true, ...(await CO.setPause(env, me.email, await req.json().catch(() => ({})))) });
       if (p === '/api/admin/checkout/baskets' && m === 'GET') return json({ ok: true, ...(await BK.adminList(env)) });
       if (p === '/api/admin/checkout/baskets/artists' && m === 'GET') return json({ ok: true, ...(await BK.adminArtists(env)) });
+      // delivery safety (22 Nov 2026): the founder reviews each exact delivery-offer version before it can be bought online
+      if (p === '/api/admin/checkout/baskets/offers' && m === 'GET') return json({ ok: true, ...(await BK.adminOffers(env)) });
+      if ((mm = p.match(/^\/api\/admin\/checkout\/baskets\/offers\/([A-Za-z0-9_-]{1,64})\/review$/)) && m === 'POST') return json({ ok: true, ...(await BK.reviewOffer(env, me.email, mm[1], await req.json().catch(() => ({})))) });
       if (p === '/api/admin/checkout/baskets/eligibility' && m === 'GET') return json({ ok: true, ...(await BK.adminEligibility(env, String(url.searchParams.get('ids') || '').split(',').filter(Boolean))) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/baskets\/(b[0-9a-z]+)(?:\/([a-z]+))?$/))) {
         if (!mm[2] && m === 'GET') return json({ ok: true, ...(await BK.adminDetail(env, mm[1])) });

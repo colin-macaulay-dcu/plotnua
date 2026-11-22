@@ -139,7 +139,8 @@ export async function artistView(env, artist) {
     processing_statement: doc ? PROCESSING_CONSENT_STATEMENT(doc.doc_id) : null, disclosure_statement: SELLER_DISCLOSURE_STATEMENT,
     seller_info: await C.sellerProfile(env, artist.id).then(async p => p ? { shown: sellerInfo(p), subject_sha256: await sellerHash(p) } : null),
     founding: !!artist.founding, delivery_fields: R.DELIVERY_FIELDS, parties: R.PARTIES,
-    works: works.map(({ delivery, ...w }) => ({ ...w, offer: w.approved_at && !w.withdrawn_at ? { delivery_cents: w.delivery_cents, version: w.version, approved_at: w.approved_at, delivery: J(delivery) } : null })) };
+    works: await Promise.all(works.map(async ({ delivery, ...w }) => ({ ...w, offer: w.approved_at && !w.withdrawn_at
+      ? { delivery_cents: w.delivery_cents, version: w.version, approved_at: w.approved_at, delivery: J(delivery), review: artistReviewView(await offerReview(env, { artwork_id: w.id, version: w.version, delivery_cents: w.delivery_cents, delivery })) } : null }))) };
 }
 export async function artistOptIn(env, artist, b) {
   if (!(await installed(env))) throw new Bad('Baskets are not installed (migration 0019)', 409);
@@ -168,7 +169,11 @@ export async function setDeliveryOffer(env, artist, artworkId, b) {
   if (!b || b.confirm !== true) throw new Bad('Confirm that you will deliver this artwork as described, anywhere in the Republic of Ireland, for this price', 400);
   const cents = b.delivery_cents;
   if (!Number.isInteger(cents) || cents < 0 || cents > R.MAX_DELIVERY_CENTS) throw new Bad(`Give the delivery charge in whole euro cents (0 to ${R.MAX_DELIVERY_CENTS})`, 400);
-  const d = R.cleanDelivery({ ...b.delivery, destination: 'Anywhere in the Republic of Ireland (the buyer’s address is given at checkout)' });
+  const islands = !!(b.delivery && b.delivery.offshore_islands === true);
+  const d = R.cleanDelivery({ ...b.delivery, offshore_islands: islands, destination_country: 'IE', destination: islands
+    ? 'Anywhere in the Republic of Ireland, including offshore islands (the buyer’s address is given at checkout)'
+    : 'Anywhere on the mainland of the Republic of Ireland; offshore islands by enquiry (the buyer’s address is given at checkout)' });
+  R.checkDeadlines(d);
   if (w.price_eur) R.checkCover(d, w.price_eur * 100);
   const ret = R.returnProblems(d);
   if (ret.length) throw new Bad(`Give the return arrangements: ${ret.join('; ')}`, 400);
@@ -177,11 +182,91 @@ export async function setDeliveryOffer(env, artist, artworkId, b) {
     VALUES (?,?, 'IE', ?,?, 1, ?,?, NULL, ?,?) ON CONFLICT(artwork_id) DO UPDATE SET delivery_cents = excluded.delivery_cents, delivery = excluded.delivery,
     version = artwork_delivery_offers.version + 1, approved_by = excluded.approved_by, approved_at = excluded.approved_at, withdrawn_at = NULL, updated_at = excluded.updated_at`,
     w.id, artist.id, cents, JSON.stringify(d), 'artist:' + artist.email, t, t, t);
-  return { artwork_id: w.id, delivery_cents: cents, version: (cur ? cur.version : 0) + 1 };
+  const version = (cur ? cur.version : 0) + 1;
+  await offerEvent(env, { artwork_id: w.id, artist_id: artist.id, kind: 'saved', version, sha: await offerSha({ artwork_id: w.id, version, delivery_cents: cents, delivery: d }), actor: 'artist:' + artist.email });
+  // a new version is never approved: the founder reviews it before the artwork can be bought online (delivery safety, 22 Nov 2026)
+  return { artwork_id: w.id, delivery_cents: cents, version, review: 'awaiting_founder_review' };
 }
 export async function withdrawDeliveryOffer(env, artist, artworkId) {
   const r = await run(env, 'UPDATE artwork_delivery_offers SET withdrawn_at = ?, updated_at = ? WHERE artwork_id = ? AND artist_id = ? AND withdrawn_at IS NULL', now(), now(), artworkId, artist.id);
+  if (r.meta.changes) { const o = await one(env, 'SELECT version FROM artwork_delivery_offers WHERE artwork_id = ?', artworkId); await offerEvent(env, { artwork_id: artworkId, artist_id: artist.id, kind: 'withdrawn', version: o.version, sha: null, actor: 'artist:' + artist.email }); }
   return { withdrawn: !!r.meta.changes };
+}
+
+/* ---------------------------------------------------------------- delivery safety (22 Nov 2026): founder review of each delivery offer
+   An artwork is offered in the basket only while the founder's LATEST review of its delivery offer approves the CURRENT version
+   and the exact content (a fingerprint of the charge and every delivery field). Any change the artist saves is a new version,
+   so an earlier approval stops counting until the founder reviews again. Reviews are append-only (migration 0022); without
+   that migration nothing is approved and every artwork stays enquiry-only. */
+export const DELIVERY_SCOPE = 'Online purchase delivers to addresses in the Republic of Ireland only. Offshore islands only where an artwork’s delivery offer includes them. For delivery anywhere else, please enquire about the artwork.';
+export const REVIEW_STATEMENT = 'I have reviewed this exact delivery offer. The delivery charge, transit insurance, dispatch and delivery deadlines and return arrangements are complete and realistic for this artwork, and it may be bought online on these terms.';
+const canon = v => Array.isArray(v) ? `[${v.map(canon).join(',')}]` : v && typeof v === 'object' ? `{${Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + canon(v[k])).join(',')}}` : JSON.stringify(v ?? null);
+export async function offerSha(o) {
+  const d = typeof o.delivery === 'string' ? JSON.parse(o.delivery) : o.delivery;
+  return sha256(canon({ artwork_id: o.artwork_id, version: o.version, delivery_cents: o.delivery_cents, delivery: d }));
+}
+async function reviewsInstalled(env) { try { await env.DB.prepare('SELECT 1 FROM delivery_offer_reviews LIMIT 1').all(); return true; } catch { return false; } }
+export async function offerReview(env, o) {
+  let r = null;
+  try { r = await one(env, 'SELECT * FROM delivery_offer_reviews WHERE artwork_id = ? ORDER BY reviewed_at DESC, rowid DESC LIMIT 1', o.artwork_id); }
+  catch { return { approved: false, state: 'not_installed' }; }
+  if (!r || o.withdrawn_at) return { approved: false, state: 'awaiting_review' };
+  const current = r.offer_version === o.version && r.offer_sha256 === await offerSha(o);
+  if (!current) return { approved: false, state: 'awaiting_review', previous: { decision: r.decision, version: r.offer_version, at: r.reviewed_at } };
+  if (r.decision === 'returned') return { approved: false, state: 'returned', note: r.note, at: r.reviewed_at, by: r.reviewed_by, id: r.id };
+  if (live(env) && !r.livemode) return { approved: false, state: 'awaiting_review' };   // a test-mode review never opens live purchase
+  return { approved: true, state: 'approved', at: r.reviewed_at, by: r.reviewed_by, id: r.id, note: r.note };
+}
+const artistReviewView = r => ({ state: r.state, at: r.at || null, note: r.state === 'returned' ? r.note : null,
+  text: r.state === 'approved' ? 'Reviewed and approved by PlotArt' : r.state === 'returned' ? 'Returned by PlotArt: change the offer and save it again' : 'Waiting for PlotArt to review it' });
+async function offerEvent(env, { artwork_id, artist_id, kind, version, sha, actor }) {
+  try { await run(env, 'INSERT INTO delivery_offer_events (id, artwork_id, artist_id, kind, offer_version, offer_sha256, actor, at) VALUES (?,?,?,?,?,?,?,?)', rid('de'), artwork_id, artist_id, kind, version, sha, actor, now()); }
+  catch { /* migration 0022 not applied: the offer itself still records who approved it and when */ }
+}
+/* Founder: every current delivery offer with its review state; those waiting first. */
+export async function adminOffers(env) {
+  if (!(await installed(env))) return { installed: false, offers: [] };
+  const ok = await reviewsInstalled(env);
+  const rows = await all(env, `SELECT o.*, w.title, w.price_eur, w.availability, a.display_name FROM artwork_delivery_offers o JOIN artworks w ON w.id = o.artwork_id
+    JOIN artists a ON a.id = o.artist_id WHERE o.withdrawn_at IS NULL AND w.archived = 0 ORDER BY o.updated_at DESC`);
+  const offers = [];
+  for (const o of rows) {
+    const d = J(o.delivery) || {}, rv = await offerReview(env, o), problems = [];
+    try { R.checkCover(d, (o.price_eur || 0) * 100); } catch (e) { problems.push(e.message); }
+    problems.push(...R.returnProblems(d).map(x => 'missing: ' + x));
+    if (R.deliveryDeadlines(d).basis !== 'agreed') problems.push('no dispatch and delivery deadlines (the artist must save the offer again)');
+    if (!o.price_eur) problems.push('the artwork has no price');
+    offers.push({ artwork_id: o.artwork_id, title: o.title, artist: o.display_name, artist_id: o.artist_id, price_eur: o.price_eur, availability: o.availability,
+      version: o.version, sha256: await offerSha(o), delivery_cents: o.delivery_cents, delivery: d, saved_by: o.approved_by, saved_at: o.approved_at, review: rv, problems,
+      history: ok ? await all(env, `SELECT 'review' AS type, decision AS what, offer_version AS version, reviewed_by AS who, reviewed_at AS at, note FROM delivery_offer_reviews WHERE artwork_id = ?
+        UNION ALL SELECT 'artist', kind, offer_version, actor, at, NULL FROM delivery_offer_events WHERE artwork_id = ? ORDER BY at DESC LIMIT 12`, o.artwork_id, o.artwork_id) : [] });
+  }
+  offers.sort((x, y) => (x.review.approved - y.review.approved) || 0);
+  return { installed: true, reviews_installed: ok, statement: REVIEW_STATEMENT, waiting: offers.filter(x => x.review.state === 'awaiting_review').length, offers };
+}
+/* Founder: approve or return ONE exact offer version (the version and fingerprint the founder was shown). */
+export async function reviewOffer(env, founder, artworkId, b) {
+  if (!(await installed(env)) || !(await reviewsInstalled(env))) throw new Bad('Delivery offer reviews are not installed (migration 0022)', 409);
+  const o = await one(env, 'SELECT o.*, w.price_eur FROM artwork_delivery_offers o JOIN artworks w ON w.id = o.artwork_id WHERE o.artwork_id = ? AND o.withdrawn_at IS NULL', artworkId);
+  if (!o) throw new Bad('No current delivery offer for that artwork', 404);
+  const decision = b && b.decision;
+  if (!['approved', 'returned'].includes(decision)) throw new Bad('Choose approve or return', 400);
+  if (b.version !== o.version || b.sha256 !== await offerSha(o)) throw new Bad('The artist changed this delivery offer since you opened it. Reload and review the current version.', 409);
+  const note = String(b.note || '').trim();
+  if (note.length > 600) throw new Bad('Note: up to 600 characters', 400);
+  if (decision === 'returned' && note.length < 3) throw new Bad('Say what the artist should change', 400);
+  if (decision === 'approved') {
+    if (b.confirm !== true || b.statement !== REVIEW_STATEMENT) throw new Bad('Tick the box to confirm your review', 400);
+    const d = J(o.delivery) || {};
+    if (!o.price_eur) throw new Bad('The artwork has no price: it cannot be bought online', 409);
+    R.checkCover(d, o.price_eur * 100);
+    const ret = R.returnProblems(d); if (ret.length) throw new Bad(`Return arrangements missing: ${ret.join('; ')}`, 409);
+    if (R.deliveryDeadlines(d).basis !== 'agreed') throw new Bad('This offer has no dispatch and delivery deadlines: return it to the artist', 409);
+  }
+  const id = rid('dr');
+  await run(env, `INSERT INTO delivery_offer_reviews (id, artwork_id, artist_id, offer_version, offer_sha256, decision, note, reviewed_by, reviewed_at, livemode) VALUES (?,?,?,?,?,?,?,?,?,?)`,
+    id, o.artwork_id, o.artist_id, o.version, b.sha256, decision, note || null, 'founder:' + founder, now(), live(env) ? 1 : 0);
+  return { id, artwork_id: o.artwork_id, version: o.version, decision, ...(await adminOffers(env)) };
 }
 
 /* ---------------------------------------------------------------- eligibility: one artwork, from the records only */
@@ -219,6 +304,9 @@ async function lineFor(env, artworkId, at) {
   const delivery = J(offer.delivery);
   try { R.checkCover(delivery, artworkCents); } catch { return no('enquire', 'delivery cover below the price'); }
   if (R.returnProblems(delivery).length) return no('enquire', 'return arrangements missing');
+  if (R.deliveryDeadlines(delivery).basis !== 'agreed') return no('enquire', 'delivery offer has no dispatch and delivery deadlines');
+  const review = await offerReview(env, offer);
+  if (!review.approved) return no('enquire', review.state === 'returned' ? 'delivery offer returned by the founder' : 'delivery offer awaiting founder approval');
   const f = foundingAt(artist, at);
   const intro = { reference: null, route: 'online_basket', introduced_at: at, founding: f.founding, founding_year_end: f.year_end };
   const e = await R.entitlementForIntro(env, { artist, intro, at });
@@ -226,10 +314,10 @@ async function lineFor(env, artworkId, at) {
   if (e.bp === 0 && commissionFreePolicy(env) !== 'with_processing_consent') return no('enquire', 'commission-free: direct payment (policy)');
   if (e.bp === 0 && !bm.processing_consent.valid) return no('enquire', 'commission-free: no valid processing-fee consent');
   const money = R.amounts({ artwork_cents: artworkCents, delivery_cents: offer.delivery_cents, commission_bp: e.bp });
-  return { ok: true, artist, work: w, pw, prof, mem, bm, offer, delivery, entitlement: e, money };
+  return { ok: true, artist, work: w, pw, prof, mem, bm, offer, delivery, review, entitlement: e, money };
 }
 const artworkUrl = (env, artist, w) => env.STAGING_GALLERY === 'true' && ['staging', 'test', 'local'].includes(env.ENVIRONMENT) ? `${env.STAGING_GALLERY_URL || '/gallery'}/${w.id}` : `${env.GALLERY_ORIGIN || 'https://plotnua.ie'}/plotart/artists/${artist.slug}/${w.slug}.html`;
-const deliverySummary = d => ({ window: d.delivery_window, transporter: d.transporter_name, tracking: d.tracking, cover: `${d.cover_provider}, up to €${(d.covered_value_cents / 100).toFixed(2)}`,
+const deliverySummary = d => ({ islands: d.offshore_islands === true, dispatch_days: d.dispatch_days, delivery_days: d.delivery_days, window: d.delivery_window, transporter: d.transporter_name, tracking: d.tracking, cover: `${d.cover_provider}, up to €${(d.covered_value_cents / 100).toFixed(2)}`,
   from: d.collection_county, returns: d.return_cost_basis === 'fixed' ? `Return cost if you change your mind: €${(d.return_cost_cents / 100).toFixed(2)}` : `Return cost if you change your mind: up to about €${(d.return_cost_cents / 100).toFixed(2)}` });
 
 /* What the basket page shows for each artwork: live availability, the seller, price and delivery (nothing internal). */
@@ -249,7 +337,7 @@ export async function preview(env, ids) {
   }
   const ok = items.filter(i => i.ok);
   const terms = await currentDoc(env, 'buyer_basket_terms');
-  return { open: enabled(env) && !(await C.pauseState(env)).paused && !!terms, test_mode: !live(env), items, max_lines: MAX_LINES,
+  return { open: enabled(env) && !(await C.pauseState(env)).paused && !!terms, test_mode: !live(env), items, max_lines: MAX_LINES, delivery_scope: DELIVERY_SCOPE,
     totals: { artworks_cents: ok.reduce((a, i) => a + i.price_cents, 0), delivery_cents: ok.reduce((a, i) => a + i.delivery_cents, 0), total_cents: ok.reduce((a, i) => a + i.total_cents, 0) },
     terms: terms ? { doc_id: terms.doc_id, title: terms.title } : null };
 }
@@ -268,7 +356,11 @@ function cleanBuyer(b) {
   if (eircode && !/^[AC-FHKNPRTV-Y][0-9]{2}W? ?[0-9AC-FHKNPRTV-Y]{4}$/i.test(eircode)) throw new Bad('Please check your Eircode', 400);
   const phone = s('phone', 30);
   if (!/^[+0-9 ()-]{7,30}$/.test(phone)) throw new Bad('Please give a telephone number for the delivery', 400);
-  return { email, name: s('name', 120), address: { line1: s('address_line1', 120), line2: s('address_line2', 120, false), town: s('town', 80), county, eircode: eircode ? eircode.toUpperCase() : null, phone } };
+  const isl = String((b && b.island) || '');
+  if (!['yes', 'no'].includes(isl)) throw new Bad('Please say whether the delivery address is on an offshore island', 400);
+  const address = { line1: s('address_line1', 120), line2: s('address_line2', 120, false), town: s('town', 80), county, eircode: eircode ? eircode.toUpperCase() : null, phone };
+  const named = R.islandMatch([address.line1, address.line2, address.town].filter(Boolean).join(' '));
+  return { email, name: s('name', 120), address: { ...address, island: isl === 'yes' || !!named }, island: { declared: isl === 'yes', named } };
 }
 const addressLine = a => [a.line1, a.line2, a.town, 'Co. ' + a.county, a.eircode, 'Ireland'].filter(Boolean).join(', ');
 
@@ -286,6 +378,11 @@ export async function openBasket(env, b) {
     const l = await lineFor(env, id, t);
     if (!l.ok) { const e = new Bad(l.reason, 409); e.artwork = id; throw e; }
     lines.push(l);
+  }
+  // offshore islands (delivery safety, 22 Nov 2026): only artworks whose founder-approved offer covers islands can go there
+  if (buyer.address.island) {
+    const not = lines.find(l => l.delivery.offshore_islands !== true);
+    if (not) { const e = new Bad(`${not.work.title} can’t be delivered to an offshore island through online purchase. Please remove it and enquire about it instead.`, 409); e.artwork = not.work.id; e.code = 'island'; throw e; }
   }
   // the client's view of the price must match the server's (a price that changed while the page was open is shown again)
   if (Number.isInteger(b.expected_total_cents) && b.expected_total_cents !== lines.reduce((a, l) => a + l.money.total_cents, 0))
@@ -314,7 +411,7 @@ export async function openBasket(env, b) {
     const seller = { name: l.artist.display_name, legal_name: l.prof.legal_name, trading_name: l.prof.trading_name, address: l.prof.address, returns_address: l.prof.returns_address || l.prof.address,
       email: l.prof.email, phone: l.prof.phone, trader_status: l.prof.trader_status, vat_number: l.prof.vat_number, role: 'Seller (the artist)', stripe_account_country: l.mem.account.country,
       platform: 'PlotArt (PlotNua, Colin Macaulay) introduces and coordinates this sale. PlotArt is not the seller.', contact: 'hello@plotnua.ie' };
-    const delivery = { ...l.delivery, destination: addressLine(buyer.address) };
+    const delivery = { ...l.delivery, destination_country: 'IE', destination: addressLine(buyer.address) + (buyer.address.island ? ' (offshore island)' : '') };
     const art = { title: l.work.title, year: l.work.year, medium: l.work.medium, materials: l.work.materials, h_cm: l.work.h_cm, w_cm: l.work.w_cm, d_cm: l.work.d_cm, listed_price_eur: l.work.price_eur };
     const snapshot = JSON.stringify({ schema: 1, reference: oref, basket: reference, quote_version: 1, issued_at: t, expires_at: hold, currency: 'EUR', seller, artwork: art,
       amounts: { artwork_cents: l.money.artwork_cents, delivery_cents: l.money.delivery_cents, total_cents: l.money.total_cents }, delivery: C.buyerDelivery(delivery), terms: { doc_id: terms.doc_id, html_sha256: terms.html_sha256 } });
@@ -327,7 +424,7 @@ export async function openBasket(env, b) {
         VALUES (?,?,?,?,?, 'checkout_open', 'open', ?,?,?,?,?,?,?,?,?,?,?, 1, 1, ?,?,?,?,?,?,?,?,?, 'buyer:basket', ?,?)`,
         oid, oref, l.artist.id, l.work.id, reference, buyer.email, lm, JSON.stringify(art), l.money.artwork_cents, l.money.delivery_cents, l.entitlement.bp, l.money.commission_cents,
         l.entitlement.basis, JSON.stringify(l.entitlement.evidence), JSON.stringify(delivery), JSON.stringify(seller), l.offer.approved_at,
-        JSON.stringify({ basis: 'standing_delivery_offer', offer_version: l.offer.version, approved_by: l.offer.approved_by, basket_addendum: l.bm.doc_id,
+        JSON.stringify({ basis: 'standing_delivery_offer', offer_version: l.offer.version, approved_by: l.offer.approved_by, founder_review: l.review.id, founder_reviewed_by: l.review.by, basket_addendum: l.bm.doc_id,
           seller_disclosure_consent: l.bm.seller_disclosure.id, processing_fee_consent: l.entitlement.bp === 0 ? l.bm.processing_consent.id : null }),
         t, hold, snapSha, add ? add.doc_id : null, terms.doc_id, t, l.mem.account.id, t, t),
       st(env, 'INSERT INTO quote_snapshots (order_id, quote_version, snapshot, sha256, issued_at) VALUES (?,?,?,?,?)', oid, 1, snapshot, snapSha, t),
@@ -718,11 +815,15 @@ const ARTIST_REASON = {
   'commission-free: direct payment (policy)': 'commission-free work: enquiry and direct sale only', 'sold': 'sold',
   'reserved': 'reserved for a buyer just now', 'published price differs from the Studio': 'new price not yet published',
   'not published as available': 'not yet published as available',
+  'delivery offer awaiting founder approval': 'delivery offer waiting for PlotArt to review it',
+  'delivery offer returned by the founder': 'delivery offer returned by PlotArt: see the note and save it again',
+  'delivery offer has no dispatch and delivery deadlines': 'delivery offer needs dispatch and delivery deadlines (save it again)',
 };
 export async function artistReadiness(env, a) {
   const bm = await artistMembership(env, a.id), mem = await C.membership(env, a.id), prof = await C.sellerProfile(env, a.id);
   const pay = await C.currentTerms(env, 'artist_payment_addendum');
-  const offers = (await one(env, 'SELECT COUNT(*) AS n FROM artwork_delivery_offers WHERE artist_id = ? AND withdrawn_at IS NULL', a.id)).n;
+  const offerRows = await all(env, 'SELECT * FROM artwork_delivery_offers WHERE artist_id = ? AND withdrawn_at IS NULL', a.id), offers = offerRows.length;
+  let offers_approved = 0; for (const o of offerRows) if ((await offerReview(env, o)).approved) offers_approved++;
   const stripe = !mem.account ? 'not connected' : mem.ready && mem.account.payouts_enabled ? 'onboarded' : 'onboarding incomplete';
   const steps = [
     { key: 'join', label: 'Join online sales (payment addendum)', founder: 'payment pilot', done: !!(mem.opted_in && pay && mem.addendum === pay.doc_id) },
@@ -741,7 +842,7 @@ export async function artistReadiness(env, a) {
   } else if (avail.length) online.not_purchasable['artist not ready'] = avail.length;
   const artist_reasons = {};
   for (const [k, n] of Object.entries(online.not_purchasable)) { const t = ARTIST_REASON[k] || 'not available online just now'; artist_reasons[t] = (artist_reasons[t] || 0) + n; }
-  return { id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, basket_addendum: bm.doc_id, basket_current: bm.current, online,
+  return { id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, delivery_offers_approved: offers_approved, basket_addendum: bm.doc_id, basket_current: bm.current, online,
     seller_disclosure: bm.seller_disclosure, processing_consent: bm.processing_consent, missing, steps: steps.map(({ founder, ...x }) => x), artist_reasons,
     commission_free_works: !a.founding ? 'none expected' : bm.processing_consent.valid ? 'offered (artist bears Stripe fees, 0% commission)' : 'direct payment only (no valid consent)' };
 }

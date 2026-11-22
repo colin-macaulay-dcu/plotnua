@@ -152,7 +152,49 @@ export const DELIVERY_FIELDS = {
   // structured return arrangements (PA-PAY 7.2; CRA 2022 Sch. 3(n): the cost of returning goods that cannot normally be posted)
   return_method: 's', return_address: 's', return_cost_cents: 'n', return_cost_basis: ['fixed', 'estimated_maximum'], return_arranged_by: 'p',
   shipment_confirmation_ref: 's', shipment_confirmed_by: 's', shipment_confirmed_on: 'd',
+  // delivery safety (22 Nov 2026). Optional here so that quotes made before them still read; required where stated:
+  //   destination_country  ISO country of the delivery address. Single-artwork quotes: required, and only 'IE' can be paid
+  //                        until the founder approves an international delivery policy (QUOTE_DESTINATIONS). Basket offers: 'IE'.
+  //   dispatch_days        Irish calendar days from payment by which the artwork is dispatched (basket offers: required)
+  //   delivery_days        Irish calendar days from payment by which it is delivered (basket offers: required)
+  //   offshore_islands     the offer also covers offshore islands (no road connection to the mainland); default no
+  destination_country: 's?', dispatch_days: 'n?', delivery_days: 'n?', offshore_islands: 'b?',
 };
+/* Delivery safety rules (22 Nov 2026). */
+export const QUOTE_DESTINATIONS = ['IE'];          // the only destination a single-artwork quote can be paid for (founder policy pending for others)
+export const MAX_DISPATCH_DAYS = 60, MAX_DELIVERY_DAYS = 90;
+export const DEFAULT_DISPATCH_DAYS = 14, DEFAULT_DELIVERY_DAYS = 30;   // monitoring only, for orders that carry no deadline of their own
+export function deliveryDeadlines(d) {
+  const ok = n => Number.isInteger(n) && n >= 1;
+  return ok(d && d.dispatch_days) && ok(d && d.delivery_days)
+    ? { dispatch_days: d.dispatch_days, delivery_days: d.delivery_days, basis: 'agreed' }
+    : { dispatch_days: DEFAULT_DISPATCH_DAYS, delivery_days: DEFAULT_DELIVERY_DAYS, basis: 'default' };
+}
+export function checkDeadlines(d) {
+  if (!Number.isInteger(d.dispatch_days) || d.dispatch_days < 1 || d.dispatch_days > MAX_DISPATCH_DAYS)
+    throw new RuleError(`Delivery: give the dispatch deadline as whole days after payment (1 to ${MAX_DISPATCH_DAYS})`);
+  if (!Number.isInteger(d.delivery_days) || d.delivery_days < d.dispatch_days || d.delivery_days > MAX_DELIVERY_DAYS)
+    throw new RuleError(`Delivery: give the delivery deadline as whole days after payment, no earlier than dispatch (up to ${MAX_DELIVERY_DAYS})`);
+}
+export function checkQuoteDestination(d) {
+  const c = String((d && d.destination_country) || '').trim().toUpperCase();
+  if (!c) throw new RuleError('Delivery: give the destination country (destination_country, for example IE)');
+  if (!QUOTE_DESTINATIONS.includes(c))
+    throw new RuleError('Online payment is available only for delivery in the Republic of Ireland. International and specialist delivery is arranged by enquiry and direct sale until PlotArt approves an international delivery policy.');
+  return c;
+}
+/* Offshore islands of the Republic of Ireland with no road connection to the mainland (Achill and Valentia are bridged and
+   are mainland for delivery). A buyer states whether the address is on one; the address is also checked against these
+   names. Matching is on whole words, accents ignored. Extend only by founder decision. */
+export const OFFSHORE_ISLANDS = ['Inis Mor', 'Inishmore', 'Inis Meain', 'Inishmaan', 'Inis Oirr', 'Inisheer', 'Aran Islands', 'Oileain Arann',
+  'Arranmore', 'Arainn Mhor', 'Tory Island', 'Toraigh', 'Gola Island', 'Gabhla', 'Inishfree', 'Inis Fraoigh', 'Owey', 'Uaigh', 'Inishbofin', 'Inis Bo Finne',
+  'Inishturk', 'Inis Toirc', 'Clare Island', 'Oilean Chliara', 'Inishbiggle', 'Inis Bigil', 'Cape Clear', 'Oilean Chleire', 'Sherkin', 'Inis Arcain',
+  'Bere Island', 'Oilean Beara', 'Whiddy', 'Heir Island', 'Inis Uí Drisceoil', 'Dursey', 'Oilean Baoi', 'Inishlyre', 'Collanmore'];
+const fold = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+export function islandMatch(text) {
+  const t = ' ' + fold(text).replace(/[^a-z0-9]+/g, ' ') + ' ';
+  return OFFSHORE_ISLANDS.find(n => t.includes(' ' + fold(n).replace(/[^a-z0-9]+/g, ' ') + ' ')) || null;
+}
 export function cleanDelivery(o) {
   if (!o || typeof o !== 'object') throw new RuleError('Delivery details are required');
   const out = {};

@@ -40,6 +40,7 @@ export async function basketE2E({ rec, KEY, accounts, runId, playwrightFrom, v1,
   try {
     for (const s of statements(readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8'))) await db.prepare(s).run();
     for (const s of statements(readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8'))) await db.prepare(s).run();
+    for (const s of statements(readFileSync(HERE + 'migrations/0022_delivery_safety.sql', 'utf8'))) await db.prepare(s).run();
     const ago = d => new Date(Date.now() - d * 86400_000).toISOString();
     const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
       const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* */ } return { s: r.status, j }; };
@@ -65,7 +66,7 @@ export async function basketE2E({ rec, KEY, accounts, runId, playwrightFrom, v1,
     for (const id of ['PA-BBT-TEST-01', 'PA-BAA-TEST-01']) { const d = await basketDoc(id, false); await db.prepare('INSERT INTO basket_terms (doc_id, kind, title, html_sha256, effective_at, created_at) VALUES (?,?,?,?,?,?)').bind(id, d.kind, d.title, d.html_sha256, '2018-01-01T00:00:00Z', ago(0)).run(); }
     const ADD = Object.entries(terms).find(([, t]) => t.kind === 'artist_payment_addendum');
     const SELLER = n => ({ legal_name: n, address: '1 Studio Lane, Dublin 8, Ireland', email: 'seller@example.test', phone: '+353 1 555 0100', trader_status: 'trader', confirm: true });
-    const DELIVERY = { collection_county: 'Dublin', unpacked_cm: '40 × 50 × 3', packed_cm: '55 × 65 × 10', weight_kg: 4, medium: 'Oil on board', framing: 'Unframed', glazing: 'None', condition: 'Excellent', access_notes: null,
+    const DELIVERY = { dispatch_days: 5, delivery_days: 10, collection_county: 'Dublin', unpacked_cm: '40 × 50 × 3', packed_cm: '55 × 65 × 10', weight_kg: 4, medium: 'Oil on board', framing: 'Unframed', glazing: 'None', condition: 'Excellent', access_notes: null,
       organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist', transporter_name: 'Synthetic Art Couriers (TEST)', installation: 'not_applicable', import_costs: 'not_applicable',
       cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting (SIMULATED)', covered_value_cents: 20000, insured_party: 'transporter', cover_confirmation_ref: 'SIM-COVER-T', cover_confirmed_by: 'Synthetic', cover_confirmed_on: '2026-11-21',
       valuation_basis: 'Sale price', excess_cents: 0, exclusions: null, cover_period: 'Collection to signed delivery', claims_contact: 'claims@example.test', delivery_window: '5–8 working days', tracking: 'Tracked', signed_receipt: true, condition_photos: true,
@@ -87,6 +88,8 @@ export async function basketE2E({ rec, KEY, accounts, runId, playwrightFrom, v1,
     await call('POST', '/api/checkout/processing-consent', FND, { accept: true, statement: PST });
     const BPS = (await call('GET', '/api/checkout/basket', FND)).j.processing_statement;   // the basket's own Founding processing-fee consent (PA-BAA cl. 4)
     await call('POST', '/api/checkout/basket/processing-consent', FND, { accept: true, statement: BPS });
+    { const oj = (await call('GET', '/api/admin/checkout/baskets/offers', FOUNDER)).j;   // delivery safety: the founder approves each exact offer
+      for (const o of oj.offers) await call('POST', `/api/admin/checkout/baskets/offers/${o.artwork_id}/review`, FOUNDER, { decision: 'approved', version: o.version, sha256: o.sha256, confirm: true, statement: oj.statement }); }
     const el = await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wagal1,wafnd1', FOUNDER);
     ok('BE-1', 'both works can be bought online: 15% for the Gallery Artist, 0% Founding 25 entitlement for the Founding Artist', el.j && el.j.items.every(i => i.ok) && el.j.items[0].commission_basis === 'gallery_artist_agreement' && el.j.items[1].commission_basis === 'founding_enquiry', el.j);
 
@@ -192,7 +195,7 @@ export async function basketE2E({ rec, KEY, accounts, runId, playwrightFrom, v1,
           validation_messages: [...new Set(errors.map(scrubText))].slice(0, 10), visible_controls: [...new Set(controls)].filter(s => /^[a-zA-Z][\w :.-]{0,64}$/.test(s)).slice(0, 40), screenshot, ...diag };
       } finally { await page.close().catch(() => {}); }
     }
-    const BUYER = { name: 'Test Buyer', address_line1: '7 Harbour Road', town: 'Kinsale', county: 'Cork', eircode: 'P17 XY12', phone: '+353 21 555 0199' };
+    const BUYER = { name: 'Test Buyer', address_line1: '7 Harbour Road', town: 'Kinsale', county: 'Cork', eircode: 'P17 XY12', phone: '+353 21 555 0199', island: 'no' };
     async function openAndPay(ids, card, label) {
       const r = await pub('POST', '/basket/checkout', { artworks: ids, accept_terms: 'PA-BBT-TEST-01', email: `plotart-basket+${tag}-${label}@example.com`.toLowerCase(), ...BUYER });
       if (r.s !== 200) return { error: r.j };

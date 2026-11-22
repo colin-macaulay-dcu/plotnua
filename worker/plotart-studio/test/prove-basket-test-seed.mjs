@@ -28,7 +28,7 @@ try {
   const state = { seller_profiles: await q('SELECT artist_id, legal_name, trading_name, address, returns_address, email, phone, vat_number FROM seller_profiles'), payment_accounts: await q('SELECT account_id, artist_id FROM payment_accounts'), artists: await q('SELECT id, slug, display_name, email, founding, account_status FROM artists') };
   writeFileSync(TMP, JSON.stringify(state));
   const seed = () => execFileSync('node', [HERE + 'test/basket-staging-seed.mjs', '--target', 'plotart-checkout-test', '--accounts', ACC.join(','), '--state', TMP], { encoding: 'utf8' });
-  const mig = readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8') + '\n' + readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8');
+  const mig = readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8') + '\n' + readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8') + '\n' + readFileSync(HERE + 'migrations/0022_delivery_safety.sql', 'utf8');
   let err = (await run(mig)) || (await run(seed()));
   check('T1 0019 and the basket seed apply to the TEST database as it is', !err, err);
   err = (await run(mig)) || (await run(seed()));

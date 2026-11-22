@@ -32,12 +32,14 @@ founder's action or approval; nothing merges, migrates production or takes a liv
    - Variable `CHECKOUT_LIVE_PUBLISHABLE_KEY` = the live `pk_live_…`.
 3. **Founder: final deployment approval**, then:
    - merge the branch to `main`;
-   - production D1 backup, then migrations 0019, 0020, 0021 (each through `migration-check.py` with its SHA-256);
+   - production D1 backup, then migrations 0019, 0020, 0021 and 0022 (delivery safety; each through `migration-check.py` with its SHA-256);
    - publish privacy notice V18 (`privacy_v18_layer.py --apply`, then the site release);
    - run `plotart-checkout-deploy.yml` → production, `enable_live_pilot` + `enable_live_basket`, approve `studio-production.`.
 4. **Artists (live, each themselves in Studio → Payment pilot page):** join the payment pilot (PA-PAY), complete Stripe live
    onboarding (charges **and payouts**), seller information, accept PA-BAA, confirm seller information may be shown,
-   (Founding, optional) give the processing-fee consent, set delivery offers with real transit insurance. The founder's
+   (Founding, optional) give the processing-fee consent, set delivery offers with real transit insurance.
+   **Founder:** review each delivery offer on Review desk → Basket readiness → "Delivery offers to review"; nothing can be
+   bought online until its exact current offer is approved (22 Nov 2026). The founder's
    "Basket readiness" table shows what each artist is missing. No synthetic or TEST artist exists in production.
 
 ## Genuinely open legal risks

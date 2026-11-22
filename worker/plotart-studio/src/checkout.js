@@ -476,6 +476,7 @@ const ALERT_REASON = {
   owed_overdue: 'Amount owed to the artist is overdue', owed_start_for_review: 'For review: start date of an amount owed rests on the pilot’s own record',
   refund_pending: 'Buyer refund waiting for the artist’s Stripe balance', refund_pending_overdue: 'Buyer refund still unfunded after 7 days',
   refund_pending_urgent: 'Buyer refund still unfunded after 30 days (Stripe cancels at 45)', refund_failed: 'Buyer refund failed at Stripe', founder_digest: 'Daily digest (sent manually)',
+  dispatch_overdue: 'Paid artwork not dispatched by its agreed date', delivery_overdue: 'Paid artwork not delivered by its agreed date',
 };
 async function alertItem(env, o, kind) {
   if (kind === 'founder_digest') return { state: 'resolved', amount_cents: null, amount_label: '—', due_date: null, due_label: '—', note: 'digest' };
@@ -492,6 +493,11 @@ async function alertItem(env, o, kind) {
     const due = w ? (w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10)) : null;
     return { state: out > 0 ? 'open' : 'resolved', amount_cents: out, amount_label: out > 0 ? `${eur(out)} still owed to the artist` : 'Nothing outstanding: paid',
       due_date: due, due_label: due ? `by the end of ${longDate(due)} (Irish time)${Date.parse(w.due_at) <= Date.now() ? ' · OVERDUE' : ''}` : '—' };
+  }
+  if (kind === 'dispatch_overdue' || kind === 'delivery_overdue') {
+    const dl = overdueState(o), x = dl[kind === 'dispatch_overdue' ? 'dispatch' : 'delivery'];
+    return { state: x.overdue ? 'open' : 'resolved', amount_cents: null, amount_label: x.overdue ? `${x.days_overdue} day(s) overdue` : (kind === 'dispatch_overdue' ? 'Dispatched or no longer due' : 'Delivered or no longer due'),
+      due_date: x.due_date, due_label: `by the end of ${longDate(x.due_date)} (Irish time)${x.overdue ? ' · OVERDUE' : ''}${dl.basis === 'default' ? ' · default deadline (none agreed)' : ''}` };
   }
   if (kind.startsWith('refund_pending')) {
     const p = (await pendingRefunds(env)).filter(x => x.order_id === o.id), amt = p.reduce((a, x) => a + x.amount_cents, 0);
@@ -750,7 +756,7 @@ export async function updateOrder(env, founder, id, b) {
   const sets = {};
   if (b.artwork_cents !== undefined) sets.artwork_cents = b.artwork_cents;
   if (b.delivery_cents !== undefined) sets.delivery_cents = b.delivery_cents;
-  if (b.delivery !== undefined) sets.delivery = JSON.stringify(R.cleanDelivery(b.delivery));
+  if (b.delivery !== undefined) { const d = R.cleanDelivery(b.delivery); R.checkQuoteDestination(d); d.destination_country = d.destination_country.toUpperCase(); sets.delivery = JSON.stringify(d); }
   if (b.exclusion !== undefined) { if (b.exclusion !== null && !R.EXCLUSIONS[b.exclusion]) throw new Bad('Unknown exclusion'); sets.exclusion = b.exclusion; }
   if (b.negotiation_note !== undefined) sets.negotiation_note = b.negotiation_note ? String(b.negotiation_note).slice(0, 1000) : null;
   const merged = { ...o, ...sets };
@@ -772,6 +778,7 @@ export async function updateOrder(env, founder, id, b) {
 async function priced(env, o, at) {
   if (o.artwork_cents == null || o.delivery_cents == null || !o.delivery) throw new Bad('Enter the artwork price, the delivery charge and the delivery and cover details first', 409);
   R.checkCover(J(o.delivery), o.artwork_cents);
+  R.checkQuoteDestination(J(o.delivery));   // delivery safety (22 Nov 2026): no international quote until the founder approves a policy
   const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', o.artist_id);
   const e = await R.entitlement(env, { artist, enquiryRef: o.enquiry_ref, at, exclusion: o.exclusion, negotiationNote: o.negotiation_note });
   if (!e.ok) throw new Bad(e.reason, 409);
@@ -909,7 +916,8 @@ export function buyerDelivery(d) {
     cover_type: d.cover_type, cover_provider: d.cover_provider, insured_party: d.insured_party, cover_confirmation_ref: d.cover_confirmation_ref, covered_value_cents: d.covered_value_cents, valuation_basis: d.valuation_basis, excess_cents: d.excess_cents,
     exclusions: d.exclusions, cover_period: d.cover_period, claims_contact: d.claims_contact, delivery_window: d.delivery_window, tracking: d.tracking,
     signed_receipt: d.signed_receipt, condition_photos: d.condition_photos,
-    return_method: d.return_method, return_address: d.return_address, return_cost_cents: d.return_cost_cents, return_cost_basis: d.return_cost_basis, return_arranged_by: d.return_arranged_by };
+    return_method: d.return_method, return_address: d.return_address, return_cost_cents: d.return_cost_cents, return_cost_basis: d.return_cost_basis, return_arranged_by: d.return_arranged_by,
+    destination_country: d.destination_country ?? null, dispatch_days: d.dispatch_days ?? null, delivery_days: d.delivery_days ?? null, offshore_islands: d.offshore_islands ?? null };
 }
 async function quoteSnapshot(env, o) {
   const r = await one(env, 'SELECT snapshot, sha256 FROM quote_snapshots WHERE order_id = ? AND quote_version = ?', o.id, o.quote_version);
@@ -943,6 +951,8 @@ export async function startCheckout(env, token, b) {
   if (!o.quote_expires_at || o.quote_expires_at <= t) { await move(env, o, 'expired', 'buyer', 'quote_expired').catch(() => {}); throw new Bad('This quote has expired. Please contact hello@plotnua.ie.', 410); }
   await requireNotPaused(env, 'buyer');   // the quote and its expiry are untouched; no reservation and no Stripe session are made
   if (o.artist_approved_version !== o.quote_version) throw new Bad('This quote is being revised', 409);
+  // delivery safety (22 Nov 2026): a quote whose destination is not a supported country (or not recorded) is never paid online
+  try { R.checkQuoteDestination(J(o.delivery)); } catch { throw new Bad('This quote can’t be paid online: online payment is available only for delivery in the Republic of Ireland. Please contact hello@plotnua.ie.', 409); }
   if (!b || b.accept_terms !== o.buyer_terms_doc_id) throw new Bad('Please read and accept the purchase terms', 400);
   const mem = await membership(env, o.artist_id);
   if (!mem.ready || mem.account.id !== o.provider_account) throw new Bad('The seller cannot take payments at the moment. Please contact hello@plotnua.ie.', 409);
@@ -2190,7 +2200,63 @@ export async function sweep(env) {
   try { refunds = await pollPendingRefunds(env); } catch (e) { refunds = { error: String(e.message || e).slice(0, 120) }; }
   let baskets = null;
   try { baskets = await B.sweep(env); } catch (e) { baskets = { error: String(e.message || e).slice(0, 120) }; }
-  return { baskets, reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, processing_reconciled, confirmations, messages_retried, dispute_fees_rechecked, owed_reminders, ...refunds, ...(await retention(env)) };
+  let overdue = null;
+  try { overdue = await overdueCheck(env); } catch (e) { overdue = { error: String(e.message || e).slice(0, 120) }; }
+  return { baskets, overdue, reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, processing_reconciled, confirmations, messages_retried, dispute_fees_rechecked, owed_reminders, ...refunds, ...(await retention(env)) };
+}
+
+/* ---------------------------------------------------------------- delivery safety: overdue dispatch and delivery (22 Nov 2026)
+   Every paid order has a dispatch deadline and a delivery deadline: the Irish calendar days agreed in its delivery offer or
+   quote (dispatch_days, delivery_days), counted from the Irish date of payment and ending at the end of that Irish day; an
+   order without agreed days (quotes made before 22 Nov 2026) uses the defaults in checkout-rules.js, labelled as such.
+   The scheduled sweep (every 15 minutes) alerts the founder ONCE per order and kind: the order_overdue_alerts key is taken
+   before the alert is sent, so concurrent sweeps cannot both send it. Alerts go through the normal founder-alert path
+   (notify → founder alerts panel; email only where checkout mail is approved). Nothing about the order changes. */
+const MONITORED = ['paid', 'dispatched', 'refund_pending', 'disputed'];
+export function overdueState(o, at = Date.now()) {
+  const d = J(o.delivery) || {}, dl = R.deliveryDeadlines(d), paidDay = o.paid_at ? dublinDate(o.paid_at) : null;
+  const mk = (days, done) => {
+    if (!paidDay) return { due_date: null, due_at: null, overdue: false, days_overdue: 0 };
+    const due_date = addDate(paidDay, days), due_at = new Date(dublinDayEnd(due_date)).toISOString(), late = !done && Date.parse(due_at) < at;
+    return { due_date, due_at, overdue: late, days_overdue: late ? Math.max(1, Math.floor((at - Date.parse(due_at)) / 86400_000) + 1) : 0 };
+  };
+  const live = MONITORED.includes(o.status);
+  return { basis: dl.basis, dispatch: mk(dl.dispatch_days, !live || ['dispatched', 'delivered'].includes(o.fulfilment_status)),
+    delivery: mk(dl.delivery_days, !live || o.fulfilment_status === 'delivered') };
+}
+export async function overdueCheck(env, at = Date.now()) {
+  try { await env.DB.prepare('SELECT 1 FROM order_overdue_alerts LIMIT 1').all(); } catch { return { installed: false }; }
+  const rows = await all(env, `SELECT * FROM checkout_orders WHERE status IN (${MONITORED.map(() => '?').join(',')}) AND paid_at IS NOT NULL
+    AND COALESCE(fulfilment_status, 'none') <> 'delivered' ORDER BY paid_at LIMIT 200`, ...MONITORED);
+  let alerted = 0, already = 0, checked = 0;
+  for (const o of rows) {
+    checked++;
+    const s = overdueState(o, at);
+    for (const kind of ['dispatch_overdue', 'delivery_overdue']) {
+      const x = s[kind === 'dispatch_overdue' ? 'dispatch' : 'delivery'];
+      if (!x.overdue) continue;
+      const r = await run(env, 'INSERT OR IGNORE INTO order_overdue_alerts (order_id, kind, due_at, deadline_basis, alerted_at) VALUES (?,?,?,?,?)', o.id, kind, x.due_at, s.basis, new Date(at).toISOString());
+      if (!r.meta.changes) { already++; continue; }
+      const art = J(o.artwork_snapshot) || {}, seller = J(o.seller) || {}, d = J(o.delivery) || {};
+      const what = kind === 'dispatch_overdue' ? 'dispatched' : 'delivered';
+      const text = [`A paid PlotArt order has not been recorded as ${what} by its ${s.basis === 'agreed' ? 'agreed' : 'default'} date.`, '',
+        `Order: ${o.reference}${o.enquiry_ref && /^PA-B-/.test(o.enquiry_ref) ? ` (basket ${o.enquiry_ref})` : ''}`,
+        `Artwork: ${art.title || o.artwork_id}`, `Artist: ${seller.name || o.artist_id}`,
+        `Paid: ${longDate(dublinDate(o.paid_at))}`, `Due ${what}: by the end of ${longDate(x.due_date)} (Irish time)${s.basis === 'default' ? ' (default deadline: none was agreed for this order)' : ''}`,
+        `Overdue: ${x.days_overdue} day(s). Order status: ${o.status}; fulfilment: ${o.fulfilment_status || 'none'}.`,
+        `Agreed delivery window shown to the buyer: ${d.delivery_window || '—'}`, '',
+        'Next: contact the artist. If the artwork cannot be delivered, the buyer may agree a new date or end the contract for this artwork with a full refund (PA-BBT 6.2; PA-BAA 8.3).',
+        'Founder desk: /admin/checkout. This alert is sent once for this order.'].join('\n');
+      if (env.CHECKOUT_NOTIFY_EMAIL) await notify(env, o, kind, text, { founderOnly: true });
+      else {   // no founder address configured: the alert is still kept for the founder's alerts panel, marked as not emailed
+        await run(env, 'INSERT INTO checkout_mail_sink (at, order_id, kind, to_role, to_sha256, subject, body, delivery, delivery_detail) VALUES (?,?,?,?,?,?,?,?,?)',
+          now(), o.id, kind, 'founder', await sha256(''), `PlotArt · ${o.reference} · ${ALERT_REASON[kind]}`, text, 'failed', 'No founder notification address is configured (CHECKOUT_NOTIFY_EMAIL)');
+        await event(env, o.id, 'system', 'notified_' + kind, o.status, o.status, { recipients: ['founder'], result: ['panel_only'] });
+      }
+      alerted++;
+    }
+  }
+  return { installed: true, checked, alerted, already_alerted: already };
 }
 
 /* Retention (spec "Records and retention"). Each period has a stated basis and a fixed start; nothing is ever deleted
@@ -2230,6 +2296,7 @@ export async function retention(env, at = now()) {
     if (await one(env, `SELECT 1 AS x FROM checkout_orders c WHERE c.id = ? AND (c.dispute_status = 'open' OR c.needs_resolution IS NOT NULL
         OR EXISTS (SELECT 1 FROM checkout_owed w WHERE w.order_id = c.id AND w.settled_cents < w.cents)
         OR EXISTS (SELECT 1 FROM order_refunds r WHERE r.order_id = c.id AND r.status = 'pending'))`, o.id)) { held++; continue; }
+    try { await run(env, 'DELETE FROM order_overdue_alerts WHERE order_id = ?', o.id); } catch { /* migration 0022 not applied */ }
     await env.DB.batch(['order_events', 'order_fulfilment_events', 'order_refunds', 'order_ledger', 'checkout_sessions', 'artwork_reservations', 'artwork_sales', 'payment_events', 'checkout_hold_events', 'checkout_holds',
       'quote_snapshots', 'order_message_deliveries', 'order_messages', 'checkout_founder_alert_reads', 'checkout_mail_sink', 'checkout_owed_payment_returns', 'checkout_owed_payments', 'checkout_owed']
       .map(t => st(env, `DELETE FROM ${t} WHERE order_id = ?`, o.id)).concat([st(env, 'DELETE FROM checkout_orders WHERE id = ?', o.id)]));

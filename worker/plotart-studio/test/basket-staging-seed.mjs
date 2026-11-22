@@ -28,6 +28,7 @@ const q = v => v === null || v === undefined ? 'NULL' : typeof v === 'number' ? 
 const ins = (table, o) => `INSERT ${STATE ? 'OR IGNORE ' : ''}INTO ${table} (${Object.keys(o).join(', ')}) VALUES (${Object.values(o).map(q).join(', ')});`;
 const now = new Date().toISOString(), ago = d => new Date(Date.now() - d * 86400_000).toISOString(), T0 = '2026-01-01T00:00:00Z';
 const sha = t => createHash('sha256').update(t).digest('hex');
+const canon = v => Array.isArray(v) ? `[${v.map(canon).join(',')}]` : v && typeof v === 'object' ? `{${Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + canon(v[k])).join(',')}}` : JSON.stringify(v ?? null);   // = basket.js
 const out = ['-- PlotArt multi-artist basket · PRIVATE STAGING SEED (synthetic only; plotart-basket-staging only)'];
 
 // texts: the pilot's TEST placeholders and the basket's TEST placeholders (never a live text)
@@ -37,7 +38,8 @@ const BBT = await basketDoc('PA-BBT-TEST-01', false), BAA = await basketDoc('PA-
 for (const d of [BBT, BAA]) out.push(ins('basket_terms', { doc_id: d.doc_id, kind: d.kind, title: d.title, html_sha256: d.html_sha256, effective_at: T0, created_at: now }));
 const ADD = Object.entries(fp).find(([, d]) => d.kind === 'artist_payment_addendum');
 
-const DELIVERY = { collection_county: 'Dublin', destination: 'Anywhere in the Republic of Ireland (the buyer’s address is given at checkout)', unpacked_cm: 'as listed', packed_cm: 'listed size + 15 cm',
+const DELIVERY = { dispatch_days: 5, delivery_days: 10, offshore_islands: false, destination_country: 'IE', collection_county: 'Dublin',
+  destination: 'Anywhere on the mainland of the Republic of Ireland; offshore islands by enquiry (the buyer’s address is given at checkout)', unpacked_cm: 'as listed', packed_cm: 'listed size + 15 cm',
   weight_kg: 5, medium: 'Oil on board', framing: 'Unframed', glazing: 'None', condition: 'Excellent (synthetic staging work)', access_notes: null,
   organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist', transporter_name: 'Synthetic Art Couriers (STAGING)',
   installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting (SIMULATED, staging only)', covered_value_cents: 500000,
@@ -94,8 +96,14 @@ for (const A0 of ARTISTS) {
     out.push(ins('basket_consents', { id: `bc${A.id}pf`, artist_id: A.id, topic: 'processing_fees', kind: 'given', doc_id: BAA.doc_id, doc_sha256: BAA.html_sha256, subject_sha256: null,
       statement: ps, statement_sha256: sha(ps), account_email: email, livemode: 0, at: ago(27) })); }
   out.push(ins('basket_artist_events', { id: `be${A.id}1`, artist_id: A.id, kind: 'opted_in', doc_id: BAA.doc_id, doc_sha256: BAA.html_sha256, account_email: email, statement: ARTIST_STATEMENT(BAA.doc_id), at: ago(28) }));
-  for (const w of works.filter(x => x.price_eur)) out.push(ins('artwork_delivery_offers', { artwork_id: w.id, artist_id: A.id, region: 'IE', delivery_cents: A.delivery * 1, delivery: JSON.stringify(DELIVERY), version: 1,
-    approved_by: 'artist:' + email, approved_at: ago(28), withdrawn_at: null, created_at: ago(28), updated_at: ago(28) }));
+  for (const w of works.filter(x => x.price_eur)) {
+    out.push(ins('artwork_delivery_offers', { artwork_id: w.id, artist_id: A.id, region: 'IE', delivery_cents: A.delivery * 1, delivery: JSON.stringify(DELIVERY), version: 1,
+      approved_by: 'artist:' + email, approved_at: ago(28), withdrawn_at: null, created_at: ago(28), updated_at: ago(28) }));
+    // delivery safety (migration 0022), TEST only: the staging founder's review of this exact offer version (same fingerprint as basket.js offerSha)
+    out.push(ins('delivery_offer_reviews', { id: `dr${w.id}`, artwork_id: w.id, artist_id: A.id, offer_version: 1,
+      offer_sha256: sha(canon({ artwork_id: w.id, version: 1, delivery_cents: A.delivery * 1, delivery: DELIVERY })), decision: 'approved', note: 'staging seed (synthetic)',
+      reviewed_by: 'founder:staging-seed', reviewed_at: ago(27), livemode: 0 }));
+  }
 }
 // the Gallery Artist holds the Gallery Artist Agreement at 15% (synthetic fingerprints), accepted before any online introduction
 const FAKE = 'a'.repeat(64);

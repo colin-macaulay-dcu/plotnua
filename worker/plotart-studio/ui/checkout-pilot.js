@@ -47,7 +47,7 @@
             ${field(`sr-why-${esc(x.id)}`, 'Reason the bank gave (5–300 characters, no bank details)', `<input id="sr-why-${esc(x.id)}" name="reason" maxlength="300" required>`)}
             ${tick(`The bank shows this ${eur(x.cents)} transfer as returned. The amount becomes owed again.`)}`, 'Record returned transfer') : ''}`).join('<br>')}</small></td></tr>` : '';
   const HOLD_BASES = [['dispute', 'Dispute'], ['claim', 'Claim'], ['revenue_enquiry', 'Revenue enquiry'], ['investigation', 'Investigation'], ['litigation', 'Litigation'], ['data_subject_request', 'Data subject request'], ['other', 'Other']];
-  const TEMPLATE = { collection_county: '', destination: '', unpacked_cm: '', packed_cm: '', weight_kg: 0, medium: '', framing: '', glazing: '', condition: '', access_notes: null,
+  const TEMPLATE = { collection_county: '', destination: '', destination_country: 'IE', dispatch_days: 7, delivery_days: 14, unpacked_cm: '', packed_cm: '', weight_kg: 0, medium: '', framing: '', glazing: '', condition: '', access_notes: null,
     organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist', transporter_name: '',
     installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: '', covered_value_cents: 0, valuation_basis: '',
     excess_cents: null, exclusions: null, cover_period: '', claims_contact: '', insured_party: 'transporter', cover_confirmation_ref: '', cover_confirmed_by: '', cover_confirmed_on: new Date().toISOString().slice(0, 10), delivery_window: '', tracking: '', signed_receipt: true, condition_photos: true,
@@ -178,9 +178,11 @@
   /* ---------------------------------------------------------------- multi-artist basket (optional; PA-BAA) */
   let J_BASKET = null;
   const CENTS = ['covered_value_cents', 'excess_cents', 'return_cost_cents'];
-  const label = k => k.replace(/_cents$/, ' (€)').replace(/_kg$/, ' (kg)').replace(/_cm$/, ' (cm)').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase());
+  const LABELS = { dispatch_days: 'Dispatch within (days after payment)', delivery_days: 'Delivered within (days after payment)', offshore_islands: 'Also deliver to offshore islands (no road connection) at this charge' };
+  const REQUIRED_HERE = ['dispatch_days', 'delivery_days'];   // optional in quotes, required in a basket delivery offer
+  const label = k => LABELS[k] || k.replace(/_cents$/, ' (€)').replace(/_kg$/, ' (kg)').replace(/_cm$/, ' (cm)').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase());
   const offerForm = (w, bj) => { const d = (w.offer && w.offer.delivery) || {}, F = bj.delivery_fields;
-    const input = (k, t) => { const id = `of-${esc(w.id)}-${k}`, v = d[k], opt = typeof t === 'string' && t.endsWith('?'), ty = typeof t === 'string' ? t.replace('?', '') : t;
+    const input = (k, t) => { const id = `of-${esc(w.id)}-${k}`, v = k === 'offshore_islands' ? d[k] === true : d[k], opt = typeof t === 'string' && t.endsWith('?') && !REQUIRED_HERE.includes(k), ty = typeof t === 'string' ? t.replace('?', '') : t;
       if (Array.isArray(ty)) return field(id, label(k), `<select id="${id}" name="${k}">${ty.map(x => `<option ${v === x ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>`);
       if (ty === 'p') return field(id, label(k), `<select id="${id}" name="${k}">${bj.parties.map(x => `<option value="${esc(x)}" ${v === x ? 'selected' : ''}>${esc(x.replace(/_/g, ' '))}</option>`).join('')}</select>`);
       if (ty === 'b') return field(id, label(k), `<select id="${id}" name="${k}"><option value="true" ${v === true ? 'selected' : ''}>yes</option><option value="false" ${v === false ? 'selected' : ''}>no</option></select>`);
@@ -189,7 +191,8 @@
       return field(id, label(k) + (opt ? ' (optional)' : ''), `<input id="${id}" name="${k}" value="${esc(val)}" ${ty === 'n' && !CENTS.includes(k) ? 'inputmode="decimal"' : ''}>`); };
     return step('offer', w.offer ? 'Change delivery offer…' : 'Set a delivery offer…', `<div data-id="${esc(w.id)}">
       ${field(`of-${esc(w.id)}-charge`, 'Delivery charge to the buyer (€), anywhere in the Republic of Ireland', `<input id="of-${esc(w.id)}-charge" name="charge" value="${w.offer ? (w.offer.delivery_cents / 100).toFixed(2) : ''}" required>`)}
-      ${Object.entries(F).filter(([k]) => k !== 'destination').map(([k, t]) => input(k, t)).join('')}
+      ${Object.entries(F).filter(([k]) => !['destination', 'destination_country'].includes(k)).map(([k, t]) => input(k, t)).join('')}
+      <p class="st-muted">PlotArt reviews each delivery offer, and every change to it, before the artwork can be bought online.</p>
       ${tick('I will sell and deliver this artwork as described, anywhere in the Republic of Ireland, for this delivery charge, with this transit insurance and these return arrangements.')}</div>`, 'Save delivery offer'); };
   function basketArtist(bj, j) {
     const m = bj.membership, pc = m.processing_consent || {}, sd = m.seller_disclosure || {};
@@ -217,7 +220,7 @@
     // 3 · delivery offers, per artwork
     h += `<h3 id="pay-delivery">Delivery offers</h3><p class="st-muted">An artwork can be bought online only with a delivery offer you have approved, including transit insurance for at least its price.</p><ul>`;
     for (const w of bj.works) h += `<li data-id="${esc(w.id)}"><strong>${esc(w.title)}</strong> ${w.price_eur ? '€' + esc(w.price_eur) : '<small class="st-muted">price on request</small>'} · ${esc(w.availability)}
-      · ${w.offer ? `delivery ${eur(w.offer.delivery_cents)} (version ${esc(w.offer.version)}) <button data-withdraw-offer="${esc(w.id)}">Withdraw</button>` : '<small class="st-muted">no delivery offer</small>'}${offerForm(w, bj)}</li>`;
+      · ${w.offer ? `delivery ${eur(w.offer.delivery_cents)} (version ${esc(w.offer.version)}) · <span class="${w.offer.review && w.offer.review.state === 'approved' ? '' : 'st-warn'}">${esc(w.offer.review ? w.offer.review.text : 'Waiting for PlotArt to review it')}</span>${w.offer.review && w.offer.review.note ? `<br><small>PlotArt’s note: ${esc(w.offer.review.note)}</small>` : ''} <button data-withdraw-offer="${esc(w.id)}">Withdraw</button>` : '<small class="st-muted">no delivery offer</small>'}${offerForm(w, bj)}</li>`;
     h += `</ul>` + step('basket-leave', 'Stop online purchase…', `<p class="st-muted">Your artworks are no longer offered in the basket. Baskets already paid or being paid are completed.</p>${tick('Stop online purchase of my artworks.')}`, 'Stop');
     return h + '</section>';
   }
@@ -232,7 +235,7 @@
       ${bj.artists.map(a => `<tr><td>${esc(a.display_name)}${a.founding ? ' <small>(Founding)</small>' : ''}</td><td>${esc(a.stripe)}</td><td>${esc(a.basket_addendum || '—')}${a.basket_addendum && !a.basket_current ? ' (old)' : ''}</td>
         <td>${a.seller_disclosure.valid ? 'confirmed ' + esc(a.seller_disclosure.at) : a.seller_disclosure.changed_since ? 'changed since confirmed' : '—'}</td>
         <td>${a.founding ? (a.processing_consent.valid ? 'given ' + esc(a.processing_consent.at) + ' (' + esc(a.processing_consent.doc_id) + ')' : a.processing_consent.given ? 'given for an older addendum' : 'none') : 'not needed'}</td>
-        <td>${esc(a.delivery_offers)}</td><td>${a.missing.length ? esc(a.missing.join(', ')) : 'ready'}</td>
+        <td>${esc(a.delivery_offers_approved ?? 0)} of ${esc(a.delivery_offers)} approved</td><td>${a.missing.length ? esc(a.missing.join(', ')) : 'ready'}</td>
         <td><strong>${on(a).purchasable} of ${on(a).available}</strong> artworks${on(a).purchasable < on(a).available ? `<br><small class="st-muted">${why(on(a))}</small>` : ''}</td></tr>`).join('')}</table></div></section>`;
   }
 
@@ -241,8 +244,47 @@
     document.querySelector('.st-tabs a[aria-current]')?.scrollIntoView({ block: 'nearest', inline: 'center' });   // the tab bar scrolls: show this tab
     let bj = null, err = '';
     try { bj = await api('GET', base + '/baskets/artists'); } catch (e) { err = e.message; }
+    let oj = null; try { oj = await api('GET', base + '/baskets/offers'); } catch (e) { err = err || e.message; }
     app.innerHTML = `<h1 class="st-h1">Basket readiness</h1><p class="st-muted">Each artist completes these steps themselves in Studio → Payment pilot. <a href="/admin/checkout">Open the Payment pilot page</a></p>`
+      + (oj && oj.installed ? offerReviews(oj) : '')
       + (bj && bj.installed ? basketFounder(bj, true) : `<p class="st-err" role="alert">${esc(err || 'The multi-artist basket is not installed.')}</p>`);
+    wireOffers(oj);
+  }
+  /* Delivery offers to review (22 Nov 2026): an artwork can be bought online only once the founder has approved its exact
+     current delivery offer. Any change by the artist is a new version and comes back here. */
+  const PARTY_LABEL = x => String(x || '—').replace(/_/g, ' ');
+  function offerReviews(oj) {
+    if (!oj.reviews_installed) return '<section class="st-card"><h2>Delivery offers to review</h2><p class="st-warn">Reviews are not installed (migration 0022): no artwork can be bought online.</p></section>';
+    const card = o => { const d = o.delivery, st = o.review.state;
+      const facts = [['Artwork price', o.price_eur ? '€' + o.price_eur : 'no price'], ['Delivery charge', eur(o.delivery_cents)], ['From', d.collection_county], ['Islands', d.offshore_islands ? 'included' : 'not included (enquiry)'],
+        ['Dispatch within', d.dispatch_days ? d.dispatch_days + ' days' : '—'], ['Delivered within', d.delivery_days ? d.delivery_days + ' days' : '—'], ['Window shown to buyer', d.delivery_window],
+        ['Packed / transport by', `${PARTY_LABEL(d.packer)} / ${PARTY_LABEL(d.transport_contracting_party)}${d.transporter_name ? ' (' + d.transporter_name + ')' : ''}`], ['Tracking', d.tracking],
+        ['Insurance', `${d.cover_provider || '—'} · holder ${PARTY_LABEL(d.insured_party)} · up to ${eur(d.covered_value_cents || 0)} · excess ${d.excess_cents != null ? eur(d.excess_cents) : '—'} · ${d.cover_period || ''}`],
+        ['Cover confirmed', `${d.cover_confirmation_ref || '—'} by ${d.cover_confirmed_by || '—'} on ${d.cover_confirmed_on || '—'}`],
+        ['Returns', `${d.return_method || '—'} · ${d.return_address || '—'} · ${d.return_cost_cents != null ? eur(d.return_cost_cents) : '—'} (${d.return_cost_basis || '—'}) · arranged by ${PARTY_LABEL(d.return_arranged_by)}`]];
+      const hist = (o.history || []).map(h => `<li>${esc(h.at)} · ${esc(h.type === 'review' ? 'PlotArt ' + h.what : 'artist ' + h.what)} v${esc(h.version)}${h.note ? ' · ' + esc(h.note) : ''}</li>`).join('');
+      return `<article class="st-card" data-offer="${esc(o.artwork_id)}" data-version="${esc(o.version)}" data-sha="${esc(o.sha256)}"><h3>${esc(o.title)} <small class="st-muted">by ${esc(o.artist)} · offer version ${esc(o.version)}</small></h3>
+        <p><strong>${st === 'approved' ? 'Approved' : st === 'returned' ? 'Returned to the artist' : 'Waiting for your review'}</strong>${o.review.previous ? ` <small class="st-muted">(earlier version ${esc(o.review.previous.version)} was ${esc(o.review.previous.decision)}; this version has not been reviewed)</small>` : ''}</p>
+        ${o.problems.length ? `<p class="st-warn">${o.problems.map(esc).join('<br>')}</p>` : ''}
+        <dl class="st-dl">${facts.map(([t, v]) => `<dt>${esc(t)}</dt><dd>${esc(v ?? '—')}</dd>`).join('')}</dl>
+        ${st !== 'approved' && !o.problems.length ? step('offer-approve', 'Approve this delivery offer…', `<p>${tick(esc(oj.statement))}</p><p><label>Note (optional) <input name="note" maxlength="600"></label></p>`, 'Approve') : ''}
+        ${step('offer-return', st === 'approved' ? 'Withdraw approval and return to the artist…' : 'Return to the artist…', `<label>What should the artist change?<textarea name="note" rows="3" maxlength="600" required></textarea></label>`, 'Return')}
+        ${hist ? `<details><summary>History</summary><ul>${hist}</ul></details>` : ''}</article>`; };
+    const open = oj.offers.filter(o => !o.review.approved), done = oj.offers.filter(o => o.review.approved);
+    const compact = o => `<details class="st-step" data-offer="${esc(o.artwork_id)}" data-version="${esc(o.version)}" data-sha="${esc(o.sha256)}"><summary>${esc(o.title)} · ${esc(o.artist)} · delivery ${eur(o.delivery_cents)} · v${esc(o.version)}</summary>${card(o)}</details>`;
+    return `<section class="st-card" id="offer-reviews"><h2>Delivery offers to review <small class="st-muted">${oj.waiting} waiting</small></h2>
+      <p class="st-muted">An artwork can be bought online only after you approve its exact current delivery offer. Any change by the artist comes back here.</p>
+      ${open.length ? open.map(card).join('') : '<p>Nothing waiting for review.</p>'}
+      ${done.length ? `<details><summary>Approved offers (${done.length})</summary>${done.map(compact).join('')}</details>` : ''}</section>`;
+  }
+  function wireOffers(oj) {
+    if (!oj || !oj.installed) return;
+    const go = (kind, fn) => app.querySelectorAll(`form[data-f="${kind}"]`).forEach(f => f.addEventListener('submit', act(async e => { const card = e.target.closest('[data-offer]');
+      await fn(new FormData(e.target), { id: card.dataset.offer, version: Number(card.dataset.version), sha256: card.dataset.sha }); loadReadiness(); })));
+    go('offer-approve', async (f, o) => { need(f.get('confirm') === 'on', 'Tick the box to confirm your review');
+      await api('POST', `${base}/baskets/offers/${encodeURIComponent(o.id)}/review`, { decision: 'approved', version: o.version, sha256: o.sha256, confirm: true, statement: oj.statement, note: String(f.get('note') || '').trim() }); say('Delivery offer approved'); });
+    go('offer-return', async (f, o) => { const note = String(f.get('note') || '').trim(); need(note.length >= 3, 'Say what the artist should change');
+      await api('POST', `${base}/baskets/offers/${encodeURIComponent(o.id)}/review`, { decision: 'returned', version: o.version, sha256: o.sha256, note }); say('Returned to the artist'); });
   }
 
   /* The artist's steps (22 Nov 2026), from the same readiness check as the founder's Basket readiness tab. Each step
@@ -410,7 +452,7 @@
     on('form[data-f="basket-processing"]', 'submit', async () => { const b = J_BASKET; await api('POST', base + '/basket/processing-consent', { accept: true, statement: b.processing_statement }); say('Consent recorded'); load(); });
     on('form[data-f="offer"]', 'submit', async e => { const f = new FormData(e.target), id = e.target.querySelector('[data-id]').dataset.id, F = J_BASKET.delivery_fields, d = {};
       need(f.get('confirm') === 'on', 'Tick the box to confirm the delivery offer');
-      for (const [k, t] of Object.entries(F)) { if (k === 'destination') continue; const raw = String(f.get(k) ?? '').trim(), ty = typeof t === 'string' ? t.replace('?', '') : t;
+      for (const [k, t] of Object.entries(F)) { if (k === 'destination' || k === 'destination_country') continue; const raw = String(f.get(k) ?? '').trim(), ty = typeof t === 'string' ? t.replace('?', '') : t;
         if (!raw) { d[k] = null; continue; }
         d[k] = CENTS.includes(k) ? toCents(raw, label(k)) : ty === 'n' ? Number(raw.replace(',', '.')) : ty === 'b' ? raw === 'true' : raw; }
       await api('PUT', `${base}/basket/offers/${encodeURIComponent(id)}`, { confirm: true, delivery_cents: toCents(f.get('charge'), 'delivery charge'), delivery: d }); say('Delivery offer saved'); load(); });

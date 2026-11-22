@@ -214,7 +214,7 @@ check('C7e a newly created account with the wrong configuration is refused and n
 await db.prepare("INSERT INTO payment_accounts (artist_id, account_id, country, created_at, updated_at) VALUES ('aunk', ?, 'IE', ?, ?)").bind(AUNK_ACCT, new Date().toISOString(), new Date().toISOString()).run();
 
 console.log('— commission entitlement (tests 1–4)');
-const DELIVERY = { collection_county: 'Dublin', destination: 'Cork, Ireland', unpacked_cm: '60 × 50 × 3', packed_cm: '75 × 65 × 12', weight_kg: 6, medium: 'Oil on board', framing: 'Framed, oak', glazing: 'None',
+const DELIVERY = { collection_county: 'Dublin', destination: 'Cork, Ireland', destination_country: 'IE', unpacked_cm: '60 × 50 × 3', packed_cm: '75 × 65 × 12', weight_kg: 6, medium: 'Oil on board', framing: 'Framed, oak', glazing: 'None',
   condition: 'Excellent; small studio mark on reverse', access_notes: null, organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist',
   transporter_name: 'Synthetic Art Couriers', installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting (SIMULATED test cover)', covered_value_cents: 100000,
   insured_party: 'transporter', cover_confirmation_ref: 'SIM-COVER-0001', cover_confirmed_by: 'Synthetic Underwriting', cover_confirmed_on: '2026-11-16',
@@ -268,6 +268,14 @@ check('V2 no cover is refused', r.s === 409, r.j);
 const { cover_confirmation_ref: _cr, ...noRef } = DELIVERY;
 r = await call('PUT', `/api/admin/checkout/orders/${o1.id}`, FOUNDER, { delivery: noRef });
 check('V3 cover without a shipment-specific confirmation reference is refused', r.s === 409 && /confirmation ref/.test(r.j.error), r.j);
+console.log('— delivery safety: no international payment through a single-artwork quote (22 Nov 2026)');
+for (const [cc, tag] of [['GB', 'IN1'], ['US', 'IN2'], ['FR', 'IN3']]) {
+  r = await call('PUT', `/api/admin/checkout/orders/${o1.id}`, FOUNDER, { delivery: { ...DELIVERY, destination: 'Abroad', destination_country: cc } });
+  check(`${tag} a quote to ${cc} is refused: online payment only for delivery in the Republic of Ireland, international by enquiry until a policy is approved`, r.s === 409 && /Republic of Ireland/.test(r.j.error) && /enquiry/.test(r.j.error), r.j);
+}
+{ const { destination_country: _dc, ...noCountry } = DELIVERY;
+  r = await call('PUT', `/api/admin/checkout/orders/${o1.id}`, FOUNDER, { delivery: noCountry });
+  check('IN4 a quote must record its destination country', r.s === 409 && /destination country/.test(r.j.error), r.j); }
 const ov = await makeOrder('agal', 'wagal7', 'PA-E-261101-AAAAAA', 120000, 7500, 'v@example.test');
 r = await call('POST', `/api/admin/checkout/orders/${ov.id}/send`, FOUNDER, {});
 check('V4 cover below the artwork price is refused before the artist is asked', r.s === 409 && /at least the artwork price/.test(r.j.error), r.j);
@@ -474,6 +482,13 @@ const TA = await prep(oa.id);
 await call('POST', `/api/admin/checkout/orders/${ob.id}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${ob.id}/approve`, GAL, { quote_version: (await order(ob.id)).quote_version, confirm: ALL });
 r = await call('POST', `/api/admin/checkout/orders/${ob.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
 check('T6a one open quote per original: a second buyer cannot be quoted for a work that already has a live quote', r.s === 409 && /is still open/.test(r.j.error), r.j);
+{ const dj = (await order(oa.id)).delivery, d = typeof dj === 'string' ? JSON.parse(dj) : dj;   // a quote issued before 22 Nov 2026 carries no destination country
+  const raw = (await q('SELECT delivery FROM checkout_orders WHERE id = ?', oa.id))[0].delivery, legacy = JSON.parse(raw); delete legacy.destination_country;
+  await db.prepare('UPDATE checkout_orders SET delivery = ? WHERE id = ?').bind(JSON.stringify(legacy), oa.id).run();
+  const lp = await pub('POST', `/q/${TA}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
+  check('IN5 an issued quote without a supported destination country cannot be paid: no Stripe session, no reservation', lp.s >= 400 && /Republic of Ireland/.test(lp.t)
+    && !(await q("SELECT * FROM checkout_sessions WHERE order_id = ?", oa.id)).length && !(await q('SELECT * FROM artwork_reservations WHERE order_id = ?', oa.id)).length, lp.t.slice(0, 300));
+  await db.prepare('UPDATE checkout_orders SET delivery = ? WHERE id = ?').bind(raw, oa.id).run(); }
 const [pa, pa2] = await Promise.all([pub('POST', `/q/${TA}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }), pub('POST', `/q/${TA}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } })]);
 const [first, second, TF] = [oa, ob, TA];
 const sA = (await q("SELECT * FROM checkout_sessions WHERE order_id = ? AND status='open'", first.id))[0];

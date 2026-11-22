@@ -52,9 +52,18 @@ const mig20 = readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8')
 let m20 = null; for (let k = 0; k < 2; k++) for (const s of statements(mig20)) { try { await db.prepare(s).run(); } catch (e) { m20 = m20 || e.message; } }
 const tablesAfter20 = (await db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all()).results.map(r => r.name);
 check('M4 migration 0020 applies, is re-runnable and adds exactly one new table (basket_consents)', !m20 && tablesAfter20.filter(t => !tablesBefore.includes(t)).join() === 'basket_consents', { m20, added: tablesAfter20.filter(t => !tablesBefore.includes(t)) });
+const mig22 = readFileSync(HERE + 'migrations/0022_delivery_safety.sql', 'utf8');
+let m22 = null; for (let k = 0; k < 2; k++) for (const s of statements(mig22)) { try { await db.prepare(s).run(); } catch (e) { m22 = m22 || e.message; } }
+const tablesAfter22 = (await db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all()).results.map(r => r.name);
+check('M5 migration 0022 (delivery safety) applies, is re-runnable and adds only its three new tables', !m22 && tablesAfter22.filter(t => !tablesAfter20.includes(t)).sort().join() === 'delivery_offer_events,delivery_offer_reviews,order_overdue_alerts', { m22, added: tablesAfter22.filter(t => !tablesAfter20.includes(t)) });
 
 const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { ...(email ? { 'Cf-Access-Jwt-Assertion': token(email) } : {}), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
   const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* html */ } return { s: r.status, j, t }; };
+/* delivery safety: the founder approves every current offer that has no problems (as on the Review desk) */
+const approveOffers = async (only = null) => { const j = (await call('GET', '/api/admin/checkout/baskets/offers', FOUNDER)).j; let n = 0;
+  for (const o of j.offers) if ((!only || only.includes(o.artwork_id)) && !o.review.approved && !o.problems.length) {
+    const r = await call('POST', `/api/admin/checkout/baskets/offers/${o.artwork_id}/review`, FOUNDER, { decision: 'approved', version: o.version, sha256: o.sha256, confirm: true, statement: j.statement }); if (r.s === 200) n++; }
+  return n; };
 const pub = async (method, path, { json = null, form = null, origin = ORIGIN, headers = {}, raw = null } = {}) => { const r = await CW.fetch(ORIGIN + path, { method, redirect: 'manual',
   headers: { ...(json || form ? { 'Content-Type': json ? 'application/json' : 'application/x-www-form-urlencoded', Origin: origin } : {}), ...headers }, body: json ? JSON.stringify(json) : form ? new URLSearchParams(form).toString() : raw ?? undefined });
   const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* html */ } return { s: r.status, t, j, loc: r.headers.get('Location'), h: r.headers }; };
@@ -134,7 +143,7 @@ check('A2 a different text fingerprint is refused', r.s === 400);
 for (const e of [GAL, FND]) r = await call('POST', '/api/checkout/basket/opt-in', e, { accept: true, doc_id: BAA.doc_id, html_sha256: BAA.html_sha256 });
 check('A3 artists opt in to baskets themselves (append-only record with the statement and fingerprint)', r.s === 200 && (await q("SELECT * FROM basket_artist_events WHERE kind='opted_in'")).length === 2
   && !!(await db.prepare("UPDATE basket_artist_events SET kind='left'").run().catch(e => e)).message);
-const DELIVERY = { collection_county: 'Dublin', unpacked_cm: '60 × 50 × 3', packed_cm: '75 × 65 × 12', weight_kg: 6, medium: 'Oil on board', framing: 'Framed, oak', glazing: 'None',
+const DELIVERY = { dispatch_days: 5, delivery_days: 10, collection_county: 'Dublin', unpacked_cm: '60 × 50 × 3', packed_cm: '75 × 65 × 12', weight_kg: 6, medium: 'Oil on board', framing: 'Framed, oak', glazing: 'None',
   condition: 'Excellent', access_notes: null, organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist',
   transporter_name: 'Synthetic Art Couriers', installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting (SIMULATED)', covered_value_cents: 150000,
   insured_party: 'transporter', cover_confirmation_ref: 'SIM-COVER-0001', cover_confirmed_by: 'Synthetic Underwriting', cover_confirmed_on: '2026-11-16', valuation_basis: 'Sale price', excess_cents: 0, exclusions: null,
@@ -148,6 +157,7 @@ check('A5 transit insurance must cover at least the artwork price (pilot rule re
 r = await call('PUT', '/api/checkout/basket/offers/wafnd1', GAL, { confirm: true, delivery_cents: 4500, delivery: DELIVERY });
 check('A6 an artist can never set an offer on another artist’s work', r.s === 404);
 for (const [e, w, c] of [[GAL, 'wagal1', 4500], [GAL, 'wagal2', 4500], [GAL, 'wagal3', 4500], [FND, 'wafnd1', 3000], [FND, 'wafnd2', 3000], [FND, 'wafnd3', 3000]]) r = await call('PUT', `/api/checkout/basket/offers/${w}`, e, { confirm: true, delivery_cents: c, delivery: DELIVERY });
+const approvedFirst = await approveOffers();
 check('A7 standing delivery offers recorded per artwork, approved by the artist (destination completed per order)', r.s === 200 && (await q('SELECT * FROM artwork_delivery_offers')).length === 6
   && JSON.parse((await one("SELECT delivery FROM artwork_delivery_offers WHERE artwork_id='wagal1'")).delivery).destination.includes('Republic of Ireland'));
 // seller information shown BEFORE payment needs the artist's own confirmation (bound to that information)
@@ -228,7 +238,7 @@ check('B3 ineligible works are refused with a buyer-friendly reason and never pr
 check('B4 the gallery (plotnua.ie) may read eligibility cross-origin; nothing else is exposed', r.h.get('Access-Control-Allow-Origin') === 'https://plotnua.ie');
 
 console.log('— buyer: open a basket (two artists, one card entry)');
-const BUYER = { name: 'Bríd Buyer', email: 'brid@example.test', address_line1: '7 Harbour Road', address_line2: '', town: 'Kinsale', county: 'Cork', eircode: 'P17 XY12', phone: '+353 21 555 0199' };
+const BUYER = { name: 'Bríd Buyer', email: 'brid@example.test', address_line1: '7 Harbour Road', address_line2: '', town: 'Kinsale', county: 'Cork', eircode: 'P17 XY12', phone: '+353 21 555 0199', island: 'no' };
 const basketReq = (artworks, extra = {}) => ({ artworks, accept_terms: 'PA-BBT-TEST-01', ...BUYER, ...extra });
 const SEEDB = [{ id: 'wagal1', img: 'https://plotnua.ie/plotart/artists/gale/img/g1.png' }, { id: 'wafnd1', img: 'https://plotnua.ie/plotart/artists/fia/img/g2.png' }, { id: 'wagal2', img: 'https://plotnua.ie/plotart/artists/gale/img/g3.png' }];
 await shot('1-basket-desktop', '/basket', { basket: SEEDB });
@@ -497,6 +507,7 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
       await db.prepare('UPDATE versions SET snapshot = ? WHERE artist_id = ? AND version = ?').bind(JSON.stringify(snap), w.artist_id, v.version).run();
       await call('PUT', `/api/checkout/basket/offers/${id}`, w.artist_id === 'agal' ? GAL : FND, { confirm: true, delivery_cents: 3000, delivery: DELIVERY });
     }
+    await approveOffers(['wagal9', 'wafnd8', 'wafnd9']);
     const avail = (await call('GET', '/api/admin/checkout/baskets/eligibility?ids=wagal9,wafnd8,wafnd9', FOUNDER)).j.items.filter(i => i.ok).map(i => i.id);
     const pick = avail;
     for (const [vw, vh, name] of [[1280, 900, 'desktop'], [390, 844, 'phone']]) {
@@ -585,6 +596,145 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
     const fh = await fp.evaluate(() => ({ h1: document.querySelector('h1').textContent, tabs: [...document.querySelectorAll('.st-tabs a')].map(a => a.textContent) }));
     check('OS10 the founder’s Payment pilot page is unchanged (its own heading and navigation)', /^Payment pilot/.test(fh.h1) && fh.tabs.join() === 'Studio', fh);
     await fc.close();
+  }
+}
+
+/* ================================================================ delivery safety (22 Nov 2026) */
+console.log('— delivery safety: founder review of delivery offers, deadlines, islands, Ireland-only, overdue alerts');
+{
+  const fresh = async (src, id) => {
+    await db.prepare(`INSERT INTO artworks (id, artist_id, slug, title, year, medium, materials, h_cm, w_cm, d_cm, price_eur, price_on_request, availability, description, ord, ai_involvement, ai_note, archived, created_at, updated_at)
+      SELECT ?, artist_id, ?, title || ' DS', year, medium, materials, h_cm, w_cm, d_cm, price_eur, 0, 'available', description, ord + 80, ai_involvement, ai_note, 0, created_at, updated_at FROM artworks WHERE id = ?`).bind(id, id, src).run();
+    const w = await one('SELECT * FROM artworks WHERE id = ?', id), v = await one('SELECT version, snapshot FROM versions WHERE artist_id = ? ORDER BY version DESC LIMIT 1', w.artist_id), snap = JSON.parse(v.snapshot);
+    snap.works.push({ ...snap.works.find(x => x.id === src), id, slug: id, title: w.title, availability: 'available' });
+    await db.prepare('UPDATE versions SET snapshot = ? WHERE artist_id = ? AND version = ?').bind(JSON.stringify(snap), w.artist_id, v.version).run();
+    return w;
+  };
+  const elig = async id => (await call('GET', '/api/admin/checkout/baskets/eligibility?ids=' + id, FOUNDER)).j.items[0];
+  const offers = async () => (await call('GET', '/api/admin/checkout/baskets/offers', FOUNDER)).j;
+  const offerOf = async id => (await offers()).offers.find(o => o.artwork_id === id);
+  const review = (id, body, who = FOUNDER) => call('POST', `/api/admin/checkout/baskets/offers/${id}/review`, who, body);
+  check('DS1 the founder approved the first offers through the Review desk API; each approval is an audit row naming the founder, the exact version and fingerprint',
+    approvedFirst === 6 && (await q('SELECT * FROM delivery_offer_reviews')).filter(r => r.decision === 'approved' && /^founder:/.test(r.reviewed_by) && r.offer_sha256.length === 64).length >= 6, approvedFirst);
+
+  await fresh('wagal1', 'wds1'); await fresh('wagal1', 'wds2'); await fresh('wafnd1', 'wds3');
+  r = await call('PUT', '/api/checkout/basket/offers/wds1', GAL, { confirm: true, delivery_cents: 4500, delivery: { ...DELIVERY, dispatch_days: undefined, delivery_days: undefined } });
+  check('DS2 a delivery offer without dispatch and delivery deadlines is refused when saved', r.s === 409 && /dispatch deadline/.test(r.j.error), r.j);
+  r = await call('PUT', '/api/checkout/basket/offers/wds1', GAL, { confirm: true, delivery_cents: 4500, delivery: { ...DELIVERY, dispatch_days: 9, delivery_days: 5 } });
+  check('DS2a the delivery deadline cannot be earlier than dispatch', r.s === 409 && /no earlier than dispatch/.test(r.j.error), r.j);
+  r = await call('PUT', '/api/checkout/basket/offers/wds1', GAL, { confirm: true, delivery_cents: 4500, delivery: DELIVERY });
+  const e1 = await elig('wds1');
+  check('DS3 a saved offer leaves the artwork enquiry-only until the founder approves it', r.s === 200 && r.j.review === 'awaiting_founder_review' && !e1.ok && e1.why === 'delivery offer awaiting founder approval', { r: r.j, e1 });
+  const o1 = await offerOf('wds1');
+  r = await review('wds1', { decision: 'approved', version: o1.version, sha256: o1.sha256, confirm: true, statement: (await offers()).statement }, GAL);
+  check('DS4 an artist cannot approve their own offer (founder-only route: 403)', r.s === 403, r.s);
+  r = await review('wds1', { decision: 'approved', version: o1.version, sha256: o1.sha256 });
+  check('DS5 approval needs the founder’s explicit confirmation of the review statement', r.s === 400 && /Tick the box/.test(r.j.error), r.j);
+  r = await review('wds1', { decision: 'approved', version: o1.version, sha256: 'f'.repeat(64), confirm: true, statement: (await offers()).statement });
+  check('DS6 approving a version or content other than the current one is refused (stale review page)', r.s === 409 && /changed this delivery offer/.test(r.j.error), r.j);
+  r = await review('wds1', { decision: 'approved', version: o1.version, sha256: o1.sha256, confirm: true, statement: (await offers()).statement });
+  const e2 = await elig('wds1');
+  check('DS7 after the founder approves the exact version the artwork can be bought online', r.s === 200 && e2.ok, { r: r.j && r.j.error, e2 });
+  r = await call('PUT', '/api/checkout/basket/offers/wds1', GAL, { confirm: true, delivery_cents: 4600, delivery: DELIVERY });
+  const e3 = await elig('wds1'), o3 = await offerOf('wds1');
+  check('DS8 any change by the artist (here the charge) is a new version: the earlier approval no longer counts and the artwork is enquiry-only again',
+    !e3.ok && e3.why === 'delivery offer awaiting founder approval' && o3.review.state === 'awaiting_review' && o3.review.previous && o3.review.previous.decision === 'approved', { e3, rv: o3.review });
+  r = await call('PUT', '/api/checkout/basket/offers/wds1', GAL, { confirm: true, delivery_cents: 4600, delivery: { ...DELIVERY, cover_provider: 'Other Underwriting (SIMULATED)' } });
+  r = await review('wds1', { decision: 'approved', version: o3.version, sha256: o3.sha256, confirm: true, statement: (await offers()).statement });
+  check('DS9 an approval prepared for an earlier version cannot be applied after a further change (insurance details changed)', r.s === 409 && !(await elig('wds1')).ok, r.j);
+  const o4 = await offerOf('wds1');
+  r = await review('wds1', { decision: 'returned', version: o4.version, sha256: o4.sha256, note: 'x' });
+  check('DS10 returning an offer needs a note for the artist', r.s === 400, r.j);
+  r = await review('wds1', { decision: 'returned', version: o4.version, sha256: o4.sha256, note: 'Please confirm the insurer covers wall-hung works in transit.' });
+  const av = (await call('GET', '/api/checkout/basket', GAL)).j.works.find(w => w.id === 'wds1');
+  check('DS11 a returned offer stays enquiry-only and the artist sees PlotArt’s note', r.s === 200 && (await elig('wds1')).why === 'delivery offer returned by the founder'
+    && av.offer.review.state === 'returned' && /wall-hung/.test(av.offer.review.note), av.offer);
+  let trig = null; try { await db.prepare("UPDATE delivery_offer_reviews SET decision = 'approved'").run(); } catch (e) { trig = e.message; }
+  let trig2 = null; try { await db.prepare('DELETE FROM delivery_offer_reviews').run(); } catch (e) { trig2 = e.message; }
+  let trig3 = null; try { await db.prepare("INSERT INTO delivery_offer_reviews (id, artwork_id, artist_id, offer_version, offer_sha256, decision, reviewed_by, reviewed_at) VALUES ('drx','wds1','agal',1,'x','approved','founder:x','2026-11-22')").run(); } catch (e) { trig3 = e.message; }
+  check('DS12 the review record is append-only and cannot approve a version that is not current (database triggers)', /never change/.test(trig) && /never removed/.test(trig2) && /not the current version/.test(trig3), { trig, trig2, trig3 });
+  const ev = await q("SELECT kind, offer_version FROM delivery_offer_events WHERE artwork_id = 'wds1' ORDER BY at");
+  r = await call('DELETE', '/api/checkout/basket/offers/wds1', GAL);
+  check('DS13 the artist’s saves and withdrawals are recorded with the version', ev.length === 3 && ev.every(x => x.kind === 'saved') && (await q("SELECT kind FROM delivery_offer_events WHERE artwork_id = 'wds1' AND kind = 'withdrawn'")).length === 1, ev);
+
+  // islands
+  await call('PUT', '/api/checkout/basket/offers/wds2', GAL, { confirm: true, delivery_cents: 4500, delivery: DELIVERY });
+  await call('PUT', '/api/checkout/basket/offers/wds3', FND, { confirm: true, delivery_cents: 9000, delivery: { ...DELIVERY, offshore_islands: true } });
+  await approveOffers(['wds2', 'wds3']);
+  const items = (await pub('GET', '/api/basket/items?ids=wds2,wds3')).j;
+  check('DS14 the basket items say, per artwork, whether offshore islands are covered, and carry the Ireland-only delivery scope',
+    items.items.find(i => i.id === 'wds2').delivery.islands === false && items.items.find(i => i.id === 'wds3').delivery.islands === true && /Republic of Ireland only/.test(items.delivery_scope), items);
+  const ISL = { address_line1: 'Teach na Trá', town: 'Inis Oírr', county: 'Galway', eircode: '' };
+  r = await pub('POST', '/basket/checkout', { json: basketReq(['wds2', 'wds3'], { island: 'yes' }) });
+  check('DS15 a buyer who says the address is on an offshore island cannot buy an artwork whose offer does not cover islands: directed to enquire', r.s === 409 && /offshore island/.test(r.j.error) && /enquire/.test(r.j.error), r.j);
+  r = await pub('POST', '/basket/checkout', { json: basketReq(['wds2'], { ...ISL, island: 'no' }) });
+  check('DS16 an address naming an offshore island (Inis Oírr) is treated as an island even if the box says no', r.s === 409 && /offshore island/.test(r.j.error), r.j);
+  r = await pub('POST', '/basket/checkout', { json: basketReq(['wds2'], { island: undefined }) });
+  check('DS17 the buyer must answer the island question', r.s === 400 && /offshore island/.test(r.j.error), r.j);
+  r = await pub('POST', '/basket/checkout', { json: basketReq(['wds3'], { ...ISL, island: 'yes' }) });
+  const ib = r.j && r.j.url ? await one("SELECT * FROM checkout_baskets ORDER BY created_at DESC, rowid DESC LIMIT 1") : null;
+  const io = ib ? await one('SELECT delivery FROM checkout_orders WHERE enquiry_ref = ?', ib.reference) : null;
+  check('DS18 an artwork whose founder-approved offer includes islands can be bought for an island address (recorded on the order)', r.s === 200 && !!r.j.url && /offshore island/.test(JSON.parse(io.delivery).destination) && JSON.parse(io.delivery).destination_country === 'IE', r.j);
+  if (ib) { const tk = new URL(r.j.url).pathname; await db.prepare("UPDATE checkout_baskets SET status = status WHERE id = ?").bind(ib.id).run(); }
+
+  // Ireland-only shown before checkout
+  const bp = await pub('GET', '/basket');
+  const iScope = bp.t.indexOf('Republic of Ireland only'), iForm = bp.t.indexOf('id="buy"');
+  check('DS19 the basket page states Ireland-only delivery before the buyer starts checkout (above the items and address form), and the county field says Republic of Ireland',
+    iScope > 0 && iScope < iForm && /County \(Republic of Ireland\)/.test(bp.t) && /offshore island/.test(bp.t), { iScope, iForm });
+  const gp = readFileSync(HERE + '../../atlas-tools/plotart_gallery_pages.py', 'utf8');
+  check('DS20 the artwork-page basket note (gallery generator) says online purchase delivers in the Republic of Ireland only', /Online purchase delivers in the Republic of Ireland only; for delivery elsewhere, please enquire/.test(gp));
+
+  // nothing purchasable without every approval
+  const allIds = (await q("SELECT id FROM artworks WHERE archived = 0")).map(x => x.id);
+  let bad = [];
+  for (let k = 0; k < allIds.length; k += 40) {
+    const its = (await call('GET', '/api/admin/checkout/baskets/eligibility?ids=' + allIds.slice(k, k + 40).join(','), FOUNDER)).j.items.filter(i => i.ok);
+    for (const it of its) {
+      const o = await one('SELECT * FROM artwork_delivery_offers WHERE artwork_id = ?', it.id), rv = await one('SELECT * FROM delivery_offer_reviews WHERE artwork_id = ? ORDER BY reviewed_at DESC, rowid DESC LIMIT 1', it.id);
+      if (!o || o.withdrawn_at || !rv || rv.decision !== 'approved' || rv.offer_version !== o.version) bad.push(it.id);
+    }
+  }
+  const okCount = (await Promise.all(allIds.map(elig))).filter(i => i.ok).length;
+  check('DS21 every artwork that can be bought online has a current, founder-approved delivery offer for its exact current version (all artworks checked)', !bad.length && okCount > 0, { bad, okCount });
+
+  // overdue dispatch and delivery
+  const po = await one("SELECT * FROM checkout_orders WHERE status = 'paid' AND COALESCE(fulfilment_status,'none') = 'none' ORDER BY paid_at LIMIT 1");
+  const dd = JSON.parse(po.delivery);
+  await db.prepare('UPDATE checkout_orders SET paid_at = ? WHERE id = ?').bind(ago(dd.delivery_days + 3), po.id).run();
+  const sinkBefore = (await q("SELECT id FROM checkout_mail_sink WHERE to_role = 'founder' AND kind IN ('dispatch_overdue','delivery_overdue')")).length;
+  await CW.scheduled({ scheduledTime: Date.now(), cron: '*/15 * * * *' });
+  const al = await q("SELECT * FROM checkout_mail_sink WHERE to_role = 'founder' AND kind IN ('dispatch_overdue','delivery_overdue') AND order_id = ?", po.id);
+  const art = JSON.parse(po.artwork_snapshot), sel = JSON.parse(po.seller);
+  check('DS22 the scheduled sweep alerts the founder when a paid order passes its agreed dispatch and delivery dates: artwork, artist, order reference and overdue status',
+    sinkBefore === 0 && al.length === 2 && al.every(a => a.body.includes(po.reference) && a.body.includes(art.title) && a.body.includes(sel.name) && /Overdue: \d+ day/.test(a.body) && /agreed/.test(a.body)), al.map(a => a.body.slice(0, 300)));
+  await CW.scheduled({ scheduledTime: Date.now(), cron: '*/15 * * * *' }); await CW.scheduled({ scheduledTime: Date.now(), cron: '*/15 * * * *' });
+  check('DS23 no duplicate alerts: later sweeps send nothing more for the same order (one row per order and kind)',
+    (await q("SELECT id FROM checkout_mail_sink WHERE to_role = 'founder' AND kind IN ('dispatch_overdue','delivery_overdue') AND order_id = ?", po.id)).length === 2
+    && (await q('SELECT * FROM order_overdue_alerts WHERE order_id = ?', po.id)).length === 2);
+  const fa = (await call('GET', '/api/admin/checkout', FOUNDER)).j.founder_alerts.items.filter(x => x.order_id === po.id && /overdue/.test(x.kind));
+  check('DS24 the alerts appear in the founder’s alerts panel with the reason, the due date and OVERDUE', fa.length === 2 && fa.every(x => x.state === 'open' && /OVERDUE/.test(x.due_label)) && fa.some(x => /not dispatched/.test(x.reason)), fa);
+  const po2 = await one("SELECT * FROM checkout_orders WHERE status = 'paid' AND COALESCE(fulfilment_status,'none') = 'none' AND id <> ? ORDER BY paid_at LIMIT 1", po.id);
+  await db.prepare('UPDATE checkout_orders SET paid_at = ? WHERE id = ?').bind(ago(1), po2.id).run();
+  await CW.scheduled({ scheduledTime: Date.now(), cron: '*/15 * * * *' });
+  check('DS25 an order still within its dates raises no alert', !(await q('SELECT * FROM order_overdue_alerts WHERE order_id = ?', po2.id)).length);
+  const C2 = await import(HERE + FIX + 'src/checkout.js');
+  const st = C2.overdueState({ status: 'paid', fulfilment_status: 'dispatched', paid_at: ago(12), delivery: JSON.stringify({ dispatch_days: 5, delivery_days: 10 }) });
+  const st2 = C2.overdueState({ status: 'paid', fulfilment_status: 'none', paid_at: ago(16), delivery: JSON.stringify({}) });
+  const st3 = C2.overdueState({ status: 'refunded', fulfilment_status: 'none', paid_at: ago(60), delivery: JSON.stringify({ dispatch_days: 5, delivery_days: 10 }) });
+  check('DS26 deadline rules: a dispatched order is only delivery-overdue; an order with no agreed days uses the labelled defaults (14/30); refunded orders are not monitored',
+    !st.dispatch.overdue && st.delivery.overdue && st2.basis === 'default' && st2.dispatch.overdue && !st2.delivery.overdue && !st3.dispatch.overdue && !st3.delivery.overdue, { st, st2, st3 });
+  if (SHOTS) {   // review screenshots (BASKET_SCREENSHOTS=dir): the buyer basket with the Ireland-only notice, and the founder's review section
+    await fresh('wagal1', 'wds4'); await call('PUT', '/api/checkout/basket/offers/wds4', GAL, { confirm: true, delivery_cents: 4500, delivery: DELIVERY }); await approveOffers(['wds4']);
+    await shot('ds-basket-desktop', '/basket', { basket: [{ id: 'wds4', img: 'https://plotnua.ie/plotart/artists/gale/img/g1.png' }] });
+    await shot('ds-basket-phone', '/basket', { basket: [{ id: 'wds4', img: 'https://plotnua.ie/plotart/artists/gale/img/g1.png' }], width: 390, height: 844 });
+    await call('PUT', '/api/checkout/basket/offers/wds2', GAL, { confirm: true, delivery_cents: 4800, delivery: DELIVERY });   // one offer waiting for review
+    for (const [w, n] of [[1280, 'desktop'], [390, 'phone']]) {
+      const c = await BR.newContext({ viewport: { width: w, height: 900 }, deviceScaleFactor: 2 }), pg = await c.newPage(); await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) });
+      await pg.goto(S.url + '/admin/baskets', { waitUntil: 'load' }); await pg.waitForSelector('#offer-reviews', { timeout: 20000 });
+      await pg.evaluate(() => { const d = document.querySelector('#offer-reviews article details.st-step'); if (d) d.open = true; });
+      await (await pg.$('#offer-reviews')).screenshot({ path: `${SHOTS}/ds-founder-review-${n}.png` }); await c.close();
+    }
   }
 }
 

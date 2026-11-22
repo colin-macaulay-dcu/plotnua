@@ -31,7 +31,7 @@ try {
   const { db } = S, CW = S.checkoutWorker;
   const seed = execFileSync('node', [HERE + 'test/basket-staging-seed.mjs', '--target', 'plotart-basket-staging', '--accounts', ACC.join(',')], { encoding: 'utf8' });
   let err = null;
-  for (const f of [readFileSync(HERE + 'migrations/0013_gallery_artist_agreement_text.sql', 'utf8'), readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8'), readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8'), seed])
+  for (const f of [readFileSync(HERE + 'migrations/0013_gallery_artist_agreement_text.sql', 'utf8'), readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8'), readFileSync(HERE + 'migrations/0020_basket_consents.sql', 'utf8'), readFileSync(HERE + 'migrations/0022_delivery_safety.sql', 'utf8'), seed])
     for (const s of statements(f)) { try { await db.prepare(s).run(); } catch (e) { err = (err ? err + " || " : "") + `${e.message} :: ${s.slice(0, 90)}`; } }
   check('S1 the staging database builds from schema.sql + 0013 + 0019 + the synthetic seed without error', !err, err);
   const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results, one = (sql, ...b) => db.prepare(sql).bind(...b).first();

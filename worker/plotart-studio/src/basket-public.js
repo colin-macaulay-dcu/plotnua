@@ -101,6 +101,7 @@ const IMG = env => `^${reEsc(gallery(env))}/(plotart/artists/[a-z0-9-]{1,80}/img
 function basketPage(env) {
   const counties = B.COUNTIES.map(c => `<option>${esc(c)}</option>`).join('');
   const body = `${banner(env)}<h1 class="bh">Your Basket</h1>
+<p class="note scope" id="scope">${esc(B.DELIVERY_SCOPE)}</p>
 <div class="grid bk"><section aria-label="Artworks"><div id="items"><p class="empty">Loading your basket…</p></div><div id="sellers"></div>
 <noscript><p class="note">The basket needs JavaScript. You can still enquire about any artwork from its page in the gallery.</p></noscript></section>
 <aside class="panel" aria-label="Order summary"><table class="sum"><tbody>
@@ -111,9 +112,12 @@ function basketPage(env) {
 <label>Address<input type="text" name="address_line1" autocomplete="address-line1" required maxlength="120"></label>
 <label>Address line 2 (optional)<input type="text" name="address_line2" autocomplete="address-line2" maxlength="120"></label>
 <div class="two"><label>Town or city<input type="text" name="town" autocomplete="address-level2" required maxlength="80"></label>
-<label>County<select name="county" required><option value="">Choose…</option>${counties}</select></label></div>
+<label>County (Republic of Ireland)<select name="county" required><option value="">Choose…</option>${counties}</select></label></div>
 <div class="two"><label>Eircode<input type="text" name="eircode" autocomplete="postal-code" maxlength="8"></label>
-<label>Telephone (for delivery)<input type="tel" name="phone" autocomplete="tel" required maxlength="30"></label></div></fieldset>
+<label>Telephone (for delivery)<input type="tel" name="phone" autocomplete="tel" required maxlength="30"></label></div>
+<fieldset class="isl"><legend>Is this address on an offshore island (not connected to the mainland by road)?</legend>
+<label class="check"><input type="radio" name="island" value="no" required><span>No</span></label><label class="check"><input type="radio" name="island" value="yes"><span>Yes</span></label>
+<p class="small muted" id="isl-note">Islands are delivered online only where an artwork’s delivery offer includes them. Otherwise, please enquire about the artwork.</p></fieldset></fieldset>
 <label class="check"><input type="checkbox" name="accept" id="accept" required><span>I have read the <a id="terms" target="_blank" rel="noopener">purchase terms</a>. Each artwork is sold by its artist.</span></label>
 <p id="err" class="note err" role="alert" hidden></p><button class="btn" type="submit" id="pay">Buy now</button><p class="nx">Next, enter your card on Stripe’s secure page and select <strong>Save</strong> there to complete your purchase.</p></form>
 <p id="closed" class="note" hidden>Online purchase is not open at the moment. You can enquire about any artwork from its page.</p></aside></div>`;
@@ -136,6 +140,7 @@ var info=el('div',null,[el('h3',null,[it.url?el('a',{href:it.url,text:it.title||
 el('p',{'class':'by',text:it.artist?('by '+it.artist):''}),
 it.ok?el('p',{'class':'meta',text:[it.medium,it.size,it.year].filter(Boolean).join(' · ')}):null,
 it.ok?el('p',{'class':'meta',text:it.delivery.window+' · '+it.delivery.tracking+' · insured'}):null,
+it.ok?el('p',{'class':'meta',text:'Delivery in the Republic of Ireland'+(it.delivery.islands?', including offshore islands':' (mainland; offshore islands by enquiry)')}):null,
 it.ok?el('p',{'class':'meta',text:it.delivery.returns}):null,
 !it.ok?el('p',{'class':'why',text:it.reason}):null,rm]);
 var price=it.ok?el('div',{'class':'price'},[document.createTextNode(eur(it.price_cents)),el('span',{'class':'d',text:'+ '+eur(it.delivery_cents)+' delivery'})]):el('div',{'class':'price'});
@@ -159,8 +164,10 @@ function showErr(m){var e=document.getElementById('err');e.textContent=m;e.hidde
 function refresh(){if(!list.length){data=null;render();return}fetch('/api/basket/items?ids='+encodeURIComponent(list.map(function(x){return x.id}).join(',')),{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(j){data=j;render()}).catch(function(){showErr('Your basket could not be loaded. Please try again.')})}
 form.addEventListener('submit',function(e){e.preventDefault();hideErr();var f=form.elements;
 if(!document.getElementById('accept').checked){showErr('Please read and accept the purchase terms.');return}
+var isl=form.querySelector('input[name=island]:checked');if(!isl){showErr('Please say whether the delivery address is on an offshore island.');return}
+if(isl.value==='yes'){var no=data.items.filter(function(i){return i.ok&&!i.delivery.islands});if(no.length){showErr('“'+(no[0].title||'An artwork')+'” can’t be delivered to an offshore island through online purchase. Please remove it and enquire about it instead.');return}}
 var b={artworks:data.items.filter(function(i){return i.ok}).map(function(i){return i.id}),expected_total_cents:data.totals.total_cents,accept_terms:data.terms&&data.terms.doc_id,
-name:f.name.value,email:f.email.value,address_line1:f.address_line1.value,address_line2:f.address_line2.value,town:f.town.value,county:f.county.value,eircode:f.eircode.value,phone:f.phone.value};
+name:f.name.value,email:f.email.value,address_line1:f.address_line1.value,address_line2:f.address_line2.value,town:f.town.value,county:f.county.value,eircode:f.eircode.value,phone:f.phone.value,island:isl.value};
 var btn=document.getElementById('pay');btn.disabled=true;btn.textContent='Opening checkout…';
 fetch('/basket/checkout',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
 .then(function(r){if(r.ok&&r.j.url){location.href=r.j.url;return}btn.disabled=false;btn.textContent=payLabel();showErr(r.j.error||'Something went wrong. Please try again.');refresh()})
