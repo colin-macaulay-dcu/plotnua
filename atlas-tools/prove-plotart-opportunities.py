@@ -189,7 +189,31 @@ for d in ("assets",):
 for fn in ("index.html", "privacy.html"):
     shutil.copyfile(os.path.join(ROOT, fn), os.path.join(site, fn))
 before = {p: open(os.path.join(site, "plotart", p), encoding="utf-8").read() for p in OPP.PAGES}
+def _cards_ok(doc, path):
+    """Art for Hire (22 Nov 2026): the same listed artists as an artwork-led mini gallery. Every card: one link to the
+    artist's gallery, the MAIN image of one of their own published works at a published size (never the portrait), with
+    that image's approved alt text, lazy-loaded, and the file present; up to GALLERY_FIRST shown, the rest one click away."""
+    base = "../" * path.count("/")
+    cards = re.findall(r'<li><a class="pa-afg-card" href="([^"]+)" data-pa-track="opportunity_artist">(.*?)</a></li>', doc, re.S)
+    want = OPP.listed(published, "art_for_hire")
+    if len(cards) != len(want) or doc.count('class="pa-afg-grid"') != (1 if len(want) <= OPP.GALLERY_FIRST else 2):
+        return False
+    by = {p["artist"]["slug"]: p for p in published}
+    for href, inner in cards:
+        m = re.fullmatch(re.escape(base) + r"artists/([a-z0-9-]+)/", href)
+        pk = m and by.get(m.group(1))
+        img = re.search(r'<img src="([^"]+)" srcset="[^"]+" sizes="[^"]+" width="\d+" height="\d+" alt="([^"]+)" loading="lazy" decoding="async">', inner)
+        if not pk or "art_for_hire" not in OPP.open_to(pk) or not img or "portrait" in img.group(1):
+            return False
+        files = {base + "artists/%s/img/%s" % (pk["artist"]["slug"], d["file"]): i.get("alt")
+                 for w in pk["works"] for i in w.get("images", []) if i.get("role") == "main" for d in i.get("derivatives", [])}
+        if img.group(1) not in files or html.unescape(img.group(2)) != (files[img.group(1)] or "").strip() \
+                or not os.path.isfile(os.path.join(ROOT, "plotart", os.path.normpath(os.path.join(os.path.dirname(path), img.group(1))))):
+            return False
+    return True
 def _thumbs_ok(doc, path):
+    if path == "art-for-hire/index.html":
+        return _cards_ok(doc, path)
     """Every listed row: a listed artist (open_to carries the key), linked as one row to their gallery, with an 80x80
     lazy-loaded thumbnail that is the smallest published derivative of a MAIN image of one of their own published works
     (never the portrait), with that image's approved alt text, and the file present."""
@@ -237,8 +261,9 @@ vis = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", regions)))
 check("O4i the wording is interest, never participation or a booking", "Being listed is not a booking, and nothing is confirmed until it’s agreed." in vis
       and not re.search(r"(?i)participating artists|confirmed artists|book now|available now|partner", vis))
 hire = after["art-for-hire/index.html"]
-check("O4j Art for Hire: the artist list sits after, and apart from, the works catalogue, which is unchanged",
-      hire.index("<!-- pa-hire-catalogue:end -->") < hire.index(OPP.BEGIN) and
+check("O4j Art for Hire (22 Nov 2026): the artists' mini gallery sits straight after the hero, apart from the works catalogue, which is unchanged; it never says a shown work is available for hire",
+      hire.index("</section>") < hire.index(OPP.BEGIN) < hire.index("<!-- pa-hire-catalogue:begin -->") and "afh3-hero" in hire[:hire.index(OPP.BEGIN)]
+      and "doesn’t mean that work, or any particular work, is available for hire" in html.unescape(hire) and
       re.search(r"<!-- pa-hire-catalogue:begin -->.*?<!-- pa-hire-catalogue:end -->", hire, re.S).group(0) == re.search(r"<!-- pa-hire-catalogue:begin -->.*?<!-- pa-hire-catalogue:end -->", before["art-for-hire/index.html"], re.S).group(0))
 
 print("— O5 the content-only boundary")

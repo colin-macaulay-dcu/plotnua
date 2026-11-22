@@ -32,6 +32,9 @@
   const cards = () => $$('[data-hire-work]');
   const empty = $$('[data-hire-empty]'), staticEmpty = empty.some(x => x.hasAttribute('data-hire-static'));
   const status = msg => $$('[data-hire-status]').forEach(el => { el.textContent = msg; el.hidden = !msg; });
+  // 22 Nov 2026: the "Available to hire" section ([data-hire-section]) ships hidden while no work is approved; it is shown only
+  // while the live check is showing at least one approved work, and hidden again whenever nothing is shown.
+  const section = shown => $$('[data-hire-section]').forEach(el => { el.hidden = !shown; });
   const cta = shown => $$('[data-hire-cta]').forEach(a => {
     a.textContent = shown ? 'See works for hire' : 'How it works';
     a.setAttribute('href', shown ? '#afh3-works' : '#afh3-how');
@@ -47,6 +50,7 @@
     state = { listed: new Map(), validUntil: 0, enquiries: false };
     cards().forEach(c => { c.hidden = true; });
     empty.forEach(el => { el.hidden = !staticEmpty; });
+    section(false);
     cta(false);
     setEnquiries(false);
     closeForm();
@@ -73,6 +77,7 @@
         if (i) { shown++; const a = c.querySelector('[data-hire-availability]'); if (a) a.textContent = label(i); }
       });
       empty.forEach(el => { el.hidden = shown > 0; });
+      section(shown > 0);
       cta(shown > 0);
       setEnquiries(FORM_BUILT && j.enquiries === true);
       if (openRef && !state.listed.has(openRef.id)) closeForm('This work is no longer available for hire.');

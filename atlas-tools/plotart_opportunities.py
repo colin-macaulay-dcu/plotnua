@@ -133,12 +133,63 @@ def _rows(pkgs, base, commission_page=False):
     return '<ul class="pa-opp-list">%s</ul>' % "".join(line(p) for p in pkgs)
 
 
-def section(key, packages, base, hub, commission_page=False):
+# Art for Hire page (founder brief 22 Nov 2026): the same list, shown as an artwork-led mini gallery straight after the hero.
+# The SAME published artists and the SAME artwork (the first work's main photograph, as thumb() chooses), at a larger
+# published size; never cropped (contained in its frame). These are artists open to discussing hire: the page never says a
+# particular work is available for hire. Up to GALLERY_FIRST cards show at once; any others are one click away.
+GALLERY_FIRST = 8
+HIRE_SAID = ("These artists have said they’d welcome conversations about hiring out their work. The artwork shown introduces each "
+             "artist’s practice; it doesn’t mean that work, or any particular work, is available for hire.")
+HIRE_INVITE = ("<h3>Interested in hiring a work?</h3><p>Explore the artists above and get in touch about a piece that interests you. "
+               "Availability, rental terms and arrangements are agreed directly with the artist.</p>")
+
+
+def gallery_image(pkg):
+    """The thumb() artwork at a card size: (src file, srcset, width, height, alt), or None."""
+    for w in pkg.get("works") or []:
+        for im in w.get("images") or []:
+            if im.get("role") == "main" and im.get("derivatives"):
+                ds = sorted(im["derivatives"], key=lambda x: x["long_edge"])
+                mid = next((d for d in ds if d["long_edge"] >= 600), ds[-1])
+                return mid, ds, (im.get("alt") or w.get("title") or "").strip()
+    return None
+
+
+def _gallery(pkgs, base):
+    def card(p):
+        a = p["artist"]
+        what = a.get("practice") or MEDIUM.get(a.get("medium"), "")
+        g = gallery_image(p)
+        root = "%sartists/%s/img/" % (base, E(a["slug"]))
+        if g:
+            mid, ds, alt = g
+            art = ('<img src="%s%s" srcset="%s" sizes="(max-width:639px) 46vw, (max-width:1023px) 31vw, 23vw" width="%d" height="%d" alt="%s" loading="lazy" decoding="async">'
+                   % (root, E(mid["file"]), E(", ".join("%s%s %dw" % (root, d["file"], d["pixels"][0]) for d in ds)), mid["pixels"][0], mid["pixels"][1],
+                      E(alt or ("Artwork by " + a["display_name"]))))
+        else:
+            art = ""
+        return ('<li><a class="pa-afg-card" href="%sartists/%s/" data-pa-track="opportunity_artist"><span class="pa-afg-art">%s</span>'
+                '<span class="pa-afg-name">%s</span>%s<span class="pa-afg-go">View gallery</span></a></li>'
+                % (base, E(a["slug"]), art, E(a["display_name"]), ('<span class="pa-afg-what">%s</span>' % E(what)) if what else ""))
+    first, rest = pkgs[:GALLERY_FIRST], pkgs[GALLERY_FIRST:]
+    out = '<ul class="pa-afg-grid">%s</ul>' % "".join(card(p) for p in first)
+    if rest:
+        out += ('<details class="pa-afg-all"><summary>View all artists open to Art for Hire <span>(%d)</span></summary><ul class="pa-afg-grid">%s</ul></details>'
+                % (len(pkgs), "".join(card(p) for p in rest)))
+    return out
+
+
+def section(key, packages, base, hub, commission_page=False, gallery=False):
     label, head, said, page, anchor = OPPORTUNITIES[key]
     pkgs = listed(packages, key)
     if not pkgs and not hub:
         return ""          # a programme page shows nothing until someone is listed (the region stays, empty)
     sid = anchor if hub else "open-artists"
+    if gallery:      # the Art for Hire page's artwork-led mini gallery (22 Nov 2026)
+        return ('<section class="pa-opp pa-afg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
+                '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s %s</p></div>\n  %s\n'
+                '  <div class="pa-afg-invite">%s</div>\n  <p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>\n</div></section>'
+                % (sid, key, key, E(head), E(HIRE_SAID), E(NOTE), _gallery(pkgs, base), HIRE_INVITE, E(base)))
     about = {"art_for_hire": "About Art for Hire", "commissions": "About commissions"}.get(key, "About the " + label)
     more = ('<p class="pa-opp-more"><a href="%s">%s →</a></p>' % (E(base + page), E(about))) if hub and page else \
            ('<p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>' % E(base)) if not hub else ""
@@ -151,7 +202,7 @@ def section(key, packages, base, hub, commission_page=False):
 def content(path, packages):
     hub = path == HUB
     base = "../" * path.count("/")
-    return "\n".join(s for s in (section(k, packages, base, hub, path == COMMISSIONS) for k in PAGES[path]) if s)
+    return "\n".join(s for s in (section(k, packages, base, hub, path == COMMISSIONS, gallery=path == "art-for-hire/index.html") for k in PAGES[path]) if s)
 
 
 def update(document, path, packages):

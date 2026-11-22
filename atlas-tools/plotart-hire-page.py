@@ -122,25 +122,14 @@ def body(cards, api, form):
 </section>
 <p class="afh3-hero-credit-m">%(credit)s</p>
 
-<section class="afh-paths" aria-label="Who Art for Hire is for"><div class="pa-wrap afh-paths-grid">
-  <div class="afh-path">
-    <h2>For businesses</h2>
-    <p>Hire original work for a set, an interior or a staged home.%(business_line)s</p>
-    <p class="afh-path-act">%(business_cta)s</p>
-  </div>
-  <div class="afh-path">
-    <h2>For artists</h2>
-    <p>Offer selected works on your own terms from your PlotArt Studio, once Art for Hire opens to artists.</p>
-    <p class="afh-path-act"><a class="afh3-link" href="#for-artists">Read the artist terms</a></p>
-  </div>
-</div></section>
+%(opportunities)s
 
 <section class="afh3-how" id="afh3-how" aria-labelledby="afh3-how-h"><div class="pa-wrap">
-  <h2 id="afh3-how-h">How a hire works</h2>
+  <div class="afh3-how-head"><h2 id="afh3-how-h">How Art for Hire works</h2><p>Three steps, agreed directly between you and the artist.%(business_how)s</p></div>
   <ol class="afh3-steps">
-    <li><h3>Choose a work</h3><p>Every listing has been offered by its artist and checked by PlotArt, with its size, medium and availability.</p></li>
-    <li><h3>Send an enquiry</h3><p>Tell the artist your dates, where the work will go and how it will be used. Your enquiry goes straight to the artist.</p></li>
-    <li><h3>Agree it with the artist</h3><p>The fee, dates, insurance, transport, installation and return are agreed directly between you and the artist, in writing.</p></li>
+    <li><h3>Discover an artist</h3><p>Browse the artists open to Art for Hire and their galleries, and find work that suits your production, interior or space.</p></li>
+    <li><h3>Make an enquiry</h3><p>Tell the artist which work interests you, your dates, where the work will go and how it will be used. Your enquiry goes straight to the artist.</p></li>
+    <li><h3>Agree the arrangements</h3><p>The fee, dates, insurance, transport, installation and return are agreed directly between you and the artist, in writing.</p></li>
   </ol>
   <ul class="afh3-know">
     <li><strong>PlotArt introduces you to the artist.</strong> We’re not a party to the artwork hire and we don’t collect artwork rent or deposits. Any PlotArt fee requires a separate agreement.</li>
@@ -156,25 +145,46 @@ def body(cards, api, form):
   <div class="afh3-scene-row" role="region" aria-label="Three illustrated settings" tabindex="0">%(scenes)s</div>
 </section>
 
-<section class="pa-hire-gal afh3-works" id="afh3-works" aria-labelledby="pa-hire-gal-h"><div class="pa-wrap">
+<section class="pa-hire-gal afh3-works" id="afh3-works" aria-labelledby="pa-hire-gal-h" data-hire-section%(works_hidden)s><div class="pa-wrap">
   <div class="afh3-works-h"><h2 id="pa-hire-gal-h">Available to hire</h2><p>Every work is offered by its artist and checked by PlotArt. Price on request.</p></div>
   <p class="pa-hire-note" data-hire-status role="status" hidden></p>
   <noscript><p class="pa-hire-note">Please turn on JavaScript to see which works are available for hire right now.</p></noscript>
   <p class="pa-hire-note" id="pa-hire-closed" data-hire-closed tabindex="-1" hidden>Hire enquiries are not yet open.</p>
   %(region)s
 </div></section>
-%(opportunities)s
-
 %(after)s
+%(next)s
 <script src="hire-live.js" data-api="%(api)s" data-enquiries="%(enq)s" defer></script>
-""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards), "opportunities": OPP.BEGIN + OPP.END,
+""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards), "opportunities": OPP.BEGIN + OPP.END, "works_hidden": "" if cards else " hidden",
+       "business_how": ' Renting for a workplace? See <a href="#business-rentals">Business rentals</a>.' if business_on else "", "next": NEXT % {"business": business_next(business_on)},
        "api": E(api), "enq": "on" if form else "off",
-       "business_line": " Or rent it for your workplace while it remains for sale." if business_on else "",
-       "business_cta": ('<a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Business%20art%20purchase%20or%20rental">Discuss hiring art for your space</a>'
-                        '<span class="afh-path-more"><a href="#afh3-how">How a hire works</a><a href="#business-rentals">Business rentals</a></span>') if business_on
-                       else ('<a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%20brief">Discuss hiring art for your space</a>'
-                             '<span class="afh-path-more"><a href="#afh3-how">How a hire works</a></span>'),
        "after": BUSINESS.REGION if business_on else ARTISTS_ONLY}
+
+
+# G · Enquiry and next steps (founder brief 22 Nov 2026): the two audience paths that used to follow the hero, at the close.
+NEXT = """<section class="afh-next" id="next-steps" aria-labelledby="afh-next-h"><div class="pa-wrap">
+  <h2 id="afh-next-h">Enquiry and next steps</h2>
+  <div class="afh-next-grid">
+    <div class="afh-next-col">
+      <h3>For businesses</h3>
+      %(business)s
+    </div>
+    <div class="afh-next-col">
+      <h3>For artists</h3>
+      <p>Offer selected works on your own terms from your PlotArt Studio, once Art for Hire opens to artists.</p>
+      <p class="afh-close-acts"><a class="afh3-link" href="#for-artists">Read the artist terms</a></p>
+    </div>
+  </div>
+</div></section>"""
+
+
+def business_next(business_on):
+    if business_on:
+        return ('<p>Hire original work for a set, an interior or a staged home. Or rent it for your workplace while it remains for sale.</p>\n'
+                '      <p class="afh-close-acts"><a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Business%20art%20purchase%20or%20rental">Discuss hiring art for your space</a>'
+                '<a class="afh3-link" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%20brief">Send a brief</a></p>')
+    return ('<p>Hire original work for a set, an interior or a staged home.</p>\n'
+            '      <p class="afh-close-acts"><a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%20brief">Discuss hiring art for your space</a></p>')
 
 
 # Without business rental information: the artists' section alone (the same wording as before the redesign).
@@ -191,11 +201,10 @@ BEGIN, END = "<!-- pa-hire-catalogue:begin -->", "<!-- pa-hire-catalogue:end -->
 
 def region(cards):
     gallery = ('<ul class="pa-hire-grid" aria-label="Works available for hire">\n%s\n</ul>' % "\n".join(cards)) if cards else ""
-    empty = ('<div class="pa-hire-empty afh3-empty" data-hire-empty%s%s>'
-             '<p><strong>No works are available for hire just now.</strong> Art for Hire is new. Works appear here once their artists choose to offer them and PlotArt has checked each one.</p>'
-             '<p>Looking for something specific for a production, shoot or space? Email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and tell us what you need.</p>'
-             '</div>') % ("" if cards else " data-hire-static", " hidden" if cards else "")
-    return "%s\n  %s\n  %s\n  %s" % (BEGIN, gallery, empty, END)
+    # 22 Nov 2026 (founder brief): no public empty state. With no approved works the whole "Available to hire" section ships
+    # hidden; hire-live.js shows it only while the live check is showing at least one approved work. The artists' mini
+    # gallery above is the page's discovery area.
+    return "%s\n  %s\n  %s" % (BEGIN, gallery, END)
 
 
 def build(root, catalogue, api, form=False, update=False):
