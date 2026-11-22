@@ -195,7 +195,8 @@ def _cards_ok(doc, path):
     that image's approved alt text, lazy-loaded, and the file present; up to GALLERY_FIRST shown, the rest one click away."""
     base = "../" * path.count("/")
     cards = re.findall(r'<li><a class="pa-afg-card" href="([^"]+)" data-pa-track="opportunity_artist">(.*?)</a></li>', doc, re.S)
-    want = OPP.listed(published, "art_for_hire")
+    key = "living_gallery" if path == "living-gallery.html" else "art_for_hire"
+    want = OPP.listed(published, key)
     if len(cards) != len(want) or doc.count('class="pa-afg-grid"') != (1 if len(want) <= OPP.GALLERY_FIRST else 2):
         return False
     by = {p["artist"]["slug"]: p for p in published}
@@ -203,7 +204,7 @@ def _cards_ok(doc, path):
         m = re.fullmatch(re.escape(base) + r"artists/([a-z0-9-]+)/", href)
         pk = m and by.get(m.group(1))
         img = re.search(r'<img src="([^"]+)" srcset="[^"]+" sizes="[^"]+" width="\d+" height="\d+" alt="([^"]+)" loading="lazy" decoding="async">', inner)
-        if not pk or "art_for_hire" not in OPP.open_to(pk) or not img or "portrait" in img.group(1):
+        if not pk or key not in OPP.open_to(pk) or not img or "portrait" in img.group(1):
             return False
         files = {base + "artists/%s/img/%s" % (pk["artist"]["slug"], d["file"]): i.get("alt")
                  for w in pk["works"] for i in w.get("images", []) if i.get("role") == "main" for d in i.get("derivatives", [])}
@@ -212,7 +213,7 @@ def _cards_ok(doc, path):
             return False
     return True
 def _thumbs_ok(doc, path):
-    if path == "art-for-hire/index.html":
+    if path in OPP.GALLERY_PAGES:
         return _cards_ok(doc, path)
     """Every listed row: a listed artist (open_to carries the key), linked as one row to their gallery, with an 80x80
     lazy-loaded thumbnail that is the smallest published derivative of a MAIN image of one of their own published works

@@ -29,30 +29,62 @@ body.pa #host .pa-lg-promises li{ border-top:0; padding-top:0; color:var(--stone
 body.pa #host .pa-actions{ margin:clamp(28px, 3vw, 36px) 0 0 !important; }
 body.pa #host .pa-note{ margin-top:16px; max-width:88ch; }
 
-/* Artists open to the Living Gallery: on the page's own grid, introduction beside the list. */
-body.pa #open-artists{ padding:clamp(56px, 6.5vw, 96px) 0; }
-body.pa #open-artists .pa-opp-in{ max-width:var(--max); display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); grid-template-rows:auto auto 1fr; column-gap:clamp(20px, 3vw, 40px); align-items:start; }
-body.pa #open-artists h2{ grid-column:1; grid-row:1; font-size:clamp(34px, 3.6vw, 52px); max-width:13ch; }
-body.pa #open-artists .pa-opp-said{ grid-column:1; grid-row:2; font-size:15.5px; max-width:44ch; margin:0; }
-body.pa #open-artists .pa-opp-more{ grid-column:1; grid-row:3; }
-body.pa #open-artists .pa-opp-list{ grid-column:2; grid-row:1 / span 3; }
-body.pa #open-artists .pa-opp-row{ padding:16px 0; }
-body.pa #open-artists h2{ margin:0 0 20px; }
-body.pa #open-artists .pa-opp-more{ margin-top:26px; }
-@media (min-width:641px){ body.pa #open-artists .pa-opp-name{ flex:1 0 auto; } body.pa #open-artists .pa-opp-what{ max-width:52%; } }
+/* Artists open to the Living Gallery (redesign preview, 22 Nov 2026): straight after the hero, as works hung on a
+   charcoal wall. The same published artists and the same artwork as before (the first work's main photograph, larger);
+   each work is contained in an even 4:5 space, never cropped, and links to the artist's gallery. */
+body.pa #open-artists.pa-lgg{ padding:clamp(56px, 7vw, 104px) 0 clamp(48px, 6vw, 88px); border-top:0; background:#30302F; }
+body.pa .pa-lgg .pa-afg-head{ display:grid; grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); gap:14px clamp(24px, 5vw, 96px); align-items:end; margin-bottom:clamp(36px, 4.5vw, 60px); }
+body.pa .pa-lgg h2{ font-size:clamp(40px, 4.4vw, 64px); line-height:1; letter-spacing:-.015em; margin:0; max-width:14ch; }
+body.pa .pa-lgg .pa-opp-said{ margin:0; max-width:60ch; font-size:15.5px; }
+.pa-lgg .pa-afg-grid{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:clamp(40px, 4.5vw, 64px) clamp(20px, 2.6vw, 40px); }
+.pa-lgg .pa-afg-card{ display:flex; flex-direction:column; height:100%; color:var(--ivory); text-decoration:none; }
+.pa-lgg .pa-afg-art{ --p:clamp(10px, 1.4vw, 20px); container-type:inline-size; display:flex; align-items:center; justify-content:center; aspect-ratio:4 / 5; padding:var(--p); margin:0 0 18px; }
+.pa-lgg .pa-afg-art img{ display:block; width:auto; height:auto; max-width:100%; max-height:calc(125cqw - 2 * var(--p)); object-fit:contain; box-shadow:0 18px 36px rgba(0,0,0,.42), 0 3px 8px rgba(0,0,0,.3); transition:transform .4s ease; }
+.pa-lgg .pa-afg-name{ font-family:var(--serif); font-size:clamp(22px, 1.8vw, 27px); line-height:1.12; }
+.pa-lgg .pa-afg-what{ margin-top:6px; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); line-height:1.5; }
+.pa-lgg .pa-afg-go{ margin-top:auto; padding-top:12px; font-size:14.5px; color:var(--stone); text-decoration:underline; text-underline-offset:.22em; text-decoration-thickness:1px; text-decoration-color:rgba(237,235,231,.3); }
+.pa-lgg .pa-afg-card:hover .pa-afg-name{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:5px; }
+.pa-lgg .pa-afg-card:hover .pa-afg-go{ color:var(--ivory); text-decoration-color:var(--ivory); }
+.pa-lgg .pa-afg-card:focus-visible{ outline:2px solid var(--ivory); outline-offset:6px; }
+@media (prefers-reduced-motion:no-preference){ .pa-lgg .pa-afg-card:hover .pa-afg-art img{ transform:translateY(-4px); } }
+.pa-lgg .pa-afg-all{ margin-top:clamp(36px, 4vw, 56px); }
+.pa-lgg .pa-afg-all summary{ display:inline-flex; align-items:center; min-height:50px; padding:0 26px; border:1px solid var(--line-2); border-radius:999px; cursor:pointer; list-style:none; color:var(--ivory); font-weight:500; }
+.pa-lgg .pa-afg-all summary::-webkit-details-marker{ display:none; }
+.pa-lgg .pa-afg-all summary span{ margin-left:6px; color:var(--stone); }
+.pa-lgg .pa-afg-all[open] summary{ margin-bottom:clamp(32px, 4vw, 48px); }
+body.pa .pa-lgg .pa-opp-more{ margin:clamp(32px, 4vw, 48px) 0 0; }
+@media (max-width:1023px){ .pa-lgg .pa-afg-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+@media (max-width:900px){ body.pa .pa-lgg .pa-afg-head{ grid-template-columns:1fr; } body.pa .pa-lgg h2{ max-width:none; } }
+@media (max-width:640px){
+  .pa-lgg .pa-afg-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:32px 14px; }
+  .pa-lgg .pa-afg-art{ --p:8px; margin-bottom:12px; }
+  .pa-lgg .pa-afg-name{ font-size:19px; }
+  .pa-lgg .pa-afg-what{ font-size:11px; letter-spacing:.1em; }
+  .pa-lgg .pa-afg-go{ font-size:13.5px; }
+}
+
+/* How it would work (redesign preview, 22 Nov 2026): the heading, then the three steps side by side across the page. */
+body.pa .pa-lg-how .pa-wrap{ display:block; }
+body.pa .pa-lg-how .pa-sec-head{ margin:0 0 clamp(28px, 3.5vw, 48px); }
+body.pa .pa-lg-how .pa-sec-head h2{ max-width:none; }
+body.pa .pa-lg-how .pa-steps{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:0 clamp(24px, 3vw, 48px); }
+body.pa .pa-lg-how .pa-steps{ border-top:0; }
+body.pa .pa-lg-how .pa-steps li{ display:block; padding:22px 0 0; border-top:1px solid var(--line-2); border-bottom:0; }
+body.pa .pa-lg-how .pa-steps li::before{ display:block; margin:0 0 16px; }
+body.pa .pa-lg-how .pa-steps p{ max-width:42ch; }
+@media (max-width:900px){ body.pa .pa-lg-how .pa-steps{ grid-template-columns:1fr; } body.pa .pa-lg-how .pa-steps li{ padding-bottom:22px; } }
+
+/* From PlotNua: A Home for Art as a slim band rather than a full section. */
+body.pa .pa-lg-aah{ padding:clamp(36px, 4vw, 56px) 0 !important; border-top:1px solid var(--line); }
+body.pa .pa-lg-aah h2{ font-size:clamp(30px, 3vw, 42px); }
 
 /* For artists: the two PlotArt buttons. */
 body.pa .pa-lg-artist-acts{ margin:30px 0 0; }
 
 @media (max-width:900px){
-  body.pa .pa-lg-how .pa-wrap{ grid-template-columns:1fr; }
-  body.pa .pa-lg-how .pa-sec-head h2{ max-width:none; }
   body.pa #host .pa-tier, body.pa #host .pa-tier:first-child{ border-left:0; padding:22px 0 24px; }
   body.pa #host .pa-tier + .pa-tier{ border-top:1px solid var(--line); }
-  body.pa #open-artists .pa-opp-in{ display:block; }
   body.pa #host .pa-lg-promises li, body.pa #host .pa-lg-promises li + li{ padding:0; }
-  body.pa #open-artists h2{ margin-bottom:14px; }
-  body.pa #open-artists .pa-opp-list{ margin-top:26px; }
 }
 @media (max-width:560px){
   body.pa #host .pa-actions .pa-btn, body.pa .pa-lg-artist-acts .pa-btn{ width:100%; justify-content:center; }

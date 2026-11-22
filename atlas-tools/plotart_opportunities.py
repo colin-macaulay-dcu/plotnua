@@ -155,7 +155,7 @@ def gallery_image(pkg):
     return None
 
 
-def _gallery(pkgs, base):
+def _gallery(pkgs, base, key="art_for_hire"):
     def card(p):
         a = p["artist"]
         what = a.get("practice") or MEDIUM.get(a.get("medium"), "")
@@ -174,9 +174,14 @@ def _gallery(pkgs, base):
     first, rest = pkgs[:GALLERY_FIRST], pkgs[GALLERY_FIRST:]
     out = '<ul class="pa-afg-grid">%s</ul>' % "".join(card(p) for p in first)
     if rest:
-        out += ('<details class="pa-afg-all"><summary>View all artists open to Art for Hire <span>(%d)</span></summary><ul class="pa-afg-grid">%s</ul></details>'
-                % (len(pkgs), "".join(card(p) for p in rest)))
+        out += ('<details class="pa-afg-all"><summary>View all %s <span>(%d)</span></summary><ul class="pa-afg-grid">%s</ul></details>'
+                % (E(OPPORTUNITIES[key][1][0].lower() + OPPORTUNITIES[key][1][1:]), len(pkgs), "".join(card(p) for p in rest)))
     return out
+
+
+# Pages that show their list as the artwork-led mini gallery: Art for Hire (22 Nov 2026) and the Living Gallery (preview,
+# 22 Nov 2026). The Living Gallery keeps its own introduction and the standard opportunities note, and has no invitation.
+GALLERY_PAGES = ("art-for-hire/index.html", "living-gallery.html")
 
 
 def section(key, packages, base, hub, commission_page=False, gallery=False):
@@ -185,6 +190,11 @@ def section(key, packages, base, hub, commission_page=False, gallery=False):
     if not pkgs and not hub:
         return ""          # a programme page shows nothing until someone is listed (the region stays, empty)
     sid = anchor if hub else "open-artists"
+    if gallery and key == "living_gallery":      # the Living Gallery's artwork-led mini gallery (preview, 22 Nov 2026)
+        return ('<section class="pa-opp pa-afg pa-lgg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
+                '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s %s</p></div>\n  %s\n'
+                '  <p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>\n</div></section>'
+                % (sid, key, key, E(head), E(said), E(NOTE), _gallery(pkgs, base, key), E(base)))
     if gallery:      # the Art for Hire page's artwork-led mini gallery (22 Nov 2026)
         return ('<section class="pa-opp pa-afg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
                 '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
@@ -202,7 +212,7 @@ def section(key, packages, base, hub, commission_page=False, gallery=False):
 def content(path, packages):
     hub = path == HUB
     base = "../" * path.count("/")
-    return "\n".join(s for s in (section(k, packages, base, hub, path == COMMISSIONS, gallery=path == "art-for-hire/index.html") for k in PAGES[path]) if s)
+    return "\n".join(s for s in (section(k, packages, base, hub, path == COMMISSIONS, gallery=path in GALLERY_PAGES) for k in PAGES[path]) if s)
 
 
 def update(document, path, packages):
