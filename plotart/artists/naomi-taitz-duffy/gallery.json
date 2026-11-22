@@ -1,6 +1,6 @@
 {
  "artist": {
-  "bio": "Naomi Taitz Duffy is an abstract painter whose practice is rooted in geometric abstraction with a focus on color relationships. Using heavy body acrylics, inks, and raw pigments on wood panels, Naomi explores the fragmented nature and interconnectivity of objects, developing bold, textured compositions that begin as visual puzzles and are developed into unique and harmonious forms.",
+  "bio": "Naomi Taitz Duffy is an abstract painter whose practice is rooted in geometric abstraction with a focus on color relationships. Using heavy body acrylics, inks, and raw pigments on wood panels, Naomi explores the fragmented nature and interconnectivity of objects, developing bold, textured compositions that begin as visual puzzles and are developed into unique and vibrant forms.\n\nOriginally from New York City, Naomi now lives and works in Dublin, where she has participated in numerous exhibitions including at the RHA and Taylor Galleries. Naomi's work has been acquired by the Fingal County Municipal Arts Collection and the Office of Public Works for the state art collection of Ireland, as well as many private collections internationally.",
   "county": null,
   "display_name": "Naomi Taitz Duffy",
   "founding": true,
@@ -81,10 +81,20 @@
    "dhash": "a80e4741c3c73e3e",
    "source_sha256": "4047fedf6e7cea6d5d100e5d4d1c1cc967a14afe938164feb08c009f4a25c6ed",
    "stem": "peacock-1"
+  },
+  {
+   "dhash": "068f871313333765",
+   "source_sha256": "9168916968f8e9d91bdff3e99c49b813a0a184ef13dd50a91c5a91b1db160b93",
+   "stem": "blue-phoenix-1"
+  },
+  {
+   "dhash": "9999397d99636720",
+   "source_sha256": "37afc8de299078a69de4fa07752937151db86a3b9cc31902922d28dc68ffb817",
+   "stem": "momentum-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-22T11:08:03.845Z",
+  "approved_at": "2026-11-22T12:35:55.695Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-22T10:57:52.645Z",
   "licence_accepted_at": "2026-11-22T09:01:34.433Z",
@@ -92,7 +102,7 @@
   "permission_ref": "PA-PERM-ac6pnyekuex",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -487,6 +497,118 @@
    "title": "Peacock",
    "w_cm": 50,
    "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 70,
+   "id": "w836jb6ls2d",
+   "images": [
+    {
+     "alt": "abstract painting with blue background",
+     "aspect": 1.41423,
+     "derivatives": [
+      {
+       "file": "blue-phoenix-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        424
+       ]
+      },
+      {
+       "file": "blue-phoenix-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        849
+       ]
+      },
+      {
+       "file": "blue-phoenix-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1414
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      7948,
+      5620
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 3200,
+   "price_on_request": false,
+   "slug": "blue-phoenix",
+   "title": "Blue Phoenix",
+   "w_cm": 100,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 60,
+   "id": "wnz7o4euf20",
+   "images": [
+    {
+     "alt": "abstract painting with green background",
+     "aspect": 1.31954,
+     "derivatives": [
+      {
+       "file": "momentum-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        455
+       ]
+      },
+      {
+       "file": "momentum-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        909
+       ]
+      },
+      {
+       "file": "momentum-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1516
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      5199,
+      3940
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 1600,
+   "price_on_request": false,
+   "slug": "momentum",
+   "title": "Momentum",
+   "w_cm": 80,
+   "year": 2026
   }
  ]
 }

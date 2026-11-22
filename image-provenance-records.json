@@ -24687,6 +24687,192 @@
       "source_sha256": "4047fedf6e7cea6d5d100e5d4d1c1cc967a14afe938164feb08c009f4a25c6ed",
       "subject": "artwork",
       "work_slug": "peacock"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/blue-phoenix-1-600.webp",
+      "bytes": 18084,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        424
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7ae2f95a49f92b5c6b3be38dd1cb373484efbb77b42109d381861b5acb8ce242",
+      "source_sha256": "9168916968f8e9d91bdff3e99c49b813a0a184ef13dd50a91c5a91b1db160b93",
+      "subject": "artwork",
+      "work_slug": "blue-phoenix"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/blue-phoenix-1-1200.webp",
+      "bytes": 87416,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        849
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "822f079c8290ffd4bb3092d6b4f2451aa1452d74a1603392b8acbaf9380df07a",
+      "source_sha256": "9168916968f8e9d91bdff3e99c49b813a0a184ef13dd50a91c5a91b1db160b93",
+      "subject": "artwork",
+      "work_slug": "blue-phoenix"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/blue-phoenix-1-2000.webp",
+      "bytes": 291788,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1414
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f1c04da6d1cc67ea564a90ba78c9e6bd980417a8a5b32083092963e4b5d3c7df",
+      "source_sha256": "9168916968f8e9d91bdff3e99c49b813a0a184ef13dd50a91c5a91b1db160b93",
+      "subject": "artwork",
+      "work_slug": "blue-phoenix"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/momentum-1-600.webp",
+      "bytes": 36718,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        455
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4a29ffeedb07a37cc429e2a18a1a8589769f25304fe69a7d22d7f5b3d20e44a9",
+      "source_sha256": "37afc8de299078a69de4fa07752937151db86a3b9cc31902922d28dc68ffb817",
+      "subject": "artwork",
+      "work_slug": "momentum"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/momentum-1-1200.webp",
+      "bytes": 154110,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        909
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8f1fdeae2033eda613e859f599aa96c1bdc5dcb1eec2674bbbb240da31d09804",
+      "source_sha256": "37afc8de299078a69de4fa07752937151db86a3b9cc31902922d28dc68ffb817",
+      "subject": "artwork",
+      "work_slug": "momentum"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "naomi-taitz-duffy",
+      "asset": "plotart/artists/naomi-taitz-duffy/img/momentum-1-2000.webp",
+      "bytes": 421486,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ac6pnyekuex",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1516
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "697a7e4cd9d1adbfe5a204c8888cb50679e185d81f62a158147ac8f49e0ad6a6",
+      "source_sha256": "37afc8de299078a69de4fa07752937151db86a3b9cc31902922d28dc68ffb817",
+      "subject": "artwork",
+      "work_slug": "momentum"
     }
   ],
   "legacy_undeclared": [
