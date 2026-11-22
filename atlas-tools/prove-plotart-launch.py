@@ -135,7 +135,10 @@ if SERVICES_ON:
     ALLOWED |= {SERVICES_PAGE, "assets/plotart-services.css"}
     # provider images, each hosted under a recorded written permission (image-rights-records.json; P4 binds every copy)
     ALLOWED |= {"assets/services/" + f for f in ("hang-it-hung-wall-1600.jpg", "hang-it-hung-wall-1600.webp",
-                                                  "hang-it-hung-wall-800.webp", "hang-it-logo.png")}
+                                                  "hang-it-hung-wall-800.webp", "hang-it-logo.png",
+                                                  # FastLane Couriers, 22 Nov 2026 (owner-supplied; ORG-FASTLANE / IPO-FASTLANE-20261122)
+                                                  "fastlane-van-1077.jpg", "fastlane-van-1077.webp", "fastlane-van-800.webp",
+                                                  "fastlane-logo.png")}
     PAGES.append(SERVICES_PAGE)
 # No prices on the Services page (Hang-It asked for its pricing to be removed, 19 Nov 2026): the ordinary L3 rule applies.
 ALLOWED |= {"assets/plotart-refine.css", "assets/plotart-refine.js"}   # Refine on All Artworks (founder approval 21 Nov 2026)
@@ -216,7 +219,8 @@ for name in PAGES:
     vt = visible_text(s)
     # L2
     for ref in re.findall(r'(?:href|src)="([^"]+)"', s):
-        if ref.startswith(("https://", "http://", "mailto:", "#")):
+        # tel: (22 Nov 2026, FastLane Couriers' telephone on the Services page): a phone link, never a site file
+        if ref.startswith(("https://", "http://", "mailto:", "#")) or re.fullmatch(r"tel:\+\d{8,15}", ref):
             continue
         path = ref.split("#")[0].split("?")[0]
         if not path:

@@ -64,6 +64,25 @@ PROVIDERS = [
                ("Please note", "Hang-It doesn’t transport artwork.")],
      "links": [("https://www.hangit.ie/", "Website", "services_hangit_web", True),
                ("https://wa.me/353876634458", "WhatsApp 087 663 4458", "services_hangit_whatsapp", "wa")]},
+    # FastLane Couriers, added 22 Nov 2026 (founder brief): the owner, Joseph Collins, agreed to be listed and supplied the
+    # logo and the branded-van photograph for this listing (image-rights-records.json ORG-FASTLANE / IPO-FASTLANE-20261122).
+    # Independent provider: no partner wording, no insurance, qualifications, guarantees or prices.
+    {"key": "fl", "publish": True, "name": "FastLane Couriers",
+     "what": "Same-day, express and scheduled collection and delivery.",
+     # supplied photograph 1077 px wide: copies are never enlarged, so the large size is 1077 (not 1600)
+     "photo": {"dir": "fastlane", "stem": "fastlane-van", "big": 1077, "w": 1077, "h": 718, "credit": "Photo: FastLane Couriers",
+               "alt": "A white FastLane Couriers van with orange and navy branding parked on a Dublin street"},
+     "logo": {"dir": "fastlane", "file": "fastlane-logo.png", "w": 588, "h": 130, "alt": "FastLane Couriers",
+              "plaque": "white"},
+     "accent": "#E8772E",
+     "facts": [("Area", "Throughout Dublin. Nationwide deliveries by arrangement."),
+               ("Enquiries", "Welcomes enquiries from artists, galleries and art buyers seeking flexible transport."),
+               ("Quotations", "Contact FastLane Couriers directly for a quotation."),
+               ("Bookings", "Arranged and paid directly with FastLane Couriers. PlotArt doesn’t process transport bookings or payments.")],
+     "links": [("https://www.fastlanecouriers.com", "Visit Website / Request a Quote", "services_fastlane_web", True),
+               ("mailto:info@fastlanecouriers.com", "Email info@fastlanecouriers.com", "services_fastlane_email", False),
+               ("tel:+35319081167", "Call 01 908 1167", "services_fastlane_phone", False),
+               ("https://wa.me/353851402487", "WhatsApp 085 140 2487", "services_fastlane_whatsapp", "wa")]},
 ]
 
 
@@ -75,7 +94,8 @@ def assets():
             continue
         if "photo" in p:
             ph = p["photo"]
-            for suf in ("-1600.jpg", "-1600.webp", "-800.webp"):
+            big = ph.get("big", 1600)
+            for suf in ("-%d.jpg" % big, "-%d.webp" % big, "-800.webp"):
                 out.append((IMG / ph["dir"] / (ph["stem"] + suf), "assets/services/" + ph["stem"] + suf))
         if "logo" in p:
             out.append((IMG / p["logo"]["dir"] / p["logo"]["file"], "assets/services/" + p["logo"]["file"]))
@@ -89,9 +109,9 @@ def card(p):
     if "photo" in p:
         ph = p["photo"]; base = "assets/services/" + ph["stem"]
         media = ('\n    <figure class="pa-sv-media"><picture>'
-                 '<source type="image/webp" srcset="%(b)s-800.webp 800w, %(b)s-1600.webp 1600w" sizes="(max-width:900px) 100vw, 46vw">'
-                 '<img src="%(b)s-1600.jpg" width="%(w)d" height="%(h)d" alt="%(alt)s" data-kind="Photograph" loading="lazy" decoding="async"></picture>'
-                 '<figcaption>%(credit)s</figcaption></figure>') % dict(b=base, w=ph["w"], h=ph["h"], alt=ph["alt"], credit=ph["credit"])
+                 '<source type="image/webp" srcset="%(b)s-800.webp 800w, %(b)s-%(big)d.webp %(big)dw" sizes="(max-width:900px) 100vw, 46vw">'
+                 '<img src="%(b)s-%(big)d.jpg" width="%(w)d" height="%(h)d" alt="%(alt)s" data-kind="Photograph" loading="lazy" decoding="async"></picture>'
+                 '<figcaption>%(credit)s</figcaption></figure>') % dict(b=base, big=ph.get("big", 1600), w=ph["w"], h=ph["h"], alt=ph["alt"], credit=ph["credit"])
     elif "placeholder" in p:
         # a provider without image permission: a quiet anthracite panel with the kind of service in the PlotArt serif;
         # decorative (the provider's name is the card heading), never a photograph, logo or stock image

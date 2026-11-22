@@ -46,3 +46,5 @@ body.pa .pa-sv-media--plain{ display:flex; align-items:center; justify-content:c
 body.pa .pa-sv-media--plain::after{ display:none; }
 body.pa .pa-sv-media--plain span{ position:relative; font-family:var(--serif); font-style:italic; font-size:clamp(22px, 2.2vw, 30px); line-height:1.2; color:var(--stone); text-align:center; max-width:16em; }
 body.pa .pa-sv-card--media .pa-sv-media--plain + .pa-sv-body{ padding-top:clamp(22px, 2.6vw, 32px); }
+/* FastLane Couriers (22 Nov 2026): the supplied logo is on white, so it sits on a white plaque (no recolouring of the mark). */
+body.pa .pa-sv-logo--white{ background:#FFFFFF; padding:8px 12px; }

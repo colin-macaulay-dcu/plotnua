@@ -1,0 +1,56 @@
+{
+ "what": "FastLane Couriers images for the PlotArt Services listing; copies made 22 Nov 2026 from the two files the owner (Joseph Collins) supplied for this listing via the founder. Photograph: cropped to 3:2 around the van (0,280)-(1077,998), resized and recompressed, metadata stripped. Logo: outer border trimmed (73,49)-(2471,579), off-white background levelled to white, resized to 130 px high, palette-reduced; no recolouring or distortion of the mark.",
+ "rights": "image-rights-records.json ORG-FASTLANE / IPO-FASTLANE-20261122 (Atlas recL1mVIHREzHZwKM)",
+ "originals": {
+  "logo": {
+   "supplied_as": "Screenshot_20261122_145321_Gallery_1.jpg",
+   "sha256": "cfd79c1c006fcb0546b2569099f3c40b4fa5dcfd76dceeb668de9e9c4836238b",
+   "pixels": [
+    2576,
+    651
+   ]
+  },
+  "photograph": {
+   "supplied_as": "Screenshot_20261122_145306_Gallery_1.jpg",
+   "sha256": "b7827905f92c49a8f22d14ba07514d668596426bc62a83c51e1d64a7b89f9d91",
+   "pixels": [
+    1077,
+    1077
+   ]
+  }
+ },
+ "copies": {
+  "fastlane-logo.png": {
+   "sha256": "f130d60d568c69b57515f697ef6c7d93a17f73be4c34b658e443846d7d40dbe5",
+   "bytes": 18319,
+   "pixels": [
+    588,
+    130
+   ]
+  },
+  "fastlane-van-1077.jpg": {
+   "sha256": "dc873be329f0565539cffbc31dfd578039bbcb65d091379f782cfab39bfa7faa",
+   "bytes": 134496,
+   "pixels": [
+    1077,
+    718
+   ]
+  },
+  "fastlane-van-1077.webp": {
+   "sha256": "3e575e1869c3f9aeb4c1ba9c3a4083199d933b988ec06f16aae37fde894c19bd",
+   "bytes": 82794,
+   "pixels": [
+    1077,
+    718
+   ]
+  },
+  "fastlane-van-800.webp": {
+   "sha256": "731413bd8f7bd8962f5623f0a88933ff84fcd59ff6803a75b90e6873d613ceff",
+   "bytes": 54172,
+   "pixels": [
+    800,
+    533
+   ]
+  }
+ }
+}

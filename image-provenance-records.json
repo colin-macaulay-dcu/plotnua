@@ -24873,6 +24873,70 @@
       "source_sha256": "37afc8de299078a69de4fa07752937151db86a3b9cc31902922d28dc68ffb817",
       "subject": "artwork",
       "work_slug": "momentum"
+    },
+    {
+      "asset": "plotart/assets/services/fastlane-logo.png",
+      "sha256": "f130d60d568c69b57515f697ef6c7d93a17f73be4c34b658e443846d7d40dbe5",
+      "bytes": 18319,
+      "pixels": [
+        588,
+        130
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-FASTLANE",
+        "atlas_permission_ref": "IPO-FASTLANE-20261122"
+      },
+      "supplier_label": "Logo",
+      "source": "FastLane Couriers' logo, supplied by the owner (Joseph Collins) for this listing, 22 Nov 2026 (sha256 cfd79c1c006fcb05…, 2576 × 651); PlotNua copy: outer border trimmed, off-white background levelled to white, resized, palette-reduced; the mark itself is not recoloured or distorted."
+    },
+    {
+      "asset": "plotart/assets/services/fastlane-van-1077.jpg",
+      "sha256": "dc873be329f0565539cffbc31dfd578039bbcb65d091379f782cfab39bfa7faa",
+      "bytes": 134496,
+      "pixels": [
+        1077,
+        718
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-FASTLANE",
+        "atlas_permission_ref": "IPO-FASTLANE-20261122"
+      },
+      "supplier_label": "Photograph",
+      "source": "FastLane Couriers' photograph of its branded van, supplied by the owner (Joseph Collins) for this listing, 22 Nov 2026 (sha256 b7827905f92c49a8…, 1077 × 1077); PlotNua web copy: cropped to 3:2 around the van, resized and recompressed, metadata stripped."
+    },
+    {
+      "asset": "plotart/assets/services/fastlane-van-1077.webp",
+      "sha256": "3e575e1869c3f9aeb4c1ba9c3a4083199d933b988ec06f16aae37fde894c19bd",
+      "bytes": 82794,
+      "pixels": [
+        1077,
+        718
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-FASTLANE",
+        "atlas_permission_ref": "IPO-FASTLANE-20261122"
+      },
+      "supplier_label": "Photograph",
+      "source": "FastLane Couriers' photograph of its branded van, supplied by the owner (Joseph Collins) for this listing, 22 Nov 2026 (sha256 b7827905f92c49a8…, 1077 × 1077); PlotNua web copy: cropped to 3:2 around the van, resized and recompressed, metadata stripped."
+    },
+    {
+      "asset": "plotart/assets/services/fastlane-van-800.webp",
+      "sha256": "731413bd8f7bd8962f5623f0a88933ff84fcd59ff6803a75b90e6873d613ceff",
+      "bytes": 54172,
+      "pixels": [
+        800,
+        533
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-FASTLANE",
+        "atlas_permission_ref": "IPO-FASTLANE-20261122"
+      },
+      "supplier_label": "Photograph",
+      "source": "FastLane Couriers' photograph of its branded van, supplied by the owner (Joseph Collins) for this listing, 22 Nov 2026 (sha256 b7827905f92c49a8…, 1077 × 1077); PlotNua web copy: cropped to 3:2 around the van, resized and recompressed, metadata stripped."
     }
   ],
   "legacy_undeclared": [
