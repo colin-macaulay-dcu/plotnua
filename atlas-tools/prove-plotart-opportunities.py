@@ -301,7 +301,9 @@ try:
     gitc("commit", "-qam", "tamper outside")
     c2, o2 = bnd(base_sha, "HEAD")
     gitc("reset", "-q", "--hard", good)
-    open(lgp, "w", encoding="utf-8").write(doc.replace('<ul class="pa-opp-list">', '<ul class="pa-opp-list"><li><a href="artists/invented/">Invented Artist</a></li>', 1))
+    _list = '<ul class="pa-afg-grid">' if '<ul class="pa-afg-grid">' in doc else '<ul class="pa-opp-list">'   # the Living Gallery shows its list as a gallery (22 Nov 2026)
+    assert _list in doc
+    open(lgp, "w", encoding="utf-8").write(doc.replace(_list, _list + '<li><a href="artists/invented/">Invented Artist</a></li>', 1))
     gitc("commit", "-qam", "tamper inside")
     c3, o3 = bnd(base_sha, "HEAD")
     gitc("reset", "-q", "--hard", good)
