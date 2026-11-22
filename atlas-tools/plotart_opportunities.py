@@ -180,8 +180,10 @@ def _gallery(pkgs, base, key="art_for_hire"):
 
 
 # Pages that show their list as the artwork-led mini gallery: Art for Hire (22 Nov 2026) and the Living Gallery (preview,
-# 22 Nov 2026). The Living Gallery keeps its own introduction and the standard opportunities note, and has no invitation.
+# 22 Nov 2026). The Living Gallery has its own introduction (founder wording) and no invitation.
 GALLERY_PAGES = ("art-for-hire/index.html", "living-gallery.html")
+LIVING_SAID = ("Discover Irish artists interested in seeing their work displayed in real homes. Explore their galleries and find out "
+               "how you could become part of the Living Gallery. Every arrangement is agreed directly with the artist.")   # founder wording, 22 Nov 2026
 
 
 def section(key, packages, base, hub, commission_page=False, gallery=False):
@@ -192,9 +194,9 @@ def section(key, packages, base, hub, commission_page=False, gallery=False):
     sid = anchor if hub else "open-artists"
     if gallery and key == "living_gallery":      # the Living Gallery's artwork-led mini gallery (preview, 22 Nov 2026)
         return ('<section class="pa-opp pa-afg pa-lgg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
-                '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s %s</p></div>\n  %s\n'
+                '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
                 '  <p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>\n</div></section>'
-                % (sid, key, key, E(head), E(said), E(NOTE), _gallery(pkgs, base, key), E(base)))
+                % (sid, key, key, E(head), E(LIVING_SAID), _gallery(pkgs, base, key), E(base)))
     if gallery:      # the Art for Hire page's artwork-led mini gallery (22 Nov 2026)
         return ('<section class="pa-opp pa-afg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
                 '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
