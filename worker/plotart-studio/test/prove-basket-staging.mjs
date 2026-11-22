@@ -76,7 +76,9 @@ try {
     await page.goto(ORIGIN + '/gallery/wastfnd2'); await page.click('a.btn:has-text("Add to basket")'); await page.waitForFunction(() => document.querySelectorAll('#items article').length === 2);
     const f = { name: 'Test Buyer', email, address_line1: '7 Harbour Road', town: 'Kinsale', eircode: 'P17 XY12', phone: '+353 21 555 0199' };
     for (const [k, v] of Object.entries(f)) await page.fill(`[name="${k}"]`, v);
-    await page.selectOption('[name="county"]', 'Cork'); await page.check('#accept'); await shot(page, `${prefix}-3-basket`);
+    await page.selectOption('[name="county"]', 'Cork');
+    await page.check('input[name="island"][value="no"]');   // the offshore-island question (Kinsale is on the mainland); the delivery rules are unchanged
+    await page.check('#accept'); await shot(page, `${prefix}-3-basket`);
     await page.click('#pay');
     try { await page.waitForURL(u => u.host === HOSTED.host, { timeout: 15000 }); }
     catch (e) { throw new Error('no hosted card page; the basket page says: ' + (await page.textContent('#err').catch(() => '')) + ' · button: ' + (await page.textContent('#pay').catch(() => ''))); }
