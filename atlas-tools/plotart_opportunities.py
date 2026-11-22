@@ -138,8 +138,8 @@ def _rows(pkgs, base, commission_page=False):
 # published size; never cropped (contained in its frame). These are artists open to discussing hire: the page never says a
 # particular work is available for hire. Up to GALLERY_FIRST cards show at once; any others are one click away.
 GALLERY_FIRST = 8
-HIRE_SAID = ("These artists have said they’d welcome conversations about hiring out their work. The artwork shown introduces each "
-             "artist’s practice; it doesn’t mean that work, or any particular work, is available for hire.")
+HIRE_SAID = ("Discover Irish artists interested in making their work available for hire. Explore their galleries and enquire "
+             "directly about individual artworks. Availability and arrangements are agreed with each artist.")   # founder wording, 22 Nov 2026
 HIRE_INVITE = ("<h3>Interested in hiring a work?</h3><p>Explore the artists above and get in touch about a piece that interests you. "
                "Availability, rental terms and arrangements are agreed directly with the artist.</p>")
 
@@ -187,9 +187,9 @@ def section(key, packages, base, hub, commission_page=False, gallery=False):
     sid = anchor if hub else "open-artists"
     if gallery:      # the Art for Hire page's artwork-led mini gallery (22 Nov 2026)
         return ('<section class="pa-opp pa-afg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
-                '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s %s</p></div>\n  %s\n'
+                '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
                 '  <div class="pa-afg-invite">%s</div>\n  <p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>\n</div></section>'
-                % (sid, key, key, E(head), E(HIRE_SAID), E(NOTE), _gallery(pkgs, base), HIRE_INVITE, E(base)))
+                % (sid, key, key, E(head), E(HIRE_SAID), _gallery(pkgs, base), HIRE_INVITE, E(base)))
     about = {"art_for_hire": "About Art for Hire", "commissions": "About commissions"}.get(key, "About the " + label)
     more = ('<p class="pa-opp-more"><a href="%s">%s →</a></p>' % (E(base + page), E(about))) if hub and page else \
            ('<p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>' % E(base)) if not hub else ""
