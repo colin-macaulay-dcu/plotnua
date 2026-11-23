@@ -435,12 +435,11 @@ def featured_sync(final=True):
         regrid(lay, sel)                   # Featured Artists, then Explore More Artists without them (17 Nov 2026)
         after = open(os.path.join(ROOT, page), encoding="utf-8").read()
         # only the two generated regions may change: nothing else on the page, and never an artist's position. The public
-        # positions index was removed (21 Nov 2026), so the positions are read from the wall's numerals: any artist
-        # numbered on the wall both before and after must keep the same number.
+        # positions index was removed (21 Nov 2026), so the positions are read from the wall (each work's data-pa-position
+        # since 23 Nov 2026, when the visible numerals were removed): any artist positioned on the wall both before and
+        # after must keep the same position.
         blank = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
-        nums = lambda d: dict((s, n) for n, s in re.findall(
-            r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"',
-            d[slice(*P.vg_region(d))]))
+        nums = lambda d: P.wall_positions(d[slice(*P.vg_region(d))])
         moved = lambda b, a: any(s in b and b[s] != n for s, n in a.items())
         if P.vg_region(before) is None or blank(before) != blank(after) or moved(nums(before), nums(after)):
             raise ValueError("the Featured Artists update would change the page outside its two regions or the positions")

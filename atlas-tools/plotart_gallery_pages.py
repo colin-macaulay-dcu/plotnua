@@ -331,7 +331,10 @@ VG_STATES = (("pub", "Published"), ("res", "Reserved"), ("prep", "In preparation
 
 
 def _vg_work(pkg, n):
-    """One open gallery on the wall: its first shown work (never cropped), the position numeral, name, practice."""
+    """One open gallery on the wall: its first shown work (never cropped), the name, practice and "Enter the gallery".
+
+    Founder brief 23 Nov 2026: no number beside the name. The founding position is not shown or announced; it is kept
+    only as data-pa-position on the work, so the publishing and launch guards can still prove no artist's place moves."""
     a = pkg["artist"]
     w, im = card_image(pkg)
     if im is None:   # no works on show (founder decision 1 Nov 2026): the gallery keeps its place, with the empty state
@@ -341,12 +344,20 @@ def _vg_work(pkg, n):
         art = ('<div class="pa-vgc-art"><img src="../artists/%s/img/%s" srcset="%s" sizes="(max-width:639px) 100vw, 680px" '
                'width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></div>') % (
             E(a["slug"]), E(d["file"]), E(srcset(im, "../artists/%s/img/" % a["slug"])), d["pixels"][0], d["pixels"][1], E(im["alt"]))
-    num = "%02d" % n if n else ""
+    pos = (' data-pa-position="%02d"' % n) if n else ""
     return """
-    <li class="pa-vgc-work">%s
-      <div class="pa-vgc-label"><span class="pa-vgc-n" aria-hidden="true">%s</span><div><h3 class="pa-vgc-name"><a href="../artists/%s/" data-pa-track="vg_artist">%s%s</a></h3>
-        <p class="pa-vgc-practice">%s</p><span class="pa-vgc-enter" aria-hidden="true">Enter the gallery &rarr;</span></div></div></li>""" % (
-        art, num, E(a["slug"]), ('<span class="pa-vgc-sr">Position %s: </span>' % num) if n else "", E(a["display_name"]), E(meta_line(a)))
+    <li class="pa-vgc-work"%s>%s
+      <div class="pa-vgc-label"><h3 class="pa-vgc-name"><a href="../artists/%s/" data-pa-track="vg_artist">%s</a></h3>
+        <p class="pa-vgc-practice">%s</p><span class="pa-vgc-enter" aria-hidden="true">Enter the gallery &rarr;</span></div></li>""" % (
+        pos, art, E(a["slug"]), E(a["display_name"]), E(meta_line(a)))
+
+
+# The wall's founding positions, read from the page (23 Nov 2026: data-pa-position, no visible numeral): {slug: "NN"}.
+WALL_POSITION = re.compile(r'<li class="pa-vgc-work" data-pa-position="(\d\d)">(?:(?!</li>).)*?<h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', re.S)
+
+
+def wall_positions(region_text):
+    return dict((sl, n) for n, sl in WALL_POSITION.findall(region_text))
 
 
 def vg_positions(pkgs, spaces=25, layout=None):
@@ -399,7 +410,7 @@ def vg_collection(pkgs, spaces=25, layout=None, featured=()):
     positions, extra = vg_positions(pkgs, spaces, layout)
     # Explore More Artists (founder decision 17 Nov 2026): the wall leaves out the artists featured above it (their gallery
     # addresses, read from the page's Featured Artists region), so nobody appears twice. Everyone else keeps their place
-    # and numeral; the A-Z list below still names every published artist.
+    # (its position kept as data only since 23 Nov 2026); the A-Z list below still names every published artist.
     hide = set(featured)
     works = [_vg_work(p, n) for n, st, p in positions if st == "pub" and p["artist"]["slug"] not in hide] + \
         [_vg_work(p, None) for p in extra if p["artist"]["slug"] not in hide]
