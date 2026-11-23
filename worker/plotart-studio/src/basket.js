@@ -278,6 +278,11 @@ const PUBLIC_REASON = {
   enquire: 'This artwork can’t be bought online. Please enquire about it instead.',
   price: 'The price of this artwork is being updated. Please try again later.',
 };
+/* The price range in force for the basket: "open" only with PRICE_RANGE=open AND texts that do not state the pilot limit. */
+async function basketPriceRange(env) {
+  const ids = [(await C.currentTerms(env, 'artist_payment_addendum'))?.doc_id, (await currentDoc(env, 'artist_basket_addendum'))?.doc_id, (await currentDoc(env, 'buyer_basket_terms'))?.doc_id];
+  return R.priceRange(env, ids.some(x => !x) ? [] : ids);
+}
 async function lineFor(env, artworkId, at) {
   const no = (code, why) => ({ ok: false, code, reason: PUBLIC_REASON[code], why });
   const w = await one(env, 'SELECT * FROM artworks WHERE id = ?', artworkId);
@@ -290,7 +295,8 @@ async function lineFor(env, artworkId, at) {
   if (w.price_on_request || !Number.isInteger(w.price_eur) || w.price_eur <= 0) return no('enquire', 'price on request');
   if (pw.price_eur !== w.price_eur) return no('price', 'published price differs from the Studio');
   const artworkCents = w.price_eur * 100;
-  if (artworkCents > R.MAX_ARTWORK_CENTS) return no('enquire', 'above the pilot price limit');
+  const range = await basketPriceRange(env);
+  if (artworkCents > range.max_artwork_cents) return no('enquire', 'above the current online price range');
   if (await one(env, 'SELECT 1 AS x FROM artwork_reservations WHERE artwork_id = ? AND expires_at > ?', w.id, at)) return no('busy', 'reserved');
   if (await one(env, `SELECT 1 AS x FROM checkout_orders WHERE artwork_id = ? AND status IN ('quoted','checkout_open','payment_failed') AND quote_expires_at > ?`, w.id, at)) return no('busy', 'an issued quote is open');
   const mem = await C.membership(env, artist.id), bm = await artistMembership(env, artist.id);
@@ -315,7 +321,11 @@ async function lineFor(env, artworkId, at) {
   if (!e.ok) return no('enquire', e.reason);
   if (e.bp === 0 && commissionFreePolicy(env) !== 'with_processing_consent') return no('enquire', 'commission-free: direct payment (policy)');
   if (e.bp === 0 && !bm.processing_consent.valid) return no('enquire', 'commission-free: no valid processing-fee consent');
-  const money = R.amounts({ artwork_cents: artworkCents, delivery_cents: offer.delivery_cents, commission_bp: e.bp });
+  // a work whose own total already reaches the linked-purchase limit could never be paid: it is not offered (23 Nov 2026;
+  // before, the button showed and the payment was refused at checkout)
+  const lim = R.linkedLimitCents(env);
+  if (lim !== null && artworkCents + offer.delivery_cents >= lim) return no('enquire', 'total at or above the online purchase limit');
+  const money = R.amounts({ artwork_cents: artworkCents, delivery_cents: offer.delivery_cents, commission_bp: e.bp, max_artwork_cents: range.max_artwork_cents });
   return { ok: true, artist, work: w, pw, prof, mem, bm, offer, delivery, review, entitlement: e, money };
 }
 const artworkUrl = (env, artist, w) => env.STAGING_GALLERY === 'true' && ['staging', 'test', 'local'].includes(env.ENVIRONMENT) ? `${env.STAGING_GALLERY_URL || '/gallery'}/${w.id}` : `${env.GALLERY_ORIGIN || 'https://plotnua.ie'}/plotart/artists/${artist.slug}/${w.slug}.html`;
@@ -396,7 +406,8 @@ export async function openBasket(env, b) {
   const since = new Date(Date.now() - R.LINKED_WINDOW_DAYS * 86400_000).toISOString();
   const prior = await one(env, `SELECT COALESCE(SUM(artwork_cents + COALESCE(delivery_cents, 0)), 0) AS c FROM checkout_orders
     WHERE lower(buyer_email) = lower(?) AND created_at >= ? AND artwork_cents IS NOT NULL AND (payment_status <> 'none' AND payment_status <> 'failed' OR status IN ('quoted','checkout_open'))`, buyer.email, since);
-  if (prior.c + total >= R.LINKED_THRESHOLD_CENTS) throw new Bad('This purchase can’t be completed online. Please contact hello@plotnua.ie.', 409);
+  const lim = R.linkedLimitCents(env);
+  if (lim !== null && prior.c + total >= lim) throw new Bad('This purchase can’t be completed online. Please contact hello@plotnua.ie.', 409);
 
   const id = rid('b'), token = rid('', 32) + rid('', 16), reference = `PA-B-${t.slice(2, 10).replace(/-/g, '')}-${rid('', 6).toUpperCase()}`;
   const expires = addMin(t, SETUP_MINUTES), hold = addMin(expires, HOLD_GRACE_MINUTES), lm = live(env) ? 1 : 0;
@@ -813,7 +824,8 @@ export async function adminEligibility(env, ids) {
    step still to do cannot sell any, so only a ready artist's works are checked one by one. */
 const ARTIST_REASON = {
   'artist not ready': 'online sales set-up not finished', 'price on request': 'price on request (add a price to sell online)',
-  'above the pilot price limit': 'above the online price limit', 'no delivery offer': 'delivery arranged personally (buyers enquire)',
+  'above the current online price range': 'above the current online price range (buyers enquire)',
+  'total at or above the online purchase limit': 'total at or above the current online purchase limit (buyers enquire)', 'no delivery offer': 'delivery arranged personally (buyers enquire)',
   'delivery cover below the price': 'transit insurance below the price', 'return arrangements missing': 'return arrangements missing from the delivery offer',
   'commission-free: no valid processing-fee consent': 'commission-free work: needs the optional processing-fee consent',
   'commission-free: direct payment (policy)': 'commission-free work: enquiry and direct sale only', 'sold': 'sold',

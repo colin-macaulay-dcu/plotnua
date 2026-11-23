@@ -760,7 +760,7 @@ export async function updateOrder(env, founder, id, b) {
   if (b.exclusion !== undefined) { if (b.exclusion !== null && !R.EXCLUSIONS[b.exclusion]) throw new Bad('Unknown exclusion'); sets.exclusion = b.exclusion; }
   if (b.negotiation_note !== undefined) sets.negotiation_note = b.negotiation_note ? String(b.negotiation_note).slice(0, 1000) : null;
   const merged = { ...o, ...sets };
-  if (merged.artwork_cents != null) R.amounts({ artwork_cents: merged.artwork_cents, delivery_cents: merged.delivery_cents ?? 0, commission_bp: 0 });   // validates the figures
+  if (merged.artwork_cents != null) R.amounts({ artwork_cents: merged.artwork_cents, delivery_cents: merged.delivery_cents ?? 0, commission_bp: 0, max_artwork_cents: (await quotePriceRange(env)).max_artwork_cents });   // validates the figures
   if (!Object.keys(sets).length) throw new Bad('Nothing to change');
   await supersede(env, o, founder, 'quote revised');
   sets.quote_version = o.quote_version + 1;
@@ -782,7 +782,7 @@ async function priced(env, o, at) {
   const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', o.artist_id);
   const e = await R.entitlement(env, { artist, enquiryRef: o.enquiry_ref, at, exclusion: o.exclusion, negotiationNote: o.negotiation_note });
   if (!e.ok) throw new Bad(e.reason, 409);
-  return { artist, e, money: R.amounts({ artwork_cents: o.artwork_cents, delivery_cents: o.delivery_cents, commission_bp: e.bp }) };
+  return { artist, e, money: R.amounts({ artwork_cents: o.artwork_cents, delivery_cents: o.delivery_cents, commission_bp: e.bp, max_artwork_cents: (await quotePriceRange(env)).max_artwork_cents }) };
 }
 export async function requestArtist(env, founder, id) {
   await requireInstalled(env); requireOn(env);
@@ -831,14 +831,19 @@ export async function approveQuote(env, artist, id, b) {
    business, agents, staged payments). This is a LIMITED OPERATIONAL SAFEGUARD: matching on email addresses cannot detect a
    buyer using other addresses or acting through others, 12 months is a pilot rule rather than a legal definition, and a
    pass is never confirmation of anti-money-laundering compliance or evidence that no obligation applies. */
+/* The price range for quotes: "open" only with PRICE_RANGE=open AND texts that do not state the pilot limit (rules.priceRange). */
+export async function quotePriceRange(env) {
+  const ids = [(await currentTerms(env, 'artist_payment_addendum'))?.doc_id, (await currentTerms(env, 'buyer_purchase_terms'))?.doc_id];
+  return R.priceRange(env, ids.some(x => !x) ? [] : ids);
+}
 export async function linkedCheck(env, o) {
   const since = new Date(Date.now() - R.LINKED_WINDOW_DAYS * 86400_000).toISOString();
   const rows = await all(env, `SELECT reference, artwork_cents + COALESCE(delivery_cents, 0) AS total FROM checkout_orders
     WHERE lower(buyer_email) = lower(?) AND id <> ? AND created_at >= ? AND artwork_cents IS NOT NULL
       AND (payment_status <> 'none' OR status IN ('quoted', 'checkout_open', 'payment_failed'))`, o.buyer_email, o.id, since);
-  const others = rows.reduce((a, r) => a + r.total, 0), total = others + o.artwork_cents + (o.delivery_cents || 0);
-  return { ok: total < R.LINKED_THRESHOLD_CENTS, total_cents: total, linked: rows.map(r => r.reference), window_days: R.LINKED_WINDOW_DAYS,
-    reason: total < R.LINKED_THRESHOLD_CENTS ? null : `This buyer's apparently linked purchases reach EUR ${(total / 100).toFixed(2)} (EUR 10,000 or more). That is outside the pilot until PlotArt's anti-money-laundering position is settled by professional advice.` };
+  const others = rows.reduce((a, r) => a + r.total, 0), total = others + o.artwork_cents + (o.delivery_cents || 0), lim = R.linkedLimitCents(env);
+  return { ok: lim === null || total < lim, total_cents: total, linked: rows.map(r => r.reference), window_days: R.LINKED_WINDOW_DAYS,
+    reason: lim === null || total < lim ? null : `This buyer's apparently linked purchases reach EUR ${(total / 100).toFixed(2)} (EUR 10,000 or more). That is outside the pilot until PlotArt's anti-money-laundering position is settled by professional advice.` };
 }
 
 /* ---------------------------------------------------------------- founder: issue the buyer's quote */
@@ -976,7 +981,7 @@ export async function startCheckout(env, token, b) {
     WHERE artwork_reservations.order_id = excluded.order_id OR artwork_reservations.expires_at < excluded.created_at`,
     o.artwork_id, o.id, o.quote_version, holdUntil, t, o.artwork_id).catch(e => { if (/UNIQUE/.test(String(e.message))) return { meta: { changes: 0 } }; throw e; });
   if (!r.meta.changes) throw new Bad('Someone else is completing a purchase of this artwork right now. Please try again later.', 409);
-  const money = R.amounts({ artwork_cents: o.artwork_cents, delivery_cents: o.delivery_cents, commission_bp: o.commission_bp });
+  const money = R.amounts({ artwork_cents: o.artwork_cents, delivery_cents: o.delivery_cents, commission_bp: o.commission_bp, max_artwork_cents: (await quotePriceRange(env)).max_artwork_cents });
   if (money.commission_cents !== o.commission_cents) throw new Bad('Quote integrity check failed', 500);
   const n = (await one(env, 'SELECT COUNT(*) AS n FROM checkout_sessions WHERE order_id = ?', o.id)).n;
   let s;

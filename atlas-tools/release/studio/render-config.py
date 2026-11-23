@@ -23,7 +23,10 @@ out = setvar(src, "ACCESS_TEAM_DOMAIN", val["STUDIO_ACCESS_TEAM"])
 out = setvar(out, "ACCESS_AUD", val["STUDIO_ACCESS_AUD"])
 out = setvar(out, "database_id", val["STUDIO_D1_DATABASE_ID"])
 CHECKOUT_KEYS = {"CHECKOUT_PILOT_ENABLED", "CHECKOUT_LIVE", "CHECKOUT_ORIGIN", "CHECKOUT_MAIL", "CHECKOUT_MAIL_APPROVED", "CHECKOUT_MAIL_FROM",
-                 "CHECKOUT_MAIL_TEST_RECIPIENTS", "CHECKOUT_MAIL_SANDBOX_TEST", "CHECKOUT_NOTIFY_EMAIL", "SANDBOX", "STRIPE_API_BASE"}
+                 "CHECKOUT_MAIL_TEST_RECIPIENTS", "CHECKOUT_MAIL_SANDBOX_TEST", "CHECKOUT_NOTIFY_EMAIL", "SANDBOX", "STRIPE_API_BASE",
+                 # price range and anti-money-laundering limit (prepared 23 Nov 2026): not switchable in production until AML advice
+                 # is settled and new texts are issued; changing that needs a reviewed change to this script
+                 "PRICE_RANGE", "AML_LINKED_LIMIT_CENTS"}
 bad = CHECKOUT_KEYS & set(prod["vars"])
 if bad: sys.exit("REFUSED: production.json may not set %s in vars: live checkout is enabled only by its checkout_live block" % sorted(bad))
 for k, v in prod["vars"].items():

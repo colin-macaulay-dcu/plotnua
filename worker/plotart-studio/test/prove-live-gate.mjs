@@ -148,6 +148,8 @@ r = studio({ ...base, vars: { ...base.vars, CHECKOUT_PILOT_ENABLED: 'true' } });
 check('L7i switching the pilot on through production.json vars is refused', !r.ok && /only by its checkout_live block/.test(r.out));
 r = studio({ ...base, vars: { ...base.vars, CHECKOUT_LIVE: 'true' } });
 check('L7j setting CHECKOUT_LIVE through vars is refused', !r.ok);
+for (const k of ['PRICE_RANGE', 'AML_LINKED_LIMIT_CENTS']) { r = studio({ ...base, vars: { ...base.vars, [k]: k === 'PRICE_RANGE' ? 'open' : 'none' } });
+  check(`L7j2 ${k} cannot be set in production (the EUR 9,999.99 range and the EUR 10,000 safeguard stay until AML advice and new texts)`, !r.ok && /may not set/.test(r.out), r.out); }
 const block = { confirmation: 'ENABLE LIVE PLOTART CHECKOUT', checkout_origin: 'https://plotart-checkout.example.workers.dev', mail_from: 'PlotArt <orders@plotnua.ie>', notify_email: 'hello@plotnua.ie' };
 r = studio({ ...base, checkout_live: { ...block, confirmation: 'yes' } });
 check('L7k a checkout_live block without the exact phrase is refused', !r.ok);

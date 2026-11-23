@@ -91,6 +91,8 @@ if TARGET == "production":
     v = cfg["vars"]
     assert "STAGING_GALLERY" not in v and "BASKET_COMMISSION_FREE" not in v and "STRIPE_API_BASE" not in v, "no staging or test-only switch in production"
     assert v.get("BASKET_ENABLED", "false") == ("true" if basket == "true" else "false")
+    # price range and anti-money-laundering limit (prepared 23 Nov 2026): not switchable in production yet
+    assert "PRICE_RANGE" not in v and "AML_LINKED_LIMIT_CENTS" not in v, "PRICE_RANGE / AML_LINKED_LIMIT_CENTS are not switchable in production yet"
     assert cfg["name"] == "plotart-checkout" and v["ENVIRONMENT"] == "production" and "SANDBOX" not in v
     assert cfg["d1_databases"][0]["database_name"] == "plotart-studio" and "STRIPE_API_BASE" not in v
     assert v["CHECKOUT_PILOT_ENABLED"] == ("true" if live else "false") and v.get("CHECKOUT_LIVE", "false") == ("true" if live else "false")

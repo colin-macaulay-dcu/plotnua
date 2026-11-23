@@ -20,6 +20,28 @@ export const CURRENCY = 'eur';
 export const MAX_ARTWORK_CENTS = 999_999;        // pilot SCOPE limit per artwork (EUR 9,999.99). It does NOT determine or resolve any
                                                  // anti-money-laundering obligation: value alone OR with linked transactions counts (see linkedCheck)
 export const LINKED_THRESHOLD_CENTS = 1_000_000; // EUR 10,000: total of this order and apparently linked orders that the pilot refuses to quote
+/* Price range (prepared 23 Nov 2026; NOT switched on). PlotArt is to support artworks at any price, subject to the law and to
+   Stripe's limits. Two separate switches, both defaulting to today's behaviour:
+   - PRICE_RANGE: "pilot" (default, EUR 9,999.99 per artwork) or "open" (up to Stripe's maximum single payment). "open"
+     counts ONLY while none of the current texts is a 2026-11 text that states the EUR 9,999.99 limit (PILOT_TEXTS):
+     opening the range needs new, issued texts first.
+   - AML_LINKED_LIMIT_CENTS: the operational linked-purchase limit (default EUR 10,000), or "none". Its final value is a
+     legal decision (anti-money-laundering advice), separate from the price range.
+   Production cannot set either: render-config.py refuses both in production.json vars until a reviewed change allows it. */
+export const STRIPE_MAX_AMOUNT_CENTS = 99_999_999;   // Stripe's maximum single charge in EUR (EUR 999,999.99)
+export const PILOT_TEXTS = Object.freeze(['PA-PAY-2026-11', 'PA-BPT-2026-11', 'PA-BAA-2026-11', 'PA-BBT-2026-11']);
+export function priceRange(env, currentDocIds) {
+  const ids = (currentDocIds || []).filter(Boolean);
+  const open = env.PRICE_RANGE === 'open' && ids.length > 0 && ids.every(id => !PILOT_TEXTS.includes(id));
+  return { open, max_artwork_cents: open ? STRIPE_MAX_AMOUNT_CENTS : MAX_ARTWORK_CENTS };
+}
+export function linkedLimitCents(env) {
+  const v = env.AML_LINKED_LIMIT_CENTS;
+  if (v === undefined || v === null || v === '') return LINKED_THRESHOLD_CENTS;
+  if (v === 'none') return null;
+  const n = Number(v);
+  return Number.isInteger(n) && n >= 100 ? n : LINKED_THRESHOLD_CENTS;   // anything unclear keeps the safeguard
+}
 export const LINKED_WINDOW_DAYS = 365;            // how far back the pilot looks for linked orders (a pilot rule, not a legal definition)
 export const REQUIRE_TRANSIT_INSURANCE = true;    // initial pilot: every real shipment needs confirmed transit insurance for at least the artwork price
 export const MAX_DELIVERY_CENTS = 200_000;
@@ -54,9 +76,11 @@ export const commissionCents = (artworkCents, bp) => Math.floor((artworkCents * 
 
 /* What the buyer pays and how it is allocated, before Stripe's processing fees (which Stripe deducts from the artist's
    own Stripe balance on a direct charge; they are not PlotArt commission and are never shown as a guaranteed net). */
-export function amounts({ artwork_cents, delivery_cents, commission_bp }) {
+export function amounts({ artwork_cents, delivery_cents, commission_bp, max_artwork_cents = MAX_ARTWORK_CENTS }) {
   const a = int(artwork_cents, 'artwork price'), d = int(delivery_cents, 'delivery charge');
-  if (a < 100 || a > MAX_ARTWORK_CENTS) throw new RuleError(`The artwork price must be between EUR 1.00 and EUR ${(MAX_ARTWORK_CENTS / 100).toFixed(2)} in the pilot`);
+  const max = Math.min(max_artwork_cents, STRIPE_MAX_AMOUNT_CENTS);
+  if (a < 100 || a > max) throw new RuleError(`The artwork price must be between EUR 1.00 and EUR ${(max / 100).toFixed(2)} for online purchase at present`);
+  if (a + d > STRIPE_MAX_AMOUNT_CENTS) throw new RuleError('The total is above the largest single card payment Stripe accepts');
   if (d > MAX_DELIVERY_CENTS) throw new RuleError('The delivery charge is above the pilot ceiling');
   if (!Number.isInteger(commission_bp) || commission_bp < 0 || commission_bp > 1500) throw new RuleError('Commission rate out of range');
   const commission = commissionCents(a, commission_bp);
