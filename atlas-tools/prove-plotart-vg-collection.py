@@ -44,7 +44,7 @@ check("V4 a published gallery without a position follows the 25, without a numbe
 h = P.vg_collection(pk, layout=lay)
 check("V5 no unpublished gallery address or name ever reaches the page", "secret-unpublished" not in h and "hidden-two" not in h)
 labels = re.findall(r'<li class="pa-vgc-work"[^>]*>.*?</li>', h, re.S)
-shape = {re.sub(r' data-pa-position="\d\d"|[a-z]+-test|[A-Z][a-z]+ Test|<div class="pa-vgc-art.*?</div>', "#", l, flags=re.S) for l in labels}
+shape = {re.sub(r'artists/[a-z0-9-]+/"|>[^<>]+</a>|<p class="pa-vgc-practice">[^<]*</p>', "#", re.search(r'<div class="pa-vgc-label">.*?</div>', l, re.S).group(0)) for l in labels}
 check("V6 equal treatment (23 Nov 2026): every open gallery has the identical label (name, practice, Enter the gallery) and no number is shown; the placed ones carry their position only as data",
       len(labels) == 3 and len(shape) == 1 and all('data-pa-position="' in l for l in labels[:2]) and 'data-pa-position' not in labels[2]
       and not re.search(r'pa-vgc-n\b|Position \d', h), labels)
