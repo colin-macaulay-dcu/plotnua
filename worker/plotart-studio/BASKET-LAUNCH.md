@@ -37,7 +37,9 @@ founder's action or approval; nothing merges, migrates production or takes a liv
    - run `plotart-checkout-deploy.yml` → production, `enable_live_pilot` + `enable_live_basket`, approve `studio-production.`.
 4. **Artists (live, each themselves in Studio → Payment pilot page):** join the payment pilot (PA-PAY), complete Stripe live
    onboarding (charges **and payouts**), seller information, accept PA-BAA, confirm seller information may be shown,
-   (Founding, optional) give the processing-fee consent, set delivery offers with real transit insurance.
+   (Founding, optional) give the processing-fee consent. Those five steps set up the ACCOUNT. Then, per artwork (23 Nov 2026):
+   a fixed delivery price with real transit insurance (bought online once the founder approves it), or delivery arranged
+   personally (no online payment: buyers enquire, the artwork page says so; a managed-checkout quote can follow the enquiry).
    **Founder:** review each delivery offer on Review desk → Basket readiness → "Delivery offers to review"; nothing can be
    bought online until its exact current offer is approved (22 Nov 2026). The founder's
    "Basket readiness" table shows what each artist is missing. No synthetic or TEST artist exists in production.

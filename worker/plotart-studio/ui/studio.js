@@ -130,13 +130,15 @@
     const LBL = Object.fromEntries(r.steps.map(x => [x.key, x.label]));
     const o = r.online, top = Object.entries(o.reasons || {}).sort((a, b) => b[1] - a[1])[0];
     let body;
-    if (r.ready) body = `<p class="st-os-state"><span class="st-os-dot on" aria-hidden="true"></span>Online sales are set up</p>
-      <p class="st-muted" style="margin:0">${o.purchasable} of ${plural(o.available, 'available artwork', 'available artworks')} can be bought online${top && o.purchasable < o.available ? `; ${top[1]} ${E(top[0])}` : ''}.</p>`;
+    // account set-up and artwork purchase are separate (23 Nov 2026): a set-up account never reads as "everything is for sale"
+    const d = r.delivery || { arranged: 0, fixed_waiting: 0 };
+    if (r.ready) body = `<p class="st-os-state"><span class="st-os-dot on" aria-hidden="true"></span>Account set up for online sales</p>
+      <p class="st-muted" style="margin:0"><b style="color:var(--ivory);font-weight:500">${o.purchasable} of ${plural(o.available, 'available artwork', 'available artworks')} can be bought online.</b>${d.arranged ? ` ${d.arranged} with delivery arranged personally (buyers enquire).` : ''}${d.fixed_waiting ? ` ${d.fixed_waiting} waiting for PlotArt to review the delivery price.` : ''}</p>`;
     else if (r.started) body = `<div class="st-os-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${r.total}" aria-valuenow="${r.done}" aria-label="Online sales set-up"><span style="width:${Math.round(100 * r.done / r.total)}%"></span></div>
       <p class="st-os-state">${r.done} of ${r.total} steps done</p><p class="st-muted" style="margin:0">Next: ${E(LBL[r.next])}</p>`;
     else body = `<p class="st-muted" style="margin:0">Let buyers buy your available artworks online, with one secure card payment. You remain the seller and are paid into your own Stripe account. Your gallery and enquiries work exactly as now whether or not you set this up.</p>`;
     box.innerHTML = `<div class="st-ck-top"><h3 id="os-h">Online sales</h3><span class="st-os-opt">Optional</span></div>${body}
-      <div class="st-actions"><a class="st-btn${r.ready ? '' : ' st-btn--solid'}" href="/checkout-pilot">${r.ready ? 'Manage online sales' : r.started ? 'Continue set-up' : 'Set up online sales'}</a></div>`;
+      <div class="st-actions"><a class="st-btn${r.ready ? '' : ' st-btn--solid'}" href="/checkout-pilot">${r.ready ? (o.purchasable ? 'Manage online sales' : 'Choose delivery for your artworks') : r.started ? 'Continue set-up' : 'Set up online sales'}</a></div>`;
     box.hidden = false;
   }
 

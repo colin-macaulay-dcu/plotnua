@@ -199,11 +199,11 @@
       if (ty === 'd') return field(id, label(k), `<input id="${id}" name="${k}" type="date" value="${esc(v || '')}">`);
       const val = CENTS.includes(k) && typeof v === 'number' ? (v / 100).toFixed(2) : (v ?? '');
       return field(id, label(k) + (opt ? ' (optional)' : ''), `<input id="${id}" name="${k}" value="${esc(val)}" ${ty === 'n' && !CENTS.includes(k) ? 'inputmode="decimal"' : ''}>`); };
-    return step('offer', w.offer ? 'Change delivery offer…' : 'Set a delivery offer…', `<div data-id="${esc(w.id)}">
+    return step('offer', w.offer ? 'Change the fixed delivery price…' : 'Set the fixed delivery price…', `<div data-id="${esc(w.id)}">
       ${field(`of-${esc(w.id)}-charge`, 'Delivery charge to the buyer (€), anywhere in the Republic of Ireland', `<input id="of-${esc(w.id)}-charge" name="charge" value="${w.offer ? (w.offer.delivery_cents / 100).toFixed(2) : ''}" required>`)}
       ${Object.entries(F).filter(([k]) => !['destination', 'destination_country'].includes(k)).map(([k, t]) => input(k, t)).join('')}
       <p class="st-muted">PlotArt reviews each delivery offer, and every change to it, before the artwork can be bought online.</p>
-      ${tick('I will sell and deliver this artwork as described, anywhere in the Republic of Ireland, for this delivery charge, with this transit insurance and these return arrangements.')}</div>`, 'Save delivery offer'); };
+      ${tick('I will sell and deliver this artwork as described, anywhere in the Republic of Ireland, for this delivery charge, with this transit insurance and these return arrangements.')}</div>`, 'Save the fixed delivery price'); };
   function basketArtist(bj, j) {
     const m = bj.membership, pc = m.processing_consent || {}, sd = m.seller_disclosure || {};
     let h = `<section class="st-card" id="basket"><h2>Online purchase through the basket <small class="st-muted">(optional)</small></h2>
@@ -227,10 +227,23 @@
       h += pc.valid ? `<p>You agreed on ${esc(pc.at)} that your commission-free artworks may be bought online, with Stripe’s processing fees deducted from your Stripe balance and 0% PlotArt commission. <button data-a2="withdraw-basket-processing">Withdraw this consent</button></p>`
         : `<p class="st-muted">Without this consent your commission-free artworks stay on enquiry and direct sale, as now.</p><form data-f="basket-processing"><p style="white-space:pre-line">${esc(bj.processing_statement)}</p><label><input type="checkbox" name="accept" required> I agree to the statement above.</label><button>Give this consent</button></form>`;
     }
-    // 3 · delivery offers, per artwork
-    h += `<h3 id="pay-delivery">Delivery offers</h3><p class="st-muted">An artwork can be bought online only with a delivery offer you have approved, including transit insurance for at least its price.</p><ul>`;
-    for (const w of bj.works) h += `<li data-id="${esc(w.id)}"><strong>${esc(w.title)}</strong> ${w.price_eur ? '€' + esc(w.price_eur) : '<small class="st-muted">price on request</small>'} · ${esc(w.availability)}
-      · ${w.offer ? `delivery ${eur(w.offer.delivery_cents)} (version ${esc(w.offer.version)}) · <span class="${w.offer.review && w.offer.review.state === 'approved' ? '' : 'st-warn'}">${esc(w.offer.review ? w.offer.review.text : 'Waiting for PlotArt to review it')}</span>${w.offer.review && w.offer.review.note ? `<br><small>PlotArt’s note: ${esc(w.offer.review.note)}</small>` : ''} <button data-withdraw-offer="${esc(w.id)}">Withdraw</button>` : '<small class="st-muted">no delivery offer</small>'}${offerForm(w, bj)}</li>`;
+    // 3 · delivery, per artwork (23 Nov 2026): two choices. Fixed delivery price = the existing offer form (insurance,
+    //     PlotArt's review, every rule unchanged). Arranged personally = no offer: buyers enquire; nothing to fill in.
+    h += `<h3 id="pay-delivery">Delivery for each artwork</h3><p class="st-muted">Choose for each available artwork. You can change it at any time.</p><ul class="st-dv-list">`;
+    for (const w of bj.works) {
+      const avail = w.availability === 'available', fixed = !!w.offer, rv = fixed && w.offer.review, priced = !!w.price_eur && !w.price_on_request;
+      h += `<li class="st-dv" data-id="${esc(w.id)}"><p class="st-dv-t"><strong>${esc(w.title)}</strong> <span class="st-muted">${priced ? '€' + esc(w.price_eur) : 'price on request'} · ${esc(w.availability)}</span></p>`;
+      if (!avail) { h += `<p class="st-muted st-dv-s">Not available, so no delivery choice is needed.</p></li>`; continue; }
+      h += `<div class="st-dv-choice" role="group" aria-label="Delivery for ${esc(w.title)}">
+          <button type="button" class="st-dv-opt" data-dv="fixed" aria-pressed="${fixed}" ${priced ? '' : 'disabled'}><b>Fixed delivery price</b><small>Buyers can pay online</small></button>
+          <button type="button" class="st-dv-opt" data-dv="arranged" aria-pressed="${!fixed}"><b>Arranged personally</b><small>Buyers enquire</small></button></div>`;
+      if (!priced) h += `<p class="st-muted st-dv-s">Add a price to this artwork in Studio to offer a fixed delivery price. Until then buyers enquire.</p>`;
+      else if (fixed) h += `<p class="st-dv-s">Delivery ${eur(w.offer.delivery_cents)} · <span class="${rv && rv.state === 'approved' ? 'st-ok' : 'st-warn'}">${esc(rv ? rv.text : 'Waiting for PlotArt to review it')}</span>${rv && rv.note ? `<br><small>PlotArt’s note: ${esc(rv.note)}</small>` : ''}</p>`
+        + `<div class="st-dv-off" hidden><p>Stop the fixed delivery price for this artwork? Buyers will enquire instead. A basket already being paid is not affected.</p><button data-withdraw-offer="${esc(w.id)}">Yes, arrange delivery personally</button> <button type="button" data-dv-cancel>Keep the fixed price</button></div>`;
+      else h += `<p class="st-muted st-dv-s">Buyers see “Enquire about this work” and a note that delivery is arranged with you. You agree delivery and the full price with them before any payment.</p>`;
+      if (priced) h += offerForm(w, bj);
+      h += `</li>`;
+    }
     h += `</ul>` + step('basket-leave', 'Stop online purchase…', `<p class="st-muted">Your artworks are no longer offered in the basket. Baskets already paid or being paid are completed.</p>${tick('Stop online purchase of my artworks.')}`, 'Stop');
     return h + '</section>';
   }
@@ -241,11 +254,11 @@
     const policy = `commission-free works: ${esc(bj.commission_free_policy.replace(/_/g, ' '))}${bj.consents_installed ? '' : ' · migration 0020 not installed'}`;
     return `<section class="st-card" id="basket-readiness">${own ? `<p class="st-muted">${policy}</p>` : `<h2>Basket readiness <small class="st-muted">${policy}</small></h2>`}
       <p>${ready} of ${bj.artists.length} artists ready · ${buy} of ${tot} available artworks can be bought online. <span class="st-muted">Every other artwork stays enquiry-only; its Add to basket button appears by itself once its artist is ready.</span></p>
-      <div class="st-scroll"><table class="st-table"><tr><th>Artist</th><th>Stripe</th><th>Addendum</th><th>Seller info shown</th><th>Processing-fee consent</th><th>Offers</th><th>Missing</th><th>Online purchase</th></tr>
+      <div class="st-scroll"><table class="st-table"><tr><th>Artist</th><th>Stripe</th><th>Addendum</th><th>Seller info shown</th><th>Processing-fee consent</th><th>Delivery</th><th>Missing</th><th>Online purchase</th></tr>
       ${bj.artists.map(a => `<tr><td>${esc(a.display_name)}${a.founding ? ' <small>(Founding)</small>' : ''}</td><td>${esc(a.stripe)}</td><td>${esc(a.basket_addendum || '—')}${a.basket_addendum && !a.basket_current ? ' (old)' : ''}</td>
         <td>${a.seller_disclosure.valid ? 'confirmed ' + esc(a.seller_disclosure.at) : a.seller_disclosure.changed_since ? 'changed since confirmed' : '—'}</td>
         <td>${a.founding ? (a.processing_consent.valid ? 'given ' + esc(a.processing_consent.at) + ' (' + esc(a.processing_consent.doc_id) + ')' : a.processing_consent.given ? 'given for an older addendum' : 'none') : 'not needed'}</td>
-        <td>${esc(a.delivery_offers_approved ?? 0)} of ${esc(a.delivery_offers)} approved</td><td>${a.missing.length ? esc(a.missing.join(', ')) : 'ready'}</td>
+        <td>${a.delivery ? `${a.delivery.fixed_approved} fixed, approved${a.delivery.fixed_waiting ? `<br><strong>${a.delivery.fixed_waiting} fixed, waiting for you</strong>` : ''}${a.delivery.fixed_returned ? `<br>${a.delivery.fixed_returned} fixed, returned` : ''}<br>${a.delivery.arranged} arranged personally` : `${esc(a.delivery_offers_approved ?? 0)} of ${esc(a.delivery_offers)} approved`}</td><td>${a.missing.length ? esc(a.missing.join(', ')) : 'account set up'}</td>
         <td><strong>${on(a).purchasable} of ${on(a).available}</strong> artworks${on(a).purchasable < on(a).available ? `<br><small class="st-muted">${why(on(a))}</small>` : ''}</td></tr>`).join('')}</table></div></section>`;
   }
 
@@ -325,7 +338,8 @@
       let first = null; for (let q = STEP_NEEDS[k]; q; q = STEP_NEEDS[q]) { const x = by(q); if (x && !x.done) first = x; }
       if (!first) first = steps.find(x => !x.done && x.key !== k);
       if (!msg) return;
-      msg.innerHTML = first ? `Step ${at(me)} opens once step ${at(first)} is complete: <strong>${esc(first.label)}</strong>. <a href="${STEP_AT[first.key]}" data-step-go="${esc(first.key)}">Go to step ${at(first)}</a>`
+      const what = me ? `Step ${at(me)} opens` : 'Delivery choices open';
+      msg.innerHTML = first ? `${what} once step ${at(first)} is complete: <strong>${esc(first.label)}</strong>. <a href="${STEP_AT[first.key]}" data-step-go="${esc(first.key)}">Go to step ${at(first)}</a>`
         : 'This step is not available just now. Please refresh the page.';
       msg.hidden = false;
       const go = msg.querySelector('[data-step-go]');
@@ -335,18 +349,32 @@
     }));
   }
 
+  /* Two separate things (23 Nov 2026): the account set-up (five steps, once) and, per artwork, whether it can be bought
+     online (a fixed delivery price approved by PlotArt, or delivery arranged personally: buyers enquire). Finishing the
+     set-up never suggests that every artwork can now be bought online. */
   function stepsCard(r) {
-    const o = r.online, why = Object.entries(o.reasons || {}).sort((a, b) => b[1] - a[1]);
-    return `<section class="st-card st-os-steps" aria-labelledby="os-steps-h"><div class="st-ck-top"><h2 id="os-steps-h">Your steps</h2><span class="st-ck-count">${r.done} of ${r.total} done</span></div>
+    const o = r.online, d = r.delivery || { fixed_approved: 0, fixed_waiting: 0, fixed_returned: 0, arranged: 0 };
+    const why = Object.entries(o.reasons || {}).filter(([t]) => !/^delivery arranged personally|^fixed delivery price (waiting|returned)/.test(t)).sort((x, y) => y[1] - x[1]);
+    const n = (k, one, many) => `${k} ${k === 1 ? one : many}`;
+    return `<section class="st-card st-os-steps" aria-labelledby="os-steps-h"><div class="st-ck-top"><h2 id="os-steps-h">Account set-up</h2><span class="st-ck-count">${r.done} of ${r.total} done</span></div>
+      <p class="st-muted st-os-note" style="margin-top:6px">Once, for your account. It lets you sell online; each artwork is then set up below.</p>
       <div class="st-os-bar" aria-hidden="true"><span style="width:${Math.round(100 * r.done / r.total)}%"></span></div>
-      <ol class="st-os-list">${r.steps.map((x, i) => `<li class="${x.done ? 'done' : x.key === r.next ? 'next' : ''}"><a href="${STEP_AT[x.key]}" data-step="${x.key}"><span class="st-os-n" aria-hidden="true">${x.done ? '✓' : i + 1}</span><span>${esc(x.label)}${x.key === 'delivery' ? '<small>Including transit insurance for at least the price</small>' : ''}</span><span class="st-os-s">${x.done ? 'Done' : x.key === r.next ? 'Next' : 'To do'}</span></a></li>`).join('')}</ol>
+      <ol class="st-os-list">${r.steps.map((x, i) => `<li class="${x.done ? 'done' : x.key === r.next ? 'next' : ''}"><a href="${STEP_AT[x.key]}" data-step="${x.key}"><span class="st-os-n" aria-hidden="true">${x.done ? '✓' : i + 1}</span><span>${esc(x.label)}</span><span class="st-os-s">${x.done ? 'Done' : x.key === r.next ? 'Next' : 'To do'}</span></a></li>`).join('')}</ol>
       <p class="st-os-msg" data-step-msg role="status" aria-live="polite" tabindex="-1" hidden></p>
       ${r.enabled ? '' : '<p class="st-os-msg" data-os-closed>Online sales are not open yet. Your steps can be completed once PlotArt opens them; nothing you have saved is lost.</p>'}
       ${r.founding ? `<p class="st-muted st-os-note">Founding Artist: your commission-free artworks can also be bought online if you give the separate, optional processing-fee consent in the basket section${r.processing_consent ? ' (given)' : ''}.</p>` : ''}
-      <h3 class="st-os-h3">Your artworks</h3>
-      <p class="st-os-state">${o.available ? `${o.purchasable} of ${o.available} available ${o.available === 1 ? 'artwork' : 'artworks'} can be bought online` : 'No available artworks yet'}</p>
-      ${why.length ? `<ul class="st-os-why">${why.map(([t, n]) => `<li>${n} ${esc(t)}</li>`).join('')}</ul>` : ''}
-      <p class="st-muted st-os-note">Artworks that can’t be bought online stay on enquiry, as now.</p></section>`;
+      </section>
+      <section class="st-card st-os-art" aria-labelledby="os-art-h"><div class="st-ck-top"><h2 id="os-art-h">Your artworks</h2><span class="st-ck-count">${o.purchasable} of ${o.available} online</span></div>
+      <p class="st-os-state">${o.available ? `${n(o.purchasable, 'artwork', 'artworks')} of ${o.available} available can be bought online` : 'No available artworks yet'}</p>
+      <p class="st-muted st-os-note" style="margin-top:4px">${r.ready ? 'An artwork can be bought online only with a fixed delivery price that PlotArt has approved. For the others, buyers enquire.' : 'Artworks can be bought online once your account set-up is complete and an artwork has a fixed delivery price approved by PlotArt.'}</p>
+      <ul class="st-os-dv">
+        <li><span>Fixed delivery price, approved</span><b>${d.fixed_approved}</b></li>
+        ${d.fixed_waiting ? `<li><span>Fixed delivery price, waiting for PlotArt</span><b>${d.fixed_waiting}</b></li>` : ''}
+        ${d.fixed_returned ? `<li class="st-warn"><span>Fixed delivery price, returned by PlotArt</span><b>${d.fixed_returned}</b></li>` : ''}
+        <li><span>Delivery arranged personally (buyers enquire)</span><b>${d.arranged}</b></li>
+      </ul>
+      ${why.length ? `<ul class="st-os-why">${why.map(([t, k]) => `<li>${k} ${esc(t)}</li>`).join('')}</ul>` : ''}
+      <p class="st-actions" style="margin:12px 0 0"><a class="st-btn st-btn--small" href="#pay-delivery" data-step="delivery">Choose delivery for each artwork</a></p></section>`;
   }
 
   async function load() {
@@ -502,7 +530,14 @@
         if (!raw) { d[k] = null; continue; }
         d[k] = CENTS.includes(k) ? toCents(raw, label(k)) : ty === 'n' ? Number(raw.replace(',', '.')) : ty === 'b' ? raw === 'true' : raw; }
       await api('PUT', `${base}/basket/offers/${encodeURIComponent(id)}`, { confirm: true, delivery_cents: toCents(f.get('charge'), 'delivery charge'), delivery: d }); say('Delivery offer saved'); load(); });
-    on('button[data-withdraw-offer]', 'click', async e => { await api('DELETE', `${base}/basket/offers/${encodeURIComponent(e.target.dataset.withdrawOffer)}`); say('Delivery offer withdrawn'); load(); });
+    // delivery choice (23 Nov 2026): "Fixed" opens the existing form; "Arranged personally" on a fixed offer asks to confirm, then withdraws it
+    app.querySelectorAll('.st-dv-opt').forEach(b => b.addEventListener('click', () => {
+      const li = b.closest('.st-dv'), form = li.querySelector('details'), off = li.querySelector('.st-dv-off');
+      if (b.dataset.dv === 'fixed') { if (off) off.hidden = true; if (form) { form.open = true; goTo(form); } return; }
+      if (off) { off.hidden = false; off.querySelector('button').focus(); } else if (form) form.open = false;
+    }));
+    app.querySelectorAll('[data-dv-cancel]').forEach(b => b.addEventListener('click', () => { b.closest('.st-dv-off').hidden = true; }));
+    on('button[data-withdraw-offer]', 'click', async e => { await api('DELETE', `${base}/basket/offers/${encodeURIComponent(e.target.dataset.withdrawOffer)}`); say('Delivery is now arranged personally for this artwork'); load(); });
     on('form[data-f="basket-leave"]', 'submit', async (e) => { need(new FormData(e.target).get('confirm') === 'on', 'Tick the box to confirm'); await api('POST', base + '/basket/leave', {}); say('Online purchase stopped'); load(); });
     on('form[data-f="processing"]', 'submit', async () => { await api('POST', base + '/processing-consent', { accept: true, statement: j.processing_statement }); say('Consent recorded'); load(); });
     const F = (kind, fn) => on(`form[data-f="${kind}"]`, 'submit', async e => fn(e, new FormData(e.target), e.target));
