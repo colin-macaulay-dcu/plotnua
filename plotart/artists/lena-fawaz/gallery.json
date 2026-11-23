@@ -42,10 +42,25 @@
    "dhash": "39b29d9616a9285d",
    "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
    "stem": "what-we-carry-1"
+  },
+  {
+   "dhash": "7868f83c981c0901",
+   "source_sha256": "f8466387b3bdc1aaedb3c318192f8408652d2ad8d4b9ca2f6481b9f6f3d82c68",
+   "stem": "day-dreaming-1"
+  },
+  {
+   "dhash": "20181a1e91a0a88c",
+   "source_sha256": "514482b622863c29748f4cec31f5e155f6faa6f3c64767e3f09a9ab354f93b54",
+   "stem": "soft-strength-1"
+  },
+  {
+   "dhash": "193232e22a1b5215",
+   "source_sha256": "cb50138b915976a3adeb8cc3301c7b00fda0f41a4864bce0f32e23b008dc0d82",
+   "stem": "time-to-play-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-18T15:21:42.635Z",
+  "approved_at": "2026-11-23T12:30:08.524Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-17T12:29:38.785Z",
   "licence_accepted_at": "2026-11-17T11:37:43.820Z",
@@ -53,7 +68,7 @@
   "permission_ref": "PA-PERM-at5xkpjluff",
   "state": "approved",
   "test_note": null,
-  "version": "v3"
+  "version": "v4"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -110,6 +125,174 @@
    "price_on_request": false,
    "slug": "what-we-carry",
    "title": "“What we Carry”",
+   "w_cm": 80,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 50,
+   "id": "wqcvxlria3z",
+   "images": [
+    {
+     "alt": "Abstract Painting",
+     "aspect": 0.98364,
+     "derivatives": [
+      {
+       "file": "day-dreaming-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        590,
+        600
+       ]
+      },
+      {
+       "file": "day-dreaming-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1180,
+        1200
+       ]
+      },
+      {
+       "file": "day-dreaming-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1967,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2705,
+      2750
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Mixed Media",
+   "price_eur": 400,
+   "price_on_request": false,
+   "slug": "day-dreaming",
+   "title": "“Day Dreaming”",
+   "w_cm": 50,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 50,
+   "id": "wia8cbztpkh",
+   "images": [
+    {
+     "alt": "AbstractPaijt",
+     "aspect": 0.99421,
+     "derivatives": [
+      {
+       "file": "soft-strength-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        597,
+        600
+       ]
+      },
+      {
+       "file": "soft-strength-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1193,
+        1200
+       ]
+      },
+      {
+       "file": "soft-strength-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1988,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2749,
+      2765
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Mixed media",
+   "price_eur": 400,
+   "price_on_request": false,
+   "slug": "soft-strength",
+   "title": "“Soft Strength”",
+   "w_cm": 50,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 80,
+   "id": "wu9hmnsg2sh",
+   "images": [
+    {
+     "alt": "Abstract Painting",
+     "aspect": 0.9891,
+     "derivatives": [
+      {
+       "file": "time-to-play-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        593,
+        600
+       ]
+      },
+      {
+       "file": "time-to-play-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1187,
+        1200
+       ]
+      },
+      {
+       "file": "time-to-play-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1978,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2723,
+      2753
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Mixed Media",
+   "price_eur": 650,
+   "price_on_request": false,
+   "slug": "time-to-play",
+   "title": "“Time to Play”",
    "w_cm": 80,
    "year": 2026
   }

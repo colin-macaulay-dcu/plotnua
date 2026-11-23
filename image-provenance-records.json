@@ -17300,130 +17300,6 @@
     },
     {
       "ai_involvement": "none",
-      "artist_slug": "lena-fawaz",
-      "asset": "plotart/artists/lena-fawaz/img/portrait-600.webp",
-      "bytes": 66460,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-at5xkpjluff",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        450,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "3846929ee6e984bf7f860e37e1e94fcb00175131f064bd11599c78d9a4070be0",
-      "source_sha256": "5811174d4e9f6f24d83d9593c4a0386acaadd81a6787a705fea57cabbbcc2024",
-      "subject": "portrait",
-      "work_slug": null
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "lena-fawaz",
-      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-600.webp",
-      "bytes": 80762,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-at5xkpjluff",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        600,
-        585
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "c23d7a8f0384d067e7a2818f77a69a958b6c0db57b64c03608b709fdeb1e9b8b",
-      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
-      "subject": "artwork",
-      "work_slug": "what-we-carry"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "lena-fawaz",
-      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-1200.webp",
-      "bytes": 290588,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-at5xkpjluff",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1200,
-        1170
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "ca0aeeb61203e6ee4498f47971936563bb9b1da4cecbb91b371ede45c025632e",
-      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
-      "subject": "artwork",
-      "work_slug": "what-we-carry"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "lena-fawaz",
-      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-2000.webp",
-      "bytes": 641064,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-at5xkpjluff",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        2000,
-        1950
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "cca698123a7431e36231bcd16c341019105a9363c0d81e5d7514d5112b770268",
-      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
-      "subject": "artwork",
-      "work_slug": "what-we-carry"
-    },
-    {
-      "ai_involvement": "none",
       "artist_slug": "carmel-marrinan",
       "asset": "plotart/artists/carmel-marrinan/img/over-the-river-1-600.webp",
       "bytes": 34106,
@@ -25340,6 +25216,409 @@
       "source_sha256": "46f639010ae32c2adfd5ba12553f561224a3f4747239fa2099496931e31fa46f",
       "subject": "artwork",
       "work_slug": "the-layers-beneath"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/portrait-600.webp",
+      "bytes": 66460,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3846929ee6e984bf7f860e37e1e94fcb00175131f064bd11599c78d9a4070be0",
+      "source_sha256": "5811174d4e9f6f24d83d9593c4a0386acaadd81a6787a705fea57cabbbcc2024",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-600.webp",
+      "bytes": 80762,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        585
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c23d7a8f0384d067e7a2818f77a69a958b6c0db57b64c03608b709fdeb1e9b8b",
+      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
+      "subject": "artwork",
+      "work_slug": "what-we-carry"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-1200.webp",
+      "bytes": 290588,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1170
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ca0aeeb61203e6ee4498f47971936563bb9b1da4cecbb91b371ede45c025632e",
+      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
+      "subject": "artwork",
+      "work_slug": "what-we-carry"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-2000.webp",
+      "bytes": 641064,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1950
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cca698123a7431e36231bcd16c341019105a9363c0d81e5d7514d5112b770268",
+      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
+      "subject": "artwork",
+      "work_slug": "what-we-carry"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/day-dreaming-1-600.webp",
+      "bytes": 69498,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        590,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b372a1aaaa79746dec1a879990103c737a9766457e0560d312fd10929d7a9175",
+      "source_sha256": "f8466387b3bdc1aaedb3c318192f8408652d2ad8d4b9ca2f6481b9f6f3d82c68",
+      "subject": "artwork",
+      "work_slug": "day-dreaming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/day-dreaming-1-1200.webp",
+      "bytes": 332294,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1180,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0c5d94a1a0612e5d1c84e640100063f6548803d171c5f0c6edaca45dac1e1737",
+      "source_sha256": "f8466387b3bdc1aaedb3c318192f8408652d2ad8d4b9ca2f6481b9f6f3d82c68",
+      "subject": "artwork",
+      "work_slug": "day-dreaming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/day-dreaming-1-2000.webp",
+      "bytes": 831430,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1967,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4267d2e988a37d27a379d937d0004d09889bd20604394f62c6558077460642de",
+      "source_sha256": "f8466387b3bdc1aaedb3c318192f8408652d2ad8d4b9ca2f6481b9f6f3d82c68",
+      "subject": "artwork",
+      "work_slug": "day-dreaming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/soft-strength-1-600.webp",
+      "bytes": 88404,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        597,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1cf10b209fffc705450e12a54bf4cf62996e1fcecca8fe6e0996e1c7bc6940be",
+      "source_sha256": "514482b622863c29748f4cec31f5e155f6faa6f3c64767e3f09a9ab354f93b54",
+      "subject": "artwork",
+      "work_slug": "soft-strength"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/soft-strength-1-1200.webp",
+      "bytes": 405526,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1193,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9245fe6c3ed320d1cb3f0bbb45227281067ee24e370735e35815a34f3a8e6f30",
+      "source_sha256": "514482b622863c29748f4cec31f5e155f6faa6f3c64767e3f09a9ab354f93b54",
+      "subject": "artwork",
+      "work_slug": "soft-strength"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/soft-strength-1-2000.webp",
+      "bytes": 933544,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1988,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fa21832cd1b00b3b60051232d3e80db22748de10db20a54a88f5288d807f6827",
+      "source_sha256": "514482b622863c29748f4cec31f5e155f6faa6f3c64767e3f09a9ab354f93b54",
+      "subject": "artwork",
+      "work_slug": "soft-strength"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/time-to-play-1-600.webp",
+      "bytes": 54330,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        593,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "38ee86d5875d6716888675085ac943c251b6d093ec6258d056f6221f1338dcf3",
+      "source_sha256": "cb50138b915976a3adeb8cc3301c7b00fda0f41a4864bce0f32e23b008dc0d82",
+      "subject": "artwork",
+      "work_slug": "time-to-play"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/time-to-play-1-1200.webp",
+      "bytes": 254204,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1187,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6f48c728ca8682bc9dc3d1ca73213d7cf25ca83c28249448183afb0f54a2b7b4",
+      "source_sha256": "cb50138b915976a3adeb8cc3301c7b00fda0f41a4864bce0f32e23b008dc0d82",
+      "subject": "artwork",
+      "work_slug": "time-to-play"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/time-to-play-1-2000.webp",
+      "bytes": 664896,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1978,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d9338bf5113c4c1a081ed85d97c43fbcc701f4923b366129529fe1178d14d61b",
+      "source_sha256": "cb50138b915976a3adeb8cc3301c7b00fda0f41a4864bce0f32e23b008dc0d82",
+      "subject": "artwork",
+      "work_slug": "time-to-play"
     }
   ],
   "legacy_undeclared": [
