@@ -453,3 +453,21 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-osp #app .st-os-list, .st-osp #app .st-os-why{ padding-left:0; } .st-osp #app .st-os-list li{ margin:0; } .st-osp #app .st-os-why li{ margin:0; }
 .st-os-msg{ margin:12px 0 0; padding:12px 14px; border-radius:12px; border:1px solid rgba(207,133,102,.45); background:rgba(207,133,102,.08); color:var(--ivory); font-size:14.5px; line-height:1.5; }
 .st-os-msg a{ color:#F2C9B8; white-space:nowrap; } .st-os-msg:focus{ outline:2px solid var(--terra-text); outline-offset:2px; }
+/* Delivery for each artwork (23 Nov 2026): two clear choices, large enough to tap on a phone */
+.st-os-dv{ list-style:none; margin:12px 0 0; padding:0; } .st-os-dv li{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-top:1px solid rgba(242,235,224,.06); font-size:14.5px; color:var(--lime); }
+.st-os-dv li:first-child{ border-top:0; } .st-os-dv b{ color:var(--ivory); font-weight:600; }
+.st-osp #app .st-os-dv{ padding-left:0; } .st-osp #app .st-os-dv li{ margin:0; }
+.st-osp #app .st-dv-list{ list-style:none; padding:0; margin:12px 0 0; }
+.st-osp #app .st-dv{ margin:0; padding:14px 0; border-top:1px solid rgba(242,235,224,.08); }
+.st-dv-t{ margin:0 0 10px; }
+.st-dv-choice{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.st-osp #app .st-dv-opt{ display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:2px; min-height:64px; margin:0; padding:10px 14px; border-radius:14px; text-align:left;
+  background:transparent; border:1px solid var(--line-2); color:var(--lime); font:500 15px var(--sans); }
+.st-osp #app .st-dv-opt small{ font-size:13px; color:var(--stone); font-weight:400; }
+.st-osp #app .st-dv-opt[aria-pressed="true"]{ border-color:var(--terra-text); background:rgba(207,133,102,.10); color:var(--ivory); box-shadow:inset 0 0 0 1px var(--terra-text); }
+.st-osp #app .st-dv-opt[aria-pressed="true"] b::before{ content:"● "; color:var(--terra-text); }
+.st-osp #app .st-dv-opt[disabled]{ opacity:.45; }
+.st-dv-s{ margin:10px 0 0; font-size:14px; } .st-ok{ color:#8DBE7C; }
+.st-dv-off{ margin:10px 0 0; padding:12px 14px; border-radius:12px; border:1px solid rgba(207,133,102,.45); background:rgba(207,133,102,.08); }
+.st-dv-off p{ margin:0 0 4px; }
+@media (max-width:359px){ .st-dv-choice{ grid-template-columns:1fr; } }

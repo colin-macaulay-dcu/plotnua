@@ -455,11 +455,17 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
       && (await one("SELECT kind FROM basket_consents WHERE artist_id = 'afnd' AND topic = 'processing_fees' ORDER BY at DESC, rowid DESC LIMIT 1")).kind === 'withdrawn');
     await ap.check('form[data-f="basket-processing"] input[name="accept"]'); await ap.click('form[data-f="basket-processing"] button'); await ap.waitForSelector('button[data-a2="withdraw-basket-processing"]', { timeout: 10000 });
     check('U3 artist gives the consent again by ticking the box: recorded against the current addendum', (await one("SELECT * FROM basket_consents WHERE artist_id = 'afnd' AND topic = 'processing_fees' ORDER BY at DESC, rowid DESC LIMIT 1")).doc_id === BAA.doc_id);
-    const before = await one("SELECT delivery_cents, version FROM artwork_delivery_offers WHERE artwork_id = 'wafnd3'");
-    const li = ap.locator('li[data-id="wafnd3"]'); await li.locator('summary').click();
+    // an available Founding work with a current fixed delivery price (the earlier ones are sold by now)
+    const U4W = 'wafnd7';
+    await db.prepare(`INSERT INTO artworks (id, artist_id, slug, title, year, medium, materials, h_cm, w_cm, d_cm, price_eur, price_on_request, availability, description, ord, ai_involvement, ai_note, archived, created_at, updated_at)
+      SELECT ?, artist_id, ?, title || ' VII', year, medium, materials, h_cm, w_cm, d_cm, 450, 0, 'available', description, ord + 40, ai_involvement, ai_note, 0, created_at, updated_at FROM artworks WHERE id = 'wafnd1'`).bind(U4W, U4W).run();
+    { const r0 = await call('PUT', `/api/checkout/basket/offers/${U4W}`, FND, { confirm: true, delivery_cents: 3000, delivery: DELIVERY }); if (r0.s !== 200) console.log('U4 setup', r0.s, r0.j); }
+    await ap.reload({ waitUntil: 'load' }); await ap.waitForSelector(`li.st-dv[data-id="${U4W}"]`, { timeout: 10000 });
+    const before = await one('SELECT delivery_cents, version FROM artwork_delivery_offers WHERE artwork_id = ?', U4W);
+    const li = ap.locator(`li.st-dv[data-id="${U4W}"]`); await li.locator('.st-dv-opt[data-dv="fixed"]').click();
     await li.locator('input[name="charge"]').fill('35.00'); await li.locator('input[name="confirm"]').check(); await li.locator('button[type="submit"]').click();
-    await ap.waitForFunction(() => /€35\.00/.test(document.querySelector('li[data-id="wafnd3"]')?.textContent || ''), null, { timeout: 10000 }).catch(() => {});
-    const after = await one("SELECT delivery_cents, version FROM artwork_delivery_offers WHERE artwork_id = 'wafnd3'");
+    await ap.waitForFunction(w => /€35\.00/.test(document.querySelector(`li.st-dv[data-id="${w}"]`)?.textContent || ''), U4W, { timeout: 10000 }).catch(() => {});
+    const after = await one('SELECT delivery_cents, version FROM artwork_delivery_offers WHERE artwork_id = ?', U4W);
     check('U4 artist changes a delivery offer on screen (the form is prefilled with the current offer): a new version at the new charge', after.delivery_cents === 3500 && after.version === before.version + 1, { before, after });
     if (UISHOT) await ap.screenshot({ path: `${UISHOT}/artist-basket.png`, fullPage: true });
     await ac.close();
@@ -544,8 +550,8 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
   const fa = Object.fromEntries((await call('GET', '/api/admin/checkout/baskets/artists', FOUNDER)).j.artists.map(a => [a.id, a]));
   const same = (r, f) => r.steps.filter(x => !x.done).length === f.missing.length && r.online.available === f.online.available && r.online.purchasable === f.online.purchasable && r.ready === !f.missing.length;
   check('OS1 artist readiness: six steps in page order, next step, artworks online; an artist who has not started has nothing done and nothing on sale',
-    rn.installed && rn.steps.map(x => x.key).join() === 'join,seller,stripe,basket,disclosure,delivery' && rn.done === 0 && !rn.started && rn.next === 'join' && rn.online.purchasable === 0 && rn.online.available === 2
-    && rn.online.reasons['online sales set-up not finished'] === 2 && rg.ready && rg.done === 6, { rn, rg });
+    rn.installed && rn.steps.map(x => x.key).join() === 'join,seller,stripe,basket,disclosure' && rn.done === 0 && !rn.started && rn.next === 'join' && rn.online.purchasable === 0 && rn.online.available === 2
+    && rn.online.reasons['online sales set-up not finished'] === 2 && rg.ready && rg.done === 5, { rn, rg });
   check('OS2 the artist and the founder see the same answer (one readiness check): steps left = founder’s “missing”, same artworks online, for every artist',
     same(rn, fa.anew) && same(rg, fa.agal) && same(rb, fa.anob), { rn: rn.steps, fan: fa.anew.missing, rb: rb.steps, fab: fa.anob.missing });
   check('OS3 nothing internal reaches the artist: no founder labels, no internal reasons, no other artist',
@@ -571,8 +577,8 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
     }
     check('OS5 Studio home: an optional “Online sales” card after the gallery checklist; not started → “Set up online sales”, in progress → steps done and the next step, set up → artworks online',
       homes.new.after && /Online sales\s*Optional/.test(homes.new.text) && /Set up online sales/.test(homes.new.text) && /work exactly as now/.test(homes.new.text)
-      && /\d of 6 steps done/.test(homes.nob.text) && /Next: /.test(homes.nob.text) && /Continue set-up/.test(homes.nob.text)
-      && /Online sales are set up/.test(homes.gal.text) && /can be bought online/.test(homes.gal.text) && /Manage online sales/.test(homes.gal.text) && homes.gal.btn === '/checkout-pilot', homes);
+      && /\d of 5 steps done/.test(homes.nob.text) && /Next: /.test(homes.nob.text) && /Continue set-up/.test(homes.nob.text)
+      && /Account set up for online sales/.test(homes.gal.text) && /can be bought online/.test(homes.gal.text) && /Manage online sales/.test(homes.gal.text) && homes.gal.btn === '/checkout-pilot', homes);
     check('OS6 Studio tabs: “Online sales” after Enquiries; every earlier tab kept', homes.new.tabs.join('|') === 'Gallery|Works|Profile|Opportunities|Enquiries|Online sales|Agreement|Preview ↗', homes.new.tabs);
     // the Online sales page: Studio tabs, the steps, the artworks line
     const pages = {};
@@ -580,18 +586,18 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
       const [c, pg] = await page(e, w); await pg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); await pg.waitForSelector('.st-os-steps', { timeout: 20000 });
       pages[k] = await pg.evaluate(() => ({ tabs: [...document.querySelectorAll('.st-tabs a')].map(a => [a.textContent, a.getAttribute('href'), a.getAttribute('aria-current')]),
         steps: [...document.querySelectorAll('.st-os-list li')].map(li => li.className + ':' + li.querySelector('.st-os-s').textContent),
-        text: document.querySelector('.st-os-steps').textContent.replace(/\s+/g, ' '), h1: document.querySelector('h1').textContent, wide: document.documentElement.scrollWidth > innerWidth + 1 }));
+        text: [...document.querySelectorAll('.st-os-steps, .st-os-art')].map(e => e.textContent).join(' ').replace(/\s+/g, ' '), h1: document.querySelector('h1').textContent, wide: document.documentElement.scrollWidth > innerWidth + 1 }));
       if (UISHOT) await pg.screenshot({ path: `${UISHOT}/online-sales-${k}.png`, fullPage: true });
       if (k === 'new') { await pg.click('a[data-step="join"]'); await pg.waitForFunction(() => { const t = document.querySelector('#pay-join').getBoundingClientRect(); return t.top >= 0 && t.top < innerHeight / 2; }, null, { timeout: 5000 }).catch(() => {}); pages.jump = await pg.evaluate(() => { const t = document.querySelector('#pay-join').getBoundingClientRect(); return t.top < innerHeight && t.bottom > 0; }); }
       await c.close();
     }
     check('OS7 Online sales page: the Studio tabs with “Online sales” current (others lead back to the Studio); the heading says it is optional',
       pages.new.tabs.length === 8 && pages.new.tabs.find(t => t[0] === 'Online sales')[2] === 'page' && pages.new.tabs.find(t => t[0] === 'Works')[1] === '/#/works' && pages.new.h1 === 'Online sales', pages.new.tabs);
-    check('OS8 “Your steps”: six steps, the first marked Next for a new artist, all Done when set up; each jumps to its section',
-      pages.new.steps.length === 6 && pages.new.steps[0] === 'next:Next' && pages.new.steps.slice(1).every(x => x === ':To do') && pages.gal.steps.every(x => x === 'done:Done') && pages.jump, pages);
+    check('OS8 “Account set-up”: five steps, the first marked Next for a new artist, all Done when set up; each jumps to its section',
+      pages.new.steps.length === 5 && pages.new.steps[0] === 'next:Next' && pages.new.steps.slice(1).every(x => x === ':To do') && pages.gal.steps.every(x => x === 'done:Done') && pages.jump, pages);
     check('OS9 artwork eligibility on the page: how many available artworks can be bought online and why not, in plain words',
-      /0 of 2 available artworks can be bought online/.test(pages.new.text) && /2 online sales set-up not finished/.test(pages.new.text) && /stay on enquiry/.test(pages.new.text)
-      && /of \d available artworks can be bought online/.test(pages.gal.text) && /price on request \(add a price to sell online\)/.test(pages.gal.text) && !pages['new-phone'].wide, { n: pages.new.text, g: pages.gal.text });
+      /0 artworks of 2 available can be bought online/.test(pages.new.text) && /2 online sales set-up not finished/.test(pages.new.text) && /Delivery arranged personally \(buyers enquire\)2/.test(pages.new.text)
+      && /of \d available can be bought online/.test(pages.gal.text) && /price on request \(add a price to sell online\)/.test(pages.gal.text) && !pages['new-phone'].wide, { n: pages.new.text, g: pages.gal.text });
     // ---- the full Online sales sequence by a new Gallery Artist, on a phone (touch) and on desktop (mobile report, 22 Nov 2026)
     const walk = async (id, email, slug, vp) => {
       await seedPublished(db, { id, slug, email, name: 'Walk ' + id, works: 2, publishedAt: ago(5) });
@@ -649,7 +655,7 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
       const wid = (await one("SELECT id FROM artworks WHERE artist_id = ? ORDER BY ord LIMIT 1", id)).id;
       out.offer = (await call('PUT', `/api/checkout/basket/offers/${wid}`, email, { confirm: true, delivery_cents: 4000, delivery: DELIVERY })).s;
       out.approved = await approveOffers([wid]);
-      await open(); out.final = await steps(); out.text = await pg.$eval('.st-os-steps', e => e.textContent.replace(/\s+/g, ' '));
+      await open(); out.final = await steps(); out.text = await pg.evaluate(() => [...document.querySelectorAll('.st-os-steps, .st-os-art')].map(e => e.textContent).join(' ').replace(/\s+/g, ' '));
       out.wide = await pg.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
       if (process.env.BASKET_UI_SHOTS && touch) { await pg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); }
       out.errs = errs;
@@ -660,14 +666,84 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
     const dt = await walk('awdt', 'walkdesk@example.test', 'wdt', { viewport: { width: 1280, height: 900 } });
     for (const [n, o] of [['phone', ph], ['desktop', dt]]) {
       check(`OS11 ${n}: before step 1, tapping steps 2–6 says step 1 must be completed first (naming it) and does not jump to step 1; “Go to step 1” lands below the header`,
-        o.locked.every(([k, m, y]) => m && /opens once step 1 is complete: Join online sales/.test(m) && y < 600) && o.goToStep1, o.locked);
+        o.locked.every(([k, m, y]) => m && /opens? once step 1 is complete: Join online sales/.test(m) && (k === 'delivery' || y < 600)) && o.goToStep1, o.locked);
       check(`OS12 ${n}: step 1 completed on screen is saved and persists after reloading`, o.afterJoin[0] === 'Done' && o.afterJoin[1] === 'Next', o.afterJoin);
       check(`OS13 ${n}: steps 2–6 each open their own section, visible below the sticky header (not step 1)`,
         o.sellerLanded && o.stripeLanded && o.basketLanded && o.disclosureLanded && o.deliveryLanded, o);
       check(`OS14 ${n}: steps 5–6 before step 4 name step 4 (the basket addendum) as the step to complete first`, /opens once step 4 is complete: Accept the basket addendum/.test(o.needs4 || ''), o.needs4);
-      check(`OS15 ${n}: the whole sequence completes through the real forms (seller information, Stripe, basket addendum, seller confirmation, an approved delivery offer): six steps done and an artwork can be bought online`,
+      check(`OS15 ${n}: the whole sequence completes through the real forms (seller information, Stripe, basket addendum, seller confirmation, an approved delivery offer): five account steps done and an artwork can be bought online`,
         o.afterSeller[1] === 'Done' && o.afterStripe[2] === 'Done' && o.afterBasket[3] === 'Done' && o.afterDisclosure[4] === 'Done' && o.offer === 200 && o.approved === 1
-        && o.final.every(x => x === 'Done') && /1 of 2 available artworks can be bought online/.test(o.text) && !o.wide && !o.errs.length, o);
+        && o.final.every(x => x === 'Done') && /1 artwork of 2 available can be bought online/.test(o.text) && !o.wide && !o.errs.length, o);
+    }
+    // ---- delivery per artwork (23 Nov 2026): fixed price (buy online once approved) or arranged personally (buyers enquire)
+    {
+      const wk = async id => (await q('SELECT id FROM artworks WHERE artist_id = ? ORDER BY ord', id)).map(x => x.id);
+      const [dFix, dArr] = await wk('awdt'), [pFix, pArr] = await wk('awph'), [nW] = await wk('anew');
+      const items = async ids => (await pub('GET', '/api/basket/items?ids=' + ids.join(','))).j.items;
+      let it = await items([dFix, dArr, nW]);
+      check('OS18 one artist, two choices: the fixed-price work (approved) can be bought online; the arranged-personally work cannot and is marked delivery_arranged; an artist not set up gets no such mark',
+        it[0].ok && !it[1].ok && it[1].delivery_arranged === true && !it[2].ok && !('delivery_arranged' in it[2]), it);
+      check('OS18b readiness counts per artwork, the same for the artist and the founder: account set up, 1 fixed approved, 1 arranged, 1 of 2 online',
+        await (async () => { const a = (await call('GET', '/api/checkout/basket/readiness', 'walkdesk@example.test')).j, f = (await call('GET', '/api/admin/checkout/baskets/artists', FOUNDER)).j.artists.find(x => x.id === 'awdt');
+          return a.ready && a.total === 5 && a.delivery.fixed_approved === 1 && a.delivery.arranged === 1 && a.online.purchasable === 1 && JSON.stringify(a.delivery) === JSON.stringify(f.delivery) && !f.missing.length; })());
+      // the buyer's artwork page (phone): the real gallery script, against the real checkout Worker
+      const bc = await BR.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true }), bp = await bc.newPage();
+      await bp.route(ORIGIN + '/**', async r => { const rq = r.request(); const res = await CW.fetch(rq.url(), { method: rq.method(), headers: { origin: 'https://plotnua.ie' } });
+        r.fulfill({ status: res.status, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' }, body: await res.text() }); });
+      const js = readFileSync(HERE + '../../plotart/assets/pa-basket.js', 'utf8');
+      const buyerPage = async id => { await bp.setContent(`<main><div class="pa-aw-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie">Enquire about this work</a><p class="pa-aw-cta-note">Your enquiry comes to PlotArt and is passed to the artist. The artist is the seller and arranges any sale with you directly.</p><div class="pa-basket" data-pa-basket-origin="${ORIGIN}" data-pa-artwork="${id}" hidden><a class="pa-btn pa-btn--ghost" href="${ORIGIN}/basket?add=${id}">Add to basket</a><p class="pa-aw-cta-note">Or buy online: one secure card payment for works from several artists. Each artist is the seller.</p></div></div></main><script>${js}</script>`);
+        await bp.waitForTimeout(700);
+        return bp.evaluate(() => { const b = document.querySelector('.pa-basket'); return { shown: !b.hidden, add: !!b.querySelector('a'), note: b.hidden ? null : b.querySelector('.pa-aw-cta-note').textContent, enquire: !!document.querySelector('a.pa-btn--solid') }; }); };
+      const bFix = await buyerPage(dFix), bArr = await buyerPage(dArr);
+      if (process.env.BASKET_UI_SHOTS) await bp.screenshot({ path: `${process.env.BASKET_UI_SHOTS}/buyer-arranged-phone.png` });
+      const bNew = await buyerPage(nW);
+      await bc.close();
+      check('OS19 buyer page (phone): fixed and approved → “Add to basket”; arranged personally → no basket button and “Delivery for this work is arranged with the artist. Enquire for a delivery quote and the full price before you buy.”; not set up → unchanged enquiry page. “Enquire” is always there',
+        bFix.shown && bFix.add && bArr.shown && !bArr.add && /arranged with the artist\. Enquire for a delivery quote and the full price before you buy/.test(bArr.note) && !bNew.shown && bFix.enquire && bArr.enquire && bNew.enquire, { bFix, bArr, bNew });
+      // the artist switches one work between the two choices (phone, taps)
+      const ac = await BR.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true }), apg = await ac.newPage();
+      await apg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token('walkphone@example.test') });
+      await apg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); await apg.waitForSelector(`li.st-dv[data-id="${pFix}"]`);
+      const state = () => apg.$$eval('li.st-dv', ls => ls.map(l => [l.dataset.id, [...l.querySelectorAll('.st-dv-opt')].map(b => b.dataset.dv + ':' + b.getAttribute('aria-pressed')).join(',')]));
+      const s0 = await state();
+      const arrFields = await apg.$eval(`li.st-dv[data-id="${pArr}"]`, l => l.querySelectorAll('input:not([type=checkbox]), select, textarea').length + (l.querySelector('details[open]') ? 100 : 0));
+      if (process.env.BASKET_UI_SHOTS) { await apg.evaluate(() => document.getElementById('pay-delivery').scrollIntoView()); await apg.evaluate(() => scrollBy(0, -130)); await apg.screenshot({ path: `${process.env.BASKET_UI_SHOTS}/artist-delivery-phone.png` }); }
+      await apg.tap(`li.st-dv[data-id="${pFix}"] .st-dv-opt[data-dv="arranged"]`);
+      const conf = await apg.$eval(`li.st-dv[data-id="${pFix}"] .st-dv-off`, e => !e.hidden && e.textContent);
+      await apg.tap(`li.st-dv[data-id="${pFix}"] .st-dv-off button[data-withdraw-offer]`); await apg.waitForTimeout(800);
+      const wd = await one('SELECT withdrawn_at FROM artwork_delivery_offers WHERE artwork_id = ?', pFix), ev = await q("SELECT kind FROM delivery_offer_events WHERE artwork_id = ? ORDER BY at", pFix);
+      it = await items([pFix]); const afterOff = it[0];
+      await apg.reload({ waitUntil: 'load' }); await apg.waitForSelector(`li.st-dv[data-id="${pFix}"]`); const s1 = await state();
+      check('OS20 phone: two clear choices per available artwork; “Arranged personally” needs no fields; switching a fixed price to arranged asks to confirm, then withdraws the offer (recorded): the work is enquiry-only at once',
+        s0.find(x => x[0] === pFix)[1] === 'fixed:true,arranged:false' && s0.find(x => x[0] === pArr)[1] === 'fixed:false,arranged:true' && arrFields < 100
+        && /Buyers will enquire instead/.test(conf || '') && !!wd.withdrawn_at && ev.map(x => x.kind).pop() === 'withdrawn' && !afterOff.ok && afterOff.delivery_arranged === true
+        && s1.find(x => x[0] === pFix)[1] === 'fixed:false,arranged:true', { s0, s1, conf, wd, ev, afterOff, arrFields });
+      // back to a fixed price: a new version, not buyable until PlotArt approves it again
+      await apg.tap(`li.st-dv[data-id="${pFix}"] .st-dv-opt[data-dv="fixed"]`);
+      const li = apg.locator(`li.st-dv[data-id="${pFix}"]`);
+      await call('PUT', `/api/checkout/basket/offers/${pFix}`, 'walkphone@example.test', { confirm: true, delivery_cents: 5500, delivery: DELIVERY });   // the long form itself is covered by U4
+      it = await items([pFix]); const waiting = it[0];
+      const appr = await approveOffers([pFix]); it = await items([pFix]); const again = it[0];
+      check('OS21 choosing a fixed price again makes a new offer version that is NOT buyable until PlotArt approves it (and the approval of the old version does not count); after approval it can be bought again',
+        (await li.locator('details').evaluate(d => d.open)) && !waiting.ok && !waiting.delivery_arranged && appr === 1 && again.ok && again.delivery_cents === 5500, { waiting, again, appr });
+      await ac.close();
+      // the existing enquiry-to-checkout route for an arranged-personally work: PlotArt quotes delivery and the full price,
+      // the artist approves, the buyer gets a payment link for the full total (nothing paid before the total is agreed)
+      // the buyer's enquiry, logged as the enquiry relay logs it (a quote is refused for an enquiry PlotArt has no record of)
+      await db.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at) VALUES (?,?,?,?, 'relay', ?,?,?, 'relay', ?)`)
+        .bind('elarr', 'PA-E-261123-ARRNGD', 'awdt', dArr, ago(1), 0, null, ago(1)).run();
+      const c0 = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'awdt', artwork_id: dArr, enquiry_ref: 'PA-E-261123-ARRNGD', buyer_email: 'enquirer@example.test' });
+      const oid = c0.j && c0.j.order && c0.j.order.id;
+      const u0 = oid && await call('PUT', `/api/admin/checkout/orders/${oid}`, FOUNDER, { artwork_cents: 90000, delivery_cents: 12000, delivery: { ...DELIVERY, covered_value_cents: 150000, destination: '3 Quay Street, Galway (agreed with the buyer by enquiry)', destination_country: 'IE' } }); if (u0 && u0.s !== 200) console.log('OS22 quote refused:', u0.j && u0.j.error);
+      const s2 = oid && await call('POST', `/api/admin/checkout/orders/${oid}/send`, FOUNDER, {});
+      const ov = oid && await one('SELECT quote_version FROM checkout_orders WHERE id = ?', oid);
+      const a2 = oid && await call('POST', `/api/checkout/orders/${oid}/approve`, 'walkdesk@example.test', { quote_version: ov.quote_version, confirm: { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true, returns: true, seller_information: true } });
+      const i2 = oid && await call('POST', `/api/admin/checkout/orders/${oid}/issue`, FOUNDER, { days: 3, linked_check_confirmed: true });
+      const o2 = oid && await one('SELECT status, artwork_cents + delivery_cents AS total_cents, delivery_cents FROM checkout_orders WHERE id = ?', oid);
+      it = await items([dArr]);
+      check('OS22 enquiry to checkout for an arranged-personally work: PlotArt quotes delivery and the full total, the artist approves it, the quote is issued for payment of the full total (EUR 900 + EUR 120); the basket still refuses the work',
+        c0.s === 200 && u0.s === 200 && s2.s === 200 && a2.s === 200 && i2.s === 200 && o2.total_cents === 102000 && o2.delivery_cents === 12000 && /quoted|checkout_open/.test(o2.status) && !it[0].ok,
+        { c0: c0.s, u0: u0 && u0.s, s2: s2 && [s2.s, s2.j && s2.j.error], a2: a2 && [a2.s, a2.j && a2.j.error], i2: i2 && [i2.s, i2.j && i2.j.error], o2 });
     }
     // ---- step 1 refused by the server (23 Nov 2026 report: production refused it, the page seemed to jump back to step 1)
     {

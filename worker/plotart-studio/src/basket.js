@@ -331,7 +331,9 @@ export async function preview(env, ids) {
     const l = await lineFor(env, id, at);
     if (!l.ok) {
       const w = await one(env, 'SELECT a.display_name, w.title FROM artworks w JOIN artists a ON a.id = w.artist_id WHERE w.id = ?', id);
-      items.push({ id, ok: false, reason: l.reason, title: w ? w.title : null, artist: w ? w.display_name : null }); continue;
+      // delivery_arranged: the artist is set up for online sales but arranges this work's delivery personally (no fixed
+      // delivery price): the gallery page says to enquire for a delivery quote (23 Nov 2026)
+      items.push({ id, ok: false, reason: l.reason, title: w ? w.title : null, artist: w ? w.display_name : null, ...(l.why === 'no delivery offer' ? { delivery_arranged: true } : {}) }); continue;
     }
     items.push({ id, ok: true, title: l.work.title, year: l.work.year, medium: l.work.medium, size: l.work.h_cm ? `${l.work.h_cm} × ${l.work.w_cm}${l.work.d_cm ? ' × ' + l.work.d_cm : ''} cm` : null,
       artist: l.artist.display_name, artist_id: l.artist.id, founding_artist: !!l.artist.founding, seller: l.prof.legal_name, seller_info: sellerInfo(l.prof), returns: returnsInfo(l.delivery), url: artworkUrl(env, l.artist, l.work),
@@ -811,14 +813,14 @@ export async function adminEligibility(env, ids) {
    step still to do cannot sell any, so only a ready artist's works are checked one by one. */
 const ARTIST_REASON = {
   'artist not ready': 'online sales set-up not finished', 'price on request': 'price on request (add a price to sell online)',
-  'above the pilot price limit': 'above the online price limit', 'no delivery offer': 'no delivery offer yet',
+  'above the pilot price limit': 'above the online price limit', 'no delivery offer': 'delivery arranged personally (buyers enquire)',
   'delivery cover below the price': 'transit insurance below the price', 'return arrangements missing': 'return arrangements missing from the delivery offer',
   'commission-free: no valid processing-fee consent': 'commission-free work: needs the optional processing-fee consent',
   'commission-free: direct payment (policy)': 'commission-free work: enquiry and direct sale only', 'sold': 'sold',
   'reserved': 'reserved for a buyer just now', 'published price differs from the Studio': 'new price not yet published',
   'not published as available': 'not yet published as available',
-  'delivery offer awaiting founder approval': 'delivery offer waiting for PlotArt to review it',
-  'delivery offer returned by the founder': 'delivery offer returned by PlotArt: see the note and save it again',
+  'delivery offer awaiting founder approval': 'fixed delivery price waiting for PlotArt to review it',
+  'delivery offer returned by the founder': 'fixed delivery price returned by PlotArt: see the note and save it again',
   'delivery offer has no dispatch and delivery deadlines': 'delivery offer needs dispatch and delivery deadlines (save it again)',
 };
 export async function artistReadiness(env, a) {
@@ -833,10 +835,16 @@ export async function artistReadiness(env, a) {
     { key: 'stripe', label: 'Connect Stripe and complete its checks', founder: 'Stripe onboarding', done: stripe === 'onboarded' },
     { key: 'basket', label: 'Accept the basket addendum', founder: 'basket addendum', done: !!bm.current },
     { key: 'disclosure', label: 'Confirm what buyers see about you as the seller', founder: 'seller-information confirmation', done: !!bm.seller_disclosure.valid },
-    { key: 'delivery', label: 'Set a delivery offer for each artwork', founder: 'delivery offers', done: offers > 0 },
   ];
+  // Delivery is chosen per artwork, not an account step (23 Nov 2026): a fixed delivery price (buyers can pay online once
+  // PlotArt approves it) or arranged personally (no current offer: buyers enquire; the default). Counted over the
+  // artist's available artworks. Nothing here makes a work buyable: lineFor alone decides that.
   const missing = steps.filter(x => !x.done).map(x => x.founder);
-  const avail = await all(env, `SELECT id FROM artworks WHERE artist_id = ? AND archived = 0 AND availability = 'available' ORDER BY ord`, a.id);
+  const avail = await all(env, `SELECT id, price_eur, price_on_request FROM artworks WHERE artist_id = ? AND archived = 0 AND availability = 'available' ORDER BY ord`, a.id);
+  const delivery = { fixed_approved: 0, fixed_waiting: 0, fixed_returned: 0, arranged: 0 };
+  for (const w of avail) { const o = offerRows.find(x => x.artwork_id === w.id);
+    // a work without a price is counted under its price ("price on request"), not as arranged delivery
+    if (!o) { if (!w.price_on_request && w.price_eur > 0) delivery.arranged++; } else { const rv = await offerReview(env, o); delivery[rv.approved ? 'fixed_approved' : rv.state === 'returned' ? 'fixed_returned' : 'fixed_waiting']++; } }
   const online = { available: avail.length, purchasable: 0, not_purchasable: {} };
   if (!missing.length) for (const w of avail) {
     const l = await lineFor(env, w.id, now());
@@ -844,7 +852,7 @@ export async function artistReadiness(env, a) {
   } else if (avail.length) online.not_purchasable['artist not ready'] = avail.length;
   const artist_reasons = {};
   for (const [k, n] of Object.entries(online.not_purchasable)) { const t = ARTIST_REASON[k] || 'not available online just now'; artist_reasons[t] = (artist_reasons[t] || 0) + n; }
-  return { id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, delivery_offers_approved: offers_approved, basket_addendum: bm.doc_id, basket_current: bm.current, online,
+  return { id: a.id, display_name: a.display_name, founding: !!a.founding, stripe, delivery_offers: offers, delivery_offers_approved: offers_approved, delivery, basket_addendum: bm.doc_id, basket_current: bm.current, online,
     seller_disclosure: bm.seller_disclosure, processing_consent: bm.processing_consent, missing, steps: steps.map(({ founder, ...x }) => x), artist_reasons,
     commission_free_works: !a.founding ? 'none expected' : bm.processing_consent.valid ? 'offered (artist bears Stripe fees, 0% commission)' : 'direct payment only (no valid consent)' };
 }
@@ -865,7 +873,7 @@ export async function artistReadinessView(env, artist) {
   const sw = C.switches(env);
   return { installed: true, enabled: !!sw.enabled, live: !!sw.live, steps: r.steps, done, total: r.steps.length, next: next && next.key,
     ready: !next, founding: r.founding, processing_consent: !!r.processing_consent.valid,
-    online: { available: r.online.available, purchasable: r.online.purchasable, reasons: r.artist_reasons }, started: r.steps.some(x => x.done) };
+    online: { available: r.online.available, purchasable: r.online.purchasable, reasons: r.artist_reasons }, delivery: r.delivery, started: r.steps.some(x => x.done) };
 }
 export async function adminReconcile(env, founder, id) { await coordinate(env, id, founder); return adminDetail(env, id); }
 export async function adminCancel(env, founder, id, b) {
