@@ -78,9 +78,9 @@ PROVIDERS = [
      "facts": [("Area", "Throughout Dublin. Nationwide deliveries by arrangement."),
                ("Enquiries", "Welcomes enquiries from artists, galleries and art buyers seeking flexible transport."),
                ("Quotations", "Contact FastLane Couriers directly for a quotation.")],
-     # website button withheld 22 Nov 2026 (founder): fastlanecouriers.com serves only a hosting "Coming Soon!" page (HTTP 503);
-     # restore ("https://www.fastlanecouriers.com", "Visit Website / Request a Quote", "services_fastlane_web", True) once it is live
-     "links": [("mailto:info@fastlanecouriers.com", "Email info@fastlanecouriers.com", "services_fastlane_email", False),
+     # website button restored 23 Nov 2026 (founder): site operational again (withheld 22 Nov while it showed a holding page)
+     "links": [("https://www.fastlanecouriers.com", "Visit Website / Request a Quote", "services_fastlane_web", True),
+               ("mailto:info@fastlanecouriers.com", "Email info@fastlanecouriers.com", "services_fastlane_email", False),
                ("tel:+35319081167", "Call 01 908 1167", "services_fastlane_phone", False),
                ("https://wa.me/353851402487", "WhatsApp 085 140 2487", "services_fastlane_whatsapp", "wa")]},
 ]
