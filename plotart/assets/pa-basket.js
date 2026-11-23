@@ -1,6 +1,7 @@
 /* PlotArt multi-artist basket (21 Nov 2026; included only when the founder sets basket_origin for publishing).
    Asks the PlotArt checkout Worker whether this artwork can be bought online right now. Only then is the hidden
-   "Add to basket" button shown; otherwise the page stays the enquiry page it was. The basket itself lives on the checkout
+   "Add to basket" button shown. If the artist arranges this work's delivery personally, a short note says so instead;
+   otherwise the page stays the enquiry page it was. The basket itself lives on the checkout
    Worker's page. Sends no cookies and stores nothing on plotnua.ie. */
 (function () {
   'use strict';
@@ -11,7 +12,17 @@
   fetch(origin + '/api/basket/items?ids=' + encodeURIComponent(id), { mode: 'cors', credentials: 'omit' })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (j) {
-      if (!j || !j.open || !j.items || !j.items[0] || !j.items[0].ok) return;
+      if (!j || !j.open || !j.items || !j.items[0]) return;
+      if (!j.items[0].ok) {
+        // the artist arranges this work's delivery personally (no fixed delivery price): say so beside the enquiry button
+        // (23 Nov 2026). No basket button; the buyer enquires and agrees delivery and the full price before paying.
+        if (j.items[0].delivery_arranged !== true) return;
+        var link = box.querySelector('a'), note = box.querySelector('.pa-aw-cta-note');
+        if (link) link.parentNode.removeChild(link);
+        if (note) note.textContent = 'Delivery for this work is arranged with the artist. Enquire for a delivery quote and the full price before you buy.';
+        box.hidden = false;
+        return;
+      }
       var a = box.querySelector('a'), img = document.querySelector('.pa-aw-frame img');
       var src = img && (img.currentSrc || img.src);
       if (a && src && /^https:\/\/plotnua\.ie\/plotart\/artists\/[a-z0-9-]+\/img\/[A-Za-z0-9._-]+$/.test(src)) a.href += '&img=' + encodeURIComponent(src);
