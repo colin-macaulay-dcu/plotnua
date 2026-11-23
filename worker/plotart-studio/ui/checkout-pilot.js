@@ -17,8 +17,17 @@
      (alert, prompt, confirm) are not used for the founder's quote and refund steps: some browsers, including embedded ones,
      suppress them, which silently sent empty answers (20 Nov 2026, deployed TEST purchase). */
   const showError = (ev, msg) => {
-    const f = ev && ev.target && ev.target.closest && ev.target.closest('form'), box = (f && f.querySelector('[data-err]')) || document.getElementById('page-error');
-    if (box) { box.textContent = msg; box.hidden = false; box.focus && box.focus(); }
+    const f = ev && ev.target && ev.target.closest && ev.target.closest('form');
+    let box = f && f.querySelector('[data-err]');
+    // a form without its own error line gets one, beside its button: the message is always where the artist pressed
+    // (23 Nov 2026: it went to the top of the page, out of sight on a phone, so the page only seemed to jump back)
+    if (f && !box) { box = document.createElement('p'); box.className = 'st-err'; box.setAttribute('data-err', ''); box.setAttribute('role', 'alert'); box.tabIndex = -1; f.appendChild(box); }
+    box = box || document.getElementById('page-error');
+    if (!box) return;
+    box.textContent = msg; box.hidden = false;
+    const hdr = document.querySelector('.st-top'), off = (hdr ? hdr.getBoundingClientRect().bottom : 0) + 12, r = box.getBoundingClientRect();
+    if (r.top < off || r.bottom > window.innerHeight) window.scrollTo({ top: Math.max(0, r.top + window.scrollY - off - 40), behavior: 'auto' });
+    box.focus && box.focus({ preventScroll: true });
   };
   const act = fn => async ev => { ev.preventDefault(); const f = ev.target.closest && ev.target.closest('form'), box = f && f.querySelector('[data-err]');
     if (box) { box.textContent = ''; box.hidden = true; }
@@ -332,6 +341,7 @@
       <div class="st-os-bar" aria-hidden="true"><span style="width:${Math.round(100 * r.done / r.total)}%"></span></div>
       <ol class="st-os-list">${r.steps.map((x, i) => `<li class="${x.done ? 'done' : x.key === r.next ? 'next' : ''}"><a href="${STEP_AT[x.key]}" data-step="${x.key}"><span class="st-os-n" aria-hidden="true">${x.done ? '✓' : i + 1}</span><span>${esc(x.label)}${x.key === 'delivery' ? '<small>Including transit insurance for at least the price</small>' : ''}</span><span class="st-os-s">${x.done ? 'Done' : x.key === r.next ? 'Next' : 'To do'}</span></a></li>`).join('')}</ol>
       <p class="st-os-msg" data-step-msg role="status" aria-live="polite" tabindex="-1" hidden></p>
+      ${r.enabled ? '' : '<p class="st-os-msg" data-os-closed>Online sales are not open yet. Your steps can be completed once PlotArt opens them; nothing you have saved is lost.</p>'}
       ${r.founding ? `<p class="st-muted st-os-note">Founding Artist: your commission-free artworks can also be bought online if you give the separate, optional processing-fee consent in the basket section${r.processing_consent ? ' (given)' : ''}.</p>` : ''}
       <h3 class="st-os-h3">Your artworks</h3>
       <p class="st-os-state">${o.available ? `${o.purchasable} of ${o.available} available ${o.available === 1 ? 'artwork' : 'artworks'} can be bought online` : 'No available artworks yet'}</p>
@@ -409,7 +419,7 @@
       const m = j.membership;
       h += '<section class="st-card st-os-sec">';   // the artist's payment set-up in one card (22 Nov 2026)
       if (!m.opted_in) h += j.addendum ? `<h2 id="pay-join">Join online sales</h2><p>Read the <a href="/payment-terms/${esc(j.addendum.doc_id)}.html" target="_blank" rel="noopener">${esc(j.addendum.title)}</a>.</p>
-        <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label><button>Set up online sales</button></form>` : '<p id="pay-join">The payment addendum has not been issued yet.</p>';
+        <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label>${sw.enabled ? '<button>Set up online sales</button>' : '<button disabled aria-describedby="os-closed-note">Set up online sales</button><p class="st-muted" id="os-closed-note">Online sales are not open yet.</p>'}</form>` : '<p id="pay-join">The payment addendum has not been issued yet.</p>';
       else {
         h += `<h2>Payments and Stripe</h2><p class="st-muted">${esc(j.direct_payment_note)}</p>`;
         if (j.seller_profile && !j.checkout_available) h += `<p class="st-warn">${esc(j.trader_question.unavailable)}</p>`;
