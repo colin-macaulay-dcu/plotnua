@@ -467,30 +467,34 @@ if vg:
     _region = vg[_ra:_rb] if (vg.count(VG_BEGIN.decode()) == 1 and vg.count(VG_END.decode()) == 1 and 0 <= _ra < _rb) else ""
     need(bool(_region), "L11 the Virtual Gallery collection region (pa-vg-collection markers) is missing or duplicated")
     _hang_m = re.search(r'\n  <ol class="pa-vgc-hang n-([123])" aria-label="Open galleries">(.*?)\n  </ol>', _region, re.S)
-    _works = re.findall(r'\n    <li class="pa-vgc-work">(.*?)</li>', _hang_m.group(2), re.S) if _hang_m else []
+    # 23 Nov 2026 (founder brief): no number beside the artist's name. A work's founding position is data-pa-position on
+    # its <li> (never shown or announced); the label is the name, the practice line and "Enter the gallery" only.
+    _works = re.findall(r'\n    <li class="pa-vgc-work"(?: data-pa-position="(\d\d)")?>(.*?)</li>', _hang_m.group(2), re.S) if _hang_m else []
     need(not _hang_m or len(re.findall(r"<li\b", _hang_m.group(2))) == len(_works), "L11 the wall holds something other than open galleries")
+    need(not re.search(r'pa-vgc-n\b|<span class="pa-vgc-sr">Position', _region),
+         "L11 the Artists' Gallery shows position numbers beside artist names again (removed 23 Nov 2026)")
     _cards, _wnums, _bad_work = [], [], []
-    for _w in _works:
-        _m = re.search(r'<div class="pa-vgc-label"><span class="pa-vgc-n" aria-hidden="true">(\d\d|)</span><div><h3 class="pa-vgc-name">'
-                       r'<a href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist">(<span class="pa-vgc-sr">Position (\d\d): </span>)?([^<]+)</a></h3>', _w)
-        if not _m or (_m.group(1) or None) != _m.group(4):
+    for _pn, _w in _works:
+        _m = re.search(r'<div class="pa-vgc-label"><h3 class="pa-vgc-name">'
+                       r'<a href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist">([^<]+)</a></h3>', _w)
+        if not _m:
             _bad_work.append(_w[:80]); continue
-        _cards.append(_m.group(2)); _wnums.append(int(_m.group(1)) if _m.group(1) else None)
+        _cards.append(_m.group(1)); _wnums.append(int(_pn) if _pn else None)
         _imgs = re.findall(r"<img\b[^>]*>", _w)
         _empty = '<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>' in _w
-        _own = re.compile(r"\.\./artists/%s/img/[a-z0-9-]+\.webp" % re.escape(_m.group(2)))
+        _own = re.compile(r"\.\./artists/%s/img/[a-z0-9-]+\.webp" % re.escape(_m.group(1)))
         _urls = []
         for t in _imgs:
             _src = re.search(r'\ssrc="([^"]*)"', t); _set = re.search(r'\ssrcset="([^"]*)"', t)
             _urls += [_src.group(1) if _src else ""] + ([x.strip().split(" ")[0] for x in _set.group(1).split(",")] if _set else [])
         if len(_imgs) != (0 if _empty else 1) or _w.count('<a ') != 1 or not all(_own.fullmatch(u) for u in _urls):
-            _bad_work.append(_m.group(2))
+            _bad_work.append(_m.group(1))
     need(_hang_m is not None or not GALLERY_SLUGS, "L11 the Virtual Gallery has published galleries but no wall of open galleries")
     need(not _hang_m or int(_hang_m.group(1)) == min(len(_works), 3), "L11 the wall's size class does not match the number of open galleries")
     need(not _bad_work, "L11 an open gallery on the wall is malformed, links elsewhere or shows another artist's image (%s)" % _bad_work)
     # The public "Founding positions" index was removed on 21 Nov 2026 (founder brief: a public presentation change only;
     # the founding records, numbers, agreements and the Studio's Gallery order are unchanged). It must not return, and
-    # the wall's position numerals must still be a clean founding order: each 01-25, each used once, ascending, every
+    # the wall's positions (data-pa-position since 23 Nov 2026) must still be a clean founding order: each 01-25, each used once, ascending, every
     # numbered gallery before any gallery without a position.
     need(not re.search(r'pa-vgc-(index|plan|pos|line|key)\b|vgIdxH', vg) and "Founding positions" not in vgv
          and not re.search(r"\b(twenty-five|25) (numbered )?positions\b", vgv, re.I),
@@ -498,7 +502,7 @@ if vg:
     _numbered = [(n, s) for n, s in zip(_wnums, _cards) if n is not None]
     _ns = [n for n, _ in _numbered]
     need(all(1 <= n <= 25 for n in _ns) and _ns == sorted(set(_ns)) and all(n is None for n in _wnums[len(_numbered):]),
-         "L11 the wall's position numerals are out of order, repeated, outside 01-25, or follow a gallery without a position")
+         "L11 the wall's positions are out of order, repeated, outside 01-25, or follow a gallery without a position")
     # the "N of 25 galleries open" counter and the twenty-five-gallery heading were removed (founder brief 17 Nov 2026)
     need("pa-vgc-count" not in vg and not re.search(r"\d+ of 25 galleries", vgv), "L11 the Artists' Gallery still shows the 25-gallery counter")
     need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
