@@ -5,5 +5,11 @@
     "INSTANT_PUBLISH_DISPATCH": "true",
     "MAILER": "resend",
     "APPLICATION_REVIEW_PUBLIC_URL": "https://plotart-application-review.colin-a41.workers.dev"
+  },
+  "checkout_live": {
+    "confirmation": "ENABLE LIVE PLOTART CHECKOUT",
+    "checkout_origin": "https://plotart-checkout.colin-a41.workers.dev",
+    "mail_from": "PlotArt <hello@plotnua.ie>",
+    "notify_email": "colin@plotnua.ie"
   }
 }

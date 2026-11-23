@@ -131,11 +131,19 @@ check('L7f live can never be enabled for the TEST environment', !r.ok && /never 
 const studio = (prodJson) => { if (prodJson) require_write(tmp + '/w/production.json', prodJson); try { return { ok: true, out: execFileSync('python3', [ROOT + 'atlas-tools/release/studio/render-config.py', tmp + '/w'], { env: { ...process.env, STUDIO_D1_DATABASE_ID: '22222222-2222-2222-2222-222222222222', STUDIO_ACCESS_AUD: 'b'.repeat(64), STUDIO_ACCESS_TEAM: 'https://y.cloudflareaccess.com' }, encoding: 'utf8', stdio: 'pipe' }) }; } catch (e) { return { ok: false, out: String(e.stdout) + String(e.stderr) }; } };
 const { writeFileSync } = await import('node:fs');
 function require_write(f, o) { writeFileSync(f, JSON.stringify(o, null, 2)); }
-const base = JSON.parse(readFileSync(HERE + 'production.json', 'utf8'));
+const committed = JSON.parse(readFileSync(HERE + 'production.json', 'utf8'));
+// the switch itself, tested from OFF: production.json without its checkout_live block
+const base = { ...committed }; delete base.checkout_live;
+// online sales opened for artists in the Studio (founder approval of live checkout, Steps 5-6, 22 Nov 2026; the Studio half, 23 Nov 2026)
+const APPROVED_LIVE = { confirmation: 'ENABLE LIVE PLOTART CHECKOUT', checkout_origin: 'https://plotart-checkout.colin-a41.workers.dev', mail_from: 'PlotArt <hello@plotnua.ie>', notify_email: 'colin@plotnua.ie' };
 const st = () => readFileSync(tmp + '/w/wrangler.production.toml', 'utf8');
 r = studio(base);
-check('L7g Studio production as committed: pilot OFF, no live switch', r.ok && /CHECKOUT_PILOT_ENABLED = "false"/.test(st()) && !/^CHECKOUT_LIVE\s*=/m.test(st()), r.out);
-check('L7h production.json as committed has no checkout_live block', !('checkout_live' in base));
+check('L7g Studio production without a checkout_live block: pilot OFF, no live switch', r.ok && /CHECKOUT_PILOT_ENABLED = "false"/.test(st()) && !/^CHECKOUT_LIVE\s*=/m.test(st()), r.out);
+check('L7h production.json as committed carries exactly the approved checkout_live block (production checkout origin, plotnua.ie sender and notifications) and nothing else changes',
+  JSON.stringify(committed.checkout_live) === JSON.stringify(APPROVED_LIVE) && JSON.stringify(Object.keys(committed).sort()) === JSON.stringify(['_note', 'checkout_live', 'vars']));
+r = studio(committed);
+check('L7h2 Studio production as committed: pilot ON in LIVE mode with the production checkout origin', r.ok && /CHECKOUT_PILOT_ENABLED = "true"/.test(st()) && /CHECKOUT_LIVE = "true"/.test(st())
+  && /CHECKOUT_ORIGIN = "https:\/\/plotart-checkout\.colin-a41\.workers\.dev"/.test(st()) && !/SANDBOX|STRIPE_API_BASE/.test(st()), r.out);
 r = studio({ ...base, vars: { ...base.vars, CHECKOUT_PILOT_ENABLED: 'true' } });
 check('L7i switching the pilot on through production.json vars is refused', !r.ok && /only by its checkout_live block/.test(r.out));
 r = studio({ ...base, vars: { ...base.vars, CHECKOUT_LIVE: 'true' } });

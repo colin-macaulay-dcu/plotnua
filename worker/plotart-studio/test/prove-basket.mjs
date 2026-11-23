@@ -669,6 +669,33 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
         o.afterSeller[1] === 'Done' && o.afterStripe[2] === 'Done' && o.afterBasket[3] === 'Done' && o.afterDisclosure[4] === 'Done' && o.offer === 200 && o.approved === 1
         && o.final.every(x => x === 'Done') && /1 of 2 available artworks can be bought online/.test(o.text) && !o.wide && !o.errs.length, o);
     }
+    // ---- step 1 refused by the server (23 Nov 2026 report: production refused it, the page seemed to jump back to step 1)
+    {
+      const E1 = 'refused@example.test';
+      await seedPublished(db, { id: 'aref', slug: 'ref', email: E1, name: 'Rae Refused', works: 1, publishedAt: ago(5) });
+      const c = await BR.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true }), pg = await c.newPage();
+      await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(E1) });
+      // the production condition, reproduced: the Studio refuses the join because online sales are switched off there
+      await pg.route('**/api/checkout/opt-in', r => r.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ ok: false, error: 'The payment pilot is switched off' }) }));
+      await pg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); await pg.waitForSelector('form[data-f="optin"]');
+      await pg.evaluate(() => document.getElementById('pay-join').scrollIntoView()); await pg.tap('form[data-f="optin"] input[name="accept"]'); await pg.tap('form[data-f="optin"] button');
+      await pg.waitForSelector('form[data-f="optin"] [data-err]:not([hidden])', { timeout: 5000 }).catch(() => {});
+      const seen = await pg.evaluate(() => { const e = document.querySelector('form[data-f="optin"] [data-err]'), h = document.querySelector('.st-top').getBoundingClientRect().bottom;
+        if (!e || e.hidden) return { shown: false }; const r = e.getBoundingClientRect(); return { shown: true, text: e.textContent, visible: r.top >= h && r.bottom <= innerHeight, focused: document.activeElement === e }; });
+      if (process.env.BASKET_UI_SHOTS) await pg.screenshot({ path: `${process.env.BASKET_UI_SHOTS}/online-sales-step1-refused-phone.png` });
+      const saved = await one("SELECT COUNT(*) AS n FROM payment_pilot_events WHERE artist_id = 'aref'");
+      check('OS16 phone: when the server refuses step 1, its reason appears beside the button, on screen below the header (not out of sight at the top of the page); nothing is recorded',
+        seen.shown && /switched off/.test(seen.text) && seen.visible && seen.focused && saved.n === 0, { seen, saved });
+      await pg.unroute('**/api/checkout/opt-in');
+      // online sales switched off in the Studio: the page says so and does not offer a join button that cannot work
+      const off = j => { if (j.switches) j.switches.enabled = false; if ('enabled' in j) j.enabled = false; return j; };
+      for (const u of ['**/api/checkout', '**/api/checkout/basket/readiness']) await pg.route(u, async r => { const res = await r.fetch(); r.fulfill({ response: res, json: off(await res.json()) }); });
+      await pg.goto(S.url + '/checkout-pilot', { waitUntil: 'load' }); await pg.waitForSelector('.st-os-steps');
+      const closed = await pg.evaluate(() => ({ note: (document.querySelector('[data-os-closed]') || {}).textContent || '', btn: document.querySelector('form[data-f="optin"] button').disabled, lead: document.querySelector('.st-os-lead').textContent }));
+      check('OS17 when online sales are switched off in the Studio, the page says they are not open yet (twice: the lead and the steps) and the join button is disabled',
+        /not open yet/.test(closed.note) && /not open at the moment/.test(closed.lead) && closed.btn === true, closed);
+      await c.close();
+    }
     const [fc, fp] = await page(FOUNDER, 1280); await fp.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await fp.waitForSelector('#basket-readiness', { timeout: 20000 });
     const fh = await fp.evaluate(() => ({ h1: document.querySelector('h1').textContent, tabs: [...document.querySelectorAll('.st-tabs a')].map(a => a.textContent) }));
     check('OS10 the founder’s Payment pilot page is unchanged (its own heading and navigation)', /^Payment pilot/.test(fh.h1) && fh.tabs.join() === 'Studio', fh);
