@@ -43,17 +43,18 @@ check("V3 reserved wins over a placed artist (07); every other position is avail
 check("V4 a published gallery without a position follows the 25, without a number", [p["artist"]["slug"] for p in extra] == ["cal-test"])
 h = P.vg_collection(pk, layout=lay)
 check("V5 no unpublished gallery address or name ever reaches the page", "secret-unpublished" not in h and "hidden-two" not in h)
-labels = re.findall(r'<div class="pa-vgc-label">.*?</div></div>', h, re.S)
-shape = {re.sub(r"\d\d|[a-z]+-test|[A-Z][a-z]+ Test", "#", l) for l in labels[:2]}
-check("V6 equal treatment: numbered open galleries share one identical label structure; the unplaced one only lacks the numeral",
-      len(labels) == 3 and len(shape) == 1 and '<span class="pa-vgc-n" aria-hidden="true"></span>' in labels[2], labels)
+labels = re.findall(r'<li class="pa-vgc-work"[^>]*>.*?</li>', h, re.S)
+shape = {re.sub(r'artists/[a-z0-9-]+/"|>[^<>]+</a>|<p class="pa-vgc-practice">[^<]*</p>', "#", re.search(r'<div class="pa-vgc-label">.*?</div>', l, re.S).group(0)) for l in labels}
+check("V6 equal treatment (23 Nov 2026): every open gallery has the identical label (name, practice, Enter the gallery) and no number is shown; the placed ones carry their position only as data",
+      len(labels) == 3 and len(shape) == 1 and all('data-pa-position="' in l for l in labels[:2]) and 'data-pa-position' not in labels[2]
+      and not re.search(r'pa-vgc-n\b|Position \d', h), labels)
 check("V7 the public Founding positions index is gone (21 Nov 2026): no heading, note, occupancy line, summary or numbered table, and no 'N of 25 galleries open' counter",
       'pa-vgc-count' not in h and "of 25 galleries" not in h and "Founding positions" not in h and not re.search(r"pa-vgc-(index|plan|pos|line|key)\b|vgIdxH", h)
       and "Reserved" not in h and "In preparation" not in h and "Available" not in h)
 h0, h25 = P.vg_collection([], layout=None), P.vg_collection([synth("t%02d-test" % i, "T%02d Test" % i) for i in range(1, 26)], layout=None)
 check("V8 0 and 25 open galleries: no wall and no index; 25 numbered works in order, then the A-Z list",
-      "pa-vgc-hang" not in h0 and "pa-vgc-pos" not in h0 and h25.count('<li class="pa-vgc-work">') == 25 and 'n-3"' in h25 and "pa-vgc-pos" not in h25
-      and re.findall(r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span>', h25) == ["%02d" % i for i in range(1, 26)])
+      "pa-vgc-hang" not in h0 and "pa-vgc-pos" not in h0 and h25.count('<li class="pa-vgc-work"') == 25 and 'n-3"' in h25 and "pa-vgc-pos" not in h25
+      and re.findall(r'<li class="pa-vgc-work" data-pa-position="(\d\d)">', h25) == ["%02d" % i for i in range(1, 26)])
 
 # P · the pipeline's view of the order (layout()): accepts "assigned" true/false only, refuses any other field
 src = open(os.path.join(HERE, "plotart-gallery-publish.py"), encoding="utf-8").read()
@@ -91,8 +92,7 @@ _pk = [json.load(open(f, encoding="utf-8")) for f in glob.glob(os.path.join(site
 _reg = orig[slice(*P.vg_region(orig))]
 # the founding positions are no longer on the page (index removed 21 Nov 2026): rebuild an order from the wall's own
 # numerals; the featured artists, whose numerals are not shown, follow without a position (test copy only)
-_pos = [{"position": int(n), "slug": sl, "reserved": False} for n, sl in re.findall(
-    r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', _reg)]
+_pos = [{"position": int(n), "slug": sl, "reserved": False} for sl, n in P.wall_positions(_reg).items()]   # data-pa-position (23 Nov 2026)
 _extra = [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', _reg) if x not in {e["slug"] for e in _pos}]
 _extra += [x["artist"] for x in FEAT.selection_in(orig) if x["artist"] not in _extra]
 orig = FEAT.update(orig, [], _pk)
@@ -106,8 +106,9 @@ slug = base["artist"]["slug"]
 FAULTS = [
     ("G1 the Founding positions index comes back", lambda s: s.replace(P.VG_END, '<div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH"><h3 id="vgIdxH">Founding positions</h3></div>\n  ' + P.VG_END, 1), "L11"),
     ("G2 the published/reserved/available summary comes back", lambda s: s.replace(P.VG_END, '<ul class="pa-vgc-key"><li><b>14</b> published</li><li><b>8</b> reserved</li></ul>\n  ' + P.VG_END, 1), "L11"),
-    ("G4 the wall's numerals out of order", lambda s: re.sub(r'(<span class="pa-vgc-n" aria-hidden="true">)(\d\d)(</span>.*?Position )\2(: )', r'\g<1>24\g<3>24\4', s, count=1, flags=re.S), "L11"),
-    ("G6 a numeral repeated on the wall", lambda s: (lambda ns: re.sub(r'(<span class="pa-vgc-n" aria-hidden="true">)%s(</span>.*?Position )%s(: )' % (ns[1], ns[1]), r'\g<1>%s\g<2>%s\3' % (ns[0], ns[0]), s, count=1, flags=re.S))(re.findall(r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span>', s)), "L11"),
+    ("G4 the wall's positions out of order", lambda s: re.sub(r'(<li class="pa-vgc-work" data-pa-position=")(\d\d)(">)', r'\g<1>24\3', s, count=1), "L11"),
+    ("G6 a position repeated on the wall", lambda s: (lambda ns: s.replace('data-pa-position="%s"' % ns[1], 'data-pa-position="%s"' % ns[0], 1))(re.findall(r'data-pa-position="(\d\d)"', s)), "L11"),
+    ("G13 a position number shown beside an artist's name again", lambda s: s.replace('<div class="pa-vgc-label"><h3 class="pa-vgc-name">', '<div class="pa-vgc-label"><span class="pa-vgc-n" aria-hidden="true">04</span><h3 class="pa-vgc-name">', 1), "L11"),
     ("G7 an open gallery shows another artist's image in its srcset", lambda s: s.replace("../artists/%s/img/" % slug, "../artists/someone-else/img/", 2), "L11"),
     ("G8 the removed 25-gallery counter comes back", lambda s: s.replace('\n  <ol class="pa-vgc-hang', '\n  <p class="pa-vgc-count">9 of 25 galleries open</p>\n  <ol class="pa-vgc-hang', 1), "L11"),
     ("G10 the markers are removed", lambda s: s.replace(P.VG_BEGIN, "").replace(P.VG_END, ""), "L11"),

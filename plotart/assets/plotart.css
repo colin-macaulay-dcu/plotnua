@@ -607,8 +607,7 @@ body.pa .pa-vgc-count{ margin:10px 0 clamp(28px, 3.2vw, 48px); font-size:15px; c
   border:1px solid rgba(237,235,231,.12); text-align:center; }
 .pa-vgc-art.is-empty span{ font-family:var(--serif); font-size:clamp(18px, 1.6vw, 22px); line-height:1.3; color:var(--stone); }
 .pa-vgc-work:hover .pa-vgc-art img{ box-shadow:0 2px 3px rgba(0,0,0,.3), 0 22px 40px rgba(0,0,0,.38), 0 48px 80px rgba(0,0,0,.26); }
-.pa-vgc-label{ display:grid; grid-template-columns:auto minmax(0, 1fr); column-gap:18px; margin-top:22px; padding-top:16px; border-top:1px solid rgba(237,235,231,.14); }
-.pa-vgc-n{ min-width:1.1em; font-family:var(--serif); font-size:clamp(28px, 2.3vw, 34px); line-height:.95; color:var(--terra-text); font-variant-numeric:lining-nums tabular-nums; }
+.pa-vgc-label{ margin-top:22px; padding-top:16px; border-top:1px solid rgba(237,235,231,.14); }   /* name flush left: no numeral (23 Nov 2026) */
 .pa-vgc-name{ font-size:clamp(24px, 2vw, 28px); line-height:1.1; }
 .pa-vgc-name a{ color:var(--ivory); text-decoration:none; }
 .pa-vgc-name a::after{ content:""; position:absolute; inset:0; }   /* the whole work is one link, named by the artist */
@@ -664,7 +663,7 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
   .pa-vgc-art, .pa-vgc-hang.n-1 .pa-vgc-art{ height:auto; justify-content:center; }
   .pa-vgc-art img{ max-height:64svh; }
   .pa-vgc-art.is-empty{ max-height:none; }
-  .pa-vgc-label{ margin-top:18px; padding-top:14px; column-gap:14px; }
+  .pa-vgc-label{ margin-top:18px; padding-top:14px; }
   .pa-vgc-line{ gap:3px; }
   /* the plan becomes a compact grid of numerals; each state keeps a mark (and its words for screen readers) */
   .pa-vgc-pos{ min-height:58px; }

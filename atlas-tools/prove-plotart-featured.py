@@ -74,8 +74,7 @@ def layout_from(doc):
     so the positions come from the wall's own numerals; the featured artists (whose numerals the page does not show)
     and any gallery without a numeral follow without a position, in the order the page names them."""
     reg = doc[slice(*P.vg_region(doc))]
-    pos = [{"position": int(n), "slug": sl, "reserved": False} for n, sl in re.findall(
-        r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', reg)]
+    pos = [{"position": int(n), "slug": sl, "reserved": False} for sl, n in P.wall_positions(reg).items()]   # data-pa-position (23 Nov 2026)
     numbered = {x["slug"] for x in pos}
     extra = [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', reg) if x not in numbered]
     return {"positions": pos, "extra": extra + [x["artist"] for x in FEAT.selection_in(doc) if x["artist"] not in extra]}
@@ -93,7 +92,7 @@ def build(doc, sel, pk, lay=LAY):
 
 wall = lambda d: re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', d[slice(*P.vg_region(d))])
 # the wall's position numerals (the public positions index was removed 21 Nov 2026): artist -> numeral
-index = lambda d: dict((sl, n) for n, sl in re.findall(r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', d[slice(*P.vg_region(d))]))
+index = lambda d: P.wall_positions(d[slice(*P.vg_region(d))])   # data-pa-position since 23 Nov 2026 (no visible numeral)
 same_nums = lambda a, b: all(b.get(k, v) == v for k, v in a.items())
 both_out = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
 DOC = build(LIVE_DOC, [], PK)                         # the page with no selection: every published artist on the wall
