@@ -19,6 +19,7 @@ import * as BP from './basket-public.js';
 import * as BG from './basket-staging-gallery.js';     // multi-artist basket on the same checkout (development 21 Nov 2026): test mode only, off by default
 import * as CO from './checkout.js';   // managed checkout pilot (development 16 Nov 2026): test mode only, off by default
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
+import * as G from './galleries.js';   // Three galleries (Phase B, migration 0023): memberships, placements, order, Artists in Focus, image-use consent
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
@@ -1233,7 +1234,8 @@ async function route(req, env) {
     if (!env.PIPELINE_TOKEN || req.headers.get('Authorization') !== `Bearer ${env.PIPELINE_TOKEN}`) return json({ ok: false }, 401);
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
-    if (p === '/api/pipeline/featured-artists' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, VISIBLE_SQL)) });   // gallery address + artwork id only
+    if (p === '/api/pipeline/featured-artists' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, VISIBLE_SQL)) });
+    if (p === '/api/pipeline/galleries' && m === 'GET') return json({ ok: true, ...(await G.pipeline(env, await HP.published(env, VISIBLE_SQL))) });   // Phase B: read-only, public identifiers   // gallery address + artwork id only
     // the earlier homepage route, kept only so a publisher from before this release keeps working (it now receives artists only)
     if (p === '/api/pipeline/homepage' && m === 'GET') { const r = await HP.pipeline(env, VISIBLE_SQL); return json({ ok: true, ...r, items: r.items.map(i => ({ kind: 'artist', ...i })) }); }
     if (p === '/api/pipeline/ideas' && m === 'GET') return json({ ok: true, ...(await pipelineIdeas(env)) });   // Idea Board: approved, public fields only
@@ -1329,6 +1331,19 @@ async function route(req, env) {
     if (p === '/admin/featured') return html(A.ADMIN_HTML);
     if (p === '/admin/homepage') return Response.redirect(new URL('/admin/featured', req.url).toString(), 302);   // the tab's earlier address
     // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
+    /* Three galleries (Phase B, migration 0023): founder-only. Each route writes only the gallery tables and the audit log. */
+    if (p === '/api/admin/galleries' && m === 'GET') return json({ ok: true, ...(await G.adminView(env, await HP.published(env, VISIBLE_SQL))) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/targets$/)) && m === 'PUT') return json({ ok: true, gallery: await G.setTargets(env, me.email, mm[1], await req.json().catch(() => null)) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/status$/)) && m === 'POST') return json({ ok: true, ...(await G.setStatus(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL))) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/members$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPropose(env, me.email, mm[1], await req.json().catch(() => null))) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/members\/(a[0-9a-z]+)\/(approve|refuse|withdraw)$/)) && m === 'POST')
+      return json({ ok: true, ...(mm[3] === 'approve' ? await G.founderApprove(env, me.email, mm[1], mm[2]) : await G.founderClose(env, me.email, mm[1], mm[2], mm[3] === 'refuse' ? 'refused' : 'withdrawn')) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/artworks\/(w[0-9a-z]+)\/(place|refuse|withdraw|restore)$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPlacement(env, me.email, mm[1], mm[2], mm[3])) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/order$/)) && m === 'PUT') return json({ ok: true, order: await G.saveOrder(env, me.email, mm[1], await req.json().catch(() => null)) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/features$/)) && m === 'PUT') return json({ ok: true, features: await G.saveFeatures(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL)) });
+    if (p === '/api/admin/image-use/requests' && m === 'POST') return json({ ok: true, request: await G.requestConsent(env, me.email, await req.json().catch(() => null)) });
+    if ((mm = p.match(/^\/api\/admin\/image-use\/requests\/(u[0-9a-z]+)\/cancel$/)) && m === 'POST') return json({ ok: true, ...(await G.cancelRequest(env, me.email, mm[1])) });
+    if (p === '/api/admin/image-use/record' && m === 'POST') return json({ ok: true, ...(await G.recordEmailConsent(env, me.email, await req.json().catch(() => null))) });
     if (p === '/api/admin/featured' && m === 'GET') return json({ ok: true, ...(await HP.view(env, VISIBLE_SQL)) });
     if (p === '/api/admin/featured' && m === 'PUT') {
       const r = await HP.save(env, me.email, await req.json().catch(() => null), VISIBLE_SQL);
@@ -1559,6 +1574,10 @@ async function route(req, env) {
       if (b.application_ref && String(b.application_ref).startsWith('PA-AP-') && programme !== 'gallery_artist')
         throw new Bad('A PlotArt application (PA-AP-…) leads to a Gallery Artist invitation. Choose Gallery Artist, or leave the reference out.', 409);
       if (programme === 'gallery_artist' && !(await termsInstalled(env))) throw new Bad('Gallery Artist invitations become available once the Gallery Artist records are installed (migration 0012).', 503);
+      // Three galleries (Phase B): an optional choice of galleries at invitation. Absent: Contemporary Art by default, as today.
+      if (b.galleries !== undefined && (!Array.isArray(b.galleries) || !b.galleries.length || b.galleries.some(g => !G.GALLERIES.includes(g)) || new Set(b.galleries).size !== b.galleries.length))
+        throw new Bad('Choose one or more galleries');
+      if (b.galleries !== undefined && !(await G.installed(env))) throw new Bad('Gallery choice at invitation needs the three-gallery records (migration 0023)', 503);
       const id = rid('a'), at = now();
       await env.DB.batch([
         env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
@@ -1566,6 +1585,7 @@ async function route(req, env) {
         ...(programme === 'gallery_artist' ? [env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
           VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)] : [])]);
       await audit(env, me.email, 'founder', 'invite', id, { slug, founding: programme === 'founding', programme });
+      if (b.galleries !== undefined) await G.onInvite(env, me.email, id, b.galleries, b.application_ref || null);
       // Start the artist's private working profile from their Founding 25 application, where there is one (11 Nov 2026).
       let prefill = { fields: [], skipped: {}, reason: 'no application reference' };
       if (b.application_ref) {
@@ -1699,6 +1719,14 @@ async function route(req, env) {
   if (me.role !== 'artist') return p.startsWith('/api/') ? json({ ok: false, error: 'This is an artist’s Studio. Use /admin.' }, 403) : Response.redirect(url.origin + '/admin', 302);
   const artist = { ...me.artist, email: me.email };
   if (p === '/' || p === '/index.html') return html(A.STUDIO_HTML);
+  /* Three galleries (Phase B, migration 0023): the artist's own memberships, placements and image-use requests only. */
+  if (p === '/api/galleries' && m === 'GET') return json({ ok: true, ...(await G.artistView(env, artist)) });
+  { const g3 = p.match(/^\/api\/galleries\/([a-z]+)\/(request|accept|decline|withdraw)$/);
+    if (g3 && m === 'POST') return json({ ok: true, ...(await G.artistAct(env, artist, g3[1], g3[2])) }); }
+  { const g3 = p.match(/^\/api\/galleries\/([a-z]+)\/artworks\/(w[0-9a-z]+)\/(propose|accept|decline|withdraw)$/);
+    if (g3 && m === 'POST') return json({ ok: true, ...(await G.artistPlacement(env, artist, g3[1], g3[2], g3[3])) }); }
+  { const g3 = p.match(/^\/api\/image-use\/(u[0-9a-z]+)\/answer$/);
+    if (g3 && m === 'POST') return json({ ok: true, ...(await G.answerConsent(env, artist, g3[1], await req.json().catch(() => null))) }); }
   if (p.startsWith('/preview/')) {
     const rest = p.slice('/preview/'.length);
     if (rest.startsWith('img/')) return previewImage(env, await ownImage(env, artist, rest.slice(4)));

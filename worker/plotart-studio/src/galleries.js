@@ -1,0 +1,445 @@
+/* PlotArt Studio · Three galleries: the gallery data model (Phase B, development 24 Nov 2026; migration 0023).
+   One artist account, one Studio, one artwork inventory; an artist and individual works can belong to more than one of the
+   three galleries: Contemporary Art, Landscape Art, Portraiture.
+
+   The rules, in one place:
+   - Membership of a gallery needs BOTH the founder's approval and the artist's acceptance before it is live. It can begin
+     as a founder invitation, an application, the founder's curation or the artist's own request (the request counts as
+     the artist's acceptance; the founder's invitation or curation counts as the founder's approval).
+   - Contemporary Art keeps today's behaviour: an artist with NO membership rows at all is a live Contemporary Art member,
+     and every work of a live Contemporary member is in Contemporary Art unless an explicit 'withdrawn' placement row takes
+     it out. Nothing is ever written for existing artists or artworks; the first time an artist who has no rows is given
+     any membership row, their Contemporary membership is first written down as it already was (live, 'existing_contemporary').
+   - Landscape Art and Portraiture start empty. Nobody is assigned to them automatically. A work is placed there only with
+     the founder's approval and the artist's acceptance, and only while the artist is a live member of that gallery.
+   - Order: unlimited per gallery. Contemporary Art keeps positions 01-25 in gallery_positions (unchanged and still guarded
+     by its own checks); gallery_order holds Contemporary positions from 26 and every position of the other two galleries.
+   - Artists in Focus: Landscape Art and Portraiture each have their own selection of up to six (gallery_features);
+     Contemporary Art keeps homepage_features (featured.js), unchanged.
+   - Image-use consent: per use, recorded, optional (licence PA-GPIL §3.2, no standing opt-in). image_use_consents is
+     append-only: this module never updates or deletes a consent row; a withdrawal is a new 'no'.
+   - Readiness targets are editable and advisory; opening a gallery is the founder's explicit act (typed confirmation).
+     Contemporary Art is always open. Opening here changes the Studio's record only: the public site shows a gallery as
+     open only when its own launch switch is changed in a separate, approved release (Phase E).
+   This module writes only the seven migration-0023 tables and the audit log. It never changes an artist, artwork, image,
+   price, agreement, commission term, payment record, gallery position (01-25) or Featured Artists selection. */
+import { Bad, now, rid } from './lib.js';
+
+export const GALLERIES = ['contemporary', 'landscape', 'portraiture'];
+export const TITLES = { contemporary: 'Contemporary Art', landscape: 'Landscape Art', portraiture: 'Portraiture' };
+export const DEFAULTS = {
+  contemporary: { status: 'open', target_artists: 0, target_works: 0 },
+  landscape: { status: 'in_preparation', target_artists: 6, target_works: 30 },
+  portraiture: { status: 'in_preparation', target_artists: 6, target_works: 30 },
+};
+export const SCOPES = ['homepage_feature', 'promotional_campaign', 'social_media', 'editorial_feature', 'video_feature'];
+export const SOURCES = ['founder_invitation', 'application', 'founder_curation', 'artist_request'];
+export const FEATURE_MAX = 6;
+const OPEN_STATES = ['proposed', 'founder_approved', 'artist_accepted'];
+const APP_REF = /^(F25|PA-AP)-\d{6}-[A-Z0-9]{6}$/;
+const all = async (env, sql, ...b) => (await env.DB.prepare(sql).bind(...b).all()).results;
+const one = (env, sql, ...b) => env.DB.prepare(sql).bind(...b).first();
+async function audit(env, actor, role, action, artistId, detail) {
+  await env.DB.prepare('INSERT INTO audit (at, actor, role, action, artist_id, detail) VALUES (?,?,?,?,?,?)')
+    .bind(now(), actor, role, action, artistId || null, JSON.stringify(detail).slice(0, 4000)).run();
+}
+const gallery = g => { if (!GALLERIES.includes(g)) throw new Bad('Unknown gallery', 404); return g; };
+const newGallery = g => { if (gallery(g) === 'contemporary') throw new Bad('Contemporary Art keeps its existing order and Artists in Focus', 409); return g; };
+
+export async function installed(env) {
+  return !!(await one(env, "SELECT name FROM sqlite_master WHERE type='table' AND name='gallery_memberships'"));
+}
+async function need(env) { if (!(await installed(env))) throw new Bad('The three-gallery records aren’t installed yet (migration 0023)', 503); }
+
+/* ---- settings and readiness ------------------------------------------------------------------------------------------ */
+export async function settings(env) {
+  const rows = await all(env, 'SELECT * FROM gallery_settings');
+  return Object.fromEntries(GALLERIES.map(g => {
+    const r = rows.find(x => x.gallery_id === g);
+    return [g, { gallery_id: g, title: TITLES[g], ...DEFAULTS[g], opened_at: null, opened_by: null, ...(r || {}), saved: !!r }];
+  }));
+}
+async function writeSettings(env, g, s, founder) {
+  await env.DB.prepare(`INSERT INTO gallery_settings (gallery_id, status, target_artists, target_works, opened_at, opened_by, updated_at, updated_by)
+    VALUES (?,?,?,?,?,?,?,?) ON CONFLICT(gallery_id) DO UPDATE SET status=excluded.status, target_artists=excluded.target_artists,
+    target_works=excluded.target_works, opened_at=excluded.opened_at, opened_by=excluded.opened_by, updated_at=excluded.updated_at, updated_by=excluded.updated_by`)
+    .bind(g, s.status, s.target_artists, s.target_works, s.opened_at, s.opened_by, now(), founder).run();
+}
+export async function setTargets(env, founder, g, body) {
+  await need(env); newGallery(g);
+  const ints = k => { const v = body && body[k]; if (!Number.isInteger(v) || v < 0 || v > (k === 'target_artists' ? 500 : 5000)) throw new Bad(`${k} must be a whole number`); return v; };
+  if (!body || Object.keys(body).sort().join() !== 'target_artists,target_works') throw new Bad('Refused');
+  const s = (await settings(env))[g], before = { target_artists: s.target_artists, target_works: s.target_works };
+  s.target_artists = ints('target_artists'); s.target_works = ints('target_works');
+  await writeSettings(env, g, s, founder);
+  await audit(env, founder, 'founder', 'gallery_targets', null, { gallery: g, before, after: { target_artists: s.target_artists, target_works: s.target_works } });
+  return (await readiness(env, null))[g];
+}
+export async function setStatus(env, founder, g, body, visibleSql) {
+  await need(env); newGallery(g);
+  if (!body || !['open', 'in_preparation', 'paused'].includes(body.status)) throw new Bad('Choose open, in preparation or paused');
+  const s = (await settings(env))[g], want = body.status;
+  if (s.status === want) return { changed: false, gallery: (await readiness(env, visibleSql))[g] };
+  if (want === 'open') {
+    if (body.confirm !== `OPEN ${TITLES[g].toUpperCase()}`) throw new Bad(`To open it, type OPEN ${TITLES[g].toUpperCase()}`, 409);
+    const r = (await readiness(env, visibleSql))[g];
+    if (!r.ready && body.below_target !== true) throw new Bad(`${TITLES[g]} has ${r.live_artists} of ${r.target_artists} artists and ${r.live_works} of ${r.target_works} works. Confirm opening below the target to continue.`, 409);
+    s.opened_at = now(); s.opened_by = founder;
+  }
+  if (want === 'in_preparation') { s.opened_at = null; s.opened_by = null; }
+  const before = s.status; s.status = want;
+  await writeSettings(env, g, s, founder);
+  await audit(env, founder, 'founder', 'gallery_status', null, { gallery: g, before, after: want });
+  return { changed: true, gallery: (await readiness(env, visibleSql))[g] };
+}
+
+/* ---- memberships ------------------------------------------------------------------------------------------------------ */
+async function rowsFor(env, artistId) { return all(env, 'SELECT * FROM gallery_memberships WHERE artist_id = ?', artistId); }
+// The effective membership of one artist in one gallery: the explicit row, or Contemporary Art by default (no rows at all).
+export function effective(rows, g) {
+  const r = rows.find(x => x.gallery_id === g);
+  if (r) return r;
+  if (g === 'contemporary' && rows.length === 0) return { gallery_id: 'contemporary', state: 'live', source: 'existing_contemporary', implicit: true };
+  return null;
+}
+// Write the default Contemporary membership down before an artist's first explicit row, so it never changes by accident.
+async function settleDefault(env, artist, by) {
+  if ((await rowsFor(env, artist.id)).length) return;
+  const at = now();
+  await env.DB.prepare(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, application_ref, proposed_by, proposed_at,
+    founder_approved_by, founder_approved_at, artist_accepted_at, updated_at) VALUES (?, 'contemporary', 'live', 'existing_contemporary', NULL, ?, ?, ?, ?, ?, ?)`)
+    .bind(artist.id, by, at, 'existing', artist.created_at || at, artist.licence_accepted_at || artist.created_at || at, at).run();
+}
+async function artistById(env, id) {
+  const a = await one(env, "SELECT id, slug, display_name, account_status, created_at, licence_accepted_at FROM artists WHERE id = ?", id);
+  if (!a) throw new Bad('No such artist', 404);
+  if (!['invited', 'active'].includes(a.account_status)) throw new Bad('That artist’s account isn’t active', 409);
+  return a;
+}
+
+/* The founder proposes (invitation, application, curation): this is the founder's approval; the artist then accepts. */
+export async function founderPropose(env, founder, g, body) {
+  await need(env); gallery(g);
+  if (!body || typeof body.artist_id !== 'string') throw new Bad('Choose an artist');
+  const source = body.source || 'founder_curation';
+  if (!['founder_invitation', 'application', 'founder_curation'].includes(source)) throw new Bad('Unknown source');
+  if (source === 'application' && !APP_REF.test(String(body.application_ref || ''))) throw new Bad('An application needs its reference (PA-AP-… or F25-…)');
+  const a = await artistById(env, body.artist_id);
+  await settleDefault(env, a, founder);
+  const cur = (await rowsFor(env, a.id)).find(r => r.gallery_id === g);
+  if (cur && ['live', 'founder_approved'].includes(cur.state)) throw new Bad(`${a.display_name} is already ${cur.state === 'live' ? 'a member of' : 'invited to'} ${TITLES[g]}`, 409);
+  const at = now(), accepted = cur && cur.state === 'artist_accepted' ? cur.artist_accepted_at : null;
+  const state = accepted ? 'live' : 'founder_approved';
+  await env.DB.prepare(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, application_ref, proposed_by, proposed_at, founder_approved_by,
+    founder_approved_at, artist_accepted_at, closed_by, closed_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,NULL,NULL,?)
+    ON CONFLICT(artist_id, gallery_id) DO UPDATE SET state=excluded.state, source=excluded.source, application_ref=excluded.application_ref,
+    proposed_by=excluded.proposed_by, proposed_at=excluded.proposed_at, founder_approved_by=excluded.founder_approved_by,
+    founder_approved_at=excluded.founder_approved_at, artist_accepted_at=excluded.artist_accepted_at, closed_by=NULL, closed_at=NULL, updated_at=excluded.updated_at`)
+    .bind(a.id, g, state, accepted ? cur.source : source, source === 'application' ? body.application_ref : (cur && cur.application_ref) || null,
+      founder, at, founder, at, accepted, at).run();
+  await audit(env, founder, 'founder', 'gallery_membership_' + (accepted ? 'approved' : 'proposed'), a.id, { gallery: g, source, state });
+  return membershipView(env, a.id);
+}
+/* The founder approves an artist's own request. */
+export async function founderApprove(env, founder, g, artistId) {
+  await need(env); gallery(g);
+  const cur = (await rowsFor(env, artistId)).find(r => r.gallery_id === g);
+  if (!cur || !['proposed', 'artist_accepted'].includes(cur.state)) throw new Bad('There is no request to approve', 409);
+  const at = now(), live = !!cur.artist_accepted_at;
+  await env.DB.prepare(`UPDATE gallery_memberships SET state=?, founder_approved_by=?, founder_approved_at=?, updated_at=? WHERE artist_id=? AND gallery_id=?`)
+    .bind(live ? 'live' : 'founder_approved', founder, at, at, artistId, g).run();
+  await audit(env, founder, 'founder', 'gallery_membership_approved', artistId, { gallery: g, live });
+  return membershipView(env, artistId);
+}
+export async function founderClose(env, founder, g, artistId, how) {
+  await need(env); gallery(g);
+  if (!['refused', 'withdrawn'].includes(how)) throw new Bad('Refused');
+  const a = await one(env, 'SELECT id, created_at, licence_accepted_at FROM artists WHERE id = ?', artistId);
+  if (!a) throw new Bad('No such artist', 404);
+  await settleDefault(env, a, founder);
+  const cur = (await rowsFor(env, artistId)).find(r => r.gallery_id === g);
+  if (!cur || !(how === 'refused' ? ['proposed', 'artist_accepted'] : [...OPEN_STATES, 'live']).includes(cur.state)) throw new Bad('Nothing to ' + (how === 'refused' ? 'refuse' : 'withdraw'), 409);
+  const at = now();
+  await env.DB.prepare('UPDATE gallery_memberships SET state=?, closed_by=?, closed_at=?, updated_at=? WHERE artist_id=? AND gallery_id=?').bind(how, founder, at, at, artistId, g).run();
+  await audit(env, founder, 'founder', 'gallery_membership_' + how, artistId, { gallery: g, was: cur.state });
+  return membershipView(env, artistId);
+}
+/* The artist's side: request to join (counts as acceptance), accept the founder's invitation, decline it, or leave. */
+export async function artistAct(env, artist, g, action) {
+  await need(env); gallery(g);
+  const a = await one(env, 'SELECT id, created_at, licence_accepted_at FROM artists WHERE id = ?', artist.id);
+  const rows = await rowsFor(env, artist.id), cur = rows.find(r => r.gallery_id === g), at = now();
+  if (action === 'request') {
+    if (cur && [...OPEN_STATES, 'live'].includes(cur.state)) throw new Bad(cur.state === 'live' ? 'You’re already in this gallery' : 'This is already in progress', 409);
+    if (!cur && effective(rows, g)) throw new Bad('You’re already in this gallery', 409);
+    if (cur && cur.state === 'refused') throw new Bad('PlotArt has decided on this gallery; please get in touch if your work has changed', 409);
+    await settleDefault(env, a, artist.email);
+    await env.DB.prepare(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, application_ref, proposed_by, proposed_at, founder_approved_by,
+      founder_approved_at, artist_accepted_at, closed_by, closed_at, updated_at) VALUES (?,?,'artist_accepted','artist_request',NULL,?,?,NULL,NULL,?,NULL,NULL,?)
+      ON CONFLICT(artist_id, gallery_id) DO UPDATE SET state='artist_accepted', source='artist_request', proposed_by=excluded.proposed_by, proposed_at=excluded.proposed_at,
+      founder_approved_by=NULL, founder_approved_at=NULL, artist_accepted_at=excluded.artist_accepted_at, closed_by=NULL, closed_at=NULL, updated_at=excluded.updated_at`)
+      .bind(artist.id, g, artist.email, at, at, at).run();
+  } else if (action === 'accept') {
+    if (!cur || cur.state !== 'founder_approved') throw new Bad('There is no invitation to accept', 409);
+    await env.DB.prepare("UPDATE gallery_memberships SET state='live', artist_accepted_at=?, updated_at=? WHERE artist_id=? AND gallery_id=?").bind(at, at, artist.id, g).run();
+  } else if (action === 'decline' || action === 'withdraw') {
+    const eff = effective(rows, g);
+    if (action === 'decline' ? !cur || cur.state !== 'founder_approved' : !eff || ![...OPEN_STATES, 'live'].includes(eff.state)) throw new Bad('Nothing to ' + action, 409);
+    await settleDefault(env, a, artist.email);
+    await env.DB.prepare('UPDATE gallery_memberships SET state=?, closed_by=?, closed_at=?, updated_at=? WHERE artist_id=? AND gallery_id=?')
+      .bind(action === 'decline' ? 'declined' : 'withdrawn', artist.email, at, at, artist.id, g).run();
+  } else throw new Bad('Refused');
+  await audit(env, artist.email, 'artist', 'gallery_membership_' + action, artist.id, { gallery: g });
+  return membershipView(env, artist.id);
+}
+export async function membershipView(env, artistId) {
+  const rows = await rowsFor(env, artistId);
+  return { artist_id: artistId, galleries: GALLERIES.map(g => { const e = effective(rows, g); return { gallery_id: g, title: TITLES[g], state: e ? e.state : 'none', source: e ? e.source : null, implicit: !!(e && e.implicit) }; }) };
+}
+async function isLive(env, artistId, g) { const e = effective(await rowsFor(env, artistId), g); return !!(e && e.state === 'live'); }
+
+/* At invitation (the founder creates Studio access): optional galleries; absent = Contemporary Art by default, as today. */
+export async function onInvite(env, founder, artistId, galleries, applicationRef) {
+  if (galleries === undefined) return null;
+  if (!(await installed(env))) throw new Bad('Gallery choice at invitation needs the three-gallery records (migration 0023)', 503);
+  if (!Array.isArray(galleries) || !galleries.length || galleries.some(g => !GALLERIES.includes(g)) || new Set(galleries).size !== galleries.length) throw new Bad('Choose one or more galleries');
+  const at = now(), source = applicationRef ? 'application' : 'founder_invitation';
+  await env.DB.batch(galleries.map(g => env.DB.prepare(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, application_ref, proposed_by, proposed_at,
+    founder_approved_by, founder_approved_at, artist_accepted_at, updated_at) VALUES (?,?,'founder_approved',?,?,?,?,?,?,NULL,?)`)
+    .bind(artistId, g, source, applicationRef || null, founder, at, founder, at, at)));
+  await audit(env, founder, 'founder', 'gallery_membership_proposed', artistId, { galleries, source });
+  return galleries;
+}
+
+/* ---- artwork placement ------------------------------------------------------------------------------------------------ */
+async function workOf(env, artworkId) {
+  const w = await one(env, 'SELECT id, artist_id, slug, title, archived FROM artworks WHERE id = ?', artworkId);
+  if (!w || w.archived) throw new Bad('No such artwork', 404);
+  return w;
+}
+async function placement(env, artworkId, g) { return one(env, 'SELECT * FROM artwork_placements WHERE artwork_id = ? AND gallery_id = ?', artworkId, g); }
+async function upsertPlacement(env, w, g, fields) {
+  const at = now(), f = { state: null, proposed_by: null, proposed_at: at, founder_approved_by: null, founder_approved_at: null, artist_accepted_at: null, closed_by: null, closed_at: null, ...fields };
+  await env.DB.prepare(`INSERT INTO artwork_placements (artwork_id, artist_id, gallery_id, state, proposed_by, proposed_at, founder_approved_by, founder_approved_at,
+    artist_accepted_at, closed_by, closed_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(artwork_id, gallery_id) DO UPDATE SET state=excluded.state,
+    proposed_by=excluded.proposed_by, proposed_at=excluded.proposed_at, founder_approved_by=excluded.founder_approved_by, founder_approved_at=excluded.founder_approved_at,
+    artist_accepted_at=excluded.artist_accepted_at, closed_by=excluded.closed_by, closed_at=excluded.closed_at, updated_at=excluded.updated_at`)
+    .bind(w.id, w.artist_id, g, f.state, f.proposed_by, f.proposed_at, f.founder_approved_by, f.founder_approved_at, f.artist_accepted_at, f.closed_by, f.closed_at, at).run();
+}
+/* Founder: place (counts as approval; artist then accepts), approve an artist's proposal, refuse, or withdraw. In Contemporary
+   Art the only action is to take a work out (withdraw) or put it back (restore). */
+export async function founderPlacement(env, founder, g, artworkId, action) {
+  await need(env); gallery(g);
+  const w = await workOf(env, artworkId), cur = await placement(env, artworkId, g), at = now();
+  if (g === 'contemporary') {
+    if (action === 'withdraw') { if (cur) throw new Bad('Already taken out of Contemporary Art', 409); await upsertPlacement(env, w, g, { state: 'withdrawn', proposed_by: founder, closed_by: founder, closed_at: at }); }
+    else if (action === 'restore') { if (!cur) throw new Bad('This work is already in Contemporary Art', 409); await env.DB.prepare("DELETE FROM artwork_placements WHERE artwork_id=? AND gallery_id='contemporary'").bind(w.id).run(); }
+    else throw new Bad('In Contemporary Art a work can only be taken out or put back', 409);
+  } else if (action === 'place') {
+    if (!(await isLive(env, w.artist_id, g))) throw new Bad(`The artist isn’t a member of ${TITLES[g]} yet`, 409);
+    if (cur && ['founder_approved', 'live'].includes(cur.state)) throw new Bad('Already placed', 409);
+    const accepted = cur && cur.state === 'artist_accepted' ? cur.artist_accepted_at : null;
+    await upsertPlacement(env, w, g, { state: accepted ? 'live' : 'founder_approved', proposed_by: cur ? cur.proposed_by : founder, founder_approved_by: founder, founder_approved_at: at, artist_accepted_at: accepted });
+  } else if (action === 'refuse' || action === 'withdraw') {
+    if (!cur || !(action === 'refuse' ? ['proposed', 'artist_accepted'] : [...OPEN_STATES, 'live']).includes(cur.state)) throw new Bad('Nothing to ' + action, 409);
+    await env.DB.prepare('UPDATE artwork_placements SET state=?, closed_by=?, closed_at=?, updated_at=? WHERE artwork_id=? AND gallery_id=?').bind(action === 'refuse' ? 'refused' : 'withdrawn', founder, at, at, w.id, g).run();
+  } else throw new Bad('Refused');
+  await audit(env, founder, 'founder', 'artwork_placement_' + action, w.artist_id, { gallery: g, artwork: w.id });
+  return placementView(env, w.artist_id);
+}
+export async function artistPlacement(env, artist, g, artworkId, action) {
+  await need(env); newGallery(g);
+  const w = await workOf(env, artworkId);
+  if (w.artist_id !== artist.id) throw new Bad('No such artwork', 404);
+  const cur = await placement(env, artworkId, g), at = now();
+  if (action === 'propose') {
+    if (!(await isLive(env, artist.id, g))) throw new Bad(`You aren’t a member of ${TITLES[g]} yet`, 409);
+    if (cur && [...OPEN_STATES, 'live'].includes(cur.state)) throw new Bad('This is already in progress', 409);
+    await upsertPlacement(env, w, g, { state: 'artist_accepted', proposed_by: artist.email, artist_accepted_at: at });
+  } else if (action === 'accept') {
+    if (!cur || cur.state !== 'founder_approved') throw new Bad('There is nothing to accept', 409);
+    await env.DB.prepare("UPDATE artwork_placements SET state='live', artist_accepted_at=?, updated_at=? WHERE artwork_id=? AND gallery_id=?").bind(at, at, w.id, g).run();
+  } else if (action === 'decline' || action === 'withdraw') {
+    if (!cur || !(action === 'decline' ? ['founder_approved'] : [...OPEN_STATES, 'live']).includes(cur.state)) throw new Bad('Nothing to ' + action, 409);
+    await env.DB.prepare('UPDATE artwork_placements SET state=?, closed_by=?, closed_at=?, updated_at=? WHERE artwork_id=? AND gallery_id=?').bind(action === 'decline' ? 'declined' : 'withdrawn', artist.email, at, at, w.id, g).run();
+  } else throw new Bad('Refused');
+  await audit(env, artist.email, 'artist', 'artwork_placement_' + action, artist.id, { gallery: g, artwork: w.id });
+  return placementView(env, artist.id);
+}
+export async function placementView(env, artistId) {
+  return { artist_id: artistId, placements: await all(env, 'SELECT artwork_id, gallery_id, state, proposed_at, founder_approved_at, artist_accepted_at, closed_at FROM artwork_placements WHERE artist_id = ? ORDER BY gallery_id, artwork_id', artistId) };
+}
+
+/* ---- who and what is in each gallery (published galleries only) ------------------------------------------------------ */
+// published: [{artist_id, slug, display_name, works:[{id, slug, ...}]}] from featured.js (latest published version, shown works).
+export async function contents(env, published) {
+  const rows = await all(env, 'SELECT * FROM gallery_memberships');
+  const pl = await all(env, 'SELECT artwork_id, gallery_id, state FROM artwork_placements');
+  const out = Object.fromEntries(GALLERIES.map(g => [g, { artists: [], works: [] }]));
+  for (const a of published) {
+    const mine = rows.filter(r => r.artist_id === a.artist_id);
+    for (const g of GALLERIES) {
+      const e = effective(mine, g);
+      if (!e || e.state !== 'live') continue;
+      const works = a.works.filter(w => g === 'contemporary'
+        ? !pl.some(p => p.artwork_id === w.id && p.gallery_id === 'contemporary')
+        : pl.some(p => p.artwork_id === w.id && p.gallery_id === g && p.state === 'live'));
+      out[g].artists.push({ artist_id: a.artist_id, slug: a.slug, display_name: a.display_name, works: works.length });
+      out[g].works.push(...works.map(w => ({ artist_id: a.artist_id, artist: a.slug, work: w.slug, artwork_id: w.id })));
+    }
+  }
+  return out;
+}
+export async function readiness(env, published) {
+  const s = await settings(env), c = published ? await contents(env, published) : null;
+  return Object.fromEntries(GALLERIES.map(g => {
+    const la = c ? c[g].artists.length : null, lw = c ? c[g].works.length : null;
+    return [g, { ...s[g], live_artists: la, live_works: lw, ready: c ? la >= s[g].target_artists && lw >= s[g].target_works : null }];
+  }));
+}
+
+/* ---- unrestricted order --------------------------------------------------------------------------------------------- */
+export async function order(env, g) {
+  gallery(g);
+  return all(env, 'SELECT o.position, o.artist_id, a.slug, a.display_name FROM gallery_order o JOIN artists a ON a.id = o.artist_id WHERE o.gallery_id = ? ORDER BY o.position', g);
+}
+// Replace a gallery's order with the given artists, in order. Contemporary Art: positions from 26, and never an artist who
+// already holds one of the 25 positions in gallery_positions (those stay exactly where they are).
+export async function saveOrder(env, founder, g, body) {
+  await need(env); gallery(g);
+  if (!body || !Array.isArray(body.artists) || body.artists.length > 5000 || body.artists.some(x => typeof x !== 'string')) throw new Bad('Send the artists in order');
+  if (new Set(body.artists).size !== body.artists.length) throw new Bad('Each artist appears once');
+  const held = new Set(g === 'contemporary' ? (await all(env, 'SELECT artist_id FROM gallery_positions WHERE artist_id IS NOT NULL')).map(r => r.artist_id) : []);
+  for (const id of body.artists) {
+    if (held.has(id)) throw new Bad('That artist already holds one of the 25 Contemporary Art positions; those are set in Gallery order', 409);
+    if (!(await isLive(env, id, g))) throw new Bad(`Only live members of ${TITLES[g]} can be ordered`, 409);
+  }
+  const base = g === 'contemporary' ? 26 : 1, at = now();
+  const before = await order(env, g);
+  await env.DB.batch([env.DB.prepare('DELETE FROM gallery_order WHERE gallery_id = ?').bind(g),
+    ...body.artists.map((id, i) => env.DB.prepare('INSERT INTO gallery_order (gallery_id, position, artist_id, updated_at, updated_by) VALUES (?,?,?,?,?)').bind(g, base + i, id, at, founder))]);
+  await audit(env, founder, 'founder', 'gallery_order', null, { gallery: g, before: before.map(r => r.artist_id), after: body.artists });
+  return order(env, g);
+}
+
+/* ---- Artists in Focus for Landscape Art and Portraiture --------------------------------------------------------------- */
+export async function features(env, g) {
+  newGallery(g);
+  return all(env, 'SELECT position, artist_id, artwork_id, updated_at FROM gallery_features WHERE gallery_id = ? ORDER BY position', g);
+}
+export async function saveFeatures(env, founder, g, body, published) {
+  await need(env); newGallery(g);
+  if (!body || !Array.isArray(body.items) || body.items.length > FEATURE_MAX) throw new Bad(`Up to ${FEATURE_MAX} artists`);
+  const c = (await contents(env, published))[g], seen = new Set();
+  const items = body.items.map((it, n) => {
+    if (!it || Object.keys(it).sort().join() !== 'artist_id,artwork_id') throw new Bad('Refused');
+    if (seen.has(it.artist_id)) throw new Bad('Each artist can be featured once'); seen.add(it.artist_id);
+    if (!c.works.some(w => w.artist_id === it.artist_id && w.artwork_id === it.artwork_id))
+      throw new Bad(`Choice ${n + 1} isn’t a published work placed in ${TITLES[g]}`, 409);
+    return { position: n + 1, ...it };
+  });
+  const at = now(), before = await features(env, g);
+  await env.DB.batch([env.DB.prepare('DELETE FROM gallery_features WHERE gallery_id = ?').bind(g),
+    ...items.map(i => env.DB.prepare('INSERT INTO gallery_features (gallery_id, position, artist_id, artwork_id, updated_at, updated_by) VALUES (?,?,?,?,?,?)').bind(g, i.position, i.artist_id, i.artwork_id, at, founder))]);
+  await audit(env, founder, 'founder', 'gallery_features', null, { gallery: g, before: before.map(r => `${r.artist_id}/${r.artwork_id}`), after: items.map(r => `${r.artist_id}/${r.artwork_id}`) });
+  return features(env, g);
+}
+
+/* ---- per-use image consent (append-only answers) -------------------------------------------------------------------- */
+async function sha256(s) { return [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].map(b => b.toString(16).padStart(2, '0')).join(''); }
+function requestText(r) { return JSON.stringify({ scope: r.scope, gallery_id: r.gallery_id, artwork_ids: r.artwork_ids, purpose: r.purpose, channels: r.channels, valid_until: r.valid_until }); }
+async function checkUse(env, body) {
+  if (!body || !SCOPES.includes(body.scope)) throw new Bad('Choose what the image would be used for');
+  if (body.gallery_id != null) gallery(body.gallery_id);
+  const ids = body.artwork_ids;
+  if (!Array.isArray(ids) || !ids.length || ids.length > 20 || ids.some(x => typeof x !== 'string')) throw new Bad('Choose the artworks');
+  const purpose = String(body.purpose || '').trim(), channels = String(body.channels || '').trim();
+  if (purpose.length < 10 || purpose.length > 600) throw new Bad('Describe the use (10–600 characters)');
+  if (channels.length < 2 || channels.length > 300) throw new Bad('Say where it would appear');
+  if (body.valid_until != null && !/^\d{4}-\d{2}-\d{2}$/.test(body.valid_until)) throw new Bad('End date: YYYY-MM-DD');
+  const a = await artistById(env, body.artist_id);
+  for (const id of ids) { const w = await workOf(env, id); if (w.artist_id !== a.id) throw new Bad('Every artwork must be this artist’s own', 409); }
+  return { artist_id: a.id, scope: body.scope, gallery_id: body.gallery_id || null, artwork_ids: JSON.stringify(ids), purpose, channels, valid_until: body.valid_until || null };
+}
+export async function requestConsent(env, founder, body) {
+  await need(env);
+  const u = await checkUse(env, body), id = rid('u'), at = now();
+  await env.DB.prepare(`INSERT INTO image_use_requests (id, artist_id, scope, gallery_id, artwork_ids, purpose, channels, valid_until, request_text_sha256, status, requested_by, requested_at)
+    VALUES (?,?,?,?,?,?,?,?,?,'open',?,?)`).bind(id, u.artist_id, u.scope, u.gallery_id, u.artwork_ids, u.purpose, u.channels, u.valid_until, await sha256(requestText(u)), founder, at).run();
+  await audit(env, founder, 'founder', 'image_use_requested', u.artist_id, { request: id, scope: u.scope });
+  return one(env, 'SELECT * FROM image_use_requests WHERE id = ?', id);
+}
+export async function cancelRequest(env, founder, id) {
+  await need(env);
+  const r = await one(env, "SELECT * FROM image_use_requests WHERE id = ? AND status = 'open'", id);
+  if (!r) throw new Bad('No open request', 409);
+  await env.DB.prepare("UPDATE image_use_requests SET status='cancelled', closed_at=? WHERE id=? AND status='open'").bind(now(), id).run();
+  await audit(env, founder, 'founder', 'image_use_cancelled', r.artist_id, { request: id });
+  return { cancelled: id };
+}
+async function insertConsent(env, u, answer, method, by, requestId, textSha) {
+  const id = rid('c');
+  await env.DB.prepare(`INSERT INTO image_use_consents (id, request_id, artist_id, scope, gallery_id, artwork_ids, purpose, channels, valid_until, answer, method, request_text_sha256, recorded_by, created_at)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id, requestId, u.artist_id, u.scope, u.gallery_id, u.artwork_ids, u.purpose, u.channels, u.valid_until, answer, method, textSha, by, now()).run();
+  return id;
+}
+/* The artist answers in the Studio (yes or no; optional, nothing changes if they never answer). */
+export async function answerConsent(env, artist, requestId, body) {
+  await need(env);
+  if (!body || !['yes', 'no'].includes(body.answer)) throw new Bad('Answer yes or no');
+  const r = await one(env, "SELECT * FROM image_use_requests WHERE id = ? AND artist_id = ? AND status = 'open'", requestId, artist.id);
+  if (!r) throw new Bad('No open request', 404);
+  const id = await insertConsent(env, r, body.answer, 'studio', artist.email, r.id, r.request_text_sha256);
+  await env.DB.prepare("UPDATE image_use_requests SET status='answered', closed_at=? WHERE id=? AND status='open'").bind(now(), r.id).run();
+  await audit(env, artist.email, 'artist', 'image_use_answered', artist.id, { request: r.id, consent: id, answer: body.answer });
+  return { consent: id, answer: body.answer };
+}
+/* The founder records an answer the artist gave by email (the request is the same per-use request). */
+export async function recordEmailConsent(env, founder, body) {
+  await need(env);
+  if (!body || !['yes', 'no'].includes(body.answer)) throw new Bad('Record yes or no');
+  let u, reqId = null;
+  if (body.request_id) {
+    u = await one(env, "SELECT * FROM image_use_requests WHERE id = ? AND status = 'open'", body.request_id);
+    if (!u) throw new Bad('No open request', 404);
+    reqId = u.id;
+  } else u = await checkUse(env, body);
+  const id = await insertConsent(env, u, body.answer, 'email_logged_by_founder', founder, reqId, reqId ? u.request_text_sha256 : await sha256(requestText(u)));
+  if (reqId) await env.DB.prepare("UPDATE image_use_requests SET status='answered', closed_at=? WHERE id=? AND status='open'").bind(now(), reqId).run();
+  await audit(env, founder, 'founder', 'image_use_recorded', u.artist_id, { consent: id, answer: body.answer });
+  return { consent: id, answer: body.answer };
+}
+/* Is this use allowed now? Only the artist's latest answer for that use counts, and only a 'yes' that has not expired. */
+export async function consentFor(env, artistId, artworkId, scope, today = now().slice(0, 10)) {
+  const rows = await all(env, 'SELECT * FROM image_use_consents WHERE artist_id = ? AND scope = ? ORDER BY created_at DESC, rowid DESC', artistId, scope);
+  const latest = rows.find(r => JSON.parse(r.artwork_ids).includes(artworkId));
+  return !!latest && latest.answer === 'yes' && (!latest.valid_until || latest.valid_until >= today);
+}
+export async function consentsView(env, artistId) {
+  return { requests: await all(env, 'SELECT * FROM image_use_requests WHERE artist_id = ? ORDER BY requested_at DESC', artistId),
+    answers: await all(env, 'SELECT * FROM image_use_consents WHERE artist_id = ? ORDER BY created_at DESC', artistId) };
+}
+
+/* ---- views ---------------------------------------------------------------------------------------------------------- */
+export async function adminView(env, published) {
+  if (!(await installed(env))) return { installed: false, galleries: GALLERIES.map(g => ({ gallery_id: g, title: TITLES[g], ...DEFAULTS[g] })) };
+  const c = await contents(env, published), r = await readiness(env, published);
+  return { installed: true, galleries: await Promise.all(GALLERIES.map(async g => ({ ...r[g], members: c[g].artists, order: await order(env, g),
+    features: g === 'contemporary' ? null : await features(env, g) }))),
+    memberships: await all(env, 'SELECT m.*, a.display_name, a.slug FROM gallery_memberships m JOIN artists a ON a.id = m.artist_id ORDER BY m.gallery_id, a.display_name'),
+    placements: await all(env, 'SELECT * FROM artwork_placements ORDER BY gallery_id, artist_id'),
+    open_requests: await all(env, "SELECT * FROM image_use_requests WHERE status = 'open' ORDER BY requested_at") };
+}
+export async function artistView(env, artist) {
+  await need(env);
+  return { ...(await membershipView(env, artist.id)), ...(await placementView(env, artist.id)), ...(await consentsView(env, artist.id)) };
+}
+/* For the publishing pipeline (Phase E): public identifiers only. */
+export async function pipeline(env, published) {
+  if (!(await installed(env))) return { installed: false };
+  const c = await contents(env, published), s = await settings(env);
+  return { installed: true, galleries: await Promise.all(GALLERIES.map(async g => ({ gallery: g, status: s[g].status,
+    artists: c[g].artists.map(a => a.slug), works: c[g].works.map(w => ({ artist: w.artist, work: w.work })),
+    order: (await order(env, g)).map(o => ({ position: o.position, artist: o.slug })),
+    features: g === 'contemporary' ? null : (await features(env, g)).map(f => ({ position: f.position, artist_id: f.artist_id, artwork_id: f.artwork_id })) }))) };
+}
