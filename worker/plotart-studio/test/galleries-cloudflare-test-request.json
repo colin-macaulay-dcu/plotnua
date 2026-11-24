@@ -1,0 +1,6 @@
+{
+  "purpose": "Phase B final verification: migration 0023 and the Phase B Studio on a real, temporary Cloudflare D1 database (created and deleted by the run; never production, never the shared TEST database)",
+  "requested_on": "2026-11-24",
+  "migration_sha256": "e1054b216170f2e9907e441aecb17bbde8903e2a47ab07470913651d9a9deb81",
+  "needs": "the founder's Approve on the checkout-test environment"
+}
