@@ -77,7 +77,7 @@ def entrances(path=None):
 def prep_panel(key, where):
     g = GALLERY[key]
     return ('<div class="pa-gx-prep" data-pa-placeholder="%s" role="img" aria-label="%s is in preparation. No artwork is shown yet.">%s'
-            '<p>Artwork will be shown here once %s’s artists have been selected.</p></div>') % (key, E(g["title"]), g["icon"], E(g["title"]))
+            '<p>Artwork will be shown here once this gallery’s artists have been selected.</p></div>') % (key, E(g["title"]), g["icon"])
 
 
 def tile(key, arts):
