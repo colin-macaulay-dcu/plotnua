@@ -33,6 +33,64 @@ LOGIN = '<a class="pa-login" href="%s" data-pa-track="nav_artist_login">Artist L
 FOOT_ARTISTS = '<li><a href="%s" data-pa-track="footer_artist_studio">Artist Studio</a></li><li><a href="{R}for-artists.html" data-pa-track="footer_for_artists">For artists</a></li>' % STUDIO
 
 
+# Three galleries (founder approval of Phase A, 24 Nov 2026): the "Artists’ Gallery" and "Mobile Gallery" pills became one
+# "Galleries" menu in the header. Contemporary Art is the existing Artists’ Gallery at gallery/ (same address, same
+# collection); Landscape Art and Portraiture are standalone gallery pages, shown "In preparation" until the founder opens
+# them (launch switches landscape_gallery_state / portraiture_gallery_state). atlas-tools/plotart-galleries-nav.py applies
+# exactly this markup to hand-built and already-published pages; prove-plotart-launch.py L11 and L21 check it.
+GALLERIES = (("contemporary", "gallery/", "Contemporary Art", "nav_gallery_contemporary"),
+             ("landscape", "landscape/", "Landscape Art", "nav_gallery_landscape"),
+             ("portraiture", "portraiture/", "Portraiture", "nav_gallery_portraiture"))
+GALLERY_STATES = ("in_preparation",)   # Phase A: no new gallery can be opened; opening is Phase E (guard L21)
+FOOT_GALLERIES = ('<li><a href="{R}gallery/">Contemporary Art</a></li><li><a href="{R}landscape/">Landscape Art</a></li>'
+                  '<li><a href="{R}portraiture/">Portraiture</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li>')
+PREP_NOTE = '<span class="pa-dd-note">In preparation</span>'
+
+
+def gallery_state(key):
+    """'open' for Contemporary; for a new gallery, its launch switch (anything but 'in_preparation' is refused here)."""
+    if key == "contemporary":
+        return "open"
+    st = SEO.switches().get(key + "_gallery_state")
+    if st not in GALLERY_STATES:
+        raise ValueError("%s_gallery_state must be one of %s in Phase A, not %r" % (key, GALLERY_STATES, st))
+    return st
+
+
+def galleries_menu(R, current, mg_href=None):
+    """The header's Galleries menu. current: a gallery key or "mg" marks that page's link (aria-current); "vg" (an artist's
+    gallery or artwork page, all of which are Contemporary Art today) marks only the menu itself as the current section."""
+    keys = {g[0] for g in GALLERIES} | {"mg"}
+    links = []
+    for key, href, label, track in GALLERIES:
+        links.append('<a class="pa-dd-link" href="%s%s"%s data-pa-track="%s">%s%s</a>' % (
+            R, href, ' aria-current="page"' if key == current else "", track, label,
+            PREP_NOTE if gallery_state(key) == "in_preparation" else ""))
+    links.append('<a class="pa-dd-link" href="%s"%s data-pa-track="nav_mobile_gallery">Mobile Gallery</a>' % (
+        mg_href or R + "mobile-gallery/", ' aria-current="page"' if current == "mg" else ""))
+    return ('<details class="pa-dd%s" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary>'
+            '<div class="pa-dd-panel">%s</div></details>') % (" is-current" if current in keys | {"vg"} else "", "".join(links))
+
+
+def menu_items(nav):
+    """The phone Menu links, in header order, from the header navigation (pills and Galleries menu links alike)."""
+    import re as _re
+    items = []
+    for a in _re.findall(r'<a\b[^>]*>.*?</a>', nav, _re.S):
+        a2 = _re.sub(r'class="[^"]*"', 'class="%s"' % ('pn-sm-link is-out' if 'pa-pill--out' in a else 'pn-sm-link'), a, 1)
+        items.append(_re.sub(r'\sdata-pa-track="([^"]*)"', r' data-pa-track="\1_menu"', a2))
+    return items
+
+
+def gallery_tabs(R, current):
+    """The tabs shared by the three gallery pages (Phase A): the same three galleries, the current one marked."""
+    tabs = "".join('<li><a class="pa-gtab" href="%s%s"%s data-pa-track="gallery_tab_%s">%s%s</a></li>' % (
+        R, href, ' aria-current="page"' if key == current else "", key, label,
+        PREP_NOTE.replace("pa-dd-note", "pa-gtab-note") if gallery_state(key) == "in_preparation" else "")
+        for key, href, label, _t in GALLERIES)
+    return ('<nav class="pa-gtabs" aria-label="PlotArt galleries"><div class="pa-wrap"><ul class="pa-gtabs-list">%s</ul></div></nav>' % tabs)
+
+
 def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", hire_nav=None, fine=ARTIST_FINE, styles=(), services_nav=None):
     hire_nav = HIRE_NAV if hire_nav is None else hire_nav
     services_nav = SERVICES_NAV if services_nav is None else services_nav
@@ -42,10 +100,9 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
     pill = lambda key, href, lbl, track: '<a class="pa-pill" href="%s"%s data-pa-track="%s">%s</a>' % (href, ' aria-current="page"' if key == current else "", track, lbl)
     header = ('<header class="pa-head pa-head--pills">\n  <div class="pa-wrap">\n'
               '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt=""></a>\n'
-              '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s%s</nav>\n  </div>\n</header>') % (
+              '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, " pa-pills--hire" if hire_nav else "", pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
-        pill("vg", R + "gallery/", "Artists’ Gallery", "nav_virtual_gallery"),
-        pill("mg", R + "mobile-gallery/", "Mobile Gallery", "nav_mobile_gallery"),
+        galleries_menu(R, current),
         pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
         (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
         + (pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]) if services_nav else ""),
@@ -53,17 +110,14 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
     # Phone Menu (founder approval 30 Oct 2026): the same links in the shared one-row Menu
     import re as _re
     _nav = _re.search(r'<nav class="pa-pills[^"]*"[^>]*>(.*?)</nav>', header, _re.S).group(1)
-    _items = []
-    for _a in _re.findall(r'<a\b[^>]*>.*?</a>', _nav, _re.S):
-        _a2 = _re.sub(r'class="[^"]*"', 'class="%s"' % ('pn-sm-link is-out' if 'pa-pill--out' in _a else 'pn-sm-link'), _a, 1)
-        _items.append(_re.sub(r'\sdata-pa-track="([^"]*)"', r' data-pa-track="\1_menu"', _a2))
+    _items = menu_items(_nav)
     _menu = ('<details class="pn-sm" data-pn-menu><summary class="pn-sm-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" '
              'stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/>'
              '<path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary>'
              '<div class="pn-sm-panel">%s</div></details>') % "".join(_items)
     header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + LOGIN + '\n    ' + _menu + '\n  </div>\n</header>', 1)
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
-    footlinks = ('<li><a href="{R}gallery/">Artists’ Gallery</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
+    footlinks = (FOOT_GALLERIES + '<li><a href="{R}living-gallery.html">Living Gallery</a></li>'
                  + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') + ('<li><a href="{R}services.html">Services</a></li>' if services_nav else '') +
                  '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>' + FOOT_ARTISTS).format(R=R)
     robots = SEO.head(path, title, desc)

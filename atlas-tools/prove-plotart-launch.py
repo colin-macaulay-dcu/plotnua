@@ -64,6 +64,12 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       Founding 25 pointer. When open, they are exactly the build (build-plotart-join.py), with one form posting only
       to the approved route and the Worker's own confirmations; the only percentage is the approved 15% wording
       and the only price the approved worked example; no discount, waiver or individual-terms wording.
+  L21 Three galleries, Phase A (founder approval 24 Nov 2026): the homepage opens with the one heading "A new home for
+      Irish art." and the three gallery entrances exactly as build-plotart-galleries.py writes them; Contemporary Art (the
+      existing gallery/, unchanged collection, order and Featured Artists) shows the founder's credited painting whole, never
+      cropped; Landscape Art and Portraiture stay "In preparation" (no other state is accepted before Phase E): their
+      entrances and holding pages show no image, artist or artwork, are noindex and outside the sitemap, and nothing says
+      they are open. The three gallery pages carry the same gallery tabs; every PlotArt page carries the one Galleries menu.
   L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
       notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
       homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
@@ -74,6 +80,10 @@ import plotart_seo as SEO
 import plotart_search_content as C
 import plotart_opportunities as OPP
 import plotart_featured as FEAT
+import plotart_shell as SHELL
+import importlib.util as _ilu
+_gx_spec = _ilu.spec_from_file_location("build_plotart_galleries", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-plotart-galleries.py"))
+GX = _ilu.module_from_spec(_gx_spec); _gx_spec.loader.exec_module(GX)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if len(sys.argv) < 2:
@@ -142,6 +152,11 @@ if SERVICES_ON:
     PAGES.append(SERVICES_PAGE)
 # No prices on the Services page (Hang-It asked for its pricing to be removed, 19 Nov 2026): the ordinary L3 rule applies.
 ALLOWED |= {"assets/plotart-refine.css", "assets/plotart-refine.js"}   # Refine on All Artworks (founder approval 21 Nov 2026)
+# Three galleries, Phase A (founder approval 24 Nov 2026): the holding pages of the two galleries in preparation and the
+# galleries stylesheet (L21). They are launch pages, so every L2-L10 rule applies to them as well.
+GX_PAGES = ["landscape/index.html", "portraiture/index.html"]
+PAGES += GX_PAGES
+ALLOWED |= set(GX_PAGES) | {"assets/plotart-galleries.css"}
 ALLOWED |= {"assets/plotart-featured.css"}   # Featured Artists in the Artists' Gallery (17 Nov 2026; was plotart-home.css on the homepage)   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
@@ -307,8 +322,10 @@ for _n, _s in (("index.html", home), ("living-gallery.html", open(os.path.join(P
 # linked to the Discovery and captioned as an illustration.
 need(re.search(r'<a href="\.\./discovery-a-home-for-art\.html"[^>]*><img src="\.\./assets/img/dfb125ba9dd7cd87\.jpg"', home) is not None
      and "Illustration · not a real home" in visible_text(home), "L6 the Art at Home image must be the Discovery's image, linked to it and captioned as an illustration")
-_hero = re.search(r'<section class="pa-hero">.*?</section>', home, re.S)
-need(_hero is not None and not re.search(r"(?i)AI-generated|conceptual image", visible_text(_hero.group(0))), "L6 the homepage hero still carries an AI-image label (the hero is the founder's painting)")
+# Three galleries (24 Nov 2026): the gallery entrances replaced the hero; the founder's painting is now the Contemporary Art
+# entrance and must still carry no AI-image label.
+_hero = re.search(r'<section class="pa-gx".*?</section>', home, re.S)
+need(_hero is not None and not re.search(r"(?i)AI-generated|conceptual image", visible_text(_hero.group(0))), "L6 the homepage gallery entrances carry an AI-image label (the Contemporary Art entrance is the founder's painting)")
 need(not re.search(r'pa-vg-card|pa-vg-grid|pa-vg-count|galleries reserved|waiting for their artists', home), "L6 the homepage shows empty gallery slots or counters (removed, 29 Oct 2026)")
 # The application link is required only while applications are open. The state is read here directly: STATE itself is
 # defined with L8 below, and this line raised a NameError in every state but "open" (found closing Founding 25, 13 Nov 2026).
@@ -319,7 +336,10 @@ need(("No artwork is currently available through PlotArt." in visible_text(home)
      "L6 the homepage must state availability for the current state (galleries %s)" % ("open" if OPEN else "not open"))
 # Founder decision 29 Oct 2026: the introduction is the approved lede, and availability is stated by the
 # Virtual Gallery line and the footer (the "Where PlotArt is now" panel was removed).
-need("PlotArt brings artists and art lovers together." in visible_text(home), "L6 the homepage introduction is not the approved wording")
+# Three galleries (founder decisions 24 Nov 2026): the homepage has one heading, "A new home for Irish art.", directly above
+# the gallery entrances, and no introductory label or lede (the earlier introduction was retired with the hero).
+need(re.findall(r"<h1\b[^>]*>(.*?)</h1>", home, re.S) == ["A new home for Irish art."] and "Three curated galleries" not in visible_text(home),
+     "L6 the homepage heading must be exactly 'A new home for Irish art.' with no added label")
 need(len(demo_names) > 0 or not os.path.exists(cat_path), "L3 demonstration names could not be read")
 
 # L3 on a release branch: the prototype data is never published, so demonstration names
@@ -550,13 +570,18 @@ if os.path.exists(smp):
     _azwant = [(p["artist"]["slug"], html.escape(p["artist"]["display_name"], quote=True))
                for p in sorted(_packages, key=lambda p: (p["artist"]["display_name"].casefold(), p["artist"]["slug"]))]
     need(_azlinks == _azwant and (bool(_az) == bool(_packages)), "L11 artist A-Z must match approved public names exactly")
-NAV_WANT = ["Discover PlotArt", "Artists’ Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
+# Three galleries (24 Nov 2026): the Artists' Gallery and Mobile Gallery pills became the one Galleries menu, which must sit
+# straight after Discover PlotArt and be exactly the shell's (checked below, with its current link).
+NAV_WANT = ["Discover PlotArt", "Living Gallery", "PlotNua ↗"]
 if HIRE_ON:
-    NAV_WANT.insert(4, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
+    NAV_WANT.insert(2, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
 if SERVICES_ON:
     NAV_WANT.insert(len(NAV_WANT) - 1, "Services")                                        # Art Services & Providers (19 Nov 2026)
-NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Artists’ Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
-               "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
+NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": None, "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
+               "mobile-gallery/index.html": None, "mobile-gallery/gallery.html": None, "landscape/index.html": None, "portraiture/index.html": None}
+# the page each Galleries menu link is current on (the menu itself is then marked as the current section)
+DD_CURRENT = {"gallery/index.html": "contemporary", "landscape/index.html": "landscape", "portraiture/index.html": "portraiture",
+              "mobile-gallery/index.html": "mg", "mobile-gallery/gallery.html": "mg"}
 NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
 NAV_CURRENT.update({"join.html": None, "curatorial-policy.html": None})
 NAV_CURRENT[HIRE_PAGE] = "Art for Hire"
@@ -574,9 +599,12 @@ for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
         mg_href = "index.html" if name.startswith("mobile-gallery/") else depth + "mobile-gallery/"
-        want_hrefs = [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
+        want_hrefs = [depth + "index.html", depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
         need(len(links) == len(want_hrefs) and [x[0] for x in links] == want_hrefs,
-             "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Mobile Gallery, the Living Gallery and the PlotNua homepage" % name)
+             "L11 %s pills must link to the PlotArt homepage, the Living Gallery, Art for Hire, Services and the PlotNua homepage" % name)
+        _dd = SHELL.galleries_menu(depth, DD_CURRENT.get(name), mg_href=mg_href)
+        need(nav is not None and nav.group(1).count("data-pa-dd") == 1 and re.match(r'<a class="pa-pill"[^>]*>Discover PlotArt</a>' + re.escape(_dd), nav.group(1)) is not None,
+             "L11 %s must carry the one Galleries menu, exactly as the shell writes it, straight after Discover PlotArt" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
 
@@ -587,6 +615,68 @@ if not SERVICES_ON:
                 _t = open(os.path.join(_d, _f), encoding="utf-8").read()
                 need("services.html" not in _t and 'data-pa-track="nav_services' not in _t,
                      "L11 %s links to the paused Services page or carries its tab" % os.path.relpath(os.path.join(_d, _f), PA))
+
+# L21 · three galleries, Phase A (founder approval 24 Nov 2026)
+_gx_states = {k: launch.get(k + "_gallery_state") for k in ("landscape", "portraiture")}
+need(all(v in SHELL.GALLERY_STATES for v in _gx_states.values()),
+     "L21 Landscape Art and Portraiture must stay in_preparation until Phase E (switches: %s)" % _gx_states)
+try:
+    _gx_built = GX.plan(SITE)
+except ValueError as _e:
+    _gx_built = {}
+    need(False, "L21 " + str(_e))
+for _rel, _doc in _gx_built.items():
+    _fp = os.path.join(PA, _rel)
+    need(os.path.exists(_fp) and open(_fp, encoding="utf-8").read() == _doc,
+         "L21 %s is not exactly what build-plotart-galleries.py writes (run it, then re-pin)" % _rel)
+# the homepage entrances: three, in order; only Contemporary Art shows artwork, and only the founder's credited painting
+_gx_sec = re.search(r'<section class="pa-gx".*?</section>', home, re.S)
+_tiles = re.findall(r'<li class="pa-gx-tile" data-pa-gallery="([a-z]+)">(.*?)</li>', _gx_sec.group(0) if _gx_sec else "", re.S)
+need([k for k, _ in _tiles] == ["contemporary", "landscape", "portraiture"], "L21 the homepage must carry exactly the three gallery entrances, in order")
+for _k, _t in _tiles:
+    _imgs = re.findall(r"<img\b[^>]*>", _t)
+    _tv = visible_text(_t)
+    if _k == "contemporary":
+        need(len(_imgs) == 1 and 'src="assets/hero/founder-01-abstract.webp"' in _imgs[0] and "Gallery open" in _tv and 'href="gallery/"' in _t,
+             "L21 the Contemporary Art entrance must show only the founder's credited painting and enter gallery/")
+    else:
+        need(not _imgs and "In preparation" in _tv and "Gallery open" not in _tv and "artists/" not in _t and ('href="%s/"' % _k) in _t,
+             "L21 the %s entrance must say In preparation and show no image, artist or artwork" % _k)
+# artwork in an entrance is shown whole: the galleries stylesheet never crops (object-fit:cover) and contains the image
+_gx_css = open(os.path.join(PA, "assets", "plotart-galleries.css"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "assets", "plotart-galleries.css")) else ""
+need("object-fit:cover" not in _gx_css.replace(" ", "") and re.search(r"\.pa-gx-art img\{[^}]*object-fit:contain", _gx_css) is not None,
+     "L21 gallery entrance artwork must be shown whole (object-fit:contain), never cropped")
+# the holding pages: in preparation, nothing published in them, nothing implying they are open
+for _rel in GX_PAGES:
+    _fp = os.path.join(PA, _rel)
+    _s = open(_fp, encoding="utf-8").read() if os.path.exists(_fp) else ""
+    _m = _s.split("<main", 1)[-1].split("</main>")[0]
+    _mv = re.sub(r"\s+", " ", visible_text(_m))
+    need(bool(_s) and "In preparation" in _mv and not re.findall(r"<img\b", _m) and "artists/" not in _m and "pa-vg-collection" not in _s
+         and "pa-featured-artists" not in _s and not re.search(r"Artists in Focus|Explore More Artists|Gallery open|now open|is open\b", _mv),
+         "L21 %s must be a holding page: In preparation, with no artist, artwork, image or gallery section, and nothing saying it is open" % _rel)
+    need('<meta name="robots" content="noindex, follow">' in _s, "L21 %s must be noindex while in preparation" % _rel)
+# the gallery tabs: the same three tabs on the three gallery pages, the page's own tab current
+for _rel, _key in (("gallery/index.html", "contemporary"), ("landscape/index.html", "landscape"), ("portraiture/index.html", "portraiture")):
+    _fp = os.path.join(PA, _rel)
+    _s = open(_fp, encoding="utf-8").read() if os.path.exists(_fp) else ""
+    need(_s.count('<nav class="pa-gtabs"') == 1 and SHELL.gallery_tabs("../", _key) in _s, "L21 %s must carry the gallery tabs with its own tab current" % _rel)
+need("<h1>Contemporary Art.</h1>" in vg, "L21 the Contemporary Art gallery's heading must be 'Contemporary Art.'")
+# every PlotArt page with a header carries the one Galleries menu, and no Artists' Gallery or Mobile Gallery pill is left
+for _d, _, _fs in os.walk(PA):
+    for _f in _fs:
+        if _f.endswith(".html"):
+            _t = open(os.path.join(_d, _f), encoding="utf-8").read()
+            if 'class="pa-pills' in _t:
+                need(_t.count("data-pa-dd") == 1 and 'data-pa-track="nav_virtual_gallery' not in _t
+                     and not re.search(r'<a class="pa-pill[^"]*"[^>]*data-pa-track="nav_mobile_gallery"', _t),
+                     "L21 %s must carry exactly one Galleries menu and no Artists’ Gallery pill" % os.path.relpath(os.path.join(_d, _f), PA))
+# the homepage states the real status of the Living Gallery and Art for Hire (founder decision 5, 24 Nov 2026)
+_hv = re.sub(r"\s+", " ", visible_text(home))
+need("no homes are taking part yet" in _hv and not re.search(r"Real art\. Real homes\.|displayed in real homes", _hv),
+     "L21 the homepage must present the Living Gallery as a programme in development (no homes are taking part yet)")
+need(("Hire enquiries are not yet open." in _hv) == (not HIRE_FORM) and (not HIRE_ON or 'href="art-for-hire/"' in home),
+     "L21 the homepage must say Art for Hire enquiries are not yet open exactly while the enquiry form is off")
 
 # L12 · the Founding 25 and the Living Gallery are separate programmes (founder decision 28 Oct 2026)
 SEP = "The Founding 25 is the PlotArt Artists’ Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."
@@ -948,4 +1038,4 @@ if problems:
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L20 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L21 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))

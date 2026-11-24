@@ -281,3 +281,15 @@
     });
   }
 })();
+/* pa-galleries-nav:begin · the Galleries menu closes on Escape, on a click outside it, and when another menu opens (24 Nov 2026). */
+(function () {
+  var menus = function () { return document.querySelectorAll('details[data-pa-dd]'); };
+  document.addEventListener('click', function (e) {
+    menus().forEach(function (d) { if (d.open && !d.contains(e.target)) d.open = false; });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    menus().forEach(function (d) { if (d.open) { d.open = false; var s = d.querySelector('summary'); if (s) s.focus(); } });
+  });
+})();
+/* pa-galleries-nav:end */

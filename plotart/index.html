@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="assets/plotart.css">
 <link rel="stylesheet" href="assets/plotart-join.css">
+<link rel="stylesheet" href="assets/plotart-galleries.css">
 <script>document.documentElement.classList.remove('no-js');</script>
 <link rel="stylesheet" href="/assets/identity/pn-section-menu.css?v=1">
 </head>
@@ -41,34 +42,33 @@
 <header class="pa-head pa-head--pills">
   <div class="pa-wrap">
     <a class="pa-brand" href="index.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt=""></a>
-    <nav class="pa-pills pa-pills--hire" aria-label="PlotArt"><a class="pa-pill" href="index.html" aria-current="page" data-pa-track="nav_discover_plotart">Discover PlotArt</a><a class="pa-pill" href="gallery/" data-pa-track="nav_virtual_gallery">Artists’ Gallery</a><a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="living-gallery.html" data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill" href="art-for-hire/" data-pa-track="nav_art_for_hire">Art for Hire</a><a class="pa-pill" href="services.html" data-pa-track="nav_services">Services</a><a class="pa-pill pa-pill--out" href="../index.html" data-pa-track="cross_plotnua_home"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a></nav>
+    <nav class="pa-pills pa-pills--hire" aria-label="PlotArt"><a class="pa-pill" href="index.html" aria-current="page" data-pa-track="nav_discover_plotart">Discover PlotArt</a><details class="pa-dd" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary><div class="pa-dd-panel"><a class="pa-dd-link" href="gallery/" data-pa-track="nav_gallery_contemporary">Contemporary Art</a><a class="pa-dd-link" href="landscape/" data-pa-track="nav_gallery_landscape">Landscape Art<span class="pa-dd-note">In preparation</span></a><a class="pa-dd-link" href="portraiture/" data-pa-track="nav_gallery_portraiture">Portraiture<span class="pa-dd-note">In preparation</span></a><a class="pa-dd-link" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a></div></details><a class="pa-pill" href="living-gallery.html" data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill" href="art-for-hire/" data-pa-track="nav_art_for_hire">Art for Hire</a><a class="pa-pill" href="services.html" data-pa-track="nav_services">Services</a><a class="pa-pill pa-pill--out" href="../index.html" data-pa-track="cross_plotnua_home"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a></nav>
     <a class="pa-login" href="https://plotart-studio.colin-a41.workers.dev/" data-pa-track="nav_artist_login">Artist Login</a>
-    <details class="pn-sm" data-pn-menu><summary class="pn-sm-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-sm-panel"><a class="pn-sm-link" href="index.html" aria-current="page" data-pa-track="nav_discover_plotart_menu">Discover PlotArt</a><a class="pn-sm-link" href="gallery/" data-pa-track="nav_virtual_gallery_menu">Artists’ Gallery</a><a class="pn-sm-link" href="mobile-gallery/" data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a><a class="pn-sm-link" href="living-gallery.html" data-pa-track="nav_living_gallery_menu">Living Gallery</a><a class="pn-sm-link" href="art-for-hire/" data-pa-track="nav_art_for_hire_menu">Art for Hire</a><a class="pn-sm-link" href="services.html" data-pa-track="nav_services_menu">Services</a><a class="pn-sm-link is-out" href="../index.html" data-pa-track="cross_plotnua_home_menu"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a></div></details>
+    <details class="pn-sm" data-pn-menu><summary class="pn-sm-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-sm-panel"><a class="pn-sm-link" href="index.html" aria-current="page" data-pa-track="nav_discover_plotart_menu">Discover PlotArt</a><a class="pn-sm-link" href="gallery/" data-pa-track="nav_gallery_contemporary_menu">Contemporary Art</a><a class="pn-sm-link" href="landscape/" data-pa-track="nav_gallery_landscape_menu">Landscape Art<span class="pa-dd-note">In preparation</span></a><a class="pn-sm-link" href="portraiture/" data-pa-track="nav_gallery_portraiture_menu">Portraiture<span class="pa-dd-note">In preparation</span></a><a class="pn-sm-link" href="mobile-gallery/" data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a><a class="pn-sm-link" href="living-gallery.html" data-pa-track="nav_living_gallery_menu">Living Gallery</a><a class="pn-sm-link" href="art-for-hire/" data-pa-track="nav_art_for_hire_menu">Art for Hire</a><a class="pn-sm-link" href="services.html" data-pa-track="nav_services_menu">Services</a><a class="pn-sm-link is-out" href="../index.html" data-pa-track="cross_plotnua_home_menu"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a></div></details>
   </div>
 </header>
 <main id="main">
 
-<section class="pa-hero"><div class="pa-wrap">
-  <div>
-    <p class="pa-eyebrow">PlotArt · Part of PlotNua</p>
-    <h1 class="pa-h1-home">A new home for<br>Irish art.</h1>
-    <p class="pa-sub">Discover original art. Meet Irish artists. Find something you love.</p>
-  </div>
-  <figure class="pa-hero-statement pa-lit"><span class="pa-hang pa-hang--float"><img src="assets/hero/founder-01-abstract.webp" width="1332" height="940" alt="Painting by Colin MacAulay: an abstract of bold yellow outlined shapes over deep violet loops and pink and blue lines on grey" decoding="async" fetchpriority="high"></span>
-    <figcaption class="pa-credit">Original artwork by Colin MacAulay, founder of PlotArt.</figcaption>
-  </figure>
+<!-- pa-galleries:begin -->
+<section class="pa-gx" aria-labelledby="homeH"><div class="pa-wrap">
+  <h1 class="pa-gx-h1" id="homeH">A new home for Irish art.</h1>
+  <ul class="pa-gx-tiles" aria-label="PlotArt galleries">
+    <li class="pa-gx-tile" data-pa-gallery="contemporary">
+      <figure class="pa-gx-art"><img src="assets/hero/founder-01-abstract.webp" width="1332" height="940" alt="Painting by Colin MacAulay: an abstract of bold yellow outlined shapes over deep violet loops and pink and blue lines on grey" decoding="async" fetchpriority="high"></figure>
+      <p class="pa-gx-credit">Original artwork by Colin MacAulay, founder of PlotArt.</p>
+      <div class="pa-gx-body"><p class="pa-gx-status pa-gx-status--open">Gallery open</p><h2>Contemporary Art</h2><p class="pa-gx-text">Discover original contemporary art from Irish artists.</p><a class="pa-gx-go" href="gallery/" data-pa-track="home_gallery_contemporary" aria-label="Enter the Contemporary Art gallery"><span aria-hidden="true">→</span></a></div>
+    </li>
+    <li class="pa-gx-tile" data-pa-gallery="landscape">
+      <figure class="pa-gx-art"><div class="pa-gx-prep" data-pa-placeholder="landscape" role="img" aria-label="Landscape Art is in preparation. No artwork is shown yet."><svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="158" height="98" rx="2"/><circle cx="118" cy="28" r="9"/><path d="M1 74 C28 58 44 60 62 68 S104 52 159 64"/><path d="M1 86 C40 78 82 90 159 80"/></svg><p>Artwork will be shown here once Landscape Art’s artists have been selected.</p></div></figure>
+      <div class="pa-gx-body"><p class="pa-gx-status">In preparation</p><h2>Landscape Art</h2><p class="pa-gx-text">Explore Ireland’s landscapes, seascapes and places through original art.</p><a class="pa-gx-go" href="landscape/" data-pa-track="home_gallery_landscape" aria-label="About the Landscape Art gallery, in preparation"><span aria-hidden="true">→</span></a></div>
+    </li>
+    <li class="pa-gx-tile" data-pa-gallery="portraiture">
+      <figure class="pa-gx-art"><div class="pa-gx-prep" data-pa-placeholder="portraiture" role="img" aria-label="Portraiture is in preparation. No artwork is shown yet."><svg viewBox="0 0 100 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="98" height="122" rx="2"/><ellipse cx="50" cy="50" rx="17" ry="21"/><path d="M18 123 C20 96 34 84 50 84 S80 96 82 123"/></svg><p>Artwork will be shown here once Portraiture’s artists have been selected.</p></div></figure>
+      <div class="pa-gx-body"><p class="pa-gx-status">In preparation</p><h2>Portraiture</h2><p class="pa-gx-text">Discover expressive portraits and individual artistic interpretations of the human subject.</p><a class="pa-gx-go" href="portraiture/" data-pa-track="home_gallery_portraiture" aria-label="About the Portraiture gallery, in preparation"><span aria-hidden="true">→</span></a></div>
+    </li>
+  </ul>
 </div></section>
-
-
-<section class="pa-sec pa-sec--deep pa-intro" id="about" aria-labelledby="introH"><div class="pa-wrap">
-  <div class="pa-sec-head"><div><p class="pa-eyebrow">Introducing PlotArt</p><h2 id="introH">Original Irish art.<br>A gallery for every artist.</h2></div>
-  <div><p class="pa-lede" style="margin:0">PlotArt brings artists and art lovers together. Discover original artwork, explore artists' collections and connect directly with the people who create it.</p></div></div>
-  <div class="pa-tiers">
-    <div class="pa-tier"><p class="pa-eyebrow">For artists</p><h3>A gallery of your own</h3><p>Each artist will present a curated collection of original work in their own gallery, with their biography and enquiries that come straight to them. It began with the Founding 25.</p></div>
-    <div class="pa-tier"><p class="pa-eyebrow">For buyers</p><h3>Original work, shown properly</h3><p>Discover artists, see each work whole with its true dimensions, and enquire with the artist directly. PlotArt doesn't sell artwork: the artist is the seller.</p><p><a href="art-for-hire/#business-rentals">Buying or renting art for your business</a></p></div>
-    <div class="pa-tier"><p class="pa-eyebrow">For homeowners</p><h3>Live with original art</h3><p>Through the Living Gallery pilot, homeowners may one day host original work for a while. It's being developed, and nothing is arranged yet.</p></div>
-  </div>
-</div></section>
+<!-- pa-galleries:end -->
 
 <!-- pa-artist-apply:begin -->
 <section class="pa-jn-band" aria-labelledby="joinInviteH"><div class="pa-wrap pa-jn-band-grid">
@@ -80,12 +80,6 @@
 </div></section>
 <!-- pa-artist-apply:end -->
 
-<section class="pa-sec pa-home-vg" aria-labelledby="homeVgH"><div class="pa-wrap pa-cols-2" style="align-items:center">
-  <div><p class="pa-eyebrow">The Artists’ Gallery</p><h2 id="homeVgH">Every artist,<br>a gallery of their own.</h2></div>
-  <div><p class="pa-lede">Discover Irish artists, explore their original work and visit their individual online galleries.</p>
-  <p><a class="pa-btn pa-btn--ghost" href="gallery/" data-pa-track="home_vg">Explore the Artists’ Gallery <span aria-hidden="true">→</span></a></p>
-  <p style="font-size:15px;margin:0">Or <a href="artworks/" data-pa-track="home_artworks">browse all available artworks <span aria-hidden="true">→</span></a></p></div>
-</div></section>
 
 <section class="pa-sec" aria-labelledby="buyerGuideH"><div class="pa-wrap"><div class="pa-cols-2">
   <div><p class="pa-eyebrow">Finding your first work</p><h2 id="buyerGuideH">Look closer.<br>Find your way in.</h2></div>
@@ -101,11 +95,20 @@
 </div></section>
 
 <section class="pa-sec pa-home-lg" aria-labelledby="homeLgH"><div class="pa-wrap">
-  <div class="pa-sec-head"><div><p class="pa-eyebrow">The Living Gallery</p><h2 id="homeLgH">Real art. Real homes.</h2></div>
-  <div><p class="pa-lede" style="margin:0 0 18px">Discover original artwork displayed in real homes, showing how art can become part of everyday living.</p>
-  <p style="margin:0"><a class="pa-btn pa-btn--ghost" href="living-gallery.html" data-pa-track="home_lg">Visit the Living Gallery <span aria-hidden="true">→</span></a></p></div></div>
+  <div class="pa-sec-head"><div><p class="pa-eyebrow">The Living Gallery · Pilot in development</p><h2 id="homeLgH">Original art, at home.</h2></div>
+  <div><p class="pa-lede" style="margin:0 0 18px">A proposed PlotArt programme in which homeowners may host original work for a time. It is being developed: no homes are taking part yet.</p>
+  <p style="margin:0"><a class="pa-btn pa-btn--ghost" href="living-gallery.html" data-pa-track="home_lg">About the Living Gallery <span aria-hidden="true">→</span></a></p></div></div>
   <figure class="pa-lg-feature"><a href="living-gallery.html" data-pa-track="home_lg_image"><img src="assets/living/plotart-living-gallery-colin-macaulay-artwork.webp" width="1564" height="1006" alt="An original abstract painting by Colin MacAulay, in yellow, violet and pink, hanging above a linen sofa in an AI-generated living-room visualisation" loading="lazy" decoding="async"></a>
     <figcaption><span>Original artwork by Colin MacAulay. The room is an AI-generated interior visualisation for PlotArt, not a real home.</span><span class="pa-chip pa-chip--illus">AI-generated illustration</span></figcaption></figure>
+</div></section>
+
+<section class="pa-sec" aria-labelledby="homeMoreH"><div class="pa-wrap">
+  <div class="pa-sec-head"><div><p class="pa-eyebrow">Across PlotArt</p><h2 id="homeMoreH">More from PlotArt.</h2></div><div></div></div>
+  <ul class="pa-gx-more">
+    <li><span class="pa-gx-chip">Hire enquiries not yet open</span><h3>Art for Hire</h3><p>See which original works PlotArt artists are offering for hire to homes and businesses. Hire enquiries are not yet open.</p><p><a href="art-for-hire/" data-pa-track="home_hire">See works offered for hire <span aria-hidden="true">→</span></a></p></li>
+    <li><span class="pa-gx-chip">Directory</span><h3>Art services</h3><p>Art handling, hanging and delivery from independent providers listed by PlotArt.</p><p><a href="services.html" data-pa-track="home_services">Find a service <span aria-hidden="true">→</span></a></p></li>
+    <li><span class="pa-gx-chip">For artists</span><h3>PlotArt Studio</h3><p>Where PlotArt artists manage their gallery, artworks and enquiries.</p><p><a href="for-artists.html" data-pa-track="home_for_artists">For artists <span aria-hidden="true">→</span></a></p></li>
+  </ul>
 </div></section>
 
 <section class="pa-sec pa-sec--anth pa-aah" aria-labelledby="aahH"><div class="pa-wrap pa-aah-grid">
@@ -126,7 +129,7 @@
     </div>
     <div>
       <h2>PlotArt</h2>
-      <ul><li><a href="gallery/">Artists’ Gallery</a></li><li><a href="mobile-gallery/">Mobile Gallery</a></li><li><a href="living-gallery.html">Living Gallery</a></li><li><a href="art-for-hire/">Art for Hire</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About PlotArt</a></li><li><a href="founding-25.html">The Founding 25</a></li><li><a href="https://plotart-studio.colin-a41.workers.dev/" data-pa-track="footer_artist_studio">Artist Studio</a></li><li><a href="for-artists.html" data-pa-track="footer_for_artists">For artists</a></li></ul>
+      <ul><li><a href="gallery/">Contemporary Art</a></li><li><a href="landscape/">Landscape Art</a></li><li><a href="portraiture/">Portraiture</a></li><li><a href="mobile-gallery/">Mobile Gallery</a></li><li><a href="living-gallery.html">Living Gallery</a></li><li><a href="art-for-hire/">Art for Hire</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About PlotArt</a></li><li><a href="founding-25.html">The Founding 25</a></li><li><a href="https://plotart-studio.colin-a41.workers.dev/" data-pa-track="footer_artist_studio">Artist Studio</a></li><li><a href="for-artists.html" data-pa-track="footer_for_artists">For artists</a></li></ul>
     </div>
     <div>
       <h2>PlotNua</h2>
