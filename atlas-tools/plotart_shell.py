@@ -33,17 +33,20 @@ LOGIN = '<a class="pa-login" href="%s" data-pa-track="nav_artist_login">Artist L
 FOOT_ARTISTS = '<li><a href="%s" data-pa-track="footer_artist_studio">Artist Studio</a></li><li><a href="{R}for-artists.html" data-pa-track="footer_for_artists">For artists</a></li>' % STUDIO
 
 
-# Three galleries (founder approval of Phase A, 24 Nov 2026): the "Artists’ Gallery" and "Mobile Gallery" pills became one
-# "Galleries" menu in the header. Contemporary Art is the existing Artists’ Gallery at gallery/ (same address, same
-# collection); Landscape Art and Portraiture are standalone gallery pages, shown "In preparation" until the founder opens
-# them (launch switches landscape_gallery_state / portraiture_gallery_state). atlas-tools/plotart-galleries-nav.py applies
-# exactly this markup to hand-built and already-published pages; prove-plotart-launch.py L11 and L21 check it.
-GALLERIES = (("contemporary", "gallery/", "Contemporary Art", "nav_gallery_contemporary"),
-             ("landscape", "landscape/", "Landscape Art", "nav_gallery_landscape"),
-             ("portraiture", "portraiture/", "Portraiture", "nav_gallery_portraiture"))
+# Three galleries (founder approval of Phase A, 24 Nov 2026; FINAL identity approved by the founder 24 Nov 2026):
+#   Contemporary (artistic expression) at gallery/, the existing Artists' Gallery (same address, same collection);
+#   Environment (the world around us) at environment/; Being (our existence within it) at being/.
+# Environment and Being are shown "In preparation" until the founder opens them (launch switches environment_gallery_state /
+# being_gallery_state). Functional labels carry no full stop; the full stop is the editorial treatment of the homepage
+# entrances and the gallery headings only (build-plotart-galleries.py). Former addresses landscape/, places-and-spaces/ and
+# portraiture/ are generated redirect pages. atlas-tools/plotart-galleries-nav.py applies exactly this markup to hand-built and
+# already-published pages; prove-plotart-launch.py L11 and L21 check it.
+GALLERIES = (("contemporary", "gallery/", "Contemporary", "nav_gallery_contemporary"),
+             ("environment", "environment/", "Environment", "nav_gallery_environment"),
+             ("being", "being/", "Being", "nav_gallery_being"))
 GALLERY_STATES = ("in_preparation",)   # Phase A: no new gallery can be opened; opening is Phase E (guard L21)
-FOOT_GALLERIES = ('<li><a href="{R}gallery/">Contemporary Art</a></li><li><a href="{R}landscape/">Landscape Art</a></li>'
-                  '<li><a href="{R}portraiture/">Portraiture</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li>')
+FOOT_GALLERIES = ('<li><a href="{R}gallery/">Contemporary</a></li><li><a href="{R}environment/">Environment</a></li>'
+                  '<li><a href="{R}being/">Being</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li>')
 PREP_NOTE = '<span class="pa-dd-note">In preparation</span>'
 
 
@@ -59,7 +62,7 @@ def gallery_state(key):
 
 def galleries_menu(R, current, mg_href=None):
     """The header's Galleries menu. current: a gallery key or "mg" marks that page's link (aria-current); "vg" (an artist's
-    gallery or artwork page, all of which are Contemporary Art today) marks only the menu itself as the current section."""
+    gallery or artwork page, all of which are in Contemporary today) marks only the menu itself as the current section."""
     keys = {g[0] for g in GALLERIES} | {"mg"}
     links = []
     for key, href, label, track in GALLERIES:

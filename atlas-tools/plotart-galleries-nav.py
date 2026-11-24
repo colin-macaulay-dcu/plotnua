@@ -2,8 +2,10 @@
 """PlotArt · Galleries menu (three-gallery expansion, Phase A; founder approval 24 Nov 2026).
 
 Replaces the "Artists’ Gallery" and "Mobile Gallery" pills of every PlotArt page under ROOT/plotart with the one
-"Galleries" menu that atlas-tools/plotart_shell.py now writes (Contemporary Art · Landscape Art · Portraiture · Mobile
-Gallery), and makes the same change to the phone Menu and the footer. Everything else on each page is left byte-for-byte
+"Galleries" menu that atlas-tools/plotart_shell.py now writes (Contemporary · Environment · Being · Mobile
+Gallery), and makes the same change to the phone Menu and the footer. A page that already has the menu is REFRESHED to the
+shell's current markup (final gallery identity, 24 Nov 2026: Contemporary · Environment · Being):
+the menu, its phone Menu links and the footer gallery links are rewritten from the shell, nothing else. Everything else on each page is left byte-for-byte
 as it was. The menu's styles and behaviour live between the pa-galleries-nav markers in plotart.css and plotart.js.
 
   python3 atlas-tools/plotart-galleries-nav.py ROOT            apply
@@ -11,7 +13,7 @@ as it was. The menu's styles and behaviour live between the pa-galleries-nav mar
 
 Strict: a page whose PlotArt navigation does not hold exactly one Artists’ Gallery pill followed by one Mobile Gallery pill,
 the same two links once in the phone Menu and at most once in the footer, stops the run with nothing written.
-Idempotent: a page that already has the menu is left alone. The markup is the shell's own (galleries_menu, menu_items,
+Idempotent: running it twice changes nothing the second time. The markup is the shell's own (galleries_menu, menu_items,
 FOOT_GALLERIES), so the pages the publisher writes and the pages patched here cannot drift apart."""
 import os
 import re
@@ -29,7 +31,7 @@ NAV = re.compile(r'<nav class="pa-pills[^"]*" aria-label="PlotArt">(.*?)</nav>',
 
 CSS_BEGIN, CSS_END = "/* ==== pa-galleries-nav:begin", "/* ==== pa-galleries-nav:end ==== */"
 CSS = CSS_BEGIN + """ · the Galleries menu (three-gallery expansion Phase A, 24 Nov 2026). One header item, a <details>
-   menu: Contemporary Art, Landscape Art, Portraiture, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
+   menu: Contemporary, Environment, Being, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
    Scoped to .pa-dd, so nothing else changes. ==== */
 .pa-dd{ position:relative; }
 .pa-dd > summary{ list-style:none; cursor:pointer; }
@@ -76,9 +78,38 @@ def current_of(rel, vg_cur, mg_cur):
     return "vg" if vg_cur else None
 
 
+DD = re.compile(r'<details class="pa-dd(?: is-current)?" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary><div class="pa-dd-panel">(.*?)</div></details>', re.S)
+DD_LINK = re.compile(r'<a class="pa-dd-link" href="([^"]*)"( aria-current="page")? data-pa-track="([a-z_]+)">')
+MENU_RUN = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_gallery_contemporary_menu">.*?data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>', re.S)
+FOOT_RUN = re.compile(r'<li><a href="([^"]*)gallery/">Contemporary(?: Art)?</a></li>.*?<li><a href="[^"]*mobile-gallery/">Mobile Gallery</a></li>', re.S)
+KEY_OF_TRACK = {t: k for k, _h, _l, t in S.GALLERIES}
+
+
+def refresh(text, rel):
+    """A page that already has the Galleries menu: rewrite the menu, its phone Menu links and the footer gallery links from the
+    shell's current markup (same base path, same current page, same Mobile Gallery address)."""
+    ms = DD.findall(text)
+    if len(ms) != 1:
+        raise ValueError("expected one Galleries menu, found %d" % len(ms))
+    m = DD.search(text)
+    links = DD_LINK.findall(m.group(1))
+    if not links or links[0][2] != "nav_gallery_contemporary" or links[-1][2] != "nav_mobile_gallery" or not links[0][0].endswith("gallery/"):
+        raise ValueError("the Galleries menu does not start with Contemporary and end with Mobile Gallery")
+    R, mg_href = links[0][0][:-len("gallery/")], links[-1][0]
+    cur = [t for _h, a, t in links if a]
+    current = ("mg" if cur[0] == "nav_mobile_gallery" else KEY_OF_TRACK.get(cur[0], "vg")) if cur else ("vg" if " is-current" in m.group(0) else None)
+    dd = S.galleries_menu(R, current, mg_href=mg_href)
+    if len(MENU_RUN.findall(text)) != 1 or len(FOOT_RUN.findall(text)) > 1:
+        raise ValueError("expected one phone Menu gallery run and at most one footer gallery run")
+    out = text.replace(m.group(0), dd, 1)
+    out = MENU_RUN.sub(lambda _m: "".join(S.menu_items(dd)), out, count=1)
+    out = FOOT_RUN.sub(lambda f: S.FOOT_GALLERIES.format(R=f.group(1)), out, count=1)
+    return out, ("refreshed" if out != text else "already")
+
+
 def patch(text, rel):
     if "data-pa-dd" in text:
-        return text, "already"
+        return refresh(text, rel)
     navs = NAV.findall(text)
     if len(navs) != 1:
         raise ValueError("expected one PlotArt pill navigation, found %d" % len(navs))
@@ -130,7 +161,7 @@ def main(root, check=False):
     if errors:
         print("REFUSED (nothing written):\n  " + "\n  ".join(errors))
         return 2
-    changed = [p for p in plan if p[3] == "patched"] + [a for a in assets if a[1] != a[2]]
+    changed = [p for p in plan if p[3] in ("patched", "refreshed")] + [a for a in assets if a[1] != a[2]]
     if not check:
         for p in plan:
             if p[2] != p[1]:
@@ -138,7 +169,7 @@ def main(root, check=False):
         for p, t, n in assets:
             if n != t:
                 open(p, "w", encoding="utf-8").write(n)
-    print("%d pages, %d %s; assets %s" % (len(plan), sum(p[3] == "patched" for p in plan), "would change" if check else "changed",
+    print("%d pages, %d %s; assets %s" % (len(plan), sum(p[3] in ("patched", "refreshed") for p in plan), "would change" if check else "changed",
                                           "up to date" if all(a[1] == a[2] for a in assets) else ("would change" if check else "updated")))
     return 1 if (check and changed) else 0
 

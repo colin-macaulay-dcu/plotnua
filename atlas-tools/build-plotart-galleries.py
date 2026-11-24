@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
-"""PlotArt · three galleries, Phase A (founder approval 24 Nov 2026). Builds:
+"""PlotArt · three galleries (Phase A, founder approval 24 Nov 2026; FINAL gallery identity approved 24 Nov 2026). Builds:
 
   plotart/index.html               the region between the pa-galleries markers: the one heading "A new home for Irish art."
-                                   and the three gallery entrances (Contemporary Art · Landscape Art · Portraiture)
-  plotart/gallery/index.html       the region between the pa-gallery-tabs markers (the gallery tabs); the page's own
-                                   heading is "Contemporary Art." (the collection, order and Featured Artists are untouched)
-  plotart/landscape/index.html     the holding page of a gallery in preparation (whole page, from the shared shell)
-  plotart/portraiture/index.html   the same
+                                   and the three gallery entrances: Contemporary. · Environment. · Being.
+  plotart/gallery/index.html       the gallery tabs (pa-gallery-tabs markers) and the heading region (pa-gallery-hero
+                                   markers): "Contemporary." and its description. The collection, order and Featured Artists
+                                   are untouched. The address gallery/ is unchanged.
+  plotart/environment/index.html   the holding page of a gallery in preparation (whole page, from the shared shell)
+  plotart/being/index.html         the same
+  plotart/landscape/index.html, plotart/places-and-spaces/index.html, plotart/portraiture/index.html
+                                   redirect pages for the former names (Landscape Art, Places & Spaces → Environment;
+                                   Portraiture → Being), each pointing straight at the final address (no chains)
+
+The full stop is an editorial treatment: it is written on the homepage entrances and the gallery headings only, never in
+navigation, tabs, labels or other functional text (those come from plotart_shell.GALLERIES, without it).
 
   python3 atlas-tools/build-plotart-galleries.py ROOT            write
   python3 atlas-tools/build-plotart-galleries.py ROOT --check    exit 1 if any file differs from what would be written
 
-Only images PlotArt already publishes are used: the founder's own credited painting on the Contemporary Art entrance,
-shown whole (never cropped). A gallery in preparation shows a neutral "in preparation" panel instead of artwork, says it
-is in preparation, and shows no artist, artwork or image (guard L21). Opening a gallery is Phase E: the shell refuses
-any state other than in_preparation for Landscape Art and Portraiture."""
+Only images PlotArt already publishes are used: the founder's own credited painting on the Contemporary entrance, shown
+whole (never cropped). A gallery in preparation shows a neutral "in preparation" panel instead of artwork, says it is in
+preparation, and shows no artist, artwork or image (guard L21). Opening a gallery is Phase E: the shell refuses any state
+other than in_preparation for Environment and Being."""
 import os
 import re
 import sys
@@ -32,14 +39,33 @@ FOUNDER_IMG = ('<img src="assets/hero/founder-01-abstract.webp" width="1332" hei
                'of bold yellow outlined shapes over deep violet loops and pink and blue lines on grey" decoding="async" fetchpriority="high">')
 FOUNDER_CREDIT = "Original artwork by Colin MacAulay, founder of PlotArt."
 
+# The final gallery identity (founder approval, 24 Nov 2026). Contemporary explores artistic expression; Environment the world
+# around us; Being our existence within it. "title" is the functional name (no full stop); headings add the full stop.
 GALLERY = {
-    "contemporary": {"title": "Contemporary Art", "text": "Discover original contemporary art from Irish artists."},
-    "landscape": {"title": "Landscape Art", "text": "Explore Ireland’s landscapes, seascapes and places through original art.",
-                  "artists": "PlotArt welcomes expressions of interest from artists whose work explores Ireland’s landscapes, seascapes and places.",
-                  "icon": '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="158" height="98" rx="2"/><circle cx="118" cy="28" r="9"/><path d="M1 74 C28 58 44 60 62 68 S104 52 159 64"/><path d="M1 86 C40 78 82 90 159 80"/></svg>'},
-    "portraiture": {"title": "Portraiture", "text": "Discover expressive portraits and individual artistic interpretations of the human subject.",
-                    "artists": "PlotArt welcomes expressions of interest from artists whose work explores portraiture and the human subject.",
-                    "icon": '<svg viewBox="0 0 100 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="98" height="122" rx="2"/><ellipse cx="50" cy="50" rx="17" ry="21"/><path d="M18 123 C20 96 34 84 50 84 S80 96 82 123"/></svg>'},
+    "contemporary": {"title": "Contemporary", "text": "Abstraction, expression and experimentation.",
+                     "lede": "Exploring contemporary artistic expression through abstraction, materiality, conceptual approaches and experimentation. "
+                             "A collection of distinctive artistic practices that challenge, reinterpret and extend visual language."},
+    # landscapes, coastlines, countryside, streets, cityscapes, architecture, interiors, rural and industrial buildings, forgotten
+    # and changing spaces, and imagined places
+    "environment": {"title": "Environment", "text": "The spaces we inhabit, encounter and imagine.",
+                    "lede": "Exploring our relationship with the natural, built and imagined world. From landscapes and coastlines to urban streets, "
+                            "architectural forms, industrial structures and forgotten spaces, this gallery brings together diverse artistic interpretations of our surroundings.",
+                    "desc": "Environment at PlotArt, in preparation: original Irish art exploring our relationship with the natural, built and imagined world, "
+                            "from landscapes and coastlines to streets, architecture and forgotten spaces.",
+                    "artists": "PlotArt welcomes expressions of interest from artists whose work explores the natural, built and imagined world: landscapes, "
+                               "coastlines and countryside, urban streets and cityscapes, architecture and interiors, industrial structures, and forgotten "
+                               "or changing spaces.",
+                    "icon": '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="158" height="98" rx="2"/><circle cx="128" cy="24" r="8"/><path d="M1 72 C26 60 42 62 58 68"/><path d="M58 99 V52 H84 V99"/><path d="M84 99 V36 L98 26 L112 36 V99"/><path d="M66 62 H76 M66 74 H76 M92 46 H104 M92 60 H104 M92 74 H104"/><path d="M112 74 C126 68 140 70 159 66"/></svg>'},
+    # portraiture, figurative art and imaginative interpretations of being: deliberately not limited to conventional portraits,
+    # and (founder direction) not promoting animal or wildlife art at this stage
+    "being": {"title": "Being", "text": "Life, identity, emotion and existence.",
+              "lede": "An exploration of life, identity and existence through portraiture, figurative art and imaginative interpretations of being. "
+                      "From intimate portraits and expressive figures to relationships, movement and emotion, this gallery considers the experience of existence.",
+              "desc": "Being at PlotArt, in preparation: original Irish art exploring life, identity and existence through portraiture, figurative art "
+                      "and imaginative interpretations of being.",
+              "artists": "PlotArt welcomes expressions of interest from artists whose work explores life, identity and existence: portraiture, "
+                         "figurative art, the human figure, relationships, movement and emotion, and imaginative interpretations of being.",
+              "icon": '<svg viewBox="0 0 100 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="98" height="122" rx="2"/><ellipse cx="50" cy="50" rx="17" ry="21"/><path d="M18 123 C20 96 34 84 50 84 S80 96 82 123"/></svg>'},
 }
 HREF = {k: h for k, h, _l, _t in S.GALLERIES}
 ENTRANCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "release", "plotart-gallery-entrances.json")
@@ -52,7 +78,7 @@ def entrances(path=None):
     import json
     d = json.load(open(path or ENTRANCES, encoding="utf-8"))
     out = {}
-    for key in ("landscape", "portraiture"):
+    for key in ("environment", "being"):
         art = (d.get(key) or {}).get("artwork")
         if art is not None:
             if set(art) != ART_KEYS or not re.fullmatch(r"artists/%s/img/[a-z0-9-]+-\d{2,5}\.webp" % re.escape(str(art["artist_slug"])), str(art["image"])):
@@ -66,17 +92,17 @@ def entrances(path=None):
 def prep_panel(key, where):
     g = GALLERY[key]
     return ('<div class="pa-gx-prep" data-pa-placeholder="%s" role="img" aria-label="%s is in preparation. No artwork is shown yet.">%s'
-            '<p>Artwork will be shown here once %s’s artists have been selected.</p></div>') % (key, g["title"], g["icon"], g["title"])
+            '<p>Artwork will be shown here once this gallery’s artists have been selected.</p></div>') % (key, E(g["title"]), g["icon"])
 
 
 def tile(key, arts):
     """One entrance. The artwork mount has the same shape on every entrance and holds its own credit, so the status,
     title and description of the three entrances line up whatever is shown above them. Artwork is shown whole."""
     g, state = GALLERY[key], S.gallery_state(key)
-    if state == "open":       # Contemporary Art: the existing gallery
+    if state == "open":       # Contemporary: the existing gallery
         art = '<figure class="pa-gx-art">%s<figcaption class="pa-gx-credit">%s</figcaption></figure>' % (FOUNDER_IMG, FOUNDER_CREDIT)
         status = '<p class="pa-gx-status pa-gx-status--open">Gallery open</p>'
-        label = "Enter the %s gallery" % g["title"]
+        label = "Enter the %s gallery" % E(g["title"])
     else:
         a = arts.get(key)
         if a:                 # authorised artwork supplied by the founder (L21 checks provenance and consent)
@@ -85,10 +111,10 @@ def tile(key, arts):
         else:
             art = '<figure class="pa-gx-art">%s</figure>' % prep_panel(key, "home")
         status = '<p class="pa-gx-status">In preparation</p>'
-        label = "About the %s gallery, in preparation" % g["title"]
-    return ('    <li class="pa-gx-tile" data-pa-gallery="%s">\n      %s\n      <div class="pa-gx-body">%s<h2>%s</h2>'
+        label = "About the %s gallery, in preparation" % E(g["title"])
+    return ('    <li class="pa-gx-tile" data-pa-gallery="%s">\n      %s\n      <div class="pa-gx-body">%s<h2>%s.</h2>'
             '<p class="pa-gx-text">%s</p><a class="pa-gx-go" href="%s" data-pa-track="home_gallery_%s" aria-label="%s">'
-            '<span aria-hidden="true">→</span></a></div>\n    </li>\n') % (key, art, status, g["title"], g["text"], HREF[key], key, label)
+            '<span aria-hidden="true">→</span></a></div>\n    </li>\n') % (key, art, status, E(g["title"]), E(g["text"]), HREF[key], key, label)
 
 
 def home_region(arts=None):
@@ -112,22 +138,53 @@ def holding_page(key):
                '  <div><p class="pa-eyebrow">For artists</p><h2 id="ghArtH">%s artists</h2></div>\n'
                '  <div><p>%s</p>\n'
                '  <p><a class="pa-btn pa-btn--ghost" href="../for-artists.html" data-pa-track="%s_for_artists">How PlotArt works with artists <span aria-hidden="true">→</span></a></p></div>\n'
-               '</div></section>') % (g["title"], g["artists"], key)
+               '</div></section>') % (E(g["title"]), E(g["artists"]), key)
     body = (tabs_region(key) + '\n\n<section class="pa-gh" aria-labelledby="ghH"><div class="pa-wrap pa-gh-grid">\n'
             '  <div><p class="pa-eyebrow">A PlotArt gallery</p><h1 id="ghH">%s.</h1>\n'
             '  <p class="pa-gh-lede">%s</p>\n'
             '  <p class="pa-gh-status">In preparation</p>\n'
             '  <p class="pa-gh-note">This gallery is being prepared. It will open once PlotArt has selected its artists and artworks. '
             'Until then, no artists or artworks are shown here.</p>\n'
-            '  <div class="pa-gh-acts"><a class="pa-btn pa-btn--solid" href="../gallery/" data-pa-track="%s_to_contemporary">Explore Contemporary Art <span aria-hidden="true">→</span></a>'
+            '  <div class="pa-gh-acts"><a class="pa-btn pa-btn--solid" href="../gallery/" data-pa-track="%s_to_contemporary">Explore Contemporary <span aria-hidden="true">→</span></a>'
             '<a class="pa-btn pa-btn--ghost" href="../artworks/" data-pa-track="%s_to_artworks">Browse All Artworks <span aria-hidden="true">→</span></a></div></div>\n'
             '  <figure class="pa-gh-art">%s</figure>\n'
-            '</div></section>%s\n') % (g["title"], g["text"], key, key, prep_panel(key, "page"), artists)
-    title = "%s | In Preparation | PlotArt" % g["title"]
-    desc = "%s at PlotArt: a gallery of original Irish art, in preparation. %s" % (g["title"], g["text"])
-    fine = OPEN_FINE + " %s is in preparation: no artists or artworks are shown in it yet." % g["title"]
+            '</div></section>%s\n') % (E(g["title"]), E(g.get("lede", g["text"])), key, key, prep_panel(key, "page"), artists)
+    title = "%s | In Preparation | PlotArt" % g["title"]          # plain text: the shell escapes the title and description
+    desc = g.get("desc") or "%s at PlotArt: a gallery of original Irish art, in preparation. %s" % (g["title"], g["text"])
+    fine = OPEN_FINE + " %s is in preparation: no artists or artworks are shown in it yet." % E(g["title"])
     _p, doc = S.artist_page(path, title, desc, body, current=key, fine=fine, styles=("../assets/plotart-galleries.css",))
     return path, doc
+
+
+# Former addresses (24 Nov 2026): Landscape Art (landscape/, live until this release), Places & Spaces (places-and-spaces/, a
+# development name that never reached the live site) and Portraiture (portraiture/, live until this release). Each points
+# straight at its final address, so there is never a chain. GitHub Pages cannot send a server 301, so each page is the site's
+# established permanent redirect (see discovery-open-your-home-to-art.html): canonical to the new address, noindex, an
+# immediate script redirect that keeps any query string and fragment, and a meta refresh for browsers without script.
+LEGACY = {"landscape/index.html": ("environment", "Landscape Art"), "places-and-spaces/index.html": ("environment", "Places &amp; Spaces"),
+          "portraiture/index.html": ("being", "Portraiture")}
+
+
+def legacy_redirect(rel):
+    key, old = LEGACY[rel]
+    to, title = HREF[key], GALLERY[key]["title"]
+    return ('<!DOCTYPE html>\n<html lang="en-IE">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            '<title>%s | PlotArt</title>\n<meta name="robots" content="noindex, follow">\n<link rel="canonical" href="https://plotnua.ie/plotart/%s">\n'
+            '<!-- PERMANENT REDIRECT. The %s gallery is now %s (final gallery identity, founder approval 24 Nov 2026); this is a\n'
+            '     former address. Generated by atlas-tools/build-plotart-galleries.py. Not in the sitemap. -->\n'
+            '<script>location.replace("../%s" + location.search + location.hash);</script>\n'
+            '<noscript><meta http-equiv="refresh" content="0; url=../%s"></noscript>\n'
+            '<style>body{font-family:system-ui,sans-serif;background:#27282A;color:#EDEBE7;margin:0;padding:12vh 7vw;line-height:1.6}a{color:#C9D88A}</style>\n'
+            '</head>\n<body>\n<p>This gallery is now <a href="../%s">%s</a>.</p>\n</body>\n</html>\n') % (title, to, old, title, to, to, to, title)
+
+
+# The Contemporary gallery's heading region (gallery/index.html): the editorial heading and the approved description.
+HERO_BEGIN, HERO_END = "<!-- pa-gallery-hero:begin -->", "<!-- pa-gallery-hero:end -->"
+
+
+def hero_region():
+    g = GALLERY["contemporary"]
+    return (HERO_BEGIN + '\n  <div><h1>%s.</h1>\n  <p class="pa-vg2-sub pa-gx-desc">%s</p></div>\n' + HERO_END) % (E(g["title"]), E(g["lede"]))
 
 
 def replace_region(text, begin, end, new, name):
@@ -143,10 +200,13 @@ def plan(root, entrances_path=None):
     home = open(os.path.join(pa, "index.html"), encoding="utf-8").read()
     out["index.html"] = replace_region(home, HOME_BEGIN, HOME_END, home_region(entrances(entrances_path)), "index.html")
     vg = open(os.path.join(pa, "gallery", "index.html"), encoding="utf-8").read()
-    out["gallery/index.html"] = replace_region(vg, TABS_BEGIN, TABS_END, tabs_region("contemporary"), "gallery/index.html")
-    for key in ("landscape", "portraiture"):
+    vg = replace_region(vg, TABS_BEGIN, TABS_END, tabs_region("contemporary"), "gallery/index.html")
+    out["gallery/index.html"] = replace_region(vg, HERO_BEGIN, HERO_END, hero_region(), "gallery/index.html")
+    for key in ("environment", "being"):
         path, doc = holding_page(key)
         out[path] = doc
+    for rel in LEGACY:
+        out[rel] = legacy_redirect(rel)
     return out
 
 
