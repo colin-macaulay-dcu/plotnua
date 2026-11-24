@@ -944,7 +944,7 @@ html.pa-lb-on{ overflow:hidden; }
   .pa-head{ --pn-sm-top:105px; }
 }
 /* ==== pa-galleries-nav:begin · the Galleries menu (three-gallery expansion Phase A, 24 Nov 2026). One header item, a <details>
-   menu: Contemporary Art, Landscape Art, Portraiture, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
+   menu: Contemporary Art, Places & Spaces, Portraiture, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
    Scoped to .pa-dd, so nothing else changes. ==== */
 .pa-dd{ position:relative; }
 .pa-dd > summary{ list-style:none; cursor:pointer; }

@@ -2,11 +2,13 @@
 """PlotArt · three galleries, Phase A (founder approval 24 Nov 2026). Builds:
 
   plotart/index.html               the region between the pa-galleries markers: the one heading "A new home for Irish art."
-                                   and the three gallery entrances (Contemporary Art · Landscape Art · Portraiture)
+                                   and the three gallery entrances (Contemporary Art · Places & Spaces · Portraiture)
   plotart/gallery/index.html       the region between the pa-gallery-tabs markers (the gallery tabs); the page's own
                                    heading is "Contemporary Art." (the collection, order and Featured Artists are untouched)
-  plotart/landscape/index.html     the holding page of a gallery in preparation (whole page, from the shared shell)
+  plotart/places-and-spaces/index.html   the holding page of a gallery in preparation (whole page, from the shared shell)
   plotart/portraiture/index.html   the same
+  plotart/landscape/index.html     a redirect page: Places & Spaces was named Landscape Art until 24 Nov 2026 (founder's
+                                   gallery identity revision); its old address sends visitors on, keeping any query string
 
   python3 atlas-tools/build-plotart-galleries.py ROOT            write
   python3 atlas-tools/build-plotart-galleries.py ROOT --check    exit 1 if any file differs from what would be written
@@ -14,7 +16,7 @@
 Only images PlotArt already publishes are used: the founder's own credited painting on the Contemporary Art entrance,
 shown whole (never cropped). A gallery in preparation shows a neutral "in preparation" panel instead of artwork, says it
 is in preparation, and shows no artist, artwork or image (guard L21). Opening a gallery is Phase E: the shell refuses
-any state other than in_preparation for Landscape Art and Portraiture."""
+any state other than in_preparation for Places & Spaces and Portraiture."""
 import os
 import re
 import sys
@@ -34,9 +36,18 @@ FOUNDER_CREDIT = "Original artwork by Colin MacAulay, founder of PlotArt."
 
 GALLERY = {
     "contemporary": {"title": "Contemporary Art", "text": "Discover original contemporary art from Irish artists."},
-    "landscape": {"title": "Landscape Art", "text": "Explore Ireland’s landscapes, seascapes and places through original art.",
-                  "artists": "PlotArt welcomes expressions of interest from artists whose work explores Ireland’s landscapes, seascapes and places.",
-                  "icon": '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="158" height="98" rx="2"/><circle cx="118" cy="28" r="9"/><path d="M1 74 C28 58 44 60 62 68 S104 52 159 64"/><path d="M1 86 C40 78 82 90 159 80"/></svg>'},
+    # Places & Spaces (founder's gallery identity revision, 24 Nov 2026; formerly Landscape Art): natural landscapes, coastlines,
+    # countryside, urban environments, streets, cityscapes, architecture, interiors, rural buildings, industrial structures,
+    # abandoned and changing spaces, and abstract or imagined interpretations of place.
+    "places_and_spaces": {"title": "Places & Spaces", "text": "Exploring the environments we inhabit, encounter and imagine.",
+                  "lede": "Exploring the environments we inhabit, encounter and imagine. From natural landscapes and coastlines to urban streets, "
+                          "architectural forms and forgotten spaces, this gallery brings together diverse artistic interpretations of place and our relationship with it.",
+                  "desc": "Places & Spaces at PlotArt, in preparation: original art exploring the environments we inhabit, encounter and imagine, "
+                          "from landscapes and coastlines to streets, architecture and forgotten spaces.",
+                  "artists": "PlotArt welcomes expressions of interest from artists whose work explores place: natural landscapes, coastlines and countryside, "
+                             "urban streets and cityscapes, architecture and interiors, rural and industrial buildings, abandoned and changing spaces, "
+                             "and abstract or imagined interpretations of place.",
+                  "icon": '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="158" height="98" rx="2"/><circle cx="128" cy="24" r="8"/><path d="M1 72 C26 60 42 62 58 68"/><path d="M58 99 V52 H84 V99"/><path d="M84 99 V36 L98 26 L112 36 V99"/><path d="M66 62 H76 M66 74 H76 M92 46 H104 M92 60 H104 M92 74 H104"/><path d="M112 74 C126 68 140 70 159 66"/></svg>'},
     "portraiture": {"title": "Portraiture", "text": "Discover expressive portraits and individual artistic interpretations of the human subject.",
                     "artists": "PlotArt welcomes expressions of interest from artists whose work explores portraiture and the human subject.",
                     "icon": '<svg viewBox="0 0 100 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="98" height="122" rx="2"/><ellipse cx="50" cy="50" rx="17" ry="21"/><path d="M18 123 C20 96 34 84 50 84 S80 96 82 123"/></svg>'},
@@ -52,7 +63,7 @@ def entrances(path=None):
     import json
     d = json.load(open(path or ENTRANCES, encoding="utf-8"))
     out = {}
-    for key in ("landscape", "portraiture"):
+    for key in ("places_and_spaces", "portraiture"):
         art = (d.get(key) or {}).get("artwork")
         if art is not None:
             if set(art) != ART_KEYS or not re.fullmatch(r"artists/%s/img/[a-z0-9-]+-\d{2,5}\.webp" % re.escape(str(art["artist_slug"])), str(art["image"])):
@@ -66,7 +77,7 @@ def entrances(path=None):
 def prep_panel(key, where):
     g = GALLERY[key]
     return ('<div class="pa-gx-prep" data-pa-placeholder="%s" role="img" aria-label="%s is in preparation. No artwork is shown yet.">%s'
-            '<p>Artwork will be shown here once %s’s artists have been selected.</p></div>') % (key, g["title"], g["icon"], g["title"])
+            '<p>Artwork will be shown here once %s’s artists have been selected.</p></div>') % (key, E(g["title"]), g["icon"], E(g["title"]))
 
 
 def tile(key, arts):
@@ -76,7 +87,7 @@ def tile(key, arts):
     if state == "open":       # Contemporary Art: the existing gallery
         art = '<figure class="pa-gx-art">%s<figcaption class="pa-gx-credit">%s</figcaption></figure>' % (FOUNDER_IMG, FOUNDER_CREDIT)
         status = '<p class="pa-gx-status pa-gx-status--open">Gallery open</p>'
-        label = "Enter the %s gallery" % g["title"]
+        label = "Enter the %s gallery" % E(g["title"])
     else:
         a = arts.get(key)
         if a:                 # authorised artwork supplied by the founder (L21 checks provenance and consent)
@@ -85,10 +96,10 @@ def tile(key, arts):
         else:
             art = '<figure class="pa-gx-art">%s</figure>' % prep_panel(key, "home")
         status = '<p class="pa-gx-status">In preparation</p>'
-        label = "About the %s gallery, in preparation" % g["title"]
+        label = "About the %s gallery, in preparation" % E(g["title"])
     return ('    <li class="pa-gx-tile" data-pa-gallery="%s">\n      %s\n      <div class="pa-gx-body">%s<h2>%s</h2>'
             '<p class="pa-gx-text">%s</p><a class="pa-gx-go" href="%s" data-pa-track="home_gallery_%s" aria-label="%s">'
-            '<span aria-hidden="true">→</span></a></div>\n    </li>\n') % (key, art, status, g["title"], g["text"], HREF[key], key, label)
+            '<span aria-hidden="true">→</span></a></div>\n    </li>\n') % (key, art, status, E(g["title"]), E(g["text"]), HREF[key], key, label)
 
 
 def home_region(arts=None):
@@ -112,7 +123,7 @@ def holding_page(key):
                '  <div><p class="pa-eyebrow">For artists</p><h2 id="ghArtH">%s artists</h2></div>\n'
                '  <div><p>%s</p>\n'
                '  <p><a class="pa-btn pa-btn--ghost" href="../for-artists.html" data-pa-track="%s_for_artists">How PlotArt works with artists <span aria-hidden="true">→</span></a></p></div>\n'
-               '</div></section>') % (g["title"], g["artists"], key)
+               '</div></section>') % (E(g["title"]), E(g["artists"]), key)
     body = (tabs_region(key) + '\n\n<section class="pa-gh" aria-labelledby="ghH"><div class="pa-wrap pa-gh-grid">\n'
             '  <div><p class="pa-eyebrow">A PlotArt gallery</p><h1 id="ghH">%s.</h1>\n'
             '  <p class="pa-gh-lede">%s</p>\n'
@@ -122,12 +133,30 @@ def holding_page(key):
             '  <div class="pa-gh-acts"><a class="pa-btn pa-btn--solid" href="../gallery/" data-pa-track="%s_to_contemporary">Explore Contemporary Art <span aria-hidden="true">→</span></a>'
             '<a class="pa-btn pa-btn--ghost" href="../artworks/" data-pa-track="%s_to_artworks">Browse All Artworks <span aria-hidden="true">→</span></a></div></div>\n'
             '  <figure class="pa-gh-art">%s</figure>\n'
-            '</div></section>%s\n') % (g["title"], g["text"], key, key, prep_panel(key, "page"), artists)
-    title = "%s | In Preparation | PlotArt" % g["title"]
-    desc = "%s at PlotArt: a gallery of original Irish art, in preparation. %s" % (g["title"], g["text"])
-    fine = OPEN_FINE + " %s is in preparation: no artists or artworks are shown in it yet." % g["title"]
+            '</div></section>%s\n') % (E(g["title"]), E(g.get("lede", g["text"])), key, key, prep_panel(key, "page"), artists)
+    title = "%s | In Preparation | PlotArt" % g["title"]          # plain text: the shell escapes the title and description
+    desc = g.get("desc") or "%s at PlotArt: a gallery of original Irish art, in preparation. %s" % (g["title"], g["text"])
+    fine = OPEN_FINE + " %s is in preparation: no artists or artworks are shown in it yet." % E(g["title"])
     _p, doc = S.artist_page(path, title, desc, body, current=key, fine=fine, styles=("../assets/plotart-galleries.css",))
     return path, doc
+
+
+# The gallery's former address (Landscape Art, 24 Nov 2026). GitHub Pages cannot send a server 301, so this page is the
+# site's established permanent redirect (see discovery-open-your-home-to-art.html): canonical to the new address, noindex,
+# an immediate script redirect that keeps any query string and fragment, and a meta refresh for browsers without script.
+LEGACY = ("landscape/index.html", "places-and-spaces/")
+
+
+def legacy_redirect():
+    to = "https://plotnua.ie/plotart/" + LEGACY[1]
+    return ('<!DOCTYPE html>\n<html lang="en-IE">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            '<title>Places &amp; Spaces | PlotArt</title>\n<meta name="robots" content="noindex, follow">\n<link rel="canonical" href="%s">\n'
+            '<!-- PERMANENT REDIRECT. Landscape Art was renamed Places & Spaces (founder decision, 24 Nov 2026); this is its former\n'
+            '     address. Generated by atlas-tools/build-plotart-galleries.py. Not in the sitemap. -->\n'
+            '<script>location.replace("../%s" + location.search + location.hash);</script>\n'
+            '<noscript><meta http-equiv="refresh" content="0; url=../%s"></noscript>\n'
+            '<style>body{font-family:system-ui,sans-serif;background:#27282A;color:#EDEBE7;margin:0;padding:12vh 7vw;line-height:1.6}a{color:#C9D88A}</style>\n'
+            '</head>\n<body>\n<p>Landscape Art is now <a href="../%s">Places &amp; Spaces</a>.</p>\n</body>\n</html>\n') % (to, LEGACY[1], LEGACY[1], LEGACY[1])
 
 
 def replace_region(text, begin, end, new, name):
@@ -144,9 +173,10 @@ def plan(root, entrances_path=None):
     out["index.html"] = replace_region(home, HOME_BEGIN, HOME_END, home_region(entrances(entrances_path)), "index.html")
     vg = open(os.path.join(pa, "gallery", "index.html"), encoding="utf-8").read()
     out["gallery/index.html"] = replace_region(vg, TABS_BEGIN, TABS_END, tabs_region("contemporary"), "gallery/index.html")
-    for key in ("landscape", "portraiture"):
+    for key in ("places_and_spaces", "portraiture"):
         path, doc = holding_page(key)
         out[path] = doc
+    out[LEGACY[0]] = legacy_redirect()
     return out
 
 

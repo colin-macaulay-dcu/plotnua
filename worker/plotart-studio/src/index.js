@@ -1333,14 +1333,14 @@ async function route(req, env) {
     // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
     /* Three galleries (Phase B, migration 0023): founder-only. Each route writes only the gallery tables and the audit log. */
     if (p === '/api/admin/galleries' && m === 'GET') return json({ ok: true, ...(await G.adminView(env, await HP.published(env, VISIBLE_SQL))) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/targets$/)) && m === 'PUT') return json({ ok: true, gallery: await G.setTargets(env, me.email, mm[1], await req.json().catch(() => null)) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/status$/)) && m === 'POST') return json({ ok: true, ...(await G.setStatus(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL))) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/members$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPropose(env, me.email, mm[1], await req.json().catch(() => null))) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/members\/(a[0-9a-z]+)\/(approve|refuse|withdraw)$/)) && m === 'POST')
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/targets$/)) && m === 'PUT') return json({ ok: true, gallery: await G.setTargets(env, me.email, mm[1], await req.json().catch(() => null)) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/status$/)) && m === 'POST') return json({ ok: true, ...(await G.setStatus(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL))) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/members$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPropose(env, me.email, mm[1], await req.json().catch(() => null))) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/members\/(a[0-9a-z]+)\/(approve|refuse|withdraw)$/)) && m === 'POST')
       return json({ ok: true, ...(mm[3] === 'approve' ? await G.founderApprove(env, me.email, mm[1], mm[2]) : await G.founderClose(env, me.email, mm[1], mm[2], mm[3] === 'refuse' ? 'refused' : 'withdrawn')) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/artworks\/(w[0-9a-z]+)\/(place|refuse|withdraw|restore)$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPlacement(env, me.email, mm[1], mm[2], mm[3])) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/order$/)) && m === 'PUT') return json({ ok: true, order: await G.saveOrder(env, me.email, mm[1], await req.json().catch(() => null)) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z]+)\/features$/)) && m === 'PUT') return json({ ok: true, features: await G.saveFeatures(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL)) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/artworks\/(w[0-9a-z]+)\/(place|refuse|withdraw|restore)$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPlacement(env, me.email, mm[1], mm[2], mm[3])) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/order$/)) && m === 'PUT') return json({ ok: true, order: await G.saveOrder(env, me.email, mm[1], await req.json().catch(() => null)) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/features$/)) && m === 'PUT') return json({ ok: true, features: await G.saveFeatures(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL)) });
     if (p === '/api/admin/image-use/requests' && m === 'POST') return json({ ok: true, request: await G.requestConsent(env, me.email, await req.json().catch(() => null)) });
     if ((mm = p.match(/^\/api\/admin\/image-use\/requests\/(u[0-9a-z]+)\/cancel$/)) && m === 'POST') return json({ ok: true, ...(await G.cancelRequest(env, me.email, mm[1])) });
     if (p === '/api/admin/image-use/record' && m === 'POST') return json({ ok: true, ...(await G.recordEmailConsent(env, me.email, await req.json().catch(() => null))) });
@@ -1722,9 +1722,9 @@ async function route(req, env) {
   if (p === '/' || p === '/index.html') return html(A.STUDIO_HTML);
   /* Three galleries (Phase B, migration 0023): the artist's own memberships, placements and image-use requests only. */
   if (p === '/api/galleries' && m === 'GET') return json({ ok: true, ...(await G.artistView(env, artist)) });
-  { const g3 = p.match(/^\/api\/galleries\/([a-z]+)\/(request|accept|decline|withdraw)$/);
+  { const g3 = p.match(/^\/api\/galleries\/([a-z_]+)\/(request|accept|decline|withdraw)$/);
     if (g3 && m === 'POST') return json({ ok: true, ...(await G.artistAct(env, artist, g3[1], g3[2])) }); }
-  { const g3 = p.match(/^\/api\/galleries\/([a-z]+)\/artworks\/(w[0-9a-z]+)\/(propose|accept|decline|withdraw)$/);
+  { const g3 = p.match(/^\/api\/galleries\/([a-z_]+)\/artworks\/(w[0-9a-z]+)\/(propose|accept|decline|withdraw)$/);
     if (g3 && m === 'POST') return json({ ok: true, ...(await G.artistPlacement(env, artist, g3[1], g3[2], g3[3])) }); }
   { const g3 = p.match(/^\/api\/image-use\/(u[0-9a-z]+)\/answer$/);
     if (g3 && m === 'POST') return json({ ok: true, ...(await G.answerConsent(env, artist, g3[1], await req.json().catch(() => null))) }); }

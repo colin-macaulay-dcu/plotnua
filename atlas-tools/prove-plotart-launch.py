@@ -67,9 +67,12 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
   L21 Three galleries, Phase A (founder approval 24 Nov 2026): the homepage opens with the one heading "A new home for
       Irish art." and the three gallery entrances exactly as build-plotart-galleries.py writes them; Contemporary Art (the
       existing gallery/, unchanged collection, order and Featured Artists) shows the founder's credited painting whole, never
-      cropped; Landscape Art and Portraiture stay "In preparation" (no other state is accepted before Phase E): their
+      cropped; Places & Spaces and Portraiture stay "In preparation" (no other state is accepted before Phase E): their
       entrances and holding pages show no image, artist or artwork, are noindex and outside the sitemap, and nothing says
       they are open. The three gallery pages carry the same gallery tabs; every PlotArt page carries the one Galleries menu.
+      Gallery identity revision (24 Nov 2026): Landscape Art is now Places & Spaces at places-and-spaces/; no page names
+      Landscape Art or links to landscape/, which is only the generated permanent-redirect page (noindex, canonical to the new
+      address, outside the sitemap).
   L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
       notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
       homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
@@ -160,9 +163,10 @@ if SERVICES_ON:
 ALLOWED |= {"assets/plotart-refine.css", "assets/plotart-refine.js"}   # Refine on All Artworks (founder approval 21 Nov 2026)
 # Three galleries, Phase A (founder approval 24 Nov 2026): the holding pages of the two galleries in preparation and the
 # galleries stylesheet (L21). They are launch pages, so every L2-L10 rule applies to them as well.
-GX_PAGES = ["landscape/index.html", "portraiture/index.html"]
+GX_PAGES = ["places-and-spaces/index.html", "portraiture/index.html"]
+GX_LEGACY = "landscape/index.html"   # the former Landscape Art address: a generated redirect page only (24 Nov 2026)
 PAGES += GX_PAGES
-ALLOWED |= set(GX_PAGES) | {"assets/plotart-galleries.css"}
+ALLOWED |= set(GX_PAGES) | {"assets/plotart-galleries.css", GX_LEGACY}
 ALLOWED |= {"assets/plotart-featured.css"}   # Featured Artists in the Artists' Gallery (17 Nov 2026; was plotart-home.css on the homepage)   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
@@ -586,9 +590,9 @@ if HIRE_ON:
 if SERVICES_ON:
     NAV_WANT.insert(len(NAV_WANT) - 1, "Services")                                        # Art Services & Providers (19 Nov 2026)
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": None, "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
-               "mobile-gallery/index.html": None, "mobile-gallery/gallery.html": None, "landscape/index.html": None, "portraiture/index.html": None}
+               "mobile-gallery/index.html": None, "mobile-gallery/gallery.html": None, "places-and-spaces/index.html": None, "portraiture/index.html": None}
 # the page each Galleries menu link is current on (the menu itself is then marked as the current section)
-DD_CURRENT = {"gallery/index.html": "contemporary", "landscape/index.html": "landscape", "portraiture/index.html": "portraiture",
+DD_CURRENT = {"gallery/index.html": "contemporary", "places-and-spaces/index.html": "places_and_spaces", "portraiture/index.html": "portraiture",
               "mobile-gallery/index.html": "mg", "mobile-gallery/gallery.html": "mg"}
 NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
 NAV_CURRENT.update({"join.html": None, "curatorial-policy.html": None})
@@ -625,13 +629,14 @@ if not SERVICES_ON:
                      "L11 %s links to the paused Services page or carries its tab" % os.path.relpath(os.path.join(_d, _f), PA))
 
 # L21 · three galleries, Phase A (founder approval 24 Nov 2026)
-_gx_states = {k: launch.get(k + "_gallery_state") for k in ("landscape", "portraiture")}
+_gx_states = {k: launch.get(k + "_gallery_state") for k in ("places_and_spaces", "portraiture")}
 try:
     PROV_RECORDS = json.load(open(os.path.join(SITE, "image-provenance-records.json"), encoding="utf-8")).get("records", [])
 except (OSError, ValueError):
     PROV_RECORDS = []
 need(all(v in SHELL.GALLERY_STATES for v in _gx_states.values()),
-     "L21 Landscape Art and Portraiture must stay in_preparation until Phase E (switches: %s)" % _gx_states)
+     "L21 Places & Spaces and Portraiture must stay in_preparation until Phase E (switches: %s)" % _gx_states)
+need("landscape_gallery_state" not in launch, "L21 the retired switch landscape_gallery_state must not come back (it is places_and_spaces_gallery_state)")
 try:
     _gx_arts = GX.entrances(GX_ENTRANCES)
 except (ValueError, OSError) as _e:
@@ -648,8 +653,8 @@ for _rel, _doc in _gx_built.items():
          "L21 %s is not exactly what build-plotart-galleries.py writes (run it, then re-pin)" % _rel)
 # the homepage entrances: three, in order; only Contemporary Art shows artwork, and only the founder's credited painting
 _gx_sec = re.search(r'<section class="pa-gx".*?</section>', home, re.S)
-_tiles = re.findall(r'<li class="pa-gx-tile" data-pa-gallery="([a-z]+)">(.*?)</li>', _gx_sec.group(0) if _gx_sec else "", re.S)
-need([k for k, _ in _tiles] == ["contemporary", "landscape", "portraiture"], "L21 the homepage must carry exactly the three gallery entrances, in order")
+_tiles = re.findall(r'<li class="pa-gx-tile" data-pa-gallery="([a-z_]+)">(.*?)</li>', _gx_sec.group(0) if _gx_sec else "", re.S)
+need([k for k, _ in _tiles] == ["contemporary", "places_and_spaces", "portraiture"], "L21 the homepage must carry exactly the three gallery entrances, in order")
 for _k, _t in _tiles:
     _imgs = re.findall(r"<img\b[^>]*>", _t)
     _tv = visible_text(_t)
@@ -658,7 +663,7 @@ for _k, _t in _tiles:
              "L21 the Contemporary Art entrance must show only the founder's credited painting and enter gallery/")
     else:
         _a = _gx_arts.get(_k)
-        need("In preparation" in _tv and "Gallery open" not in _tv and not re.search(r'href="[^"]*artists/', _t) and ('href="%s/"' % _k) in _t,
+        need("In preparation" in _tv and "Gallery open" not in _tv and not re.search(r'href="[^"]*artists/', _t) and ('href="%s"' % GX.HREF[_k]) in _t,
              "L21 the %s entrance must say In preparation, link only to its holding page and never to an artist" % _k)
         if not _a:
             need(not _imgs, "L21 the %s entrance shows an image but no authorised entrance artwork is recorded" % _k)
@@ -687,11 +692,31 @@ for _rel in GX_PAGES:
          "L21 %s must be a holding page: In preparation, with no artist, artwork, image or gallery section, and nothing saying it is open" % _rel)
     need('<meta name="robots" content="noindex, follow">' in _s, "L21 %s must be noindex while in preparation" % _rel)
 # the gallery tabs: the same three tabs on the three gallery pages, the page's own tab current
-for _rel, _key in (("gallery/index.html", "contemporary"), ("landscape/index.html", "landscape"), ("portraiture/index.html", "portraiture")):
+for _rel, _key in (("gallery/index.html", "contemporary"), ("places-and-spaces/index.html", "places_and_spaces"), ("portraiture/index.html", "portraiture")):
     _fp = os.path.join(PA, _rel)
     _s = open(_fp, encoding="utf-8").read() if os.path.exists(_fp) else ""
     need(_s.count('<nav class="pa-gtabs"') == 1 and SHELL.gallery_tabs("../", _key) in _s, "L21 %s must carry the gallery tabs with its own tab current" % _rel)
 need("<h1>Contemporary Art.</h1>" in vg, "L21 the Contemporary Art gallery's heading must be 'Contemporary Art.'")
+# gallery identity revision (24 Nov 2026): Places & Spaces is named exactly so, at places-and-spaces/; the former address
+# landscape/ is only the generated redirect (noindex, canonical to the new address, outside the sitemap), and no page
+# names Landscape Art or links to landscape/
+_pss = open(os.path.join(PA, "places-and-spaces", "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "places-and-spaces", "index.html")) else ""
+need("<h1 id=\"ghH\">Places &amp; Spaces.</h1>" in _pss and "<title>Places &amp; Spaces | In Preparation | PlotArt</title>" in _pss
+     and "Exploring the environments we inhabit, encounter and imagine. From natural landscapes and coastlines to urban streets, architectural forms and forgotten spaces, this gallery brings together diverse artistic interpretations of place and our relationship with it." in _pss,
+     "L21 places-and-spaces/index.html must carry the approved name, title and gallery description")
+_lg = open(os.path.join(PA, GX_LEGACY), encoding="utf-8").read() if os.path.exists(os.path.join(PA, GX_LEGACY)) else ""
+need(_lg == GX.legacy_redirect() and '<meta name="robots" content="noindex, follow">' in _lg and '<link rel="canonical" href="https://plotnua.ie/plotart/places-and-spaces/">' in _lg
+     and 'location.replace("../places-and-spaces/"' in _lg and 'content="0; url=../places-and-spaces/"' in _lg and "<main" not in _lg and "<img" not in _lg,
+     "L21 landscape/index.html must be exactly the generated permanent redirect to places-and-spaces/ (noindex, canonical, script and no-script redirect)")
+_sm = open(smp, encoding="utf-8").read() if os.path.exists(smp) else ""
+need("/landscape/" not in _sm and "/places-and-spaces/" not in _sm, "L21 neither the redirect nor the holding page may be in the sitemap while in preparation")
+for _d, _, _fs in os.walk(PA):
+    for _f in _fs:
+        _rp = os.path.relpath(os.path.join(_d, _f), PA).replace(os.sep, "/")
+        if _f.endswith(".html") and _rp != GX_LEGACY:
+            _t = open(os.path.join(_d, _f), encoding="utf-8").read()
+            need("Landscape Art" not in _t and not re.search(r'href="(?:\.\./)*landscape/', _t) and 'nav_gallery_landscape' not in _t,
+                 "L21 %s still names Landscape Art or links to the former landscape/ address" % _rp)
 # every PlotArt page with a header carries the one Galleries menu, and no Artists' Gallery or Mobile Gallery pill is left
 for _d, _, _fs in os.walk(PA):
     for _f in _fs:

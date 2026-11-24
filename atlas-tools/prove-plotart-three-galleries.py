@@ -48,11 +48,11 @@ def check(name, ok, detail=""):
 
 
 FAULTS = [
-    ("F1 an image on the Landscape Art entrance", "index.html", 'data-pa-placeholder="landscape"', 'data-pa-placeholder="landscape"><img src="assets/hero/founder-01-abstract.webp" alt="x"', "L21 the landscape entrance shows an image but no authorised entrance artwork is recorded"),
+    ("F1 an image on the Places & Spaces entrance", "index.html", 'data-pa-placeholder="places_and_spaces"', 'data-pa-placeholder="places_and_spaces"><img src="assets/hero/founder-01-abstract.webp" alt="x"', "L21 the places_and_spaces entrance shows an image but no authorised entrance artwork is recorded"),
     ("F2 'Gallery open' on the Portraiture entrance", "index.html", '<p class="pa-gx-status">In preparation</p><h2>Portraiture</h2>', '<p class="pa-gx-status">Gallery open</p><h2>Portraiture</h2>', "L21 the portraiture entrance"),
-    ("F3 an Artists in Focus section on a holding page", "landscape/index.html", '<p class="pa-gh-status">In preparation</p>', '<p class="pa-gh-status">In preparation</p><h2>Artists in Focus</h2>', "L21 landscape/index.html must be a holding page"),
+    ("F3 an Artists in Focus section on a holding page", "places-and-spaces/index.html", '<p class="pa-gh-status">In preparation</p>', '<p class="pa-gh-status">In preparation</p><h2>Artists in Focus</h2>', "L21 places-and-spaces/index.html must be a holding page"),
     ("F4 an artist's artwork on a holding page", "portraiture/index.html", '<figure class="pa-gh-art">', '<figure class="pa-gh-art"><img src="../artists/carolyn-walsh/img/coastal-series-8-1-600.webp" alt="x">', "L21 portraiture/index.html must be a holding page"),
-    ("F5 a holding page made indexable", "landscape/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 landscape/index.html must be noindex"),
+    ("F5 a holding page made indexable", "places-and-spaces/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 places-and-spaces/index.html must be noindex"),
     ("F6 entrance artwork cropped", "assets/plotart-galleries.css", "object-fit:contain", "object-fit:cover", "L21 gallery entrance artwork must be shown whole"),
     ("F7 the gallery tabs removed from Contemporary Art", "gallery/index.html", '<nav class="pa-gtabs"', '<nav class="pa-gtabs-gone"', "L21 gallery/index.html must carry the gallery tabs"),
     ("F8 the Contemporary Art heading reverted", "gallery/index.html", "<h1>Contemporary Art.</h1>", "<h1>The Artists’ Gallery.</h1>", "L21 the Contemporary Art gallery's heading"),
@@ -64,6 +64,12 @@ FAULTS = [
     ("F13 a holding page implying an opening date", "portraiture/index.html", "This gallery is being prepared.", "This gallery is opening soon.", "L9"),
     ("F16 an artist link on the Portraiture entrance", "index.html", '<p class="pa-gx-text">Discover expressive portraits', '<a href="artists/carolyn-walsh/">x</a><p class="pa-gx-text">Discover expressive portraits', "L21 the portraiture entrance must say In preparation, link only to its holding page"),
     ("F17 the Contemporary Art search title reverted", "gallery/index.html", "<title>Contemporary Irish Art Gallery | PlotArt</title>", "<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>", "L11 the Contemporary Art gallery's search title"),
+    # gallery identity revision (24 Nov 2026): Places & Spaces, its address, its description and the redirect from landscape/
+    ("F21 the old name Landscape Art back in a footer", "about.html", '>Places &amp; Spaces</a></li>', '>Landscape Art</a></li>', "L21 about.html still names Landscape Art"),
+    ("F22 a link to the former landscape/ address", "for-artists.html", 'href="places-and-spaces/" data-pa-track="nav_gallery_places_and_spaces">', 'href="landscape/" data-pa-track="nav_gallery_places_and_spaces">', "L21 for-artists.html still names Landscape Art or links to the former"),
+    ("F23 the approved gallery description shortened", "places-and-spaces/index.html", " and our relationship with it.</p>", ".</p>", "L21 places-and-spaces/index.html must carry the approved name, title and gallery description"),
+    ("F24 the redirect made indexable", "landscape/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 landscape/index.html must be exactly the generated permanent redirect"),
+    ("F25 the redirect pointed elsewhere", "landscape/index.html", 'location.replace("../places-and-spaces/"', 'location.replace("../gallery/"', "L21 landscape/index.html must be exactly the generated permanent redirect"),
     ("F14 a Galleries menu link changed on the homepage", "index.html", 'href="portraiture/" data-pa-track="nav_gallery_portraiture">Portraiture<span', 'href="portraiture/" data-pa-track="nav_gallery_portraiture">Portraits<span', "L11 index.html must carry the one Galleries menu"),
 ]
 
@@ -79,11 +85,15 @@ def main():
             out = guard(site)
             check(name + " → refused", "PLOTART LAUNCH · FAILED" in out and want in out, "" if want in out else out[:300])
         sw = json.load(open(SW, encoding="utf-8"))
-        sw["landscape_gallery_state"] = "open"
+        sw["places_and_spaces_gallery_state"] = "open"
         swp = os.path.join(tmp, "switches-open.json")
         json.dump(sw, open(swp, "w", encoding="utf-8"))
         out = guard(copy_site(tmp, 99), swp)
-        check("F15 Landscape Art switched open before Phase E → refused", "L21 Landscape Art and Portraiture must stay in_preparation" in out, out[:300])
+        check("F15 Places & Spaces switched open before Phase E → refused", "L21 Places & Spaces and Portraiture must stay in_preparation" in out, out[:300])
+        sw = json.load(open(SW, encoding="utf-8")); sw["landscape_gallery_state"] = "in_preparation"
+        swp2 = os.path.join(tmp, "switches-legacy.json"); json.dump(sw, open(swp2, "w", encoding="utf-8"))
+        out = guard(copy_site(tmp, 98), swp2)
+        check("F26 the retired landscape_gallery_state switch reintroduced → refused", "L21 the retired switch landscape_gallery_state" in out, out[:300])
         # entrance artwork (final Phase A refinement): only an artist's published artwork with per-use consent, shown whole
         import importlib.util
         spec = importlib.util.spec_from_file_location("gx", os.path.join(ROOT, "atlas-tools", "build-plotart-galleries.py"))
@@ -93,11 +103,11 @@ def main():
         cases = [("F18 entrance artwork with a provenance record and per-use consent → accepted, shown whole", dict(good), True, ""),
                  ("F19 entrance artwork without a consent reference → refused", dict(good, consent_ref=""), False, "no consent_ref"),
                  ("F20 the artist's portrait photograph as entrance artwork → refused", dict(good, image="artists/carolyn-walsh/img/portrait-600.webp", width=398, height=600),
-                  False, "L21 the landscape entrance artwork must be an artist's published artwork")]
+                  False, "L21 the places_and_spaces entrance artwork must be an artist's published artwork")]
         for n, (name, art, ok, want) in enumerate(cases, 200):
             site = copy_site(tmp, n)
             ent = os.path.join(tmp, "entrances-%d.json" % n)
-            d = json.load(open(GX.ENTRANCES, encoding="utf-8")); d["landscape"]["artwork"] = art
+            d = json.load(open(GX.ENTRANCES, encoding="utf-8")); d["places_and_spaces"]["artwork"] = art
             json.dump(d, open(ent, "w", encoding="utf-8"))
             try:
                 built = GX.home_region(GX.entrances(ent))

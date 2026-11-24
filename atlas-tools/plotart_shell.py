@@ -35,14 +35,15 @@ FOOT_ARTISTS = '<li><a href="%s" data-pa-track="footer_artist_studio">Artist Stu
 
 # Three galleries (founder approval of Phase A, 24 Nov 2026): the "Artists’ Gallery" and "Mobile Gallery" pills became one
 # "Galleries" menu in the header. Contemporary Art is the existing Artists’ Gallery at gallery/ (same address, same
-# collection); Landscape Art and Portraiture are standalone gallery pages, shown "In preparation" until the founder opens
-# them (launch switches landscape_gallery_state / portraiture_gallery_state). atlas-tools/plotart-galleries-nav.py applies
+# collection); Places & Spaces and Portraiture are standalone gallery pages, shown "In preparation" until the founder opens
+# them (launch switches places_and_spaces_gallery_state / portraiture_gallery_state). Places & Spaces was named Landscape Art
+# until the founder's gallery identity revision of 24 Nov 2026; its old address landscape/ is a redirect page. atlas-tools/plotart-galleries-nav.py applies
 # exactly this markup to hand-built and already-published pages; prove-plotart-launch.py L11 and L21 check it.
 GALLERIES = (("contemporary", "gallery/", "Contemporary Art", "nav_gallery_contemporary"),
-             ("landscape", "landscape/", "Landscape Art", "nav_gallery_landscape"),
+             ("places_and_spaces", "places-and-spaces/", "Places &amp; Spaces", "nav_gallery_places_and_spaces"),
              ("portraiture", "portraiture/", "Portraiture", "nav_gallery_portraiture"))
 GALLERY_STATES = ("in_preparation",)   # Phase A: no new gallery can be opened; opening is Phase E (guard L21)
-FOOT_GALLERIES = ('<li><a href="{R}gallery/">Contemporary Art</a></li><li><a href="{R}landscape/">Landscape Art</a></li>'
+FOOT_GALLERIES = ('<li><a href="{R}gallery/">Contemporary Art</a></li><li><a href="{R}places-and-spaces/">Places &amp; Spaces</a></li>'
                   '<li><a href="{R}portraiture/">Portraiture</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li>')
 PREP_NOTE = '<span class="pa-dd-note">In preparation</span>'
 

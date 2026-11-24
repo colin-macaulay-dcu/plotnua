@@ -1,6 +1,6 @@
 // PROVE · Three galleries (Phase B) · integrity checks requested at final verification (24 Nov 2026). Synthetic artists only;
 // the Worker runs locally (Miniflare/workerd) with a local D1, which enforces foreign keys as Cloudflare D1 does. Nothing here
-// touches Cloudflare.
+// touches Cloudflare. (I8.0 uses Portraiture: revision 1 still named the second gallery 'landscape'.)
 //   I1 artwork placements cannot associate an artwork with the wrong artist
 //   I2 Artists in Focus cannot reference another artist's artwork
 //   I3 image-use consent cannot be recorded against another artist's artwork or an unrelated request
@@ -36,10 +36,10 @@ console.log('PROVE · Three galleries · integrity (final verification)');
   const S0 = await start({ port: 8861, schemaSql: mainSchema + '\n' + rev1 });
   const c0 = mkcall(S0.mf, S0.url);
   await seedPublished(S0.db, { id: 'aold', slug: 'old-rev', email: 'old@example.test', name: 'Old Rev', works: 1 });
-  await c0('POST', '/api/admin/galleries/landscape/members', FOUNDER, { artist_id: 'aold' });
-  await c0('POST', '/api/galleries/landscape/accept', 'old@example.test');
+  await c0('POST', '/api/admin/galleries/portraiture/members', FOUNDER, { artist_id: 'aold' });
+  await c0('POST', '/api/galleries/portraiture/accept', 'old@example.test');
   const wid = (await c0('POST', '/api/artworks', 'old@example.test')).j.id;
-  await c0('POST', `/api/galleries/landscape/artworks/${wid}/propose`, 'old@example.test');
+  await c0('POST', `/api/galleries/portraiture/artworks/${wid}/propose`, 'old@example.test');
   const del = await c0('DELETE', `/api/artworks/${wid}`, 'old@example.test');
   check('I8.0 (the defect found) with revision 1 of the migration, deleting a draft that has a gallery placement is REFUSED by the database (foreign key)',
     del.s >= 500 && (await S0.db.prepare('SELECT COUNT(*) n FROM artworks WHERE id = ?').bind(wid).first()).n === 1, `${del.s} ${del.t.slice(0, 120)}`);
@@ -63,41 +63,41 @@ const placeLive = async (wid, email, g) => { const a = await call('POST', `/api/
 const ana0 = JSON.stringify(await artistRows(db, 'aeve'));   // an artist nothing here should touch
 
 /* ---- I1 · placements are always the artwork's own artist ---- */
-check('I1.0 setup: Ana and Ben are live members of Landscape Art', await join('aana', A, 'landscape') && await join('aben', B, 'landscape'));
+check('I1.0 setup: Ana and Ben are live members of Places & Spaces', await join('aana', A, 'places_and_spaces') && await join('aben', B, 'places_and_spaces'));
 let r = await call('POST', '/api/admin/galleries/portraiture/artworks/waben1/place', FOUNDER);
 check('I1.1 the founder cannot place a work in a gallery its own artist is not a member of', r.s === 409 && !(await pstate('waben1', 'portraiture')));
-r = await call('POST', '/api/galleries/landscape/artworks/waben1/propose', A);
-check('I1.2 an artist cannot propose another artist’s work (not found, nothing written)', r.s === 404 && !(await pstate('waben1', 'landscape')));
+r = await call('POST', '/api/galleries/places_and_spaces/artworks/waben1/propose', A);
+check('I1.2 an artist cannot propose another artist’s work (not found, nothing written)', r.s === 404 && !(await pstate('waben1', 'places_and_spaces')));
 check('I1.3 a founder placement records the artwork’s OWN artist (read from the artwork, never from the request)',
-  await placeLive('waana1', A, 'landscape') && (await pstate('waana1', 'landscape')).artist_id === 'aana');
+  await placeLive('waana1', A, 'places_and_spaces') && (await pstate('waana1', 'places_and_spaces')).artist_id === 'aana');
 // a deliberately corrupt row (as if written by hand): Ben's work recorded under Ana
 await db.prepare(`INSERT INTO artwork_placements (artwork_id, artist_id, gallery_id, state, proposed_by, proposed_at, founder_approved_by, founder_approved_at, artist_accepted_at, updated_at)
-  VALUES ('waben2','aana','landscape','live','x','2026-11-24T00:00:00.000Z','x','2026-11-24T00:00:00.000Z','2026-11-24T00:00:00.000Z','2026-11-24T00:00:00.000Z')`).run();
-const l1 = await pg('landscape'), anaView = (await call('GET', '/api/galleries', A)).j, adm = (await call('GET', '/api/admin/galleries', FOUNDER)).j;
+  VALUES ('waben2','aana','places_and_spaces','live','x','2026-11-24T00:00:00.000Z','x','2026-11-24T00:00:00.000Z','2026-11-24T00:00:00.000Z','2026-11-24T00:00:00.000Z')`).run();
+const l1 = await pg('places_and_spaces'), anaView = (await call('GET', '/api/galleries', A)).j, adm = (await call('GET', '/api/admin/galleries', FOUNDER)).j;
 check('I1.4 even a corrupt row naming the wrong artist is ignored everywhere: not in the gallery, not in either artist’s view, not in the founder’s list',
   !l1.works.some(w => w.work === 'work-2' && w.artist === 'ben-test') && !anaView.placements.some(p => p.artwork_id === 'waben2') && !adm.placements.some(p => p.artwork_id === 'waben2'),
   JSON.stringify(l1.works));
 await db.prepare("DELETE FROM artwork_placements WHERE artwork_id = 'waben2'").run();
 
 /* ---- I2 · Artists in Focus only ever show an artist's own placed work ---- */
-await placeLive('waben1', B, 'landscape');
-r = await call('PUT', '/api/admin/galleries/landscape/features', FOUNDER, { items: [{ artist_id: 'aana', artwork_id: 'waben1' }] });
-check('I2.1 Artists in Focus refuses an artist paired with another artist’s work', r.s === 409 && (await G.features(env, 'landscape')).length === 0);
-r = await call('PUT', '/api/admin/galleries/landscape/features', FOUNDER, { items: [{ artist_id: 'aana', artwork_id: 'waana2' }] });
+await placeLive('waben1', B, 'places_and_spaces');
+r = await call('PUT', '/api/admin/galleries/places_and_spaces/features', FOUNDER, { items: [{ artist_id: 'aana', artwork_id: 'waben1' }] });
+check('I2.1 Artists in Focus refuses an artist paired with another artist’s work', r.s === 409 && (await G.features(env, 'places_and_spaces')).length === 0);
+r = await call('PUT', '/api/admin/galleries/places_and_spaces/features', FOUNDER, { items: [{ artist_id: 'aana', artwork_id: 'waana2' }] });
 check('I2.2 … and the artist’s own work that is not placed in this gallery', r.s === 409);
-r = await call('PUT', '/api/admin/galleries/landscape/features', FOUNDER, { items: [{ artist_id: 'aana', artwork_id: 'waana1' }, { artist_id: 'aben', artwork_id: 'waben1' }] });
+r = await call('PUT', '/api/admin/galleries/places_and_spaces/features', FOUNDER, { items: [{ artist_id: 'aana', artwork_id: 'waana1' }, { artist_id: 'aben', artwork_id: 'waben1' }] });
 check('I2.3 their own placed works are accepted', r.s === 200 && r.j.features.length === 2);
-await db.prepare("INSERT INTO gallery_features (gallery_id, position, artist_id, artwork_id, updated_at, updated_by) VALUES ('landscape', 3, 'acara', 'waana2', '2026-11-24T00:00:00.000Z', 'x')").run();
+await db.prepare("INSERT INTO gallery_features (gallery_id, position, artist_id, artwork_id, updated_at, updated_by) VALUES ('places_and_spaces', 3, 'acara', 'waana2', '2026-11-24T00:00:00.000Z', 'x')").run();
 check('I2.4 a corrupt feature row (Cara with Ana’s work) is never shown to the publisher or the founder',
-  !(await pg('landscape')).features.some(f => f.artist_id === 'acara') && !(await call('GET', '/api/admin/galleries', FOUNDER)).j.galleries.find(g => g.gallery_id === 'landscape').features.some(f => f.artist_id === 'acara'));
+  !(await pg('places_and_spaces')).features.some(f => f.artist_id === 'acara') && !(await call('GET', '/api/admin/galleries', FOUNDER)).j.galleries.find(g => g.gallery_id === 'places_and_spaces').features.some(f => f.artist_id === 'acara'));
 await db.prepare("DELETE FROM gallery_features WHERE artist_id = 'acara'").run();
-await call('POST', '/api/galleries/landscape/artworks/waben1/withdraw', B);
+await call('POST', '/api/galleries/places_and_spaces/artworks/waben1/withdraw', B);
 check('I2.5 when a placement closes, its Artists in Focus entry goes with it (stored and shown)',
-  !(await G.features(env, 'landscape')).some(f => f.artwork_id === 'waben1') && !(await pg('landscape')).features.some(f => f.artwork_id === 'waben1'));
+  !(await G.features(env, 'places_and_spaces')).some(f => f.artwork_id === 'waben1') && !(await pg('places_and_spaces')).features.some(f => f.artwork_id === 'waben1'));
 
 /* ---- I3 · consent belongs to its own artist and its own request ---- */
-const ask = (aid, ids, extra = {}) => call('POST', '/api/admin/image-use/requests', FOUNDER, { artist_id: aid, scope: 'homepage_feature', gallery_id: 'landscape', artwork_ids: ids,
-  purpose: 'Landscape Art homepage, Artists in Focus image', channels: 'plotnua.ie homepage', valid_until: '2027-06-30', ...extra });
+const ask = (aid, ids, extra = {}) => call('POST', '/api/admin/image-use/requests', FOUNDER, { artist_id: aid, scope: 'homepage_feature', gallery_id: 'places_and_spaces', artwork_ids: ids,
+  purpose: 'Places & Spaces homepage, Artists in Focus image', channels: 'plotnua.ie homepage', valid_until: '2027-06-30', ...extra });
 r = await ask('aana', ['waana1', 'waben1']);
 check('I3.1 a request for one artist cannot include another artist’s work', r.s === 409 && (await db.prepare('SELECT COUNT(*) n FROM image_use_requests').first()).n === 0);
 const R1 = (await ask('aana', ['waana1'])).j.request.id;
@@ -117,36 +117,36 @@ r = await call('POST', `/api/image-use/${R1}/answer`, A, { answer: 'yes' });
 const c1 = await db.prepare('SELECT * FROM image_use_consents WHERE request_id = ?').bind(R1).first(), q1 = await db.prepare('SELECT * FROM image_use_requests WHERE id = ?').bind(R1).first();
 check('I3.6 the artist’s own answer copies the request exactly (artist, scope, gallery, works, purpose, channels, end date, request text hash)',
   r.s === 200 && ['artist_id', 'scope', 'gallery_id', 'artwork_ids', 'purpose', 'channels', 'valid_until', 'request_text_sha256'].every(k => c1[k] === q1[k]) && q1.status === 'answered');
-check('I3.7 that yes authorises exactly that use: this work, this scope, in Landscape Art',
-  await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'landscape', on: '2027-01-01' }) && !(await G.consentFor(env, 'aana', 'waana2', 'homepage_feature', { gallery: 'landscape', on: '2027-01-01' }))
-  && !(await G.consentFor(env, 'aana', 'waana1', 'social_media', { gallery: 'landscape', on: '2027-01-01' })));
+check('I3.7 that yes authorises exactly that use: this work, this scope, in Places & Spaces',
+  await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'places_and_spaces', on: '2027-01-01' }) && !(await G.consentFor(env, 'aana', 'waana2', 'homepage_feature', { gallery: 'places_and_spaces', on: '2027-01-01' }))
+  && !(await G.consentFor(env, 'aana', 'waana1', 'social_media', { gallery: 'places_and_spaces', on: '2027-01-01' })));
 
 /* ---- I4 · expired, cancelled and withdrawn permissions authorise nothing ---- */
-check('I4.1 after its end date the same yes no longer authorises anything', !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'landscape', on: '2027-07-01' })));
-check('I4.2 a yes for Landscape Art never covers Portraiture, nor a use with no gallery named',
+check('I4.1 after its end date the same yes no longer authorises anything', !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'places_and_spaces', on: '2027-07-01' })));
+check('I4.2 a yes for Places & Spaces never covers Portraiture, nor a use with no gallery named',
   !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'portraiture', on: '2027-01-01' })) && !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { on: '2027-01-01' })));
 r = await ask('aana', ['waana1'], { valid_until: '2020-01-01' });
 check('I4.3 a request whose end date has already passed cannot be made', r.s === 400);
 await db.prepare(`INSERT INTO image_use_requests (id, artist_id, scope, gallery_id, artwork_ids, purpose, channels, valid_until, request_text_sha256, status, requested_by, requested_at)
-  VALUES ('uexpired','aana','video_feature','landscape','["waana1"]','A video about Landscape Art artists','YouTube','2020-01-01',?, 'open', ?, '2019-12-01T00:00:00.000Z')`).bind('1'.repeat(64), FOUNDER).run();
+  VALUES ('uexpired','aana','video_feature','places_and_spaces','["waana1"]','A video about Places & Spaces artists','YouTube','2020-01-01',?, 'open', ?, '2019-12-01T00:00:00.000Z')`).bind('1'.repeat(64), FOUNDER).run();
 r = await call('POST', '/api/image-use/uexpired/answer', A, { answer: 'yes' });
 check('I4.4 an open request that has expired can no longer be answered yes (nothing recorded)', r.s === 409 && !(await db.prepare("SELECT id FROM image_use_consents WHERE request_id = 'uexpired'").first()));
 const R3 = (await ask('aana', ['waana1'], { scope: 'editorial_feature' })).j.request.id;
 await call('POST', `/api/admin/image-use/requests/${R3}/cancel`, FOUNDER);
 r = await call('POST', `/api/image-use/${R3}/answer`, A, { answer: 'yes' });
 check('I4.5 a cancelled request cannot be answered, records nothing and authorises nothing',
-  r.s === 404 && !(await db.prepare('SELECT id FROM image_use_consents WHERE request_id = ?').bind(R3).first()) && !(await G.consentFor(env, 'aana', 'waana1', 'editorial_feature', { gallery: 'landscape' })));
+  r.s === 404 && !(await db.prepare('SELECT id FROM image_use_consents WHERE request_id = ?').bind(R3).first()) && !(await G.consentFor(env, 'aana', 'waana1', 'editorial_feature', { gallery: 'places_and_spaces' })));
 r = await call('POST', `/api/image-use/consents/${c1.id}/withdraw`, A);
 const answers = (await db.prepare('SELECT answer FROM image_use_consents WHERE request_id = ? ORDER BY rowid').bind(R1).all()).results.map(x => x.answer).join(',');
 check('I4.6 the artist withdraws the yes: it no longer authorises anything; the earlier yes stays on record (append-only: yes,no)',
-  r.s === 200 && answers === 'yes,no' && !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'landscape', on: '2027-01-01' })), answers);
+  r.s === 200 && answers === 'yes,no' && !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'places_and_spaces', on: '2027-01-01' })), answers);
 r = await call('POST', `/api/image-use/consents/${c1.id}/withdraw`, B);
 check('I4.7 another artist cannot withdraw (or see) it', r.s === 404);
 const R4 = (await ask('aana', ['waana1'])).j.request.id; await call('POST', `/api/image-use/${R4}/answer`, A, { answer: 'yes' });
-const yesAgain = await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'landscape', on: '2027-01-01' });
-await call('POST', '/api/galleries/landscape/withdraw', A);
+const yesAgain = await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'places_and_spaces', on: '2027-01-01' });
+await call('POST', '/api/galleries/places_and_spaces/withdraw', A);
 check('I4.8 a fresh yes works again, and stops working the moment the artist leaves that gallery',
-  yesAgain && !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'landscape', on: '2027-01-01' })));
+  yesAgain && !(await G.consentFor(env, 'aana', 'waana1', 'homepage_feature', { gallery: 'places_and_spaces', on: '2027-01-01' })));
 
 /* ---- I5 · no obsolete acceptance is ever reused ---- */
 await call('POST', '/api/galleries/portraiture/request', D);
@@ -184,24 +184,24 @@ check('I5.4 leaving a gallery closes the artist’s placements, order position a
 const racing = (compete) => { let h = compete; return { DB: { prepare: (...a) => db.prepare(...a), batch: async s => { if (h) { const f = h; h = null; await f(); } return db.batch(s); } } }; };
 const outcome = async f => { try { await f(); return 'ok'; } catch (e) { return e.status || e.message; } };
 const founderE = FOUNDER, artE = { id: 'aeve', email: E };
-await G.founderPropose(env, founderE, 'landscape', { artist_id: 'aeve' });
-let o = await outcome(() => G.artistAct(racing(() => G.founderClose(env, founderE, 'landscape', 'aeve', 'withdrawn')), artE, 'landscape', 'accept'));
+await G.founderPropose(env, founderE, 'places_and_spaces', { artist_id: 'aeve' });
+let o = await outcome(() => G.artistAct(racing(() => G.founderClose(env, founderE, 'places_and_spaces', 'aeve', 'withdrawn')), artE, 'places_and_spaces', 'accept'));
 check('I6.1 artist accepts while the founder withdraws the invitation: the accept is refused (409); the membership stays withdrawn, never live',
-  o === 409 && (await state('aeve', 'landscape')).state === 'withdrawn', o);
-await G.founderPropose(env, founderE, 'landscape', { artist_id: 'aeve' });
-o = await outcome(() => G.founderClose(racing(() => G.artistAct(env, artE, 'landscape', 'accept')), founderE, 'landscape', 'aeve', 'withdrawn'));
+  o === 409 && (await state('aeve', 'places_and_spaces')).state === 'withdrawn', o);
+await G.founderPropose(env, founderE, 'places_and_spaces', { artist_id: 'aeve' });
+o = await outcome(() => G.founderClose(racing(() => G.artistAct(env, artE, 'places_and_spaces', 'accept')), founderE, 'places_and_spaces', 'aeve', 'withdrawn'));
 check('I6.2 the founder withdraws an invitation the artist accepted a moment earlier: refused (409) rather than acting on stale state; live stands (the founder can then withdraw it knowingly)',
-  o === 409 && (await state('aeve', 'landscape')).state === 'live', o);
+  o === 409 && (await state('aeve', 'places_and_spaces')).state === 'live', o);
 await G.artistAct(env, artE, 'portraiture', 'request');
 o = await outcome(() => G.founderApprove(racing(() => G.artistAct(env, artE, 'portraiture', 'withdraw')), founderE, 'portraiture', 'aeve'));
 check('I6.3 the founder approves a request the artist is withdrawing: refused (409); withdrawn, never live', o === 409 && (await state('aeve', 'portraiture')).state === 'withdrawn', o);
-await G.founderPlacement(env, founderE, 'landscape', 'waeve1', 'place');
-o = await outcome(() => G.artistPlacement(racing(() => G.founderPlacement(env, founderE, 'landscape', 'waeve1', 'withdraw')), artE, 'landscape', 'waeve1', 'accept'));
-check('I6.4 a work is accepted while the founder withdraws it: refused (409); the placement stays withdrawn', o === 409 && (await pstate('waeve1', 'landscape')).state === 'withdrawn', o);
-await G.founderPlacement(env, founderE, 'landscape', 'waeve1', 'place');
-o = await outcome(() => G.artistPlacement(racing(() => G.founderClose(env, founderE, 'landscape', 'aeve', 'withdrawn')), artE, 'landscape', 'waeve1', 'accept'));
+await G.founderPlacement(env, founderE, 'places_and_spaces', 'waeve1', 'place');
+o = await outcome(() => G.artistPlacement(racing(() => G.founderPlacement(env, founderE, 'places_and_spaces', 'waeve1', 'withdraw')), artE, 'places_and_spaces', 'waeve1', 'accept'));
+check('I6.4 a work is accepted while the founder withdraws it: refused (409); the placement stays withdrawn', o === 409 && (await pstate('waeve1', 'places_and_spaces')).state === 'withdrawn', o);
+await G.founderPlacement(env, founderE, 'places_and_spaces', 'waeve1', 'place');
+o = await outcome(() => G.artistPlacement(racing(() => G.founderClose(env, founderE, 'places_and_spaces', 'aeve', 'withdrawn')), artE, 'places_and_spaces', 'waeve1', 'accept'));
 check('I6.5 a work is accepted while the artist’s membership is withdrawn: refused (409); the work is not live in a gallery its artist has left',
-  o === 409 && (await pstate('waeve1', 'landscape')).state === 'withdrawn' && (await state('aeve', 'landscape')).state === 'withdrawn', o);
+  o === 409 && (await pstate('waeve1', 'places_and_spaces')).state === 'withdrawn' && (await state('aeve', 'places_and_spaces')).state === 'withdrawn', o);
 const u5 = (await G.requestConsent(env, founderE, { artist_id: 'aeve', scope: 'social_media', artwork_ids: ['waeve1'], purpose: 'A post about the new galleries', channels: 'Instagram' })).id;
 o = await outcome(() => G.answerConsent(racing(() => G.answerConsent(env, artE, u5, { answer: 'no' })), artE, u5, { answer: 'yes' }));
 const ans5 = (await db.prepare('SELECT answer FROM image_use_consents WHERE request_id = ?').bind(u5).all()).results;
@@ -214,14 +214,14 @@ check('I6.7 the founder invites while the artist requests the same gallery: one 
 // Stress: real concurrent HTTP requests, 25 rounds of "artist accepts" against "founder withdraws".
 let bad = 0, both = 0, rounds = 0;
 for (let i = 0; i < 25; i++) {
-  await G.founderPropose(env, founderE, 'landscape', { artist_id: 'aeve' }).catch(() => {});
-  if ((await state('aeve', 'landscape')).state !== 'founder_approved') { bad++; continue; }
-  const [x, y] = await Promise.all([call('POST', '/api/galleries/landscape/accept', E), call('POST', '/api/admin/galleries/landscape/members/aeve/withdraw', FOUNDER)]);
-  const st = (await state('aeve', 'landscape')).state; rounds++;
+  await G.founderPropose(env, founderE, 'places_and_spaces', { artist_id: 'aeve' }).catch(() => {});
+  if ((await state('aeve', 'places_and_spaces')).state !== 'founder_approved') { bad++; continue; }
+  const [x, y] = await Promise.all([call('POST', '/api/galleries/places_and_spaces/accept', E), call('POST', '/api/admin/galleries/places_and_spaces/members/aeve/withdraw', FOUNDER)]);
+  const st = (await state('aeve', 'places_and_spaces')).state; rounds++;
   if (x.s === 200 && y.s === 200) both++;
   const okEnd = (y.s === 200 && st === 'withdrawn') || (y.s === 409 && x.s === 200 && st === 'live');
   if (!okEnd || ![200, 409].includes(x.s) || ![200, 409].includes(y.s)) bad++;
-  if (st === 'live') await G.founderClose(env, founderE, 'landscape', 'aeve', 'withdrawn');
+  if (st === 'live') await G.founderClose(env, founderE, 'places_and_spaces', 'aeve', 'withdrawn');
 }
 check(`I6.8 stress: ${rounds} rounds of simultaneous accept and withdraw over HTTP end only in valid states (withdrawn, or live with the withdrawal refused)`, rounds === 25 && bad === 0, JSON.stringify({ bad, both }));
 
@@ -229,29 +229,29 @@ check(`I6.8 stress: ${rounds} rounds of simultaneous accept and withdraw over HT
 const fault = (name, sql) => db.prepare(`CREATE TRIGGER ${name} ${sql} BEGIN SELECT RAISE(ABORT, 'injected test fault'); END`).run();
 const unfault = name => db.prepare(`DROP TRIGGER ${name}`).run();
 await fault('f1', "BEFORE INSERT ON gallery_memberships WHEN NEW.gallery_id = 'portraiture'");
-r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Faye Fault', email: 'faye@example.test', programme: 'gallery_artist', galleries: ['landscape', 'portraiture'] });
+r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Faye Fault', email: 'faye@example.test', programme: 'gallery_artist', galleries: ['places_and_spaces', 'portraiture'] });
 const faye = await db.prepare("SELECT id FROM artists WHERE email = 'faye@example.test'").first();
 check('I7.1 an invitation whose second gallery fails to write creates NOTHING: no artist, no commission terms, no gallery rows',
   r.s >= 500 && !faye && (await db.prepare("SELECT COUNT(*) n FROM artist_terms t JOIN artists a ON a.id = t.artist_id WHERE a.email = 'faye@example.test'").first()).n === 0
   && (await db.prepare("SELECT COUNT(*) n FROM gallery_memberships WHERE proposed_at >= '2026-11-24' AND artist_id NOT IN (SELECT id FROM artists)").first()).n === 0, `${r.s}`);
 await unfault('f1');
-r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Faye Fault', email: 'faye@example.test', programme: 'gallery_artist', galleries: ['landscape', 'portraiture'] });
+r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Faye Fault', email: 'faye@example.test', programme: 'gallery_artist', galleries: ['places_and_spaces', 'portraiture'] });
 const fRows = r.j.id ? (await db.prepare('SELECT gallery_id, state, source FROM gallery_memberships WHERE artist_id = ? ORDER BY gallery_id').bind(r.j.id).all()).results : [];
 check('I7.2 the same invitation without the fault creates the artist, the 15% terms and both invitations together (not Contemporary: it was not chosen)',
-  r.s === 200 && JSON.stringify(fRows) === JSON.stringify([{ gallery_id: 'landscape', state: 'founder_approved', source: 'founder_invitation' }, { gallery_id: 'portraiture', state: 'founder_approved', source: 'founder_invitation' }])
+  r.s === 200 && JSON.stringify(fRows) === JSON.stringify([{ gallery_id: 'places_and_spaces', state: 'founder_approved', source: 'founder_invitation' }, { gallery_id: 'portraiture', state: 'founder_approved', source: 'founder_invitation' }])
   && (await db.prepare('SELECT commission_bp FROM artist_terms WHERE artist_id = ?').bind(r.j.id).first()).commission_bp === 1500, JSON.stringify(fRows));
 await seedPublished(db, { id: 'agus', slug: 'gus-test', email: 'gus@example.test', name: 'Gus Test', works: 1, number: 6 });
-await fault('f2', "BEFORE INSERT ON gallery_memberships WHEN NEW.gallery_id = 'landscape'");
-r = await call('POST', '/api/admin/galleries/landscape/members', FOUNDER, { artist_id: 'agus' });
+await fault('f2', "BEFORE INSERT ON gallery_memberships WHEN NEW.gallery_id = 'places_and_spaces'");
+r = await call('POST', '/api/admin/galleries/places_and_spaces/members', FOUNDER, { artist_id: 'agus' });
 check('I7.3 a first gallery invitation that fails also leaves the default Contemporary membership unwritten (all or nothing)',
   r.s >= 500 && (await db.prepare("SELECT COUNT(*) n FROM gallery_memberships WHERE artist_id = 'agus'").first()).n === 0);
 await unfault('f2');
-await join('agus', 'gus@example.test', 'landscape'); await placeLive('wagus1', 'gus@example.test', 'landscape');
-await call('PUT', '/api/admin/galleries/landscape/features', FOUNDER, { items: [{ artist_id: 'agus', artwork_id: 'wagus1' }] });
+await join('agus', 'gus@example.test', 'places_and_spaces'); await placeLive('wagus1', 'gus@example.test', 'places_and_spaces');
+await call('PUT', '/api/admin/galleries/places_and_spaces/features', FOUNDER, { items: [{ artist_id: 'agus', artwork_id: 'wagus1' }] });
 await fault('f3', 'BEFORE DELETE ON gallery_features');
-r = await call('POST', '/api/admin/galleries/landscape/members/agus/withdraw', FOUNDER);
+r = await call('POST', '/api/admin/galleries/places_and_spaces/members/agus/withdraw', FOUNDER);
 check('I7.4 withdrawing a membership whose follow-on clean-up fails changes nothing (still live, work still placed, still in focus)',
-  r.s >= 500 && (await state('agus', 'landscape')).state === 'live' && (await pstate('wagus1', 'landscape')).state === 'live' && (await G.features(env, 'landscape')).some(f => f.artist_id === 'agus'));
+  r.s >= 500 && (await state('agus', 'places_and_spaces')).state === 'live' && (await pstate('wagus1', 'places_and_spaces')).state === 'live' && (await G.features(env, 'places_and_spaces')).some(f => f.artist_id === 'agus'));
 await unfault('f3');
 const u7 = (await ask('agus', ['wagus1'])).j.request.id;
 await fault('f4', 'BEFORE UPDATE ON image_use_requests');
@@ -262,10 +262,10 @@ await unfault('f4');
 
 /* ---- I8 · existing deletion, leaving and account processes with the new foreign keys ---- */
 const wd = (await call('POST', '/api/artworks', 'gus@example.test')).j.id;
-await call('POST', `/api/galleries/landscape/artworks/${wd}/propose`, 'gus@example.test');
+await call('POST', `/api/galleries/places_and_spaces/artworks/${wd}/propose`, 'gus@example.test');
 r = await call('DELETE', `/api/artworks/${wd}`, 'gus@example.test');
 check('I8.1 an artist deletes a draft that has a gallery placement: works as today; its placement goes with it',
-  r.s === 200 && !(await db.prepare('SELECT id FROM artworks WHERE id = ?').bind(wd).first()) && !(await pstate(wd, 'landscape')));
+  r.s === 200 && !(await db.prepare('SELECT id FROM artworks WHERE id = ?').bind(wd).first()) && !(await pstate(wd, 'places_and_spaces')));
 // Cara: memberships in three galleries, live placement, order, Artists in Focus, requests and consents
 await G.founderApprove(env, founderE, 'portraiture', 'acara'); await placeLive('wacara1', C, 'portraiture');
 await call('PUT', '/api/admin/galleries/portraiture/order', FOUNDER, { artists: ['acara', 'adia'] });
@@ -302,6 +302,12 @@ check('I8.5 nobody else’s rows were touched (Dia still ordered in Portraiture;
 r = await call('POST', '/api/leave', B, { confirm: true, reason: 'Moving my work elsewhere' });
 check('I8.6 an artist’s own request to leave works as today with gallery memberships present', r.s === 200);
 
+/* ---- I9 · the gallery identity revision (24 Nov 2026): Landscape Art is Places & Spaces, identifier places_and_spaces ---- */
+r = await call('POST', '/api/admin/galleries/landscape/members', FOUNDER, { artist_id: 'aben' });
+let dbr = 'accepted'; try { await db.prepare("INSERT INTO gallery_settings (gallery_id, status, target_artists, target_works, updated_at, updated_by) VALUES ('landscape', 'in_preparation', 1, 1, '2026-11-24T00:00:00.000Z', 'x')").run(); } catch { dbr = 'refused'; }
+check('I9.1 the former identifier "landscape" is not a gallery: the Studio answers 404 and the database refuses it', r.s === 404 && dbr === 'refused', `${r.s} ${dbr}`);
+const gv = (await call('GET', '/api/admin/galleries', FOUNDER)).j.galleries.map(g => [g.gallery_id, g.title]);
+check('I9.2 the Studio names the three galleries Contemporary Art, Places & Spaces and Portraiture', JSON.stringify(gv) === JSON.stringify([['contemporary', 'Contemporary Art'], ['places_and_spaces', 'Places & Spaces'], ['portraiture', 'Portraiture']]), JSON.stringify(gv));
 await mf.dispose();
 const fail = results.filter(x => !x).length;
 console.log(`\nTHREE GALLERIES · INTEGRITY · ${results.length} checks, ${results.length - fail} passed, ${fail} failed`);

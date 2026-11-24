@@ -69,8 +69,8 @@ const call = callFor(B, mf, url);
 const g = JSON.parse((await call('GET', '/api/admin/galleries', B.FOUNDER)).t);
 const gal = k => g.galleries.find(x => x.gallery_id === k);
 check(`S5 Contemporary Art holds all 18 published artists and all ${shownWorks} works shown on the live site, as today`, gal('contemporary').members.length === 18 && gal('contemporary').live_works === shownWorks, `${gal('contemporary').members.length} / ${gal('contemporary').live_works}`);
-check('S6 Landscape Art and Portraiture are empty and In preparation (0 of 6 artists, 0 of 30 works); nobody was assigned to them',
-  ['landscape', 'portraiture'].every(k => gal(k).status === 'in_preparation' && gal(k).live_artists === 0 && gal(k).live_works === 0 && gal(k).ready === false)
+check('S6 Places & Spaces and Portraiture are empty and In preparation (0 of 6 artists, 0 of 30 works); nobody was assigned to them',
+  ['places_and_spaces', 'portraiture'].every(k => gal(k).status === 'in_preparation' && gal(k).live_artists === 0 && gal(k).live_works === 0 && gal(k).ready === false)
   && (await db.prepare('SELECT COUNT(*) n FROM gallery_memberships').first()).n === 0 && (await db.prepare('SELECT COUNT(*) n FROM artwork_placements').first()).n === 0);
 const pipe = JSON.parse((await call('GET', '/api/pipeline/galleries', null, { Authorization: 'Bearer ' + B.PIPELINE_TOKEN })).t);
 check('S7 the new read-only pipeline view lists the same 18 Contemporary artists by public address and the other two galleries empty',
