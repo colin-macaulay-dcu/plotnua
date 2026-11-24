@@ -1574,7 +1574,7 @@ async function route(req, env) {
       if (b.application_ref && String(b.application_ref).startsWith('PA-AP-') && programme !== 'gallery_artist')
         throw new Bad('A PlotArt application (PA-AP-…) leads to a Gallery Artist invitation. Choose Gallery Artist, or leave the reference out.', 409);
       if (programme === 'gallery_artist' && !(await termsInstalled(env))) throw new Bad('Gallery Artist invitations become available once the Gallery Artist records are installed (migration 0012).', 503);
-      // Three galleries (Phase B): an optional choice of galleries at invitation. Absent: Contemporary Art by default, as today.
+      // Three galleries (Phase B): an optional choice of galleries at invitation. Absent: Contemporary by default, as today.
       if (b.galleries !== undefined && !G.validInviteGalleries(b.galleries)) throw new Bad('Choose one or more galleries');
       if (b.galleries !== undefined && !(await G.installed(env))) throw new Bad('Gallery choice at invitation needs the three-gallery records (migration 0023)', 503);
       const id = rid('a'), at = now();

@@ -193,22 +193,22 @@ try {
   check('5.2 everything the founder’s existing desks read is identical (Gallery order, Featured Artists, Opportunities)',
     READS.filter(r => r[1] === 'founder').every(([p]) => after[p].s === 200 && after[p].t === before[p].t));
   const g = (await S.call('GET', '/api/admin/galleries', FOUNDER)).j, gal = k => g.galleries.find(x => x.gallery_id === k);
-  check(`5.3 Contemporary Art holds all 18 published artists and all ${staged.shownWorks} shown works; Places & Spaces and Portraiture are empty and In preparation`,
+  check(`5.3 Contemporary holds all 18 published artists and all ${staged.shownWorks} shown works; Environment and Being are empty and In preparation`,
     g.installed && gal('contemporary').members.length === 18 && gal('contemporary').live_works === staged.shownWorks
-    && ['places_and_spaces', 'portraiture'].every(k => gal(k).status === 'in_preparation' && gal(k).live_artists === 0), JSON.stringify({ c: gal('contemporary').members.length, w: gal('contemporary').live_works }));
+    && ['environment', 'being'].every(k => gal(k).status === 'in_preparation' && gal(k).live_artists === 0), JSON.stringify({ c: gal('contemporary').members.length, w: gal('contemporary').live_works }));
   check('5.4 nothing was written for any existing artist or artwork', GTABLES.every(t => rows(`SELECT COUNT(*) n FROM ${t}`)[0].n === 0));
   // the gallery model on real D1, with two synthetic artists invited through the Studio
-  const inv = await S.call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Cloud Test One', email: 'cf-one@example.test', programme: 'gallery_artist', galleries: ['places_and_spaces'] });
-  const inv2 = await S.call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Cloud Test Two', email: 'cf-two@example.test', programme: 'gallery_artist', galleries: ['portraiture', 'contemporary'] });
+  const inv = await S.call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Cloud Test One', email: 'cf-one@example.test', programme: 'gallery_artist', galleries: ['environment'] });
+  const inv2 = await S.call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Cloud Test Two', email: 'cf-two@example.test', programme: 'gallery_artist', galleries: ['being', 'contemporary'] });
   const m1 = inv.j.id ? rows(`SELECT gallery_id, state FROM gallery_memberships WHERE artist_id = '${inv.j.id}' ORDER BY gallery_id`) : [];
   check('5.5 invitations with a gallery choice write the artist, the 15% terms and the invitations in one batch on real D1',
-    inv.s === 200 && inv2.s === 200 && JSON.stringify(m1) === JSON.stringify([{ gallery_id: 'places_and_spaces', state: 'founder_approved' }])
+    inv.s === 200 && inv2.s === 200 && JSON.stringify(m1) === JSON.stringify([{ gallery_id: 'environment', state: 'founder_approved' }])
     && rows(`SELECT commission_bp FROM artist_terms WHERE artist_id = '${inv.j.id}'`)[0].commission_bp === 1500, JSON.stringify(m1));
   const one = inv.j.id, ONE = 'cf-one@example.test';
-  const acc = await S.call('POST', '/api/galleries/places_and_spaces/accept', ONE);
+  const acc = await S.call('POST', '/api/galleries/environment/accept', ONE);
   const wid = (await S.call('POST', '/api/artworks', ONE)).j.id;
-  const prop = await S.call('POST', `/api/galleries/places_and_spaces/artworks/${wid}/propose`, ONE);
-  const place = await S.call('POST', `/api/admin/galleries/places_and_spaces/artworks/${wid}/place`, FOUNDER);
+  const prop = await S.call('POST', `/api/galleries/environment/artworks/${wid}/propose`, ONE);
+  const place = await S.call('POST', `/api/admin/galleries/environment/artworks/${wid}/place`, FOUNDER);
   check('5.6 founder approval + artist acceptance makes a membership and a placement live on real D1', acc.s === 200 && prop.s === 200 && place.s === 200
     && rows(`SELECT state FROM artwork_placements WHERE artwork_id = '${wid}'`)[0].state === 'live', `${acc.s} ${prop.s} ${place.s}`);
   const del = await S.call('DELETE', `/api/artworks/${wid}`, ONE);
@@ -218,24 +218,24 @@ try {
   const TWO = 'cf-two@example.test', two = inv2.j.id;
   let bad = 0, rounds = 0; const odd = [];
   for (let i = 0; i < 12; i++) {
-    const st = rows(`SELECT state FROM gallery_memberships WHERE artist_id = '${two}' AND gallery_id = 'portraiture'`)[0].state;
-    if (st !== 'founder_approved') { const r = await S.call('POST', '/api/admin/galleries/portraiture/members', FOUNDER, { artist_id: two }); if (r.s !== 200) { bad++; odd.push(`re-invite ${st} → ${r.s} ${r.t.slice(0, 80)}`); continue; } }
-    const [x, y] = await Promise.all([S.call('POST', '/api/galleries/portraiture/accept', TWO), S.call('POST', `/api/admin/galleries/portraiture/members/${two}/withdraw`, FOUNDER)]);
-    const end = rows(`SELECT state FROM gallery_memberships WHERE artist_id = '${two}' AND gallery_id = 'portraiture'`)[0].state; rounds++;
+    const st = rows(`SELECT state FROM gallery_memberships WHERE artist_id = '${two}' AND gallery_id = 'being'`)[0].state;
+    if (st !== 'founder_approved') { const r = await S.call('POST', '/api/admin/galleries/being/members', FOUNDER, { artist_id: two }); if (r.s !== 200) { bad++; odd.push(`re-invite ${st} → ${r.s} ${r.t.slice(0, 80)}`); continue; } }
+    const [x, y] = await Promise.all([S.call('POST', '/api/galleries/being/accept', TWO), S.call('POST', `/api/admin/galleries/being/members/${two}/withdraw`, FOUNDER)]);
+    const end = rows(`SELECT state FROM gallery_memberships WHERE artist_id = '${two}' AND gallery_id = 'being'`)[0].state; rounds++;
     if (!((y.s === 200 && end === 'withdrawn') || (y.s === 409 && x.s === 200 && end === 'live'))) { bad++; odd.push(`accept ${x.s} withdraw ${y.s} end ${end}`); }
-    if (end === 'live') { const w = await S.call('POST', `/api/admin/galleries/portraiture/members/${two}/withdraw`, FOUNDER); if (w.s !== 200) odd.push(`cleanup withdraw ${w.s} ${w.t.slice(0, 80)}`); }
+    if (end === 'live') { const w = await S.call('POST', `/api/admin/galleries/being/members/${two}/withdraw`, FOUNDER); if (w.s !== 200) odd.push(`cleanup withdraw ${w.s} ${w.t.slice(0, 80)}`); }
   }
   check(`5.8 ${rounds} rounds of a simultaneous accept and withdrawal on real D1 end only in valid states`, rounds === 12 && bad === 0, `bad=${bad} ${odd.join(' ; ')}`);
-  // one of the live (staging) artists joins Places & Spaces with a published work: Artists in Focus, order, targets and a permission
+  // one of the live (staging) artists joins Environment with a published work: Artists in Focus, order, targets and a permission
   const la = rows("SELECT a.id, a.email, w.id AS wid FROM artists a JOIN artworks w ON w.artist_id = a.id WHERE a.email LIKE '%@staging.invalid' AND w.availability = 'available' ORDER BY a.slug, w.ord LIMIT 1")[0];
-  const steps = [await S.call('POST', '/api/admin/galleries/places_and_spaces/members', FOUNDER, { artist_id: la.id, source: 'founder_curation' }), await S.call('POST', '/api/galleries/places_and_spaces/accept', la.email),
-    await S.call('POST', `/api/admin/galleries/places_and_spaces/artworks/${la.wid}/place`, FOUNDER), await S.call('POST', `/api/galleries/places_and_spaces/artworks/${la.wid}/accept`, la.email),
-    await S.call('PUT', '/api/admin/galleries/places_and_spaces/order', FOUNDER, { artists: [la.id] }), await S.call('PUT', '/api/admin/galleries/places_and_spaces/features', FOUNDER, { items: [{ artist_id: la.id, artwork_id: la.wid }] }),
-    await S.call('PUT', '/api/admin/galleries/places_and_spaces/targets', FOUNDER, { target_artists: 5, target_works: 25 })];
-  const ur = await S.call('POST', '/api/admin/image-use/requests', FOUNDER, { artist_id: la.id, scope: 'homepage_feature', gallery_id: 'places_and_spaces', artwork_ids: [la.wid], purpose: 'Places & Spaces homepage, Artists in Focus image', channels: 'plotnua.ie homepage', valid_until: '2027-06-30' });
+  const steps = [await S.call('POST', '/api/admin/galleries/environment/members', FOUNDER, { artist_id: la.id, source: 'founder_curation' }), await S.call('POST', '/api/galleries/environment/accept', la.email),
+    await S.call('POST', `/api/admin/galleries/environment/artworks/${la.wid}/place`, FOUNDER), await S.call('POST', `/api/galleries/environment/artworks/${la.wid}/accept`, la.email),
+    await S.call('PUT', '/api/admin/galleries/environment/order', FOUNDER, { artists: [la.id] }), await S.call('PUT', '/api/admin/galleries/environment/features', FOUNDER, { items: [{ artist_id: la.id, artwork_id: la.wid }] }),
+    await S.call('PUT', '/api/admin/galleries/environment/targets', FOUNDER, { target_artists: 5, target_works: 25 })];
+  const ur = await S.call('POST', '/api/admin/image-use/requests', FOUNDER, { artist_id: la.id, scope: 'homepage_feature', gallery_id: 'environment', artwork_ids: [la.wid], purpose: 'Environment homepage, Artists in Focus image', channels: 'plotnua.ie homepage', valid_until: '2027-06-30' });
   steps.push(ur, await S.call('POST', `/api/image-use/${ur.j.request && ur.j.request.id}/answer`, la.email, { answer: 'yes' }));
-  const pl = (await S.call('GET', '/api/pipeline/galleries', null, undefined, PIPE)).j.galleries.find(x => x.gallery === 'places_and_spaces');
-  check('5.10 a live gallery artist joins Places & Spaces with a published work, in focus and ordered there, with a recorded permission; their Contemporary membership is untouched',
+  const pl = (await S.call('GET', '/api/pipeline/galleries', null, undefined, PIPE)).j.galleries.find(x => x.gallery === 'environment');
+  check('5.10 a live gallery artist joins Environment with a published work, in focus and ordered there, with a recorded permission; their Contemporary membership is untouched',
     steps.every(r => r.s === 200) && pl.artists.length === 1 && pl.works.length === 1 && pl.features.length === 1 && pl.order.length === 1
     && rows(`SELECT state FROM gallery_memberships WHERE artist_id = '${la.id}' AND gallery_id = 'contemporary'`)[0].state === 'live', steps.map(r => r.s).join());
   const pipe = (await S.call('GET', '/api/pipeline/galleries', null, undefined, PIPE)).j;

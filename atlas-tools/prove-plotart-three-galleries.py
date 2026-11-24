@@ -48,29 +48,33 @@ def check(name, ok, detail=""):
 
 
 FAULTS = [
-    ("F1 an image on the Places & Spaces entrance", "index.html", 'data-pa-placeholder="places_and_spaces"', 'data-pa-placeholder="places_and_spaces"><img src="assets/hero/founder-01-abstract.webp" alt="x"', "L21 the places_and_spaces entrance shows an image but no authorised entrance artwork is recorded"),
-    ("F2 'Gallery open' on the Portraiture entrance", "index.html", '<p class="pa-gx-status">In preparation</p><h2>Portraiture</h2>', '<p class="pa-gx-status">Gallery open</p><h2>Portraiture</h2>', "L21 the portraiture entrance"),
-    ("F3 an Artists in Focus section on a holding page", "places-and-spaces/index.html", '<p class="pa-gh-status">In preparation</p>', '<p class="pa-gh-status">In preparation</p><h2>Artists in Focus</h2>', "L21 places-and-spaces/index.html must be a holding page"),
-    ("F4 an artist's artwork on a holding page", "portraiture/index.html", '<figure class="pa-gh-art">', '<figure class="pa-gh-art"><img src="../artists/carolyn-walsh/img/coastal-series-8-1-600.webp" alt="x">', "L21 portraiture/index.html must be a holding page"),
-    ("F5 a holding page made indexable", "places-and-spaces/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 places-and-spaces/index.html must be noindex"),
+    ("F1 an image on the Environment entrance", "index.html", 'data-pa-placeholder="environment"', 'data-pa-placeholder="environment"><img src="assets/hero/founder-01-abstract.webp" alt="x"', "L21 the environment entrance shows an image but no authorised entrance artwork"),
+    ("F2 'Gallery open' on the Being entrance", "index.html", '<p class="pa-gx-status">In preparation</p><h2>Being.</h2>', '<p class="pa-gx-status">Gallery open</p><h2>Being.</h2>', "L21 the being entrance"),
+    ("F3 an Artists in Focus section on a holding page", "environment/index.html", '<p class="pa-gh-status">In preparation</p>', '<p class="pa-gh-status">In preparation</p><h2>Artists in Focus</h2>', "L21 environment/index.html must be a holding page"),
+    ("F4 an artist's artwork on a holding page", "being/index.html", '<figure class="pa-gh-art">', '<figure class="pa-gh-art"><img src="../artists/carolyn-walsh/img/coastal-series-8-1-600.webp" alt="x">', "L21 being/index.html must be a holding page"),
+    ("F5 a holding page made indexable", "environment/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 environment/index.html must be noindex"),
     ("F6 entrance artwork cropped", "assets/plotart-galleries.css", "object-fit:contain", "object-fit:cover", "L21 gallery entrance artwork must be shown whole"),
-    ("F7 the gallery tabs removed from Contemporary Art", "gallery/index.html", '<nav class="pa-gtabs"', '<nav class="pa-gtabs-gone"', "L21 gallery/index.html must carry the gallery tabs"),
-    ("F8 the Contemporary Art heading reverted", "gallery/index.html", "<h1>Contemporary Art.</h1>", "<h1>The Artists’ Gallery.</h1>", "L21 the Contemporary Art gallery's heading"),
+    ("F7 the gallery tabs removed from Contemporary", "gallery/index.html", '<nav class="pa-gtabs"', '<nav class="pa-gtabs-gone"', "L21 gallery/index.html must carry the gallery tabs"),
+    ("F8 the Contemporary heading reverted", "gallery/index.html", "<h1>Contemporary.</h1>", "<h1>Contemporary Art.</h1>", "L21 the Contemporary gallery's heading must be 'Contemporary.'"),
     ("F9 an extra label under the homepage heading", "index.html", "A new home for Irish art.</h1>", "A new home for Irish art.</h1><p>Three curated galleries</p>", "L6 the homepage heading must be exactly"),
     ("F10 'Real art. Real homes.' restored", "index.html", "Original art, at home.", "Real art. Real homes.", "L21 the homepage must present the Living Gallery"),
     ("F11 Art for Hire enquiries wording removed", "index.html", " Hire enquiries are not yet open.</p>", "</p>", "L21 the homepage must say Art for Hire enquiries are not yet open"),
     ("F12 an Artists' Gallery pill back on an artwork page", "artists/carolyn-walsh/coastal-series-8.html", 'data-pa-track="nav_mobile_gallery">Mobile Gallery</a>',
      'data-pa-track="nav_mobile_gallery">Mobile Gallery</a></div></details><a class="pa-pill" href="../../gallery/" data-pa-track="nav_virtual_gallery">Artists’ Gallery</a><details hidden><div>', "L21 artists/carolyn-walsh/coastal-series-8.html must carry exactly one Galleries menu"),
-    ("F13 a holding page implying an opening date", "portraiture/index.html", "This gallery is being prepared.", "This gallery is opening soon.", "L9"),
-    ("F16 an artist link on the Portraiture entrance", "index.html", '<p class="pa-gx-text">Discover expressive portraits', '<a href="artists/carolyn-walsh/">x</a><p class="pa-gx-text">Discover expressive portraits', "L21 the portraiture entrance must say In preparation, link only to its holding page"),
-    ("F17 the Contemporary Art search title reverted", "gallery/index.html", "<title>Contemporary Irish Art Gallery | PlotArt</title>", "<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>", "L11 the Contemporary Art gallery's search title"),
-    # gallery identity revision (24 Nov 2026): Places & Spaces, its address, its description and the redirect from landscape/
-    ("F21 the old name Landscape Art back in a footer", "about.html", '>Places &amp; Spaces</a></li>', '>Landscape Art</a></li>', "L21 about.html still names Landscape Art"),
-    ("F22 a link to the former landscape/ address", "for-artists.html", 'href="places-and-spaces/" data-pa-track="nav_gallery_places_and_spaces">', 'href="landscape/" data-pa-track="nav_gallery_places_and_spaces">', "L21 for-artists.html still names Landscape Art or links to the former"),
-    ("F23 the approved gallery description shortened", "places-and-spaces/index.html", " and our relationship with it.</p>", ".</p>", "L21 places-and-spaces/index.html must carry the approved name, title and gallery description"),
-    ("F24 the redirect made indexable", "landscape/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 landscape/index.html must be exactly the generated permanent redirect"),
-    ("F25 the redirect pointed elsewhere", "landscape/index.html", 'location.replace("../places-and-spaces/"', 'location.replace("../gallery/"', "L21 landscape/index.html must be exactly the generated permanent redirect"),
-    ("F14 a Galleries menu link changed on the homepage", "index.html", 'href="portraiture/" data-pa-track="nav_gallery_portraiture">Portraiture<span', 'href="portraiture/" data-pa-track="nav_gallery_portraiture">Portraits<span', "L11 index.html must carry the one Galleries menu"),
+    ("F13 a holding page implying an opening date", "being/index.html", "This gallery is being prepared.", "This gallery is opening soon.", "L9"),
+    ("F16 an artist link on the Being entrance", "index.html", '<p class="pa-gx-text">Life, identity', '<a href="artists/carolyn-walsh/">x</a><p class="pa-gx-text">Life, identity', "L21 the being entrance must say In preparation, link only to its holding page and never to an artist"),
+    ("F17 the Contemporary search title reverted", "gallery/index.html", "<title>Contemporary Irish Art Gallery | PlotArt</title>", "<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>", "L11 the Contemporary Art gallery's search title"),
+    # final gallery identity (24 Nov 2026): names, editorial full stops, descriptions, plain navigation and redirects
+    ("F21 a former name (Landscape Art) back in a footer", "about.html", '>Environment</a></li>', '>Landscape Art</a></li>', "L21 about.html still uses a former gallery name"),
+    ("F22 a link to a former address (portraiture/)", "for-artists.html", 'href="being/" data-pa-track="nav_gallery_being">', 'href="portraiture/" data-pa-track="nav_gallery_being">', "L21 for-artists.html still uses a former gallery name"),
+    ("F23 the approved Environment description shortened", "environment/index.html", " diverse artistic interpretations of our surroundings.</p>", ".</p>", "L21 environment/index.html must carry the approved name, title and gallery description"),
+    ("F24 a redirect made indexable", "portraiture/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 portraiture/index.html must be exactly the generated permanent redirect"),
+    ("F25 a redirect chain (landscape/ → places-and-spaces/)", "landscape/index.html", 'location.replace("../environment/"', 'location.replace("../places-and-spaces/"', "L21 landscape/index.html must be exactly the generated permanent redirect"),
+    ("F27 a full stop in the navigation", "index.html", 'data-pa-track="nav_gallery_being">Being<', 'data-pa-track="nav_gallery_being">Being.<', "L21 the navigation must name the galleries Contemporary, Environment and Being, without full stops"),
+    ("F28 the editorial full stop dropped from an entrance", "index.html", "<h2>Environment.</h2>", "<h2>Environment</h2>", "L21 the environment entrance must read 'Environment.'"),
+    ("F29 a Being introduction changed", "index.html", "Life, identity, emotion and existence.", "Portraits and the human subject.", "L21 the being entrance must read 'Being.'"),
+    ("F30 the Places & Spaces redirect pointed elsewhere", "places-and-spaces/index.html", 'location.replace("../environment/"', 'location.replace("../gallery/"', "L21 places-and-spaces/index.html must be exactly the generated permanent redirect"),
+    ("F14 a Galleries menu link changed on the homepage", "index.html", 'href="being/" data-pa-track="nav_gallery_being">Being<span', 'href="being/" data-pa-track="nav_gallery_being">Beings<span', "L11 index.html must carry the one Galleries menu"),
 ]
 
 
@@ -85,15 +89,15 @@ def main():
             out = guard(site)
             check(name + " → refused", "PLOTART LAUNCH · FAILED" in out and want in out, "" if want in out else out[:300])
         sw = json.load(open(SW, encoding="utf-8"))
-        sw["places_and_spaces_gallery_state"] = "open"
+        sw["environment_gallery_state"] = "open"
         swp = os.path.join(tmp, "switches-open.json")
         json.dump(sw, open(swp, "w", encoding="utf-8"))
         out = guard(copy_site(tmp, 99), swp)
-        check("F15 Places & Spaces switched open before Phase E → refused", "L21 Places & Spaces and Portraiture must stay in_preparation" in out, out[:300])
+        check("F15 Environment switched open before Phase E → refused", "L21 Environment and Being must stay in_preparation" in out, out[:300])
         sw = json.load(open(SW, encoding="utf-8")); sw["landscape_gallery_state"] = "in_preparation"
         swp2 = os.path.join(tmp, "switches-legacy.json"); json.dump(sw, open(swp2, "w", encoding="utf-8"))
         out = guard(copy_site(tmp, 98), swp2)
-        check("F26 the retired landscape_gallery_state switch reintroduced → refused", "L21 the retired switch landscape_gallery_state" in out, out[:300])
+        check("F26 a retired gallery switch (landscape_gallery_state) reintroduced → refused", "L21 retired gallery switches must not come back" in out, out[:300])
         # entrance artwork (final Phase A refinement): only an artist's published artwork with per-use consent, shown whole
         import importlib.util
         spec = importlib.util.spec_from_file_location("gx", os.path.join(ROOT, "atlas-tools", "build-plotart-galleries.py"))
@@ -103,11 +107,11 @@ def main():
         cases = [("F18 entrance artwork with a provenance record and per-use consent → accepted, shown whole", dict(good), True, ""),
                  ("F19 entrance artwork without a consent reference → refused", dict(good, consent_ref=""), False, "no consent_ref"),
                  ("F20 the artist's portrait photograph as entrance artwork → refused", dict(good, image="artists/carolyn-walsh/img/portrait-600.webp", width=398, height=600),
-                  False, "L21 the places_and_spaces entrance artwork must be an artist's published artwork")]
+                  False, "L21 the environment entrance artwork must be an artist's published artwork")]
         for n, (name, art, ok, want) in enumerate(cases, 200):
             site = copy_site(tmp, n)
             ent = os.path.join(tmp, "entrances-%d.json" % n)
-            d = json.load(open(GX.ENTRANCES, encoding="utf-8")); d["places_and_spaces"]["artwork"] = art
+            d = json.load(open(GX.ENTRANCES, encoding="utf-8")); d["environment"]["artwork"] = art
             json.dump(d, open(ent, "w", encoding="utf-8"))
             try:
                 built = GX.home_region(GX.entrances(ent))

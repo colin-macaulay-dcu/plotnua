@@ -2,9 +2,9 @@
 """PlotArt · Galleries menu (three-gallery expansion, Phase A; founder approval 24 Nov 2026).
 
 Replaces the "Artists’ Gallery" and "Mobile Gallery" pills of every PlotArt page under ROOT/plotart with the one
-"Galleries" menu that atlas-tools/plotart_shell.py now writes (Contemporary Art · Places & Spaces · Portraiture · Mobile
+"Galleries" menu that atlas-tools/plotart_shell.py now writes (Contemporary · Environment · Being · Mobile
 Gallery), and makes the same change to the phone Menu and the footer. A page that already has the menu is REFRESHED to the
-shell's current markup (gallery identity revision, 24 Nov 2026: Landscape Art became Places & Spaces at places-and-spaces/):
+shell's current markup (final gallery identity, 24 Nov 2026: Contemporary · Environment · Being):
 the menu, its phone Menu links and the footer gallery links are rewritten from the shell, nothing else. Everything else on each page is left byte-for-byte
 as it was. The menu's styles and behaviour live between the pa-galleries-nav markers in plotart.css and plotart.js.
 
@@ -31,7 +31,7 @@ NAV = re.compile(r'<nav class="pa-pills[^"]*" aria-label="PlotArt">(.*?)</nav>',
 
 CSS_BEGIN, CSS_END = "/* ==== pa-galleries-nav:begin", "/* ==== pa-galleries-nav:end ==== */"
 CSS = CSS_BEGIN + """ · the Galleries menu (three-gallery expansion Phase A, 24 Nov 2026). One header item, a <details>
-   menu: Contemporary Art, Places & Spaces, Portraiture, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
+   menu: Contemporary, Environment, Being, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
    Scoped to .pa-dd, so nothing else changes. ==== */
 .pa-dd{ position:relative; }
 .pa-dd > summary{ list-style:none; cursor:pointer; }
@@ -81,7 +81,7 @@ def current_of(rel, vg_cur, mg_cur):
 DD = re.compile(r'<details class="pa-dd(?: is-current)?" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary><div class="pa-dd-panel">(.*?)</div></details>', re.S)
 DD_LINK = re.compile(r'<a class="pa-dd-link" href="([^"]*)"( aria-current="page")? data-pa-track="([a-z_]+)">')
 MENU_RUN = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_gallery_contemporary_menu">.*?data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>', re.S)
-FOOT_RUN = re.compile(r'<li><a href="([^"]*)gallery/">Contemporary Art</a></li>.*?<li><a href="[^"]*mobile-gallery/">Mobile Gallery</a></li>', re.S)
+FOOT_RUN = re.compile(r'<li><a href="([^"]*)gallery/">Contemporary(?: Art)?</a></li>.*?<li><a href="[^"]*mobile-gallery/">Mobile Gallery</a></li>', re.S)
 KEY_OF_TRACK = {t: k for k, _h, _l, t in S.GALLERIES}
 
 
@@ -94,7 +94,7 @@ def refresh(text, rel):
     m = DD.search(text)
     links = DD_LINK.findall(m.group(1))
     if not links or links[0][2] != "nav_gallery_contemporary" or links[-1][2] != "nav_mobile_gallery" or not links[0][0].endswith("gallery/"):
-        raise ValueError("the Galleries menu does not start with Contemporary Art and end with Mobile Gallery")
+        raise ValueError("the Galleries menu does not start with Contemporary and end with Mobile Gallery")
     R, mg_href = links[0][0][:-len("gallery/")], links[-1][0]
     cur = [t for _h, a, t in links if a]
     current = ("mg" if cur[0] == "nav_mobile_gallery" else KEY_OF_TRACK.get(cur[0], "vg")) if cur else ("vg" if " is-current" in m.group(0) else None)

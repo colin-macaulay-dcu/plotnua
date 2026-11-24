@@ -236,7 +236,7 @@ try:
         ("B10 the independent-sales sentence removed", "open", "join.html", " It doesn’t apply to your independent sales.", ""),
         ("B11 the 24-month explanation removed", "open", "join.html", "An introduction counts for 24 months.", "Introductions count."),
         ("B12 a selection board mentioned", "open", "join.html", "We review every submission individually and may ask to see a little more.", "Our selection board reads every submission."),
-        ("B13 commercial terms on the homepage band", "open", "index.html", "Places &amp; Spaces or Portraiture galleries.", "Places &amp; Spaces or Portraiture galleries. 15% commission. No fees. No exclusivity."),
+        ("B13 commercial terms on the homepage band", "open", "index.html", "Environment or Being galleries.", "Environment or Being galleries. 15% commission. No fees. No exclusivity."),
         ("B14 a criterion dropped from the policy", "open", "curatorial-policy.html", "<h3>Contribution to the gallery</h3>", "<h3>Fit</h3>"),
         ("B15 'deserves to be discovered' brought back", "open", "join.html", "<h2>A gallery of your own.</h2>", "<h2>Your art deserves to be discovered.</h2>"),
         ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),

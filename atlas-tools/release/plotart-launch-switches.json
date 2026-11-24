@@ -28,6 +28,6 @@
   "for_artists_indexable": true,
   "services_page": true,
   "services_indexable": true,
-  "places_and_spaces_gallery_state": "in_preparation",
-  "portraiture_gallery_state": "in_preparation"
+  "environment_gallery_state": "in_preparation",
+  "being_gallery_state": "in_preparation"
 }

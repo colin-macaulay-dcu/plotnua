@@ -6,18 +6,18 @@
 --
 -- What the tables hold (the rules that use them live in src/galleries.js):
 --   gallery_settings     the founder's readiness targets and the open / in preparation / paused status of each gallery.
---                        Empty until the founder changes something: the defaults are in code (Contemporary Art open;
---                        Places & Spaces and Portraiture in preparation, target 6 artists and 30 works).
+--                        Empty until the founder changes something: the defaults are in code (Contemporary open;
+--                        Environment and Being in preparation, target 6 artists and 30 works).
 --   gallery_memberships  an artist's membership of a gallery: proposed, approved by the founder, accepted by the artist, live,
 --                        and how it began (founder invitation, application, founder curation, artist request). An artist with
---                        no membership rows at all is a live Contemporary Art member, exactly as today: existing artists are
+--                        no membership rows at all is a live Contemporary member, exactly as today: existing artists are
 --                        never copied, moved or assigned anywhere by this migration.
---   artwork_placements   an artwork's placement in Places & Spaces or Portraiture (founder approval and artist acceptance), and
---                        the only way a work can be taken out of Contemporary Art (an explicit 'withdrawn' row).
---   gallery_order        unlimited curated order per gallery. Contemporary Art keeps positions 01-25 in gallery_positions
+--   artwork_placements   an artwork's placement in Environment or Being (founder approval and artist acceptance), and
+--                        the only way a work can be taken out of Contemporary (an explicit 'withdrawn' row).
+--   gallery_order        unlimited curated order per gallery. Contemporary keeps positions 01-25 in gallery_positions
 --                        (unchanged, still guarded); this table holds Contemporary positions from 26 and every position of
 --                        the other two galleries.
---   gallery_features     Artists in Focus for Places & Spaces and Portraiture (up to six each). Contemporary Art keeps
+--   gallery_features     Artists in Focus for Environment and Being (up to six each). Contemporary keeps
 --                        homepage_features (migration 0016), unchanged.
 --   image_use_requests   the founder's request to use specific artworks for one purpose (homepage, campaign, social media,
 --                        editorial, video), per use, as licence PA-GPIL §3.2 requires. No standing opt-in.
@@ -30,10 +30,12 @@
 -- once a gallery row pointed at the artwork or artist. With it, those deletions work exactly as today and take the matching
 -- gallery rows with them. Nothing cascades the other way: no existing row is ever deleted or changed by these tables.
 --
--- Revision 3 (24 Nov 2026, gallery identity revision): the second gallery is Places & Spaces (formerly Landscape Art). Its
--- identifier is 'places_and_spaces' everywhere (these CHECK constraints, the Studio, the launch switch and the public pages
--- at plotart/places-and-spaces/). Revision 2 never reached any database, so no record carries the old identifier
--- 'landscape'; changing it now leaves no legacy value to translate. Nothing else changed from revision 2.
+-- Revision 4 (24 Nov 2026, FINAL gallery identity approved by the founder): the three galleries and their permanent
+-- identifiers are 'contemporary' (Contemporary), 'environment' (Environment) and 'being' (Being), in these CHECK constraints,
+-- the Studio, the launch switches and the public pages (plotart/gallery/, plotart/environment/, plotart/being/). Revisions 1-3
+-- used earlier names for the other two galleries (Landscape Art, then Places & Spaces; and Portraiture). None of them ever ran
+-- against a real database, so no record carries an earlier identifier and no translation layer is needed. Only the gallery
+-- identifiers in the CHECK constraints differ from revision 3 (and from revision 2). Revisions 1-3 are superseded.
 --
 -- Preconditions before anyone runs it:
 --   (1) migrations up to 0022 have run;
@@ -44,7 +46,7 @@
 -- @@DDL-BEGIN (schema.sql carries this block verbatim for new installs and local tests)
 
 CREATE TABLE IF NOT EXISTS gallery_settings (
-  gallery_id TEXT PRIMARY KEY CHECK (gallery_id IN ('contemporary', 'places_and_spaces', 'portraiture')),
+  gallery_id TEXT PRIMARY KEY CHECK (gallery_id IN ('contemporary', 'environment', 'being')),
   status TEXT NOT NULL CHECK (status IN ('in_preparation', 'open', 'paused')),
   target_artists INTEGER NOT NULL CHECK (target_artists BETWEEN 0 AND 500),
   target_works INTEGER NOT NULL CHECK (target_works BETWEEN 0 AND 5000),
@@ -58,7 +60,7 @@ CREATE TABLE IF NOT EXISTS gallery_settings (
 
 CREATE TABLE IF NOT EXISTS gallery_memberships (
   artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
-  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'places_and_spaces', 'portraiture')),
+  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'environment', 'being')),
   state TEXT NOT NULL CHECK (state IN ('proposed', 'founder_approved', 'artist_accepted', 'live', 'declined', 'refused', 'withdrawn')),
   source TEXT NOT NULL CHECK (source IN ('existing_contemporary', 'founder_invitation', 'application', 'founder_curation', 'artist_request')),
   application_ref TEXT CHECK (application_ref IS NULL OR length(application_ref) BETWEEN 8 AND 40),
@@ -81,7 +83,7 @@ CREATE INDEX IF NOT EXISTS gallery_memberships_gallery ON gallery_memberships(ga
 CREATE TABLE IF NOT EXISTS artwork_placements (
   artwork_id TEXT NOT NULL REFERENCES artworks(id) ON DELETE CASCADE,
   artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
-  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'places_and_spaces', 'portraiture')),
+  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'environment', 'being')),
   state TEXT NOT NULL CHECK (state IN ('proposed', 'founder_approved', 'artist_accepted', 'live', 'declined', 'refused', 'withdrawn')),
   proposed_by TEXT NOT NULL,
   proposed_at TEXT NOT NULL,
@@ -101,7 +103,7 @@ CREATE INDEX IF NOT EXISTS artwork_placements_gallery ON artwork_placements(gall
 CREATE INDEX IF NOT EXISTS artwork_placements_artist ON artwork_placements(artist_id);
 
 CREATE TABLE IF NOT EXISTS gallery_order (
-  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'places_and_spaces', 'portraiture')),
+  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'environment', 'being')),
   position INTEGER NOT NULL CHECK (position >= 1 AND position <= 100000),
   artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   updated_at TEXT NOT NULL CHECK (length(updated_at) BETWEEN 20 AND 30),
@@ -112,7 +114,7 @@ CREATE TABLE IF NOT EXISTS gallery_order (
 );
 
 CREATE TABLE IF NOT EXISTS gallery_features (
-  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('places_and_spaces', 'portraiture')),
+  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('environment', 'being')),
   position INTEGER NOT NULL CHECK (position BETWEEN 1 AND 6),
   artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   artwork_id TEXT NOT NULL REFERENCES artworks(id) ON DELETE CASCADE,
@@ -126,7 +128,7 @@ CREATE TABLE IF NOT EXISTS image_use_requests (
   id TEXT PRIMARY KEY,
   artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   scope TEXT NOT NULL CHECK (scope IN ('homepage_feature', 'promotional_campaign', 'social_media', 'editorial_feature', 'video_feature')),
-  gallery_id TEXT CHECK (gallery_id IS NULL OR gallery_id IN ('contemporary', 'places_and_spaces', 'portraiture')),
+  gallery_id TEXT CHECK (gallery_id IS NULL OR gallery_id IN ('contemporary', 'environment', 'being')),
   artwork_ids TEXT NOT NULL CHECK (length(artwork_ids) BETWEEN 2 AND 2000),
   purpose TEXT NOT NULL CHECK (length(purpose) BETWEEN 10 AND 600),
   channels TEXT NOT NULL CHECK (length(channels) BETWEEN 2 AND 300),
@@ -145,7 +147,7 @@ CREATE TABLE IF NOT EXISTS image_use_consents (
   request_id TEXT REFERENCES image_use_requests(id) ON DELETE CASCADE,
   artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   scope TEXT NOT NULL CHECK (scope IN ('homepage_feature', 'promotional_campaign', 'social_media', 'editorial_feature', 'video_feature')),
-  gallery_id TEXT CHECK (gallery_id IS NULL OR gallery_id IN ('contemporary', 'places_and_spaces', 'portraiture')),
+  gallery_id TEXT CHECK (gallery_id IS NULL OR gallery_id IN ('contemporary', 'environment', 'being')),
   artwork_ids TEXT NOT NULL CHECK (length(artwork_ids) BETWEEN 2 AND 2000),
   purpose TEXT NOT NULL CHECK (length(purpose) BETWEEN 10 AND 600),
   channels TEXT NOT NULL CHECK (length(channels) BETWEEN 2 AND 300),

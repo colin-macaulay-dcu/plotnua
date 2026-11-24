@@ -1,7 +1,7 @@
 /* =====================================================================
    PLOTART · three galleries (Phase A, founder approval 24 Nov 2026)
    The homepage gallery entrances, the gallery tabs shared by the three gallery pages, and the
-   Places & Spaces / Portraiture holding pages. Scoped to body.pa classes that exist nowhere else.
+   Environment / Being holding pages. Scoped to body.pa classes that exist nowhere else.
    Artwork in an entrance is always shown whole (object-fit:contain on a wall mount): never cropped.
    ===================================================================== */
 
@@ -70,7 +70,7 @@ a.pa-gx-go:focus-visible{ outline:none; }
 .pa-gx-more .pa-gx-chip{ align-self:flex-start; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:4px 9px; border-radius:999px; border:1px solid var(--line-2); color:var(--stone); }
 @media (max-width:820px){ .pa-gx-more{ grid-template-columns:1fr; } }
 
-/* ---- the gallery tabs (Contemporary Art · Places & Spaces · Portraiture) ---- */
+/* ---- the gallery tabs (Contemporary · Environment · Being) ---- */
 .pa-gtabs{ border-bottom:1px solid var(--line); background:var(--wall); }
 .pa-gtabs-list{ display:flex; gap:clamp(4px, 1.6vw, 28px); list-style:none; margin:0; padding:0; overflow-x:auto; scrollbar-width:none; }
 .pa-gtabs-list::-webkit-scrollbar{ display:none; }

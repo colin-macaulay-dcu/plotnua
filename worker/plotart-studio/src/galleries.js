@@ -1,36 +1,36 @@
 /* PlotArt Studio · Three galleries: the gallery data model (Phase B, development 24 Nov 2026; migration 0023).
    One artist account, one Studio, one artwork inventory; an artist and individual works can belong to more than one of the
-   three galleries: Contemporary Art, Places & Spaces, Portraiture.
+   three galleries: Contemporary, Environment, Being.
 
    The rules, in one place:
    - Membership of a gallery needs BOTH the founder's approval and the artist's acceptance before it is live. It can begin
      as a founder invitation, an application, the founder's curation or the artist's own request (the request counts as
      the artist's acceptance; the founder's invitation or curation counts as the founder's approval).
-   - Contemporary Art keeps today's behaviour: an artist with NO membership rows at all is a live Contemporary Art member,
-     and every work of a live Contemporary member is in Contemporary Art unless an explicit 'withdrawn' placement row takes
+   - Contemporary keeps today's behaviour: an artist with NO membership rows at all is a live Contemporary member,
+     and every work of a live Contemporary member is in Contemporary unless an explicit 'withdrawn' placement row takes
      it out. Nothing is ever written for existing artists or artworks; the first time an artist who has no rows is given
      any membership row, their Contemporary membership is first written down as it already was (live, 'existing_contemporary').
-   - Places & Spaces and Portraiture start empty. Nobody is assigned to them automatically. A work is placed there only with
+   - Environment and Being start empty. Nobody is assigned to them automatically. A work is placed there only with
      the founder's approval and the artist's acceptance, and only while the artist is a live member of that gallery.
-   - Order: unlimited per gallery. Contemporary Art keeps positions 01-25 in gallery_positions (unchanged and still guarded
+   - Order: unlimited per gallery. Contemporary keeps positions 01-25 in gallery_positions (unchanged and still guarded
      by its own checks); gallery_order holds Contemporary positions from 26 and every position of the other two galleries.
-   - Artists in Focus: Places & Spaces and Portraiture each have their own selection of up to six (gallery_features);
-     Contemporary Art keeps homepage_features (featured.js), unchanged.
+   - Artists in Focus: Environment and Being each have their own selection of up to six (gallery_features);
+     Contemporary keeps homepage_features (featured.js), unchanged.
    - Image-use consent: per use, recorded, optional (licence PA-GPIL §3.2, no standing opt-in). image_use_consents is
      append-only: this module never updates or deletes a consent row; a withdrawal is a new 'no'.
    - Readiness targets are editable and advisory; opening a gallery is the founder's explicit act (typed confirmation).
-     Contemporary Art is always open. Opening here changes the Studio's record only: the public site shows a gallery as
+     Contemporary is always open. Opening here changes the Studio's record only: the public site shows a gallery as
      open only when its own launch switch is changed in a separate, approved release (Phase E).
    This module writes only the seven migration-0023 tables and the audit log. It never changes an artist, artwork, image,
    price, agreement, commission term, payment record, gallery position (01-25) or Featured Artists selection. */
 import { Bad, now, rid } from './lib.js';
 
-export const GALLERIES = ['contemporary', 'places_and_spaces', 'portraiture'];
-export const TITLES = { contemporary: 'Contemporary Art', places_and_spaces: 'Places & Spaces', portraiture: 'Portraiture' };
+export const GALLERIES = ['contemporary', 'environment', 'being'];
+export const TITLES = { contemporary: 'Contemporary', environment: 'Environment', being: 'Being' };
 export const DEFAULTS = {
   contemporary: { status: 'open', target_artists: 0, target_works: 0 },
-  places_and_spaces: { status: 'in_preparation', target_artists: 6, target_works: 30 },
-  portraiture: { status: 'in_preparation', target_artists: 6, target_works: 30 },
+  environment: { status: 'in_preparation', target_artists: 6, target_works: 30 },
+  being: { status: 'in_preparation', target_artists: 6, target_works: 30 },
 };
 export const SCOPES = ['homepage_feature', 'promotional_campaign', 'social_media', 'editorial_feature', 'video_feature'];
 export const SOURCES = ['founder_invitation', 'application', 'founder_curation', 'artist_request'];
@@ -44,7 +44,7 @@ async function audit(env, actor, role, action, artistId, detail) {
     .bind(now(), actor, role, action, artistId || null, JSON.stringify(detail).slice(0, 4000)).run();
 }
 const gallery = g => { if (!GALLERIES.includes(g)) throw new Bad('Unknown gallery', 404); return g; };
-const newGallery = g => { if (gallery(g) === 'contemporary') throw new Bad('Contemporary Art keeps its existing order and Artists in Focus', 409); return g; };
+const newGallery = g => { if (gallery(g) === 'contemporary') throw new Bad('Contemporary keeps its existing order and Artists in Focus', 409); return g; };
 
 export async function installed(env) {
   return !!(await one(env, "SELECT name FROM sqlite_master WHERE type='table' AND name='gallery_memberships'"));
@@ -109,7 +109,7 @@ const LIVE = 'EXISTS (SELECT 1 FROM gallery_memberships m WHERE m.artist_id = ? 
 
 /* ---- memberships ------------------------------------------------------------------------------------------------------ */
 async function rowsFor(env, artistId) { return all(env, 'SELECT * FROM gallery_memberships WHERE artist_id = ?', artistId); }
-// The effective membership of one artist in one gallery: the explicit row, or Contemporary Art by default (no rows at all).
+// The effective membership of one artist in one gallery: the explicit row, or Contemporary by default (no rows at all).
 export function effective(rows, g) {
   const r = rows.find(x => x.gallery_id === g);
   if (r) return r;
@@ -126,7 +126,7 @@ function settleStmt(env, a, by, at) {
 }
 // What a membership that is no longer live takes with it: the artist's order position in that gallery, their Artists in
 // Focus entry there, and their works' placements there (closed as withdrawn, so a later re-joining starts afresh and no old
-// acceptance is reused). Contemporary Art take-outs and gallery positions 01-25 are left exactly as they are.
+// acceptance is reused). Contemporary take-outs and gallery positions 01-25 are left exactly as they are.
 function closeStmts(env, g, artistId, by, at) {
   const s = [env.DB.prepare(`DELETE FROM gallery_order WHERE gallery_id = ? AND artist_id = ? AND ${NOT_LIVE}`).bind(g, artistId, artistId, g)];
   if (g !== 'contemporary') s.push(
@@ -230,7 +230,7 @@ export async function membershipView(env, artistId) {
   return { artist_id: artistId, galleries: GALLERIES.map(g => { const e = effective(rows, g); return { gallery_id: g, title: TITLES[g], state: e ? e.state : 'none', source: e ? e.source : null, implicit: !!(e && e.implicit) }; }) };
 }
 async function isLive(env, artistId, g) { const e = effective(await rowsFor(env, artistId), g); return !!(e && e.state === 'live'); }
-/* At invitation (the founder creates Studio access): validate the optional galleries (absent = Contemporary Art by default, as
+/* At invitation (the founder creates Studio access): validate the optional galleries (absent = Contemporary by default, as
    today) and return the membership rows as statements, so the caller writes them in the SAME batch as the new artist: either
    the artist and their galleries are both created, or neither is. */
 export function validInviteGalleries(galleries) {
@@ -275,14 +275,14 @@ export async function founderPlacement(env, founder, g, artworkId, action) {
   const w = await workOf(env, artworkId), cur = await placement(env, artworkId, g), at = now();
   if (g === 'contemporary') {
     if (action === 'withdraw') {
-      if (cur) throw new Bad('Already taken out of Contemporary Art', 409);
-      if (await one(env, 'SELECT position FROM homepage_features WHERE artwork_id = ?', w.id)) throw new Bad('This work is in Contemporary Artists in Focus; change that selection first', 409);
+      if (cur) throw new Bad('Already taken out of Contemporary', 409);
+      if (await one(env, 'SELECT position FROM homepage_features WHERE artwork_id = ?', w.id)) throw new Bad('This work is in Contemporaryists in Focus; change that selection first', 409);
       await commit(env, [env.DB.prepare(`INSERT INTO artwork_placements (artwork_id, artist_id, gallery_id, state, proposed_by, proposed_at, closed_by, closed_at, updated_at)
         VALUES (?,?,'contemporary','withdrawn',?,?,?,?,?) ON CONFLICT(artwork_id, gallery_id) DO NOTHING`).bind(w.id, w.artist_id, founder, at, founder, at, at)], 0);
     } else if (action === 'restore') {
-      if (!cur) throw new Bad('This work is already in Contemporary Art', 409);
+      if (!cur) throw new Bad('This work is already in Contemporary', 409);
       await commit(env, [env.DB.prepare("DELETE FROM artwork_placements WHERE artwork_id=? AND gallery_id='contemporary'").bind(w.id)], 0);
-    } else throw new Bad('In Contemporary Art a work can only be taken out or put back', 409);
+    } else throw new Bad('In Contemporary a work can only be taken out or put back', 409);
   } else if (action === 'place') {
     if (!(await isLive(env, w.artist_id, g))) throw new Bad(`The artist isn’t a member of ${TITLES[g]} yet`, 409);
     if (cur && ['founder_approved', 'live'].includes(cur.state)) throw new Bad('Already placed', 409);
@@ -358,7 +358,7 @@ export async function order(env, g) {
   gallery(g);
   return all(env, 'SELECT o.position, o.artist_id, a.slug, a.display_name FROM gallery_order o JOIN artists a ON a.id = o.artist_id WHERE o.gallery_id = ? ORDER BY o.position', g);
 }
-// Replace a gallery's order with the given artists, in order. Contemporary Art: positions from 26, and never an artist who
+// Replace a gallery's order with the given artists, in order. Contemporary: positions from 26, and never an artist who
 // already holds one of the 25 positions in gallery_positions (those stay exactly where they are).
 export async function saveOrder(env, founder, g, body) {
   await need(env); gallery(g);
@@ -366,7 +366,7 @@ export async function saveOrder(env, founder, g, body) {
   if (new Set(body.artists).size !== body.artists.length) throw new Bad('Each artist appears once');
   const held = new Set(g === 'contemporary' ? (await all(env, 'SELECT artist_id FROM gallery_positions WHERE artist_id IS NOT NULL')).map(r => r.artist_id) : []);
   for (const id of body.artists) {
-    if (held.has(id)) throw new Bad('That artist already holds one of the 25 Contemporary Art positions; those are set in Gallery order', 409);
+    if (held.has(id)) throw new Bad('That artist already holds one of the 25 Contemporary positions; those are set in Gallery order', 409);
     if (!(await isLive(env, id, g))) throw new Bad(`Only live members of ${TITLES[g]} can be ordered`, 409);
   }
   const base = g === 'contemporary' ? 26 : 1, at = now();
@@ -377,7 +377,7 @@ export async function saveOrder(env, founder, g, body) {
   return order(env, g);
 }
 
-/* ---- Artists in Focus for Places & Spaces and Portraiture --------------------------------------------------------------- */
+/* ---- Artists in Focus for Environment and Being --------------------------------------------------------------- */
 export async function features(env, g) {
   newGallery(g);
   return all(env, 'SELECT position, artist_id, artwork_id, updated_at FROM gallery_features WHERE gallery_id = ? ORDER BY position', g);

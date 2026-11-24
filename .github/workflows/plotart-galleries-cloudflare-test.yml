@@ -1,10 +1,13 @@
-# PlotArt · three galleries (Phase B) · test on a REAL, TEMPORARY Cloudflare D1 database (final verification, 24 Nov 2026).
-# NEVER production, and never the shared TEST database plotart-checkout-test: the run creates its own empty database
-# (plotart-gallery-phaseb-test-<run id>) and deletes it at the end, whatever happens. Nothing is deployed: the Studio Worker
-# runs on the runner (wrangler dev) with its database binding pointing at that temporary remote database.
+# PlotArt · three galleries (Phase B) · test on a REAL, TEMPORARY Cloudflare D1 database (final gallery identity, 24 Nov 2026:
+# contemporary · environment · being). NEVER production, never the shared TEST database plotart-checkout-test, and it does NOT
+# use the checkout-test environment (whose protection stays exactly as it is). It runs only in its OWN environment,
+# "plotart-gallery-d1-test", which the founder sets up once (required reviewer: the founder; deployment branch: only
+# dev/plotart-three-galleries-phase-b; secret GALLERY_D1_TEST_CF_TOKEN; variables CLOUDFLARE_ACCOUNT_ID and
+# GALLERY_D1_TEST_READY = yes). The run creates its own empty database (plotart-gallery-phaseb-test-<run id>), addresses only
+# that database by the id it was given, and deletes it at the end, whatever happens. Nothing is deployed: the Studio Worker runs
+# on the runner (wrangler dev) with its database binding pointing at that temporary remote database.
 # Started ONLY by a change to worker/plotart-studio/test/galleries-cloudflare-test-request.json on
-# dev/plotart-three-galleries-phase-b, and waits for the founder's Approve on the existing "checkout-test" environment (its
-# TEST Cloudflare credentials). What it does, in order (test/cf-gallery-test.mjs):
+# dev/plotart-three-galleries-phase-b, and waits for the founder's Approve. What it does (test/cf-gallery-test.mjs):
 #   1 loads the production schema (main) and a staging copy of the live galleries (public data, synthetic emails)
 #   2 runs the PRODUCTION Studio code (main) and records what the publisher and founder read
 #   3 takes a Time Travel restore point; 4 applies migration 0023 with the production command and checks every existing
@@ -23,16 +26,16 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: plotart-checkout-test
+  group: plotart-gallery-d1-test
   cancel-in-progress: false
 jobs:
   d1-test:
     runs-on: ubuntu-latest
-    environment: checkout-test
+    environment: plotart-gallery-d1-test
     timeout-minutes: 45
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+      READY: ${{ vars.GALLERY_D1_TEST_READY }}
       DB_NAME: plotart-gallery-phaseb-test-${{ github.run_id }}
       WRANGLER_SEND_METRICS: "false"
     steps:
@@ -47,27 +50,30 @@ jobs:
         run: |
           set -euo pipefail
           [ "${{ github.ref }}" = refs/heads/dev/plotart-three-galleries-phase-b ] || { echo "REFUSED: runs only from dev/plotart-three-galleries-phase-b"; exit 1; }
+          [ "$READY" = yes ] || { echo "REFUSED: the plotart-gallery-d1-test environment is not set up (GALLERY_D1_TEST_READY is not yes). Nothing was done."; exit 1; }
+          [[ "$CLOUDFLARE_ACCOUNT_ID" =~ ^[0-9a-f]{32}$ ]] || { echo "REFUSED: CLOUDFLARE_ACCOUNT_ID is missing"; exit 1; }
           [[ "$DB_NAME" =~ ^plotart-gallery-phaseb-test-[0-9]+$ ]] || { echo "REFUSED: database name"; exit 1; }
           ! git show origin/main:worker/plotart-studio/schema.sql | grep -q gallery_memberships || { echo "REFUSED: main already has migration 0023"; exit 1; }
           echo "### Three galleries · temporary Cloudflare D1" >> "$GITHUB_STEP_SUMMARY"
       - name: Create the temporary database (empty, Western Europe)
         id: create
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.GALLERY_D1_TEST_CF_TOKEN }}
         run: |
           set -uo pipefail
           npx --yes wrangler@4.150.0 d1 create "$DB_NAME" --location weur > "$RUNNER_TEMP/create.log" 2>&1 \
-            || { python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/create.log"; echo "LIMITATION: the TEST credentials cannot create a D1 database (see the reason above). Nothing was created."; echo "- **Stopped:** the TEST credentials cannot create a D1 database" >> "$GITHUB_STEP_SUMMARY"; exit 1; }
+            || { python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/create.log"; echo "LIMITATION: the gallery test credentials cannot create a D1 database (see the reason above). Nothing was created."; echo "- **Stopped:** the gallery test credentials cannot create a D1 database" >> "$GITHUB_STEP_SUMMARY"; exit 1; }
           ID=$(grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$RUNNER_TEMP/create.log" | head -1)
           [ -n "$ID" ] || { echo "FAIL  no database id in the create output"; exit 1; }
-          [ "$ID" != "$CHECKOUT_TEST_D1_DATABASE_ID" ] || { echo "REFUSED: that is the shared TEST database"; exit 1; }
+          N=$(npx --yes wrangler@4.150.0 d1 list --json 2>/dev/null | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const l=JSON.parse(s);const d=l.find(x=>x.uuid===process.argv[1]);console.log(d?d.name:"")})' "$ID")
+          [ "$N" = "$DB_NAME" ] || { echo "REFUSED: the id returned is not the database this run created"; exit 1; }
           echo "id=$ID" >> "$GITHUB_OUTPUT"
           echo "  PASS  temporary database $DB_NAME created (empty)"
           echo "- Temporary database \`$DB_NAME\` created" >> "$GITHUB_STEP_SUMMARY"
       - name: Test migration 0023 and the Phase B Studio on it
         working-directory: worker/plotart-studio
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.GALLERY_D1_TEST_CF_TOKEN }}
           DBID: ${{ steps.create.outputs.id }}
         run: |
           set -o pipefail
@@ -76,7 +82,7 @@ jobs:
       - name: Delete the temporary database (always)
         if: ${{ always() && steps.create.outputs.id != '' }}
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.GALLERY_D1_TEST_CF_TOKEN }}
         run: |
           npx --yes wrangler@4.150.0 d1 delete "$DB_NAME" -y > "$RUNNER_TEMP/delete.log" 2>&1 || python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/delete.log"
           if npx --yes wrangler@4.150.0 d1 list --json 2>/dev/null | grep -q "\"$DB_NAME\""; then
