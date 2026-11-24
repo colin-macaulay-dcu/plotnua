@@ -19,9 +19,15 @@
 # time-travel / delete). No Worker is started, uploaded or deployed, so the token needs D1: Edit and nothing else; a token
 # without any Workers permission cannot change, deploy or delete any Worker. Steps 2 and 5 check the gallery rules directly in
 # the database (see test/cf-gallery-test.mjs --db-only); the Studio-level behaviour is proven locally (prove-galleries*).
-# Clean-up: the run deletes its database in an always() step (also after a failure, a timeout or a cancellation) and checks it
-# is gone; and every run first deletes any database left by an EARLIER run of this test (names matching exactly
-# plotart-gallery-phaseb-test-<digits>, never anything else), in case a runner was lost before its clean-up could run.
+# Clean-up, FAIL-CLOSED (founder safeguards, 24 Nov 2026; logic and self-test in test/cf-test-cleanup.mjs):
+#   - the run's own database is deleted in an always() step that runs whenever the create step started (also after a
+#     failure, a timeout or a cancellation); success is reported ONLY when a fresh, readable `d1 list` shows the database
+#     gone by name and by id. A failed delete, a failed or unreadable list, or a database still present is a visible failure.
+#   - before creating anything, databases left by EARLIER runs of this test (names exactly
+#     plotart-gallery-phaseb-test-<run id>-<attempt>, never anything else) are deleted only when GitHub shows their run has
+#     finished (completed, or moved on to a later attempt). If the run is still queued, waiting or in progress, or its status
+#     cannot be read, the database is left alone and reported for manual review. A failed list, a failed delete or an
+#     unconfirmed deletion stops the run before anything is created.
 # Logs are public: PASS/FAIL, counts and table names only. The database id is never printed.
 name: PlotArt three galleries on a temporary Cloudflare D1
 run-name: "Three galleries · temporary Cloudflare D1 · ${{ github.sha }}"
@@ -31,6 +37,7 @@ on:
     paths: [worker/plotart-studio/test/galleries-cloudflare-test-request.json]
 permissions:
   contents: read
+  actions: read          # read-only: to see whether the run that left a database behind has finished
 concurrency:
   group: plotart-gallery-d1-test
   cancel-in-progress: false
@@ -42,7 +49,7 @@ jobs:
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       READY: ${{ vars.GALLERY_D1_TEST_READY }}
-      DB_NAME: plotart-gallery-phaseb-test-${{ github.run_id }}
+      DB_NAME: plotart-gallery-phaseb-test-${{ github.run_id }}-${{ github.run_attempt }}
       WRANGLER_SEND_METRICS: "false"
     steps:
       - uses: actions/checkout@v4
@@ -58,21 +65,36 @@ jobs:
           [ "${{ github.ref }}" = refs/heads/dev/plotart-three-galleries-phase-b ] || { echo "REFUSED: runs only from dev/plotart-three-galleries-phase-b"; exit 1; }
           [ "$READY" = yes ] || { echo "REFUSED: the plotart-gallery-d1-test environment is not set up (GALLERY_D1_TEST_READY is not yes). Nothing was done."; exit 1; }
           [[ "$CLOUDFLARE_ACCOUNT_ID" =~ ^[0-9a-f]{32}$ ]] || { echo "REFUSED: CLOUDFLARE_ACCOUNT_ID is missing"; exit 1; }
-          [[ "$DB_NAME" =~ ^plotart-gallery-phaseb-test-[0-9]+$ ]] || { echo "REFUSED: database name"; exit 1; }
+          [[ "$DB_NAME" =~ ^plotart-gallery-phaseb-test-[0-9]+-[0-9]+$ ]] || { echo "REFUSED: database name"; exit 1; }
+          node worker/plotart-studio/test/cf-test-cleanup.mjs --self-test > "$RUNNER_TEMP/cleanup-selftest.log" || { cat "$RUNNER_TEMP/cleanup-selftest.log"; echo "REFUSED: the clean-up safeguards failed their self-test"; exit 1; }
+          echo "  PASS  clean-up safeguards self-test"
+          echo "  PASS  name of this run's database: $DB_NAME" 
           ! git show origin/main:worker/plotart-studio/schema.sql | grep -q gallery_memberships || { echo "REFUSED: main already has migration 0023"; exit 1; }
           echo "### Three galleries · temporary Cloudflare D1" >> "$GITHUB_STEP_SUMMARY"
-      - name: Remove databases left by earlier runs of this test (exact name pattern only)
+      - name: Databases left by earlier runs (deleted only if their run has finished; otherwise reported)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.GALLERY_D1_TEST_CF_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          C: worker/plotart-studio/test/cf-test-cleanup.mjs
         run: |
           set -uo pipefail
-          npx --yes wrangler@4.150.0 d1 list --json > "$RUNNER_TEMP/list.json" 2> "$RUNNER_TEMP/list.log" \
-            || { python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/list.log"; echo "LIMITATION: the gallery test credentials cannot list D1 databases. Nothing was created."; exit 1; }
-          for N in $(node -e 'const l=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));for(const d of l)if(/^plotart-gallery-phaseb-test-[0-9]+$/.test(d.name))console.log(d.name)' "$RUNNER_TEMP/list.json"); do
-            [[ "$N" =~ ^plotart-gallery-phaseb-test-[0-9]+$ ]] || continue
-            npx --yes wrangler@4.150.0 d1 delete "$N" -y > /dev/null 2>&1 && echo "  removed a leftover test database from an earlier run ($N)" || echo "  WARN could not remove $N"
+          W="npx --yes wrangler@4.150.0"
+          $W d1 list --json > "$RUNNER_TEMP/list.json" 2> "$RUNNER_TEMP/list.log" \
+            || { python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/list.log"; echo "FAIL  the D1 database list could not be read: stopped before anything was created"; exit 1; }
+          node "$C" plan-leftovers --list "$RUNNER_TEMP/list.json" --run-id "${{ github.run_id }}" --attempt "${{ github.run_attempt }}" > "$RUNNER_TEMP/plan.json" \
+            || { echo "FAIL  the D1 database list was not readable: stopped before anything was created"; exit 1; }
+          node -e 'const p=require(process.argv[1]);for(const r of p.review){console.log("::warning::Left for manual review: "+r.name+" ("+r.reason+")")}' "$RUNNER_TEMP/plan.json"
+          node -e 'const p=require(process.argv[1]);for(const r of p.review)console.log("- **Left for manual review:** `"+r.name+"` ("+r.reason+")")' "$RUNNER_TEMP/plan.json" >> "$GITHUB_STEP_SUMMARY"
+          FAIL=0
+          for N in $(node -e 'for(const n of require(process.argv[1]).delete)console.log(n)' "$RUNNER_TEMP/plan.json"); do
+            [[ "$N" =~ ^plotart-gallery-phaseb-test-[0-9]+-[0-9]+$ ]] || { echo "REFUSED: unexpected name"; FAIL=1; continue; }
+            $W d1 delete "$N" -y > "$RUNNER_TEMP/del.log" 2>&1 || { python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/del.log"; echo "FAIL  could not delete the leftover $N (its run has finished)"; FAIL=1; continue; }
+            $W d1 list --json > "$RUNNER_TEMP/list2.json" 2>/dev/null; node "$C" verify-gone --list "$RUNNER_TEMP/list2.json" --name "$N"; V=$?
+            if [ $V -eq 0 ]; then echo "  PASS  removed the leftover $N (its run had finished)"; echo "- Removed leftover \`$N\` (its run had finished)" >> "$GITHUB_STEP_SUMMARY";
+            else echo "FAIL  could not confirm that the leftover $N is gone"; FAIL=1; fi
           done
-          echo "  PASS  no leftover test databases"
+          [ $FAIL -eq 0 ] || { echo "- **Stopped:** a leftover test database could not be removed or its removal could not be confirmed" >> "$GITHUB_STEP_SUMMARY"; exit 1; }
+          echo "  PASS  leftovers handled (reported ones, if any, are left for manual review)"
       - name: Create the temporary database (empty, Western Europe)
         id: create
         env:
@@ -88,7 +110,7 @@ jobs:
           echo "id=$ID" >> "$GITHUB_OUTPUT"
           echo "  PASS  temporary database $DB_NAME created (empty)"
           echo "- Temporary database \`$DB_NAME\` created" >> "$GITHUB_STEP_SUMMARY"
-      - name: Test migration 0023 and the Phase B Studio on it
+      - name: Test migration 0023 on it (database-only)
         working-directory: worker/plotart-studio
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.GALLERY_D1_TEST_CF_TOKEN }}
@@ -97,13 +119,30 @@ jobs:
           set -o pipefail
           node test/cf-gallery-test.mjs --target remote --db-only --database-id "$DBID" --out "$RUNNER_TEMP/cftest" 2>&1 | grep -vE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | tee "$RUNNER_TEMP/cftest.log"
           { echo '```'; grep -E "PASS|FAIL|checks,|SHA-256" "$RUNNER_TEMP/cftest.log"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
-      - name: Delete the temporary database (always)
-        if: ${{ always() && steps.create.outputs.id != '' }}
+      - name: Delete the temporary database (always) and confirm it is gone (fail-closed)
+        if: ${{ always() && steps.create.outcome != 'skipped' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.GALLERY_D1_TEST_CF_TOKEN }}
+          DBID: ${{ steps.create.outputs.id }}
+          C: worker/plotart-studio/test/cf-test-cleanup.mjs
         run: |
-          npx --yes wrangler@4.150.0 d1 delete "$DB_NAME" -y > "$RUNNER_TEMP/delete.log" 2>&1 || python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/delete.log"
-          if npx --yes wrangler@4.150.0 d1 list --json 2>/dev/null | grep -q "\"$DB_NAME\""; then
-            echo "FAIL  the temporary database still exists: delete $DB_NAME in the Cloudflare dashboard"; echo "- **The temporary database \`$DB_NAME\` still exists**" >> "$GITHUB_STEP_SUMMARY"; exit 1
-          fi
-          echo "  PASS  temporary database deleted"; echo "- Temporary database deleted" >> "$GITHUB_STEP_SUMMARY"
+          set -u
+          W="npx --yes wrangler@4.150.0"
+          [[ "$DB_NAME" =~ ^plotart-gallery-phaseb-test-[0-9]+-[0-9]+$ ]] || { echo "REFUSED: database name"; exit 1; }
+          # delete by this run's own name (also when the create step stopped before recording the id)
+          if $W d1 delete "$DB_NAME" -y > "$RUNNER_TEMP/delete.log" 2>&1; then DEL=ok; else DEL=failed; python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/delete.log"; fi
+          # success only when a fresh, readable list shows it gone by name and by id (three tries for D1's list to catch up)
+          V=2
+          for i in 1 2 3; do
+            if $W d1 list --json > "$RUNNER_TEMP/after.json" 2> "$RUNNER_TEMP/after.log"; then
+              node "$C" verify-gone --list "$RUNNER_TEMP/after.json" --name "$DB_NAME" --id "${DBID:-}"; V=$?
+            else V=2; fi
+            [ $V -eq 1 ] && [ $i -lt 3 ] && { sleep 10; continue; }
+            break
+          done
+          case $V in
+            0) if [ "$DEL" = ok ]; then echo "  PASS  temporary database deleted and confirmed gone"; echo "- Temporary database deleted and confirmed gone" >> "$GITHUB_STEP_SUMMARY";
+               else echo "  PASS  the temporary database is not present (it was never created, or was already gone)"; echo "- Temporary database confirmed absent (delete reported: $DEL)" >> "$GITHUB_STEP_SUMMARY"; fi ;;
+            1) echo "FAIL  the temporary database $DB_NAME STILL EXISTS: delete it in the Cloudflare dashboard (D1)"; echo "- **FAIL: the temporary database \`$DB_NAME\` still exists. Delete it in the Cloudflare dashboard.**" >> "$GITHUB_STEP_SUMMARY"; exit 1 ;;
+            *) python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/after.log" 2>/dev/null; echo "FAIL  clean-up could NOT be verified (the database list could not be read): check D1 for $DB_NAME by hand"; echo "- **FAIL: clean-up could not be verified. Check the Cloudflare dashboard (D1) for \`$DB_NAME\`.**" >> "$GITHUB_STEP_SUMMARY"; exit 1 ;;
+          esac
