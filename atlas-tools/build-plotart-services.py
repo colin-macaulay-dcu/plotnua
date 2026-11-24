@@ -83,6 +83,23 @@ PROVIDERS = [
                ("mailto:info@fastlanecouriers.com", "Email info@fastlanecouriers.com", "services_fastlane_email", False),
                ("tel:+35319081167", "Call 01 908 1167", "services_fastlane_phone", False),
                ("https://wa.me/353851402487", "WhatsApp 085 140 2487", "services_fastlane_whatsapp", "wa")]},
+    # DropBy, prepared 24 Nov 2026 (founder brief): an Irish delivery marketplace preparing to launch in Dublin; co-founder
+    # Cristian confirmed interest in being listed. Text-only until DropBy supplies approved imagery (none requested from the web).
+    # AT LAUNCH: delete "status", reword the "Launch status" fact (or drop it), add contact/booking links, update "Area".
+    # No partner wording, bookings, prices, insurance, qualifications, launch date or present-tense nationwide coverage.
+    {"key": "db", "publish": True, "name": "DropBy",
+     "status": "Launching Soon",
+     "placeholder": "Same-day and next-day delivery",
+     "what": "A new Irish same-day and next-day delivery marketplace.",
+     "about": ("DropBy is an emerging Irish delivery marketplace connecting individuals and businesses with independent "
+               "couriers using bicycles, cars and vans. Preparing for its initial launch in Dublin, DropBy plans to expand "
+               "its delivery network across Ireland."),
+     "facts": [("Area", "Launching initially in Dublin, with plans to expand across Ireland."),
+               ("Artwork deliveries", "DropBy welcomes future enquiries from artists, galleries and art buyers. Suitable artwork "
+                                      "deliveries will be subject to dimensions, value, packaging and handling requirements."),
+               ("Launch status", "DropBy is preparing for its official launch. Delivery services are not yet operational. "
+                                 "Watch this space.")],
+     "links": [("https://www.dropbycouriers.com/", "Discover DropBy", "services_dropby_web", True)]},
 ]
 
 
@@ -130,9 +147,13 @@ def card(p):
         links.append('      <a class="pa-btn pa-btn--ghost" href="%s"%s data-pa-track="%s">%s%s%s</a>' % (href, attrs, track, label, arrow, sr))
     cls = "pa-sv-card pa-sv-card--%s%s" % (p["key"], " pa-sv-card--media" if media else "")
     style = ' style="--sv-accent:%s"' % p["accent"] if p.get("accent") else ""
-    return ('  <article class="%s"%s aria-labelledby="%s">%s\n    <div class="pa-sv-body">%s\n    <h2 id="%s">%s</h2>\n'
-            '    <p class="pa-sv-what">%s</p>\n    <dl class="pa-sv-facts">\n%s\n    </dl>\n    <p class="pa-sv-contact">\n%s\n    </p>\n    </div>\n  </article>'
-            % (cls, style, hid, media, logo, hid, e(p["name"]), e(p["what"]), facts, "\n".join(links)))
+    # optional, for a provider not yet operating (24 Nov 2026, DropBy): a small status label above the name, and a short
+    # description paragraph; both are omitted for every other provider, so their markup is unchanged
+    status = '\n    <p class="pa-sv-status">%s</p>' % e(p["status"]) if p.get("status") else ""
+    about = '\n    <p class="pa-sv-about">%s</p>' % e(p["about"]) if p.get("about") else ""
+    return ('  <article class="%s"%s aria-labelledby="%s">%s\n    <div class="pa-sv-body">%s%s\n    <h2 id="%s">%s</h2>\n'
+            '    <p class="pa-sv-what">%s</p>%s\n    <dl class="pa-sv-facts">\n%s\n    </dl>\n    <p class="pa-sv-contact">\n%s\n    </p>\n    </div>\n  </article>'
+            % (cls, style, hid, media, logo, status, hid, e(p["name"]), e(p["what"]), about, facts, "\n".join(links)))
 
 
 LISTED = [p for p in PROVIDERS if p["publish"]]

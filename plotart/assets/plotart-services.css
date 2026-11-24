@@ -48,3 +48,9 @@ body.pa .pa-sv-media--plain span{ position:relative; font-family:var(--serif); f
 body.pa .pa-sv-card--media .pa-sv-media--plain + .pa-sv-body{ padding-top:clamp(22px, 2.6vw, 32px); }
 /* FastLane Couriers (22 Nov 2026): the supplied logo is on white, so it sits on a white plaque (no recolouring of the mark). */
 body.pa .pa-sv-logo--white{ background:#FFFFFF; padding:8px 12px; }
+/* A provider not yet operating (DropBy, 24 Nov 2026): a small status label above the name and a short description.
+   Remove the provider's "status" in the builder at launch; nothing else depends on it. */
+body.pa .pa-sv-status{ align-self:flex-start; display:inline-flex; align-items:center; gap:8px; margin:0 0 14px; padding:5px 12px 5px 10px;
+  border:1px solid var(--line-2); border-radius:999px; font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory); }
+body.pa .pa-sv-status::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--ivory); opacity:.7; }
+body.pa .pa-sv-about{ margin:0 0 24px; color:var(--stone); font-size:15.5px; line-height:1.6; max-width:60ch; }
