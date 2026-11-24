@@ -86,6 +86,8 @@ a.pa-gx-go:focus-visible{ outline:none; }
 .pa-gh-grid{ display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, 1fr); gap:clamp(32px, 5vw, 80px); align-items:center; }
 .pa-gh h1{ font-size:clamp(48px, 6.4vw, 96px); line-height:.95; letter-spacing:-.02em; margin:0 0 20px; }
 .pa-gh-lede{ font-size:clamp(18px, 1.5vw, 21px); line-height:1.55; color:var(--lime); max-width:46ch; margin:0 0 22px; }
+/* the Contemporary gallery's description under its heading: the same restrained body text as the other two galleries' descriptions */
+.pa-vg2-hero .pa-vg2-sub.pa-gx-desc{ font-family:inherit; font-size:clamp(18px, 1.5vw, 21px); line-height:1.55; max-width:62ch; margin:14px 0 0; }
 .pa-gh-status{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; padding:6px 12px; border-radius:999px; border:1px solid var(--line-2); color:var(--stone); margin:0 0 18px; }
 .pa-gh-note{ color:var(--stone); font-size:16px; max-width:52ch; }
 .pa-gh-acts{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }

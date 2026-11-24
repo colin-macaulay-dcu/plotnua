@@ -184,7 +184,7 @@ HERO_BEGIN, HERO_END = "<!-- pa-gallery-hero:begin -->", "<!-- pa-gallery-hero:e
 
 def hero_region():
     g = GALLERY["contemporary"]
-    return (HERO_BEGIN + '\n  <div><h1>%s.</h1>\n  <p class="pa-vg2-sub">%s</p></div>\n' + HERO_END) % (E(g["title"]), E(g["lede"]))
+    return (HERO_BEGIN + '\n  <div><h1>%s.</h1>\n  <p class="pa-vg2-sub pa-gx-desc">%s</p></div>\n' + HERO_END) % (E(g["title"]), E(g["lede"]))
 
 
 def replace_region(text, begin, end, new, name):
