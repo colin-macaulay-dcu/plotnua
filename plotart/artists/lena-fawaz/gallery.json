@@ -60,7 +60,7 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-23T12:30:08.524Z",
+  "approved_at": "2026-11-24T09:42:56.130Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-17T12:29:38.785Z",
   "licence_accepted_at": "2026-11-17T11:37:43.820Z",
@@ -68,7 +68,7 @@
   "permission_ref": "PA-PERM-at5xkpjluff",
   "state": "approved",
   "test_note": null,
-  "version": "v4"
+  "version": "v5"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -195,7 +195,7 @@
    "id": "wia8cbztpkh",
    "images": [
     {
-     "alt": "AbstractPaijt",
+     "alt": "Abstract Painting",
      "aspect": 0.99421,
      "derivatives": [
       {
