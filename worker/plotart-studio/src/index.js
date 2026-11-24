@@ -1575,17 +1575,18 @@ async function route(req, env) {
         throw new Bad('A PlotArt application (PA-AP-…) leads to a Gallery Artist invitation. Choose Gallery Artist, or leave the reference out.', 409);
       if (programme === 'gallery_artist' && !(await termsInstalled(env))) throw new Bad('Gallery Artist invitations become available once the Gallery Artist records are installed (migration 0012).', 503);
       // Three galleries (Phase B): an optional choice of galleries at invitation. Absent: Contemporary Art by default, as today.
-      if (b.galleries !== undefined && (!Array.isArray(b.galleries) || !b.galleries.length || b.galleries.some(g => !G.GALLERIES.includes(g)) || new Set(b.galleries).size !== b.galleries.length))
-        throw new Bad('Choose one or more galleries');
+      if (b.galleries !== undefined && !G.validInviteGalleries(b.galleries)) throw new Bad('Choose one or more galleries');
       if (b.galleries !== undefined && !(await G.installed(env))) throw new Bad('Gallery choice at invitation needs the three-gallery records (migration 0023)', 503);
       const id = rid('a'), at = now();
       await env.DB.batch([
         env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
           .bind(id, slug, email, name, programme === 'founding' ? 1 : 0, b.application_ref || null, at, at),
         ...(programme === 'gallery_artist' ? [env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
-          VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)] : [])]);
+          VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)] : []),
+        // the chosen galleries go in the SAME batch: the artist and their gallery invitations are created together or not at all
+        ...G.inviteStatements(env, me.email, id, b.galleries, b.application_ref || null, at)]);
       await audit(env, me.email, 'founder', 'invite', id, { slug, founding: programme === 'founding', programme });
-      if (b.galleries !== undefined) await G.onInvite(env, me.email, id, b.galleries, b.application_ref || null);
+      if (b.galleries !== undefined) await audit(env, me.email, 'founder', 'gallery_membership_proposed', id, { galleries: b.galleries, source: b.application_ref ? 'application' : 'founder_invitation' });
       // Start the artist's private working profile from their Founding 25 application, where there is one (11 Nov 2026).
       let prefill = { fields: [], skipped: {}, reason: 'no application reference' };
       if (b.application_ref) {
@@ -1727,6 +1728,8 @@ async function route(req, env) {
     if (g3 && m === 'POST') return json({ ok: true, ...(await G.artistPlacement(env, artist, g3[1], g3[2], g3[3])) }); }
   { const g3 = p.match(/^\/api\/image-use\/(u[0-9a-z]+)\/answer$/);
     if (g3 && m === 'POST') return json({ ok: true, ...(await G.answerConsent(env, artist, g3[1], await req.json().catch(() => null))) }); }
+  { const g3 = p.match(/^\/api\/image-use\/consents\/(c[0-9a-z]+)\/withdraw$/);
+    if (g3 && m === 'POST') return json({ ok: true, ...(await G.withdrawConsent(env, artist, g3[1])) }); }
   if (p.startsWith('/preview/')) {
     const rest = p.slice('/preview/'.length);
     if (rest.startsWith('img/')) return previewImage(env, await ownImage(env, artist, rest.slice(4)));

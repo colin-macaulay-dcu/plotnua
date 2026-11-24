@@ -24,6 +24,12 @@
 --   image_use_consents   the artist's recorded answer (yes or no), append-only: the Studio never updates or deletes a row;
 --                        a withdrawal is a new 'no'.
 --
+-- Revision 2 (24 Nov 2026, final verification): every reference from these new tables to artists, artworks or a request is
+-- ON DELETE CASCADE. D1 enforces foreign keys, so without it the Studio's existing deletions (an artist deleting a draft
+-- artwork; erasing an ended artist's originals after 12 months; deleting their records after six years) would be refused
+-- once a gallery row pointed at the artwork or artist. With it, those deletions work exactly as today and take the matching
+-- gallery rows with them. Nothing cascades the other way: no existing row is ever deleted or changed by these tables.
+--
 -- Preconditions before anyone runs it:
 --   (1) migrations up to 0022 have run;
 --   (2) the founder has approved this exact file (SHA-256);
@@ -46,7 +52,7 @@ CREATE TABLE IF NOT EXISTS gallery_settings (
 );
 
 CREATE TABLE IF NOT EXISTS gallery_memberships (
-  artist_id TEXT NOT NULL REFERENCES artists(id),
+  artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'landscape', 'portraiture')),
   state TEXT NOT NULL CHECK (state IN ('proposed', 'founder_approved', 'artist_accepted', 'live', 'declined', 'refused', 'withdrawn')),
   source TEXT NOT NULL CHECK (source IN ('existing_contemporary', 'founder_invitation', 'application', 'founder_curation', 'artist_request')),
@@ -68,8 +74,8 @@ CREATE TABLE IF NOT EXISTS gallery_memberships (
 CREATE INDEX IF NOT EXISTS gallery_memberships_gallery ON gallery_memberships(gallery_id, state);
 
 CREATE TABLE IF NOT EXISTS artwork_placements (
-  artwork_id TEXT NOT NULL REFERENCES artworks(id),
-  artist_id TEXT NOT NULL REFERENCES artists(id),
+  artwork_id TEXT NOT NULL REFERENCES artworks(id) ON DELETE CASCADE,
+  artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'landscape', 'portraiture')),
   state TEXT NOT NULL CHECK (state IN ('proposed', 'founder_approved', 'artist_accepted', 'live', 'declined', 'refused', 'withdrawn')),
   proposed_by TEXT NOT NULL,
@@ -92,7 +98,7 @@ CREATE INDEX IF NOT EXISTS artwork_placements_artist ON artwork_placements(artis
 CREATE TABLE IF NOT EXISTS gallery_order (
   gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'landscape', 'portraiture')),
   position INTEGER NOT NULL CHECK (position >= 1 AND position <= 100000),
-  artist_id TEXT NOT NULL REFERENCES artists(id),
+  artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   updated_at TEXT NOT NULL CHECK (length(updated_at) BETWEEN 20 AND 30),
   updated_by TEXT NOT NULL,
   PRIMARY KEY (gallery_id, position),
@@ -103,8 +109,8 @@ CREATE TABLE IF NOT EXISTS gallery_order (
 CREATE TABLE IF NOT EXISTS gallery_features (
   gallery_id TEXT NOT NULL CHECK (gallery_id IN ('landscape', 'portraiture')),
   position INTEGER NOT NULL CHECK (position BETWEEN 1 AND 6),
-  artist_id TEXT NOT NULL REFERENCES artists(id),
-  artwork_id TEXT NOT NULL REFERENCES artworks(id),
+  artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
+  artwork_id TEXT NOT NULL REFERENCES artworks(id) ON DELETE CASCADE,
   updated_at TEXT NOT NULL CHECK (length(updated_at) BETWEEN 20 AND 30),
   updated_by TEXT NOT NULL,
   PRIMARY KEY (gallery_id, position),
@@ -113,7 +119,7 @@ CREATE TABLE IF NOT EXISTS gallery_features (
 
 CREATE TABLE IF NOT EXISTS image_use_requests (
   id TEXT PRIMARY KEY,
-  artist_id TEXT NOT NULL REFERENCES artists(id),
+  artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   scope TEXT NOT NULL CHECK (scope IN ('homepage_feature', 'promotional_campaign', 'social_media', 'editorial_feature', 'video_feature')),
   gallery_id TEXT CHECK (gallery_id IS NULL OR gallery_id IN ('contemporary', 'landscape', 'portraiture')),
   artwork_ids TEXT NOT NULL CHECK (length(artwork_ids) BETWEEN 2 AND 2000),
@@ -131,8 +137,8 @@ CREATE INDEX IF NOT EXISTS image_use_requests_artist ON image_use_requests(artis
 
 CREATE TABLE IF NOT EXISTS image_use_consents (
   id TEXT PRIMARY KEY,
-  request_id TEXT REFERENCES image_use_requests(id),
-  artist_id TEXT NOT NULL REFERENCES artists(id),
+  request_id TEXT REFERENCES image_use_requests(id) ON DELETE CASCADE,
+  artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
   scope TEXT NOT NULL CHECK (scope IN ('homepage_feature', 'promotional_campaign', 'social_media', 'editorial_feature', 'video_feature')),
   gallery_id TEXT CHECK (gallery_id IS NULL OR gallery_id IN ('contemporary', 'landscape', 'portraiture')),
   artwork_ids TEXT NOT NULL CHECK (length(artwork_ids) BETWEEN 2 AND 2000),
