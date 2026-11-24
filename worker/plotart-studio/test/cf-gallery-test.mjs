@@ -26,6 +26,9 @@ const TARGET = arg('--target'), DBID = arg('--database-id'), OUT = arg('--out');
 // --db-only: everything happens through Cloudflare's D1 API alone (wrangler d1 …): no Worker is started, so the token needs
 // D1: Edit and nothing else. Steps 2 and 5 then check the database rules directly in SQL instead of through the Studio.
 const DBONLY = process.argv.includes('--db-only');
+// Safety (founder review, 24 Nov 2026): against a REAL database the script runs database-only unless --allow-worker is given
+// explicitly, so a D1-only token is enough and nothing can start, upload or deploy a Worker. The workflow never passes it.
+if (TARGET === 'remote' && !DBONLY && !process.argv.includes('--allow-worker')) { console.log('REFUSED: against a real database this test runs with --db-only (or the founder-approved --allow-worker)'); process.exit(2); }
 if (!['local', 'remote'].includes(TARGET) || !OUT || (TARGET === 'remote' && !/^[0-9a-f-]{36}$/.test(DBID || ''))) { console.log('usage: --target local|remote [--database-id ID] --out DIR'); process.exit(2); }
 const REMOTE = TARGET === 'remote';
 const HERE = new URL('..', import.meta.url).pathname, ROOT = join(HERE, '../..');
