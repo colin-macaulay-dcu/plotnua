@@ -42,8 +42,9 @@ a.pa-gx-go:focus-visible{ outline:none; }
 @media (max-width:1060px) and (min-width:721px){
   .pa-gx-art{ aspect-ratio:3 / 3.4; padding:14px 14px 34px; }
   .pa-gx-credit{ white-space:normal; font-size:11.5px; }
-  .pa-gx-body{ grid-template-columns:1fr; }
-  :where(body.pa) a.pa-gx-go{ grid-column:1; grid-row:auto; margin-top:8px; width:40px; height:40px; }
+  .pa-gx-body{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; }
+  .pa-gx-text{ margin-bottom:14px; }
+  :where(body.pa) a.pa-gx-go{ margin-top:auto; align-self:flex-start; width:40px; height:40px; }   /* the three arrows share one line */
   .pa-gx-tile h2{ font-size:31px; }
   .pa-gx-text{ font-size:14.5px; }
 }
