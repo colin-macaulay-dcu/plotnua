@@ -4,18 +4,24 @@
 # "plotart-gallery-d1-test", which the founder sets up once (required reviewer: the founder; deployment branch: only
 # dev/plotart-three-galleries-phase-b; secret GALLERY_D1_TEST_CF_TOKEN; variables CLOUDFLARE_ACCOUNT_ID and
 # GALLERY_D1_TEST_READY = yes). The run creates its own empty database (plotart-gallery-phaseb-test-<run id>), addresses only
-# that database by the id it was given, and deletes it at the end, whatever happens. Nothing is deployed: the Studio Worker runs
-# on the runner (wrangler dev) with its database binding pointing at that temporary remote database.
+# that database by the id it was given (checked against the name it created), and deletes it at the end, whatever happens.
 # Started ONLY by a change to worker/plotart-studio/test/galleries-cloudflare-test-request.json on
-# dev/plotart-three-galleries-phase-b, and waits for the founder's Approve. What it does (test/cf-gallery-test.mjs):
+# dev/plotart-three-galleries-phase-b, and waits for the founder's Approve. What it does (test/cf-gallery-test.mjs --db-only):
 #   1 loads the production schema (main) and a staging copy of the live galleries (public data, synthetic emails)
-#   2 runs the PRODUCTION Studio code (main) and records what the publisher and founder read
 #   3 takes a Time Travel restore point; 4 applies migration 0023 with the production command and checks every existing
-#     table is byte-identical and exactly seven new empty tables were added; foreign keys enforced
-#   5 runs the PHASE B Studio code: the same reads identical; the gallery model on real D1 (invitations, approval and
-#     acceptance, placement, Artists in Focus, order, consent, draft deletion with ON DELETE CASCADE, simultaneous requests)
+#     table is byte-identical, every existing definition unchanged, exactly seven new empty tables; foreign keys enforced
+#   5 checks the gallery rules in the database: earlier identifiers refused; live needs approval and acceptance; a failed
+#     multi-statement write leaves nothing behind; deleting an artwork or an artist removes its gallery rows (ON DELETE
+#     CASCADE); nothing assigned to Environment or Being
 #   6 rollback rehearsal: export the gallery rows, drop only the seven gallery tables (everything else unchanged), re-apply,
 #     re-import (identical); then a Time Travel restore to the restore point (whole database identical to before 0023)
+# DATABASE-ONLY (founder review, 24 Nov 2026): the run uses Cloudflare's D1 API alone (wrangler d1 create / execute / export /
+# time-travel / delete). No Worker is started, uploaded or deployed, so the token needs D1: Edit and nothing else; a token
+# without any Workers permission cannot change, deploy or delete any Worker. Steps 2 and 5 check the gallery rules directly in
+# the database (see test/cf-gallery-test.mjs --db-only); the Studio-level behaviour is proven locally (prove-galleries*).
+# Clean-up: the run deletes its database in an always() step (also after a failure, a timeout or a cancellation) and checks it
+# is gone; and every run first deletes any database left by an EARLIER run of this test (names matching exactly
+# plotart-gallery-phaseb-test-<digits>, never anything else), in case a runner was lost before its clean-up could run.
 # Logs are public: PASS/FAIL, counts and table names only. The database id is never printed.
 name: PlotArt three galleries on a temporary Cloudflare D1
 run-name: "Three galleries · temporary Cloudflare D1 · ${{ github.sha }}"
@@ -55,6 +61,18 @@ jobs:
           [[ "$DB_NAME" =~ ^plotart-gallery-phaseb-test-[0-9]+$ ]] || { echo "REFUSED: database name"; exit 1; }
           ! git show origin/main:worker/plotart-studio/schema.sql | grep -q gallery_memberships || { echo "REFUSED: main already has migration 0023"; exit 1; }
           echo "### Three galleries · temporary Cloudflare D1" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove databases left by earlier runs of this test (exact name pattern only)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.GALLERY_D1_TEST_CF_TOKEN }}
+        run: |
+          set -uo pipefail
+          npx --yes wrangler@4.150.0 d1 list --json > "$RUNNER_TEMP/list.json" 2> "$RUNNER_TEMP/list.log" \
+            || { python3 atlas-tools/release/studio/wrangler-error.py "$RUNNER_TEMP/list.log"; echo "LIMITATION: the gallery test credentials cannot list D1 databases. Nothing was created."; exit 1; }
+          for N in $(node -e 'const l=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));for(const d of l)if(/^plotart-gallery-phaseb-test-[0-9]+$/.test(d.name))console.log(d.name)' "$RUNNER_TEMP/list.json"); do
+            [[ "$N" =~ ^plotart-gallery-phaseb-test-[0-9]+$ ]] || continue
+            npx --yes wrangler@4.150.0 d1 delete "$N" -y > /dev/null 2>&1 && echo "  removed a leftover test database from an earlier run ($N)" || echo "  WARN could not remove $N"
+          done
+          echo "  PASS  no leftover test databases"
       - name: Create the temporary database (empty, Western Europe)
         id: create
         env:
@@ -77,7 +95,7 @@ jobs:
           DBID: ${{ steps.create.outputs.id }}
         run: |
           set -o pipefail
-          node test/cf-gallery-test.mjs --target remote --database-id "$DBID" --out "$RUNNER_TEMP/cftest" 2>&1 | grep -vE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | tee "$RUNNER_TEMP/cftest.log"
+          node test/cf-gallery-test.mjs --target remote --db-only --database-id "$DBID" --out "$RUNNER_TEMP/cftest" 2>&1 | grep -vE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | tee "$RUNNER_TEMP/cftest.log"
           { echo '```'; grep -E "PASS|FAIL|checks,|SHA-256" "$RUNNER_TEMP/cftest.log"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - name: Delete the temporary database (always)
         if: ${{ always() && steps.create.outputs.id != '' }}

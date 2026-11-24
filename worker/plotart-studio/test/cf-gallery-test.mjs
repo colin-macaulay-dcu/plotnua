@@ -23,6 +23,9 @@ import { seedStaging } from './staging-seed.mjs';
 
 const arg = k => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : null; };
 const TARGET = arg('--target'), DBID = arg('--database-id'), OUT = arg('--out');
+// --db-only: everything happens through Cloudflare's D1 API alone (wrangler d1 …): no Worker is started, so the token needs
+// D1: Edit and nothing else. Steps 2 and 5 then check the database rules directly in SQL instead of through the Studio.
+const DBONLY = process.argv.includes('--db-only');
 if (!['local', 'remote'].includes(TARGET) || !OUT || (TARGET === 'remote' && !/^[0-9a-f-]{36}$/.test(DBID || ''))) { console.log('usage: --target local|remote [--database-id ID] --out DIR'); process.exit(2); }
 const REMOTE = TARGET === 'remote';
 const HERE = new URL('..', import.meta.url).pathname, ROOT = join(HERE, '../..');
@@ -132,7 +135,7 @@ function d1Adapter(sdb) {   // just enough of D1's API for the staging seeder
 
 let main = null, phaseB = null;
 try {
-  console.log(`THREE GALLERIES · ${REMOTE ? 'REAL TEMPORARY CLOUDFLARE D1 DATABASE' : 'LOCAL REHEARSAL OF THE CLOUDFLARE TEST (no Cloudflare)'}`);
+  console.log(`THREE GALLERIES · ${REMOTE ? 'REAL TEMPORARY CLOUDFLARE D1 DATABASE' : 'LOCAL REHEARSAL OF THE CLOUDFLARE TEST (no Cloudflare)'}${DBONLY ? ' · DATABASE-ONLY (D1 API alone)' : ''}`);
   /* 1 · the staging copy, production schema from main */
   step('1 · staging copy of the live galleries in the database (production schema from main)');
   if (existsSync(MAIN)) execFileSync('git', ['-C', ROOT, 'worktree', 'remove', '--force', MAIN]);
@@ -154,12 +157,16 @@ try {
     n.a === 18 && n.w === staged.packages.reduce((s, p) => s + p.works.length, 0) && n.f === 6 && n.p === staged.positions.length, JSON.stringify(n));
 
   /* 2 · today's production Studio code */
+  let before = null;
+  if (DBONLY) console.log('\n— 2 · (database-only mode: no Worker is started; the Studio-level checks run locally in prove-galleries-staging)');
+  else {
   step('2 · the PRODUCTION Studio code (main) on this database');
   execFileSync('node', ['build-assets.mjs'], { cwd: join(MAIN, 'worker/plotart-studio'), stdio: 'ignore' });
   main = await startStudio(join(MAIN, 'worker/plotart-studio'));
-  const before = await readAll(main);
+  before = await readAll(main);
   check('2.1 the production Studio serves the publisher’s and founder’s reads from the remote database', Object.values(before).every(r => r.s === 200), JSON.stringify(Object.fromEntries(Object.entries(before).map(([k, v]) => [k, v.s]))));
   await main.stop(); main = null;
+  }
 
   /* 3 · restore point, then 4 · migration 0023 with the production command */
   step('3 · restore point and fingerprint before the migration');
@@ -184,7 +191,39 @@ try {
   const fk = tryQ("INSERT INTO artwork_placements (artwork_id, artist_id, gallery_id, state, proposed_by, proposed_at, closed_by, closed_at, updated_at) VALUES ('wnosuchwork','anosuchartist','contemporary','withdrawn','t','2026-11-24T00:00:00.000Z','t','2026-11-24T00:00:00.000Z','2026-11-24T00:00:00.000Z')");
   check('4.4 the database enforces the new foreign keys (a row pointing at no artwork is refused)', /FOREIGN KEY/i.test(fk), fk.slice(0, 200));
 
-  /* 5 · the Phase B Studio */
+  /* 5 · the gallery rules on real D1 */
+  if (DBONLY) {
+  step('5 · the gallery rules, checked directly in the database (D1 API only)');
+  const T = "'2026-11-24T00:00:00.000Z'";
+  const refused = sql => { const o = tryQ(sql); return o !== 'ok' && /constraint|CHECK|FOREIGN KEY/i.test(o); };
+  check('5.1 the database refuses every earlier gallery identifier (landscape, places_and_spaces, portraiture)',
+    ['landscape', 'places_and_spaces', 'portraiture'].every(g => refused(`INSERT INTO gallery_settings (gallery_id, status, target_artists, target_works, updated_at, updated_by) VALUES ('${g}', 'in_preparation', 1, 1, ${T}, 'cf')`)));
+  const a1 = rows("SELECT id FROM artists ORDER BY slug LIMIT 1")[0].id;
+  check('5.2 a membership cannot be live without both the founder’s approval and the artist’s acceptance',
+    refused(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, proposed_by, proposed_at, updated_at) VALUES ('${a1}', 'environment', 'live', 'founder_curation', 'cf', ${T}, ${T})`));
+  const atomic = tryQ(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, proposed_by, proposed_at, founder_approved_by, founder_approved_at, updated_at) VALUES ('${a1}', 'being', 'founder_approved', 'founder_curation', 'cf', ${T}, 'cf', ${T}, ${T}); INSERT INTO gallery_settings (gallery_id, status, target_artists, target_works, updated_at, updated_by) VALUES ('portraiture', 'in_preparation', 1, 1, ${T}, 'cf')`);
+  check('5.3 D1 runs a multi-statement write as one transaction: when the second statement fails, the first leaves nothing behind',
+    atomic !== 'ok' && rows(`SELECT COUNT(*) n FROM gallery_memberships WHERE artist_id = '${a1}' AND gallery_id = 'being'`)[0].n === 0);
+  q(`INSERT INTO gallery_settings (gallery_id, status, target_artists, target_works, updated_at, updated_by) VALUES ('environment', 'in_preparation', 5, 25, ${T}, 'cf'); `
+    + `INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, proposed_by, proposed_at, founder_approved_by, founder_approved_at, updated_at) VALUES ('${a1}', 'environment', 'founder_approved', 'founder_curation', 'cf', ${T}, 'cf', ${T}, ${T}); `
+    + `INSERT INTO artworks (id, artist_id, slug, title, ord, archived, created_at, updated_at) VALUES ('wcfdraft', '${a1}', 'cf-draft', 'Draft', 99, 0, ${T}, ${T}); `
+    + `INSERT INTO artwork_placements (artwork_id, artist_id, gallery_id, state, proposed_by, proposed_at, founder_approved_by, founder_approved_at, updated_at) VALUES ('wcfdraft', '${a1}', 'environment', 'founder_approved', 'cf', ${T}, 'cf', ${T}, ${T}); `
+    + `INSERT INTO gallery_features (gallery_id, position, artist_id, artwork_id, updated_at, updated_by) VALUES ('environment', 1, '${a1}', 'wcfdraft', ${T}, 'cf')`);
+  q("DELETE FROM artworks WHERE id = 'wcfdraft'");
+  check('5.4 deleting an artwork (as the Studio deletes a draft) removes its placement and Artists in Focus entry with it (ON DELETE CASCADE)',
+    rows("SELECT (SELECT COUNT(*) FROM artwork_placements WHERE artwork_id = 'wcfdraft') p, (SELECT COUNT(*) FROM gallery_features WHERE artwork_id = 'wcfdraft') f")[0].p === 0
+    && rows("SELECT COUNT(*) n FROM gallery_features")[0].n === 0);
+  q(`INSERT INTO artists (id, slug, email, display_name, founding, account_status, created_at, updated_at) VALUES ('acfgone', 'cf-gone', 'cf-gone@example.test', 'CF Gone', 0, 'ended', ${T}, ${T}); `
+    + `INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, proposed_by, proposed_at, founder_approved_by, founder_approved_at, updated_at) VALUES ('acfgone', 'being', 'founder_approved', 'founder_curation', 'cf', ${T}, 'cf', ${T}, ${T}); `
+    + `INSERT INTO image_use_requests (id, artist_id, scope, gallery_id, artwork_ids, purpose, channels, valid_until, request_text_sha256, status, requested_by, requested_at, closed_at) VALUES ('ucfgone', 'acfgone', 'social_media', 'being', '["wx"]', 'A post about the new galleries', 'Instagram', NULL, '${'0'.repeat(64)}', 'answered', 'cf', ${T}, ${T}); `
+    + `INSERT INTO image_use_consents (id, request_id, artist_id, scope, gallery_id, artwork_ids, purpose, channels, valid_until, answer, method, request_text_sha256, recorded_by, created_at) VALUES ('ccfgone', 'ucfgone', 'acfgone', 'social_media', 'being', '["wx"]', 'A post about the new galleries', 'Instagram', NULL, 'yes', 'studio', '${'0'.repeat(64)}', 'cf', ${T})`);
+  q("DELETE FROM artists WHERE id = 'acfgone'");
+  check('5.5 deleting an artist (the six-year records deletion) removes their memberships, requests and consents with them',
+    rows("SELECT (SELECT COUNT(*) FROM gallery_memberships WHERE artist_id = 'acfgone') + (SELECT COUNT(*) FROM image_use_requests WHERE artist_id = 'acfgone') + (SELECT COUNT(*) FROM image_use_consents WHERE artist_id = 'acfgone') n")[0].n === 0);
+  check('5.6 nothing was assigned to Environment or Being automatically: the only gallery rows are the ones this test wrote',
+    rows("SELECT COUNT(*) n FROM gallery_memberships")[0].n === 1 && rows("SELECT COUNT(*) n FROM artwork_placements")[0].n === 0);
+  } else {
+  /* the Phase B Studio */
   step('5 · the PHASE B Studio code on the same database');
   phaseB = await startStudio(HERE);
   const S = phaseB, after = await readAll(S);
@@ -241,6 +280,7 @@ try {
   const pipe = (await S.call('GET', '/api/pipeline/galleries', null, undefined, PIPE)).j;
   check('5.9 the read-only pipeline view: 18 Contemporary artists by public address, no email address anywhere', pipe.installed && pipe.galleries[0].artists.length === 18 && !/@/.test(JSON.stringify(pipe)));
   await S.stop(); phaseB = null;
+  }
 
   /* 6 · rollback rehearsal that keeps the gallery records */
   step('6 · rollback rehearsal: keep the gallery records, restore, re-apply, re-import');
@@ -274,7 +314,7 @@ try {
   }
 } catch (e) {
   if (globalThis.__devlog) console.log('  studio log (errors): ' + globalThis.__devlog().slice(-3000));
-  console.log(`  FAIL  stopped: ${e.cause ? 'cause ' + (e.cause.code || e.cause.message) + ' · ' : ''}${String(e.stderr || e.message || e).split('\n').filter(l => l.trim()).slice(0, 6).join(' | ').replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, '<id>')}`);
+  console.log(`  FAIL  stopped: ${e.cause ? 'cause ' + (e.cause.code || e.cause.message) + ' · ' : ''}${String(e.stderr || e.message || e).split('\n').filter(l => l.trim() && !/WARNING|Proxy environment/.test(l)).slice(0, 6).join(' | ').replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, '<id>')}`);
   results.push(false);
 } finally {
   for (const s of [main, phaseB]) if (s) await s.stop();
