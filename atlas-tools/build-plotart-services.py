@@ -85,20 +85,17 @@ PROVIDERS = [
                ("https://wa.me/353851402487", "WhatsApp 085 140 2487", "services_fastlane_whatsapp", "wa")]},
     # DropBy, prepared 24 Nov 2026 (founder brief): an Irish delivery marketplace preparing to launch in Dublin; co-founder
     # Cristian confirmed interest in being listed. Text-only until DropBy supplies approved imagery (none requested from the web).
-    # AT LAUNCH: delete "status", reword the "Launch status" fact (or drop it), add contact/booking links, update "Area".
+    # AT LAUNCH: delete "status", reword or drop the "Watch this space" fact, add contact/booking links, update "Area".
     # No partner wording, bookings, prices, insurance, qualifications, launch date or present-tense nationwide coverage.
     {"key": "db", "publish": True, "name": "DropBy",
      "status": "Launching Soon",
      "placeholder": "Same-day and next-day delivery",
      "what": "A new Irish same-day and next-day delivery marketplace.",
-     "about": ("DropBy is an emerging Irish delivery marketplace connecting individuals and businesses with independent "
-               "couriers using bicycles, cars and vans. Preparing for its initial launch in Dublin, DropBy plans to expand "
-               "its delivery network across Ireland."),
+     "about": "Connecting individuals and businesses with independent couriers using bicycles, cars and vans.",
      "facts": [("Area", "Launching initially in Dublin, with plans to expand across Ireland."),
-               ("Artwork deliveries", "DropBy welcomes future enquiries from artists, galleries and art buyers. Suitable artwork "
-                                      "deliveries will be subject to dimensions, value, packaging and handling requirements."),
-               ("Launch status", "DropBy is preparing for its official launch. Delivery services are not yet operational. "
-                                 "Watch this space.")],
+               ("Artwork deliveries", "Same-day and next-day delivery options, subject to artwork dimensions, value, "
+                                      "packaging and handling requirements."),
+               ("Watch this space", "An exciting new Irish delivery marketplace preparing for its official launch.")],
      "links": [("https://www.dropbycouriers.com/", "Discover DropBy", "services_dropby_web", True)]},
 ]
 
