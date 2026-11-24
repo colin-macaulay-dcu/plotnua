@@ -223,7 +223,10 @@ subprocess.run(["rm", "-rf", tmp])
 # B9
 no_alt = re.sub(r'alt="[^"]*"', "", region(page))
 own_text = re.sub(r'<p class="pa-coll-meta">.*?</p>|<h3 class="pa-coll-title">.*?</h3>', "", no_alt, flags=re.S)
-outside_text = re.sub(r"<[^>]+>", " ", C.outside(page))
+# The site header and footer are shared by every PlotArt page; since the three-gallery Phase A (24 Nov 2026) they name the
+# galleries (Contemporary Art, Landscape Art, Portraiture). That is site navigation, not a style label on these works, so
+# B9 reads the page without them: everything else, the collection region included, is checked as before.
+outside_text = re.sub(r"<[^>]+>", " ", re.sub(r'<header class="pa-head[^"]*">.*?</header>|<footer class="pa-foot">.*?</footer>', " ", C.outside(page), count=2, flags=re.S))
 check("B9 the page adds no style label of its own (abstract, figurative, landscape...)",
       not re.search(r"\b(abstract|figurative|landscape|portrait|expressionis\w*|minimalis\w*)\b", re.sub(r"<[^>]+>", " ", own_text) + " " + outside_text, re.I))
 
