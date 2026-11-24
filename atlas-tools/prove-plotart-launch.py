@@ -84,6 +84,12 @@ import plotart_shell as SHELL
 import importlib.util as _ilu
 _gx_spec = _ilu.spec_from_file_location("build_plotart_galleries", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-plotart-galleries.py"))
 GX = _ilu.module_from_spec(_gx_spec); _gx_spec.loader.exec_module(GX)
+# the founder's entrance artwork for the galleries in preparation (null until an authorised work is supplied; L6, L21)
+GX_ENTRANCES = sys.argv[sys.argv.index("--entrances") + 1] if "--entrances" in sys.argv else GX.ENTRANCES
+try:
+    GX_ART_COUNT = sum(1 for _a in GX.entrances(GX_ENTRANCES).values() if _a)
+except (ValueError, OSError):
+    GX_ART_COUNT = 0          # L21 reports the problem
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if len(sys.argv) < 2:
@@ -305,7 +311,7 @@ for name in PAGES:
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin MacAulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" ') + home.count('<img class="pa-pn-p" '),   # + the PlotArt logo in the header (31 Oct 2026) and the PlotNua house P in the PlotNua link (19 Nov 2026)
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + GX_ART_COUNT + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" ') + home.count('<img class="pa-pn-p" '),   # + the PlotArt logo in the header (31 Oct 2026) and the PlotNua house P in the PlotNua link (19 Nov 2026)
      "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image"
      " (no featured section: Featured Artists moved to the Artists' Gallery, 17 Nov 2026)")
 need("pa-home-featured" not in home and "pa-home-feat" not in home and "plotart-home.css" not in home and "data-pa-home-item" not in home,
@@ -552,7 +558,9 @@ if vg:
          all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
          "L11 the Virtual Gallery shows an image other than a published artist's own work image")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(_vgm), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
-    need("<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved search title")
+    # search title changed by the founder for the three-gallery Phase A (24 Nov 2026); the address /plotart/gallery/ is unchanged
+    need("<title>Contemporary Irish Art Gallery | PlotArt</title>" in vg and vg.count("Contemporary Irish Art Gallery | PlotArt") == 3,
+         "L11 the Contemporary Art gallery's search title (title, og:title, twitter:title) is not the approved one")
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     _sm = re.findall(r"<loc>([^<]*plotart[^<]*)</loc>", open(smp, encoding="utf-8").read())
@@ -618,10 +626,19 @@ if not SERVICES_ON:
 
 # L21 · three galleries, Phase A (founder approval 24 Nov 2026)
 _gx_states = {k: launch.get(k + "_gallery_state") for k in ("landscape", "portraiture")}
+try:
+    PROV_RECORDS = json.load(open(os.path.join(SITE, "image-provenance-records.json"), encoding="utf-8")).get("records", [])
+except (OSError, ValueError):
+    PROV_RECORDS = []
 need(all(v in SHELL.GALLERY_STATES for v in _gx_states.values()),
      "L21 Landscape Art and Portraiture must stay in_preparation until Phase E (switches: %s)" % _gx_states)
 try:
-    _gx_built = GX.plan(SITE)
+    _gx_arts = GX.entrances(GX_ENTRANCES)
+except (ValueError, OSError) as _e:
+    _gx_arts = {}
+    need(False, "L21 " + str(_e))
+try:
+    _gx_built = GX.plan(SITE, GX_ENTRANCES)
 except ValueError as _e:
     _gx_built = {}
     need(False, "L21 " + str(_e))
@@ -640,8 +657,21 @@ for _k, _t in _tiles:
         need(len(_imgs) == 1 and 'src="assets/hero/founder-01-abstract.webp"' in _imgs[0] and "Gallery open" in _tv and 'href="gallery/"' in _t,
              "L21 the Contemporary Art entrance must show only the founder's credited painting and enter gallery/")
     else:
-        need(not _imgs and "In preparation" in _tv and "Gallery open" not in _tv and "artists/" not in _t and ('href="%s/"' % _k) in _t,
-             "L21 the %s entrance must say In preparation and show no image, artist or artwork" % _k)
+        _a = _gx_arts.get(_k)
+        need("In preparation" in _tv and "Gallery open" not in _tv and not re.search(r'href="[^"]*artists/', _t) and ('href="%s/"' % _k) in _t,
+             "L21 the %s entrance must say In preparation, link only to its holding page and never to an artist" % _k)
+        if not _a:
+            need(not _imgs, "L21 the %s entrance shows an image but no authorised entrance artwork is recorded" % _k)
+        else:
+            # authorised artwork only (founder refinement 24 Nov 2026): one of the artist's own published images with an
+            # ARTIST_SUPPLIED_ARTWORK provenance record for an artwork, the per-use consent reference, and a credit
+            _rec = next((r for r in PROV_RECORDS if r.get("asset") == "plotart/" + _a["image"]), None)
+            need(len(_imgs) == 1 and ('src="%s"' % _a["image"]) in _imgs[0] and os.path.exists(os.path.join(PA, _a["image"]))
+                 and _rec is not None and _rec.get("class") == "ARTIST_SUPPLIED_ARTWORK" and _rec.get("subject") == "artwork"
+                 and _rec.get("artist_slug") == _a["artist_slug"] and _rec.get("work_slug")
+                 and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{5,}", str(_a["consent_ref"])) is not None
+                 and html.escape(_a["credit"], quote=True) in _t and _a["credit"].strip(),
+                 "L21 the %s entrance artwork must be an artist's published artwork with a provenance record, a per-use consent reference and a credit" % _k)
 # artwork in an entrance is shown whole: the galleries stylesheet never crops (object-fit:cover) and contains the image
 _gx_css = open(os.path.join(PA, "assets", "plotart-galleries.css"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "assets", "plotart-galleries.css")) else ""
 need("object-fit:cover" not in _gx_css.replace(" ", "") and re.search(r"\.pa-gx-art img\{[^}]*object-fit:contain", _gx_css) is not None,

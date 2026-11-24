@@ -42,6 +42,25 @@ GALLERY = {
                     "icon": '<svg viewBox="0 0 100 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="98" height="122" rx="2"/><ellipse cx="50" cy="50" rx="17" ry="21"/><path d="M18 123 C20 96 34 84 50 84 S80 96 82 123"/></svg>'},
 }
 HREF = {k: h for k, h, _l, _t in S.GALLERIES}
+ENTRANCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "release", "plotart-gallery-entrances.json")
+ART_KEYS = {"artist_slug", "image", "width", "height", "alt", "credit", "consent_ref"}
+
+
+def entrances(path=None):
+    """The founder's entrance artwork for the galleries in preparation (null = the neutral panel). Shape-checked here;
+    the guard (L21) also checks the image's provenance record and the consent reference."""
+    import json
+    d = json.load(open(path or ENTRANCES, encoding="utf-8"))
+    out = {}
+    for key in ("landscape", "portraiture"):
+        art = (d.get(key) or {}).get("artwork")
+        if art is not None:
+            if set(art) != ART_KEYS or not re.fullmatch(r"artists/%s/img/[a-z0-9-]+-\d{2,5}\.webp" % re.escape(str(art["artist_slug"])), str(art["image"])):
+                raise ValueError("plotart-gallery-entrances.json: %s artwork must have exactly %s and an image in that artist's img/ folder" % (key, sorted(ART_KEYS)))
+            if not str(art.get("consent_ref") or "").strip():
+                raise ValueError("plotart-gallery-entrances.json: %s artwork has no consent_ref (per-use consent, licence §3.2)" % key)
+        out[key] = art
+    return out
 
 
 def prep_panel(key, where):
@@ -50,14 +69,21 @@ def prep_panel(key, where):
             '<p>Artwork will be shown here once %s’s artists have been selected.</p></div>') % (key, g["title"], g["icon"], g["title"])
 
 
-def tile(key):
+def tile(key, arts):
+    """One entrance. The artwork mount has the same shape on every entrance and holds its own credit, so the status,
+    title and description of the three entrances line up whatever is shown above them. Artwork is shown whole."""
     g, state = GALLERY[key], S.gallery_state(key)
     if state == "open":       # Contemporary Art: the existing gallery
-        art = '<figure class="pa-gx-art">%s</figure>\n      <p class="pa-gx-credit">%s</p>' % (FOUNDER_IMG, FOUNDER_CREDIT)
+        art = '<figure class="pa-gx-art">%s<figcaption class="pa-gx-credit">%s</figcaption></figure>' % (FOUNDER_IMG, FOUNDER_CREDIT)
         status = '<p class="pa-gx-status pa-gx-status--open">Gallery open</p>'
         label = "Enter the %s gallery" % g["title"]
     else:
-        art = '<figure class="pa-gx-art">%s</figure>' % prep_panel(key, "home")
+        a = arts.get(key)
+        if a:                 # authorised artwork supplied by the founder (L21 checks provenance and consent)
+            art = ('<figure class="pa-gx-art" data-pa-entrance-art="%s"><img src="%s" width="%d" height="%d" alt="%s" loading="lazy" decoding="async">'
+                   '<figcaption class="pa-gx-credit">%s</figcaption></figure>') % (key, E(a["image"]), int(a["width"]), int(a["height"]), E(a["alt"]), E(a["credit"]))
+        else:
+            art = '<figure class="pa-gx-art">%s</figure>' % prep_panel(key, "home")
         status = '<p class="pa-gx-status">In preparation</p>'
         label = "About the %s gallery, in preparation" % g["title"]
     return ('    <li class="pa-gx-tile" data-pa-gallery="%s">\n      %s\n      <div class="pa-gx-body">%s<h2>%s</h2>'
@@ -65,10 +91,11 @@ def tile(key):
             '<span aria-hidden="true">→</span></a></div>\n    </li>\n') % (key, art, status, g["title"], g["text"], HREF[key], key, label)
 
 
-def home_region():
+def home_region(arts=None):
+    arts = entrances() if arts is None else arts
     return (HOME_BEGIN + '\n<section class="pa-gx" aria-labelledby="homeH"><div class="pa-wrap">\n'
             '  <h1 class="pa-gx-h1" id="homeH">A new home for Irish art.</h1>\n'
-            '  <ul class="pa-gx-tiles" aria-label="PlotArt galleries">\n' + "".join(tile(k) for k, *_ in S.GALLERIES) +
+            '  <ul class="pa-gx-tiles" aria-label="PlotArt galleries">\n' + "".join(tile(k, arts) for k, *_ in S.GALLERIES) +
             '  </ul>\n</div></section>\n' + HOME_END)
 
 
@@ -110,11 +137,11 @@ def replace_region(text, begin, end, new, name):
     return text[:a] + new + text[b:]
 
 
-def plan(root):
+def plan(root, entrances_path=None):
     pa = os.path.join(root, "plotart")
     out = {}
     home = open(os.path.join(pa, "index.html"), encoding="utf-8").read()
-    out["index.html"] = replace_region(home, HOME_BEGIN, HOME_END, home_region(), "index.html")
+    out["index.html"] = replace_region(home, HOME_BEGIN, HOME_END, home_region(entrances(entrances_path)), "index.html")
     vg = open(os.path.join(pa, "gallery", "index.html"), encoding="utf-8").read()
     out["gallery/index.html"] = replace_region(vg, TABS_BEGIN, TABS_END, tabs_region("contemporary"), "gallery/index.html")
     for key in ("landscape", "portraiture"):

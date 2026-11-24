@@ -5,46 +5,60 @@
    Artwork in an entrance is always shown whole (object-fit:contain on a wall mount): never cropped.
    ===================================================================== */
 
-/* ---- homepage: one heading, then the three entrances ---- */
-.pa-gx{ padding-top:clamp(26px, 3.2vw, 44px); padding-bottom:clamp(56px, 7vw, 104px);
+/* ---- homepage: one heading, then the three entrances (final Phase A refinement, 24 Nov 2026) ----
+   Editorial, not cards: no box around an entrance, only a quiet wall mount for the artwork. Every mount has the same
+   shape and keeps its credit inside it (under the work), so status, title and description line up across the three. */
+.pa-gx{ padding-top:clamp(24px, 3vw, 42px); padding-bottom:clamp(52px, 6.4vw, 96px);
   background:radial-gradient(ellipse 60% 70% at 50% -10%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%); }
 .pa-gx-h1{ font-size:clamp(40px, 4.4vw, 64px); line-height:1; letter-spacing:-.015em; margin:0 0 clamp(20px, 2.4vw, 32px); }
-.pa-gx-tiles{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(14px, 1.6vw, 24px); list-style:none; margin:0; padding:0; }
-.pa-gx-tile{ position:relative; display:flex; flex-direction:column; min-width:0; background:var(--wall-2); border:1px solid var(--line); border-radius:6px; overflow:hidden; transition:border-color .3s; }
-.pa-gx-tile:hover{ border-color:var(--line-2); }
-.pa-gx-tile:focus-within{ border-color:var(--ivory); }
-.pa-gx-art{ position:relative; margin:0; aspect-ratio:5 / 4.1; display:grid; place-items:center; padding:clamp(16px, 1.8vw, 26px);
-  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,.08), rgba(255,255,255,0) 70%), #212224; }
-.pa-gx-art img{ width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)) drop-shadow(0 16px 30px rgba(0,0,0,.35)); transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.pa-gx-tiles{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(18px, 2.2vw, 32px); list-style:none; margin:0; padding:0; }
+.pa-gx-tile{ position:relative; display:flex; flex-direction:column; min-width:0; }
+.pa-gx-art{ position:relative; margin:0; aspect-ratio:5 / 4.1; display:grid; grid-template:minmax(0, 1fr) / minmax(0, 1fr); place-items:center; overflow:hidden;
+  padding:clamp(16px, 1.8vw, 26px) clamp(16px, 1.8vw, 26px) clamp(34px, 3vw, 44px);
+  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%), #222325;
+  border:1px solid rgba(237,235,231,.05); border-radius:3px; transition:background-color .4s, border-color .4s; }
+.pa-gx-tile:hover .pa-gx-art{ background-color:#262729; border-color:rgba(237,235,231,.10); }
+.pa-gx-art img{ width:100%; height:100%; min-height:0; object-fit:contain; filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)) drop-shadow(0 16px 30px rgba(0,0,0,.35)); transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
 .pa-gx-tile:hover .pa-gx-art img{ transform:scale(1.015); }
+.pa-gx-credit{ position:absolute; left:clamp(16px, 1.8vw, 26px); right:clamp(16px, 1.8vw, 26px); bottom:clamp(10px, 1vw, 14px); margin:0;
+  font-size:12px; line-height:1.35; color:var(--mute); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .pa-gx-prep{ display:grid; justify-items:center; align-content:center; gap:16px; width:100%; height:100%; text-align:center; color:var(--mute);
   background:repeating-linear-gradient(135deg, rgba(237,235,231,.035) 0 1px, transparent 1px 14px), linear-gradient(180deg, #2A2B2E, #232426); }
-.pa-gx-prep svg{ width:min(42%, 150px); height:auto; color:#5E5F63; }
+.pa-gx-prep{ min-height:0; overflow:hidden; }
+.pa-gx-prep svg{ width:auto; height:clamp(64px, 7.4vw, 112px); max-width:60%; color:#5E5F63; }
 .pa-gx-prep p{ margin:0; max-width:28ch; font-size:13.5px; line-height:1.45; color:var(--stone); }
-.pa-gx-credit{ margin:0; padding:10px clamp(18px, 1.8vw, 24px) 0; font-size:12.5px; line-height:1.4; color:var(--mute); }
-.pa-gx-body{ display:grid; grid-template-columns:minmax(0, 1fr) auto; align-items:start; align-content:start; gap:6px 16px; padding:clamp(14px, 1.4vw, 18px) clamp(18px, 1.8vw, 24px) clamp(20px, 1.8vw, 24px); flex:1; }
+.pa-gx-body{ display:grid; grid-template-columns:minmax(0, 1fr) auto; align-items:start; align-content:start; gap:4px 16px; padding:clamp(14px, 1.3vw, 18px) 2px 0; flex:1; }
 .pa-gx-body > *{ grid-column:1; }
-.pa-gx-status{ justify-self:start; display:inline-flex; align-items:center; gap:7px; margin:0 0 2px; font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; padding:4px 10px; border-radius:999px; border:1px solid var(--line-2); color:var(--stone); }
-.pa-gx-status--open{ color:var(--ivory); border-color:rgba(237,235,231,.45); }
+.pa-gx-status{ justify-self:start; display:inline-flex; align-items:center; gap:7px; margin:0 0 4px; font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; padding:3px 9px; border-radius:999px; border:1px solid var(--line-2); color:var(--stone); }
+.pa-gx-status--open{ color:var(--ivory); border-color:rgba(237,235,231,.40); }
 .pa-gx-status--open::before{ content:""; width:6px; height:6px; border-radius:50%; background:#8FBF9A; }
 .pa-gx-tile h2{ font-size:clamp(32px, 2.9vw, 44px); line-height:1.04; }
 .pa-gx-text{ margin:0; color:var(--stone); font-size:15px; line-height:1.5; max-width:38ch; }
-:where(body.pa) a.pa-gx-go{ grid-column:2; grid-row:2; align-self:center; display:inline-grid; place-items:center; width:48px; height:48px; border-radius:50%; border:1px solid var(--line-2); color:var(--ivory); font-size:18px; text-decoration:none; transition:background .3s, color .3s, border-color .3s; }
-a.pa-gx-go::before{ content:""; position:absolute; inset:0; }      /* the whole tile is the entrance */
+:where(body.pa) a.pa-gx-go{ grid-column:2; grid-row:2; align-self:center; display:inline-grid; place-items:center; width:44px; height:44px; border-radius:50%; border:1px solid var(--line-2); color:var(--ivory); font-size:17px; text-decoration:none; transition:background .3s, color .3s, border-color .3s; }
+a.pa-gx-go::before{ content:""; position:absolute; inset:0; }      /* the whole entrance is the link */
 a.pa-gx-go:focus-visible{ outline:none; }
+.pa-gx-tile:focus-within .pa-gx-art{ border-color:var(--ivory); }
 :where(body.pa) .pa-gx-tile:hover a.pa-gx-go{ background:var(--paper); color:var(--anth); border-color:var(--paper); }
 @media (max-width:1060px) and (min-width:721px){
-  .pa-gx-art{ aspect-ratio:3 / 3.4; padding:14px; }
+  .pa-gx-art{ aspect-ratio:3 / 3.4; padding:14px 14px 34px; }
+  .pa-gx-credit{ white-space:normal; font-size:11.5px; }
   .pa-gx-body{ grid-template-columns:1fr; }
-  :where(body.pa) a.pa-gx-go{ grid-column:1; grid-row:auto; margin-top:8px; width:42px; height:42px; }
+  :where(body.pa) a.pa-gx-go{ grid-column:1; grid-row:auto; margin-top:8px; width:40px; height:40px; }
   .pa-gx-tile h2{ font-size:31px; }
   .pa-gx-text{ font-size:14.5px; }
 }
 @media (max-width:720px){
-  .pa-gx-tiles{ grid-template-columns:1fr; gap:16px; }
-  .pa-gx-art{ aspect-ratio:4 / 3.3; }
-  .pa-gx-prep svg{ width:min(30%, 110px); }
-  :where(body.pa) a.pa-gx-go{ width:44px; height:44px; }
+  .pa-gx-tiles{ grid-template-columns:1fr; gap:26px; }
+  .pa-gx-art{ aspect-ratio:4 / 2.75; padding:12px 12px 30px; }
+  .pa-gx-credit{ bottom:8px; font-size:11.5px; }
+  .pa-gx-prep{ gap:10px; }
+  .pa-gx-prep svg{ height:62px; }
+  .pa-gx-prep p{ font-size:12.5px; }
+  .pa-gx-body{ padding-top:12px; gap:2px 14px; }
+  .pa-gx-status{ margin-bottom:2px; }
+  .pa-gx-tile h2{ font-size:31px; }
+  .pa-gx-text{ font-size:14.5px; line-height:1.45; }
+  :where(body.pa) a.pa-gx-go{ width:40px; height:40px; }
 }
 
 /* ---- the homepage band of other PlotArt programmes (text only) ---- */
