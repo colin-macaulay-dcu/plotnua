@@ -300,7 +300,8 @@ try:
         "biography": (gp, d.replace("Hewson has a First-Class", "Hewson has an award-winning First-Class", 1)),
         "counter": (gp, d.replace('<ol class="pa-vgc-hang', '<p class="pa-vgc-count">10 of 25 galleries open</p>\n  <ol class="pa-vgc-hang', 1)),
         "below": (gp, (lambda r: d.replace(r, "", 1).replace("</main>", r + "\n</main>", 1))(FEAT.region(d))),
-        "homepage": (hp, h.replace("<section class=\"pa-sec pa-sec--deep pa-intro\"", "<!-- pa-home-featured:begin --><!-- pa-home-featured:end -->\n<section class=\"pa-sec pa-sec--deep pa-intro\"", 1)),
+        # anchored on the artist band since the three-gallery homepage (24 Nov 2026) retired the introduction section
+        "homepage": (hp, h.replace("<!-- pa-artist-apply:begin -->", "<!-- pa-home-featured:begin --><!-- pa-home-featured:end -->\n<!-- pa-artist-apply:begin -->", 1)),
     }
     outs = {}
     for k, (f, t) in tampers.items():
