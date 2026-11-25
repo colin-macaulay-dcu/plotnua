@@ -132,7 +132,8 @@ def enquiry_href(pkg, w=None):
 
 
 def meta_line(a):
-    return " · ".join(x for x in (a.get("practice"), a.get("county")) if x)
+    # Phase C: the artist's confirmed public location ("Strandhill, Co. Sligo, Ireland") when present, else the county as today
+    return " · ".join(x for x in (a.get("practice"), (a.get("location") or {}).get("line") or a.get("county")) if x)
 
 
 def checks_panel(pkg, blocks):

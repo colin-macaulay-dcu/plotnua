@@ -48,7 +48,8 @@ ARTIST_KEYS = {"slug", "display_name", "founding", "practice", "medium", "county
                "statement", "bio", "website", "instagram", "portrait",
                "open_for_commissions",   # optional (Open for Commissions, 13 Nov 2026): present only as true; absent = off
                "open_to",                # optional (opportunities shown publicly, 16 Nov 2026): known keys only; absent = none
-               "achievements"}           # optional (Exhibitions & Achievements, Phase C): the Studio's stored text; absent = none
+               "achievements",           # optional (Exhibitions & Achievements, Phase C): the Studio's stored text; absent = none
+               "location"}               # optional (where the artist is based, Phase C): the public view only; absent = none
 WORK_KEYS = {"id", "slug", "title", "year", "medium", "materials", "h_cm", "w_cm", "d_cm", "price_eur",
              "price_on_request", "availability", "description", "order", "ai_involvement", "ai_note",
              "ai_founder_decision", "images"}
@@ -140,6 +141,13 @@ def validate_export(g):
         raise Refused("founding and county_public must be true or false")
     if "open_for_commissions" in a and a["open_for_commissions"] is not True:
         raise Refused("open_for_commissions is carried only as true (absent means off)")
+    if "location" in a:
+        loc = a["location"]
+        if (not isinstance(loc, dict) or not set(loc) <= {"country", "county", "town", "line"} or not {"country", "line"} <= set(loc)
+                or not re.fullmatch(r"[A-Z]{2}", str(loc["country"])) or (loc.get("county") is not None and loc["county"] not in COUNTIES)
+                or not isinstance(loc["line"], str) or not 3 <= len(loc["line"]) <= 120 or re.search(r"[0-9<>]", loc["line"])
+                or ("town" in loc and (not isinstance(loc["town"], str) or re.search(r"[0-9<>]", loc["town"])))):
+            raise Refused("location must be the Studio's public view only (country, county, town, place line), never an address")
     if "achievements" in a:
         import plotart_achievements as XA
         try:

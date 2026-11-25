@@ -101,9 +101,10 @@ check('P2 when present: its own section with its own heading, after About (separ
   && withXa.indexOf('pa-ag-statement') < withXa.indexOf('pa-ag-jump') && withXa.split('pa-ag-xa"').length === 2);
 check('P3 easy to reach: a link under the statement jumps to the section', withXa.includes('<a href="#exhibitions-achievements" data-pa-track="artist_achievements_jump">') && withXa.includes('id="exhibitions-achievements"'));
 check('P4 the artist\u2019s preview in the Studio shows exactly what will be published', withXa.includes(xaSection(stored).trim()) && withXa.includes(XA_JUMP));
-const pyValid = py('import plotart_gallery as G\nd=json.load(sys.stdin)\nout=[]\nfor a in d:\n    try:\n        G.validate_export({"artist": a, "works": []}); out.append("ok")\n    except Exception as e: out.append(type(e).__name__ + ":" + str(e)[:60])\nprint(json.dumps(out))',
+const pyValid = py('import plotart_gallery as G\nd=json.load(sys.stdin)\nout=[]\nfor a in d:\n    try:\n        G.validate_export({"schema": G.SCHEMA, "artist": dict({"slug": "sample-artist", "display_name": "Sample Artist", "founding": False, "practice": "Painter", "medium": "painting", "county": None, "county_public": False, "statement": None, "bio": "A synthetic biography used only to check the export rules, long enough to be valid.", "website": None, "instagram": None, "portrait": None}, **{k: v for k, v in a.items() if k in ("location", "achievements")}), "works": []}); out.append("ok")\n    except Exception as e: out.append(type(e).__name__ + ":" + str(e)[:60])\nprint(json.dumps(out))',
   [{ ...pkg.artist, achievements: stored }, { ...pkg.artist, achievements: messy }]);
-check('P5 the publisher\u2019s export check accepts the stored section and refuses anything else', /^\["[^"]*",\s*"Refused/.test(pyValid) && !/achievements/.test(JSON.parse(pyValid)[0]), pyValid);
+check('P5 the publisher\u2019s export check accepts the stored section and refuses anything else (the refusal names the section)',
+  !/achievements|not a plotnua/.test(JSON.parse(pyValid)[0]) && /^Refused:.*achievements/.test(JSON.parse(pyValid)[1]), pyValid);
 
 /* ---- migration 0026 ---- */
 const M26 = HERE + 'migrations/0026_artist_achievements.sql';

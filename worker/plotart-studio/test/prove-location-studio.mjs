@@ -72,6 +72,27 @@ const art = await call('GET', '/api/admin/locations', 'kay@example.test'), unk =
 check('S9 only the founder can see the overview; an unknown county is refused', art.s === 403 && unk.s === 400);
 const au = (await db.prepare("SELECT action, detail FROM audit WHERE action IN ('location','delivery') ORDER BY id").all()).results;
 check('S10 every save is in the audit log, without the town itself (only whether one was given)', au.length >= 5 && au.every(r => !/Dingle|Paris/.test(r.detail || '')), JSON.stringify(au).slice(0, 300));
+/* ---- the public profile: the confirmed public location, never an address ---- */
+await db.prepare("UPDATE artists SET practice='Painter' WHERE id IN ('akay','acor')").run();
+const pv = await call('GET', '/preview/', 'kay@example.test');
+const meta = (pv.t.match(/<p class="pa-ag-meta">([^<]*)<\/p>/) || [])[1];
+check('P1 the gallery page shows the confirmed public location under the name: "Painter · Dingle, Co. Kerry, Ireland"', meta === 'Painter · Dingle, Co. Kerry, Ireland', meta);
+await call('PUT', '/api/me/location', 'cor@example.test', { country: 'IE', county: 'Cork', show_location: false });
+const pv2 = await call('GET', '/preview/', 'cor@example.test');
+check('P2 when the artist does not show their location, no place appears at all (and coverage is never on the profile)',
+  ((pv2.t.match(/<p class="pa-ag-meta">([^<]*)<\/p>/) || [])[1]) === 'Painter' && !/Limerick|Delivers/.test(pv2.t));
+const py = (code, input) => execFileSync('python3', ['-c', `import sys, json; sys.path.insert(0, ${JSON.stringify(HERE + '../../atlas-tools')}); ${code}`], { input: JSON.stringify(input), encoding: 'utf8' });
+const base = JSON.parse(execFileSync('cat', [HERE + '../../plotart/artists/leah-hewson/gallery.json'], { encoding: 'utf8' })).artist;
+const pv3 = JSON.parse(py('import plotart_gallery as G\nd=json.load(sys.stdin)\nout=[]\nfor a in d:\n    try:\n        G.validate_export({"schema": G.SCHEMA, "artist": dict({"slug": "sample-artist", "display_name": "Sample Artist", "founding": False, "practice": "Painter", "medium": "painting", "county": None, "county_public": False, "statement": None, "bio": "A synthetic biography used only to check the export rules, long enough to be valid.", "website": None, "instagram": None, "portrait": None}, **{k: v for k, v in a.items() if k in ("location", "achievements")}), "works": []}); out.append("ok")\n    except Exception as e: out.append(type(e).__name__+":"+str(e)[:50])\nprint(json.dumps(out))',
+  [{ ...base, location: { country: 'IE', county: 'Kerry', town: 'Dingle', line: 'Dingle, Co. Kerry, Ireland' } }, { ...base, location: { country: 'IE', county: 'Kerry', line: '4 Strand St, Dingle' } },
+   { ...base, location: { country: 'IE', county: 'Kerry', line: 'Co. Kerry, Ireland', scope: 'island' } }]));
+check('P3 the publisher accepts only the public view: an address-like line or any extra field (e.g. delivery) is refused',
+  !/location/.test(pv3[0]) && !/not a plotnua/.test(pv3[0]) && /^Refused:location/.test(pv3[1]) && /^Refused:location/.test(pv3[2]), JSON.stringify(pv3));
+const n = s => { const m = s.match(/^(\d{4})_/); return m && m[1]; };
+const files = execFileSync('ls', [HERE + 'migrations'], { encoding: 'utf8' }).split('\n').filter(f => /^\d{4}_.*\.sql$/.test(f) && !f.endsWith('_rollback.sql'));
+const nums = files.map(n), dup = nums.filter((x, i) => nums.indexOf(x) !== i);
+check('N1 every migration number is used once (0024 Spaces, 0025 location and delivery, 0026 Exhibitions & Achievements)',
+  !dup.length && ['0024_spaces_identifier.sql', '0025_artist_locations.sql', '0026_artist_achievements.sql'].every(f => files.includes(f)) && !files.some(f => /exhibitions/.test(f)), JSON.stringify(dup));
 await mf.dispose();
 
 const fail = results.filter(x => !x).length;
