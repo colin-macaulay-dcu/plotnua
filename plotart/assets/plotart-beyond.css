@@ -20,7 +20,7 @@
 .pa-bg-tile:hover .pa-bg-stage{ transform:translateX(-50%) scale(1.02); }
 .pa-bg-art figcaption{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin:10px 0 0; font-size:12px; line-height:1.45; color:var(--mute); }
 .pa-bg-art figcaption .pa-chip{ font-size:10px; padding:3px 8px; }
-@media (min-width:721px){ .pa-bg-art figcaption{ min-height:calc(2 * 1.45em + 24px); align-content:flex-start; } }   /* the three captions take the same height, so the titles line up */
+@media (min-width:721px){ .pa-bg-tiles{ grid-auto-rows:auto; } .pa-bg-tile{ display:grid; grid-row:span 2; grid-template-rows:subgrid; row-gap:0; } .pa-bg-art figcaption{ align-content:flex-start; } }   /* the tiles share their rows, so the titles line up whatever the caption length */
 
 /* Art for Hire: the film-set illustration from the Art for Hire page (same drawing, same painting, same disclosure) */
 .pa-bg-stage{ position:absolute; top:0; left:50%; height:100%; aspect-ratio:16 / 9; transform:translateX(-50%); transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
