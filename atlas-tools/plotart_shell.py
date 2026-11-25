@@ -40,7 +40,8 @@ FOOT_ARTISTS = '<li><a href="%s" data-pa-track="footer_artist_studio">Artist Stu
 # being_gallery_state). Functional labels carry no full stop; the full stop is the editorial treatment of the homepage
 # entrances and the gallery headings only (build-plotart-galleries.py). Former addresses landscape/, places-and-spaces/ and
 # portraiture/ are generated redirect pages. atlas-tools/plotart-galleries-nav.py applies exactly this markup to hand-built and
-# already-published pages; prove-plotart-launch.py L11 and L21 check it.
+# already-published pages; prove-plotart-launch.py L11 and L21 check it. Mobile Gallery left the Galleries menu and is its own
+# pill again, straight after it (founder brief 25 Nov 2026: restore Mobile Gallery to the primary navigation).
 GALLERIES = (("contemporary", "gallery/", "Contemporary", "nav_gallery_contemporary"),
              ("environment", "environment/", "Environment", "nav_gallery_environment"),
              ("being", "being/", "Being", "nav_gallery_being"))
@@ -61,18 +62,25 @@ def gallery_state(key):
 
 
 def galleries_menu(R, current, mg_href=None):
-    """The header's Galleries menu. current: a gallery key or "mg" marks that page's link (aria-current); "vg" (an artist's
-    gallery or artwork page, all of which are in Contemporary today) marks only the menu itself as the current section."""
-    keys = {g[0] for g in GALLERIES} | {"mg"}
+    """The header's Galleries menu: the three galleries only. current: a gallery key marks that page's link (aria-current);
+    "vg" (an artist's gallery or artwork page, all of which are in Contemporary today) marks only the menu itself as the
+    current section. Mobile Gallery is its own pill again, straight after this menu (mobile_gallery_pill, founder brief
+    25 Nov 2026); mg_href is accepted for callers that still pass it and is not used here."""
+    keys = {g[0] for g in GALLERIES}
     links = []
     for key, href, label, track in GALLERIES:
         links.append('<a class="pa-dd-link" href="%s%s"%s data-pa-track="%s">%s%s</a>' % (
             R, href, ' aria-current="page"' if key == current else "", track, label,
             PREP_NOTE if gallery_state(key) == "in_preparation" else ""))
-    links.append('<a class="pa-dd-link" href="%s"%s data-pa-track="nav_mobile_gallery">Mobile Gallery</a>' % (
-        mg_href or R + "mobile-gallery/", ' aria-current="page"' if current == "mg" else ""))
     return ('<details class="pa-dd%s" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary>'
             '<div class="pa-dd-panel">%s</div></details>') % (" is-current" if current in keys | {"vg"} else "", "".join(links))
+
+
+def mobile_gallery_pill(R, current, mg_href=None):
+    """The Mobile Gallery pill (restored to the primary navigation, founder brief 25 Nov 2026): straight after the Galleries
+    menu, marked current on the Mobile Gallery's own pages."""
+    return '<a class="pa-pill" href="%s"%s data-pa-track="nav_mobile_gallery">Mobile Gallery</a>' % (
+        mg_href or R + "mobile-gallery/", ' aria-current="page"' if current == "mg" else "")
 
 
 def menu_items(nav):
@@ -105,7 +113,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
               '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt=""></a>\n'
               '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, " pa-pills--hire" if hire_nav else "", pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
-        galleries_menu(R, current),
+        galleries_menu(R, current) + mobile_gallery_pill(R, current),
         pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
         (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
         + (pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]) if services_nav else ""),

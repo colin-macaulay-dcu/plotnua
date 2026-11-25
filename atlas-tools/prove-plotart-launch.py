@@ -173,6 +173,7 @@ GX_PAGES = ["environment/index.html", "being/index.html"]
 GX_LEGACY = ["landscape/index.html", "places-and-spaces/index.html", "portraiture/index.html"]   # former addresses: generated redirects only
 PAGES += GX_PAGES
 ALLOWED |= set(GX_PAGES) | {"assets/plotart-galleries.css"} | set(GX_LEGACY)
+ALLOWED |= {"assets/plotart-beyond.css"}   # Beyond the Gallery on the homepage (founder brief 25 Nov 2026)
 ALLOWED |= {"assets/plotart-featured.css"}   # Featured Artists in the Artists' Gallery (17 Nov 2026; was plotart-home.css on the homepage)   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
@@ -321,8 +322,9 @@ for name in PAGES:
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin MacAulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + GX_ART_COUNT + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" ') + home.count('<img class="pa-pn-p" '),   # + the PlotArt logo in the header (31 Oct 2026) and the PlotNua house P in the PlotNua link (19 Nov 2026)
-     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image"
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + 2 + GX_ART_COUNT + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" ') + home.count('<img class="pa-pn-p" '),   # + the PlotArt logo in the header (31 Oct 2026) and the PlotNua house P in the PlotNua link (19 Nov 2026)
+     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation, the A Home for Art image"
+     " and, in Beyond the Gallery, the Mobile Gallery visualisation and the founder's painting in the Art for Hire film-set illustration"
      " (no featured section: Featured Artists moved to the Artists' Gallery, 17 Nov 2026)")
 need("pa-home-featured" not in home and "pa-home-feat" not in home and "plotart-home.css" not in home and "data-pa-home-item" not in home,
      "L6 the homepage still carries the featured artworks section (moved to the Artists' Gallery, founder brief 17 Nov 2026)")
@@ -588,15 +590,16 @@ if os.path.exists(smp):
     _azwant = [(p["artist"]["slug"], html.escape(p["artist"]["display_name"], quote=True))
                for p in sorted(_packages, key=lambda p: (p["artist"]["display_name"].casefold(), p["artist"]["slug"]))]
     need(_azlinks == _azwant and (bool(_az) == bool(_packages)), "L11 artist A-Z must match approved public names exactly")
-# Three galleries (24 Nov 2026): the Artists' Gallery and Mobile Gallery pills became the one Galleries menu, which must sit
-# straight after Discover PlotArt and be exactly the shell's (checked below, with its current link).
-NAV_WANT = ["Discover PlotArt", "Living Gallery", "PlotNua ↗"]
+# Three galleries (24 Nov 2026): the Artists' Gallery pill became the one Galleries menu, which must sit straight after
+# Discover PlotArt and be exactly the shell's (checked below, with its current link). Mobile Gallery is its own pill again,
+# straight after the menu (founder brief 25 Nov 2026: restore Mobile Gallery to the primary navigation).
+NAV_WANT = ["Discover PlotArt", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]
 if HIRE_ON:
-    NAV_WANT.insert(2, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
+    NAV_WANT.insert(3, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
 if SERVICES_ON:
     NAV_WANT.insert(len(NAV_WANT) - 1, "Services")                                        # Art Services & Providers (19 Nov 2026)
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": None, "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
-               "mobile-gallery/index.html": None, "mobile-gallery/gallery.html": None, "environment/index.html": None, "being/index.html": None}
+               "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery", "environment/index.html": None, "being/index.html": None}
 # the page each Galleries menu link is current on (the menu itself is then marked as the current section)
 DD_CURRENT = {"gallery/index.html": "contemporary", "environment/index.html": "environment", "being/index.html": "being",
               "mobile-gallery/index.html": "mg", "mobile-gallery/gallery.html": "mg"}
@@ -617,12 +620,12 @@ for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
         mg_href = "index.html" if name.startswith("mobile-gallery/") else depth + "mobile-gallery/"
-        want_hrefs = [depth + "index.html", depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
+        want_hrefs = [depth + "index.html", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
         need(len(links) == len(want_hrefs) and [x[0] for x in links] == want_hrefs,
-             "L11 %s pills must link to the PlotArt homepage, the Living Gallery, Art for Hire, Services and the PlotNua homepage" % name)
-        _dd = SHELL.galleries_menu(depth, DD_CURRENT.get(name), mg_href=mg_href)
+             "L11 %s pills must link to the PlotArt homepage, the Mobile Gallery, the Living Gallery, Art for Hire, Services and the PlotNua homepage" % name)
+        _dd = SHELL.galleries_menu(depth, DD_CURRENT.get(name)) + SHELL.mobile_gallery_pill(depth, DD_CURRENT.get(name), mg_href=mg_href)
         need(nav is not None and nav.group(1).count("data-pa-dd") == 1 and re.match(r'<a class="pa-pill"[^>]*>Discover PlotArt</a>' + re.escape(_dd), nav.group(1)) is not None,
-             "L11 %s must carry the one Galleries menu, exactly as the shell writes it, straight after Discover PlotArt" % name)
+             "L11 %s must carry the one Galleries menu, exactly as the shell writes it, straight after Discover PlotArt, then the Mobile Gallery pill" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
 
@@ -743,21 +746,56 @@ for _d, _, _fs in os.walk(PA):
         if _f.endswith(".html") and _rp not in GX_LEGACY:
             _t = open(os.path.join(_d, _f), encoding="utf-8").read()
             need(not _OLD.search(_t), "L21 %s still uses a former gallery name or links to a former gallery address" % _rp)
-# every PlotArt page with a header carries the one Galleries menu, and no Artists' Gallery or Mobile Gallery pill is left
+# every PlotArt page with a header carries the one Galleries menu (the three galleries only) followed by exactly one Mobile
+# Gallery pill, and no Artists' Gallery pill is left (Mobile Gallery restored to the primary navigation, 25 Nov 2026)
 for _d, _, _fs in os.walk(PA):
     for _f in _fs:
         if _f.endswith(".html"):
             _t = open(os.path.join(_d, _f), encoding="utf-8").read()
             if 'class="pa-pills' in _t:
                 need(_t.count("data-pa-dd") == 1 and 'data-pa-track="nav_virtual_gallery' not in _t
-                     and not re.search(r'<a class="pa-pill[^"]*"[^>]*data-pa-track="nav_mobile_gallery"', _t),
-                     "L21 %s must carry exactly one Galleries menu and no Artists’ Gallery pill" % os.path.relpath(os.path.join(_d, _f), PA))
+                     and len(re.findall(r'</details><a class="pa-pill"[^>]*data-pa-track="nav_mobile_gallery">Mobile Gallery</a>', _t)) == 1
+                     and 'class="pa-dd-link"' not in _t.split('data-pa-track="nav_mobile_gallery"')[1].split("</nav>")[0]
+                     and not re.search(r'<a class="pa-dd-link"[^>]*data-pa-track="nav_mobile_gallery"', _t),
+                     "L21 %s must carry exactly one Galleries menu, then the Mobile Gallery pill, and no Artists’ Gallery pill" % os.path.relpath(os.path.join(_d, _f), PA))
 # the homepage states the real status of the Living Gallery and Art for Hire (founder decision 5, 24 Nov 2026)
 _hv = re.sub(r"\s+", " ", visible_text(home))
 need("no homes are taking part yet" in _hv and not re.search(r"Real art\. Real homes\.|displayed in real homes", _hv),
      "L21 the homepage must present the Living Gallery as a programme in development (no homes are taking part yet)")
 need(("Hire enquiries are not yet open." in _hv) == (not HIRE_FORM) and (not HIRE_ON or 'href="art-for-hire/"' in home),
      "L21 the homepage must say Art for Hire enquiries are not yet open exactly while the enquiry form is off")
+
+# Beyond the Gallery (founder brief 25 Nov 2026): straight after the three galleries, the Mobile Gallery, Living Gallery and Art
+# for Hire, in that order, each with a picture, a status, a short text and one link to its own page. Every picture is the
+# founder's painting in a disclosed illustration; no gallery is named or implied to take part, and nothing claims a live service.
+_bg = re.search(r'<!-- pa-galleries:end -->\s*<!-- pa-beyond:begin.*?-->(.*?)<!-- pa-beyond:end -->', home, re.S)
+need(_bg is not None and '<h2 id="beyondH">Beyond the Gallery.</h2>' in (_bg.group(1) if _bg else ""),
+     "L21 the homepage must carry 'Beyond the Gallery.' straight after the three galleries")
+if _bg:
+    _bgt = _bg.group(1)
+    _tiles = re.findall(r'<li class="pa-bg-tile" data-pa-beyond="([a-z-]+)">(.*?)</li>', _bgt, re.S)
+    need([k for k, _ in _tiles] == ["mobile-gallery", "living-gallery", "art-for-hire"],
+         "L21 Beyond the Gallery must show Mobile Gallery, Living Gallery and Art for Hire, in that order")
+    _bg_href = {"mobile-gallery": "mobile-gallery/", "living-gallery": "living-gallery.html", "art-for-hire": "art-for-hire/"}
+    _bg_img = {"mobile-gallery": {"mobile-gallery/img/mg-hero-colin-macaulay-880.webp", "mobile-gallery/img/mg-hero-colin-macaulay-600.webp"},
+               "living-gallery": {"assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"},
+               "art-for-hire": {"assets/hero/founder-01-abstract.webp"}}
+    for _k, _t in _tiles:
+        if _k not in _bg_href:
+            continue                                   # already refused by the order rule above
+        _links = re.findall(r'<a [^>]*href="([^"]+)"', _t)
+        _imgs = set(re.findall(r'<img [^>]*src="([^"]+)"', _t)) | set(u.split(" ")[0] for ss in re.findall(r'srcset="([^"]+)"', _t) for u in ss.split(", "))
+        need(_links == [_bg_href[_k]], "L21 the %s tile must link only to its own page (%s)" % (_k, _links))
+        need(bool(_imgs) and _imgs <= _bg_img[_k], "L21 the %s tile may show only its declared illustration (%s)" % (_k, sorted(_imgs)))
+        need(re.search(r'<span class="pa-chip pa-chip--illus">(AI-generated illustration|Illustration)</span>', _t) is not None and "Colin MacAulay" in _t,
+             "L21 the %s tile's picture must carry its illustration label and the founder's credit" % _k)
+        need('<p class="pa-bg-status">' in _t and "<h3>" in _t, "L21 the %s tile needs its status and title" % _k)
+    _bgv = re.sub(r"\s+", " ", visible_text(_bgt))
+    need(not re.search(r"Artworld|Doorway|Sol Art|Gormley|Trinity Gallery|Gallery Kinsale|participat|partner|book (a|an|your)|appointments? (are|is) available", _bgv, re.I),
+         "L21 Beyond the Gallery must not name a prospective gallery or imply a gallery, booking or appointment is confirmed")
+    need("appointments can’t yet be arranged through PlotArt" in _bgv and "no homes are taking part yet" in _bgv,
+         "L21 Beyond the Gallery must keep the Mobile Gallery and Living Gallery status sentences")
+    need("Not offered for hire." in _bgv, "L21 the Art for Hire picture must say the founder's painting is not offered for hire")
 
 # L12 · the Founding 25 and the Living Gallery are separate programmes (founder decision 28 Oct 2026)
 SEP = "The Founding 25 is the PlotArt Artists’ Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."

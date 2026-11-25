@@ -944,8 +944,8 @@ html.pa-lb-on{ overflow:hidden; }
   .pa-head{ --pn-sm-top:105px; }
 }
 /* ==== pa-galleries-nav:begin · the Galleries menu (three-gallery expansion Phase A, 24 Nov 2026). One header item, a <details>
-   menu: Contemporary, Environment, Being, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
-   Scoped to .pa-dd, so nothing else changes. ==== */
+   menu: Contemporary, Environment, Being (Mobile Gallery is its own pill again after the menu, 25 Nov 2026). The summary is styled
+   as a pill; the panel drops below it. Scoped to .pa-dd, so nothing else changes. ==== */
 .pa-dd{ position:relative; }
 .pa-dd > summary{ list-style:none; cursor:pointer; }
 .pa-dd > summary::-webkit-details-marker{ display:none; }
@@ -961,10 +961,9 @@ html.pa-lb-on{ overflow:hidden; }
 :where(body.pa) a.pa-dd-link[aria-current="page"]{ color:var(--ivory); background:rgba(237,235,231,.08); }
 :where(body.pa) a.pa-dd-link:focus-visible{ outline:2px solid var(--terra-text); outline-offset:-2px; }
 .pa-dd-note{ font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); }
-.pa-dd-link:last-child{ margin-top:4px; border-top:1px solid rgba(237,235,231,.10); border-radius:0 0 10px 10px; padding-top:13px; }
 .pn-sm-link .pa-dd-note{ margin-left:auto; }
 @media (max-width:1180px){ .pa-dd{ display:flex; } :where(body.pa) .pa-pills .pa-pill--dd{ width:100%; min-height:44px; padding:0 8px; font-size:14px; }
-  .pa-pills.pa-pills--hire{ grid-template-columns:repeat(6, minmax(0, 1fr)); } }
-@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+  .pa-pills.pa-pills--hire{ grid-template-columns:repeat(7, minmax(0, 1fr)); } }
+@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(4, minmax(0, 1fr)); } }
 @media (max-width:860px){ :where(body.pa) .pa-pills .pa-pill--dd{ padding:0 4px; font-size:13px; letter-spacing:0; } }
 /* ==== pa-galleries-nav:end ==== */

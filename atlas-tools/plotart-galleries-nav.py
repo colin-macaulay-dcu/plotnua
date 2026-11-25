@@ -4,8 +4,9 @@
 Replaces the "Artists’ Gallery" and "Mobile Gallery" pills of every PlotArt page under ROOT/plotart with the one
 "Galleries" menu that atlas-tools/plotart_shell.py now writes (Contemporary · Environment · Being · Mobile
 Gallery), and makes the same change to the phone Menu and the footer. A page that already has the menu is REFRESHED to the
-shell's current markup (final gallery identity, 24 Nov 2026: Contemporary · Environment · Being):
-the menu, its phone Menu links and the footer gallery links are rewritten from the shell, nothing else. Everything else on each page is left byte-for-byte
+shell's current markup (final gallery identity, 24 Nov 2026: Contemporary · Environment · Being; from 25 Nov 2026 the menu holds
+the three galleries only and Mobile Gallery is its own pill again, straight after it): the menu, the Mobile Gallery pill, its phone
+Menu links and the footer gallery links are rewritten from the shell, nothing else. Everything else on each page is left byte-for-byte
 as it was. The menu's styles and behaviour live between the pa-galleries-nav markers in plotart.css and plotart.js.
 
   python3 atlas-tools/plotart-galleries-nav.py ROOT            apply
@@ -31,8 +32,8 @@ NAV = re.compile(r'<nav class="pa-pills[^"]*" aria-label="PlotArt">(.*?)</nav>',
 
 CSS_BEGIN, CSS_END = "/* ==== pa-galleries-nav:begin", "/* ==== pa-galleries-nav:end ==== */"
 CSS = CSS_BEGIN + """ · the Galleries menu (three-gallery expansion Phase A, 24 Nov 2026). One header item, a <details>
-   menu: Contemporary, Environment, Being, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
-   Scoped to .pa-dd, so nothing else changes. ==== */
+   menu: Contemporary, Environment, Being (Mobile Gallery is its own pill again after the menu, 25 Nov 2026). The summary is styled
+   as a pill; the panel drops below it. Scoped to .pa-dd, so nothing else changes. ==== */
 .pa-dd{ position:relative; }
 .pa-dd > summary{ list-style:none; cursor:pointer; }
 .pa-dd > summary::-webkit-details-marker{ display:none; }
@@ -48,11 +49,10 @@ CSS = CSS_BEGIN + """ · the Galleries menu (three-gallery expansion Phase A, 24
 :where(body.pa) a.pa-dd-link[aria-current="page"]{ color:var(--ivory); background:rgba(237,235,231,.08); }
 :where(body.pa) a.pa-dd-link:focus-visible{ outline:2px solid var(--terra-text); outline-offset:-2px; }
 .pa-dd-note{ font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); }
-.pa-dd-link:last-child{ margin-top:4px; border-top:1px solid rgba(237,235,231,.10); border-radius:0 0 10px 10px; padding-top:13px; }
 .pn-sm-link .pa-dd-note{ margin-left:auto; }
 @media (max-width:1180px){ .pa-dd{ display:flex; } :where(body.pa) .pa-pills .pa-pill--dd{ width:100%; min-height:44px; padding:0 8px; font-size:14px; }
-  .pa-pills.pa-pills--hire{ grid-template-columns:repeat(6, minmax(0, 1fr)); } }
-@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+  .pa-pills.pa-pills--hire{ grid-template-columns:repeat(7, minmax(0, 1fr)); } }
+@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(4, minmax(0, 1fr)); } }
 @media (max-width:860px){ :where(body.pa) .pa-pills .pa-pill--dd{ padding:0 4px; font-size:13px; letter-spacing:0; } }
 """ + CSS_END + "\n"
 JS_BEGIN, JS_END = "/* pa-galleries-nav:begin", "/* pa-galleries-nav:end */"
@@ -78,7 +78,8 @@ def current_of(rel, vg_cur, mg_cur):
     return "vg" if vg_cur else None
 
 
-DD = re.compile(r'<details class="pa-dd(?: is-current)?" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary><div class="pa-dd-panel">(.*?)</div></details>', re.S)
+DD = re.compile(r'<details class="pa-dd(?: is-current)?" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary><div class="pa-dd-panel">(.*?)</div></details>'
+                r'(<a class="pa-pill" href="([^"]*)"( aria-current="page")? data-pa-track="nav_mobile_gallery">Mobile Gallery</a>)?', re.S)
 DD_LINK = re.compile(r'<a class="pa-dd-link" href="([^"]*)"( aria-current="page")? data-pa-track="([a-z_]+)">')
 MENU_RUN = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_gallery_contemporary_menu">.*?data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>', re.S)
 FOOT_RUN = re.compile(r'<li><a href="([^"]*)gallery/">Contemporary(?: Art)?</a></li>.*?<li><a href="[^"]*mobile-gallery/">Mobile Gallery</a></li>', re.S)
@@ -86,23 +87,35 @@ KEY_OF_TRACK = {t: k for k, _h, _l, t in S.GALLERIES}
 
 
 def refresh(text, rel):
-    """A page that already has the Galleries menu: rewrite the menu, its phone Menu links and the footer gallery links from the
-    shell's current markup (same base path, same current page, same Mobile Gallery address)."""
-    ms = DD.findall(text)
-    if len(ms) != 1:
-        raise ValueError("expected one Galleries menu, found %d" % len(ms))
+    """A page that already has the Galleries menu: rewrite the menu, the Mobile Gallery pill, the phone Menu gallery links and
+    the footer gallery links from the shell's current markup (same base path, same current page, same Mobile Gallery address).
+    Accepts both the 24 Nov form (Mobile Gallery as the menu's last link) and the 25 Nov form (Mobile Gallery pill after it)."""
+    if text.count("data-pa-dd>") != 1:
+        raise ValueError("expected one Galleries menu, found %d" % text.count("data-pa-dd>"))
     m = DD.search(text)
+    if not m:
+        raise ValueError("the Galleries menu is not in the shell's form")
     links = DD_LINK.findall(m.group(1))
-    if not links or links[0][2] != "nav_gallery_contemporary" or links[-1][2] != "nav_mobile_gallery" or not links[0][0].endswith("gallery/"):
-        raise ValueError("the Galleries menu does not start with Contemporary and end with Mobile Gallery")
-    R, mg_href = links[0][0][:-len("gallery/")], links[-1][0]
+    tracks = [t for _h, _a, t in links]
+    if m.group(2):                                    # 25 Nov form: three galleries, then the Mobile Gallery pill
+        if tracks != [g[3] for g in S.GALLERIES]:
+            raise ValueError("the Galleries menu must hold exactly the three galleries")
+        mg_href, mg_cur = m.group(3), bool(m.group(4))
+    else:                                             # 24 Nov form: Mobile Gallery as the menu's last link
+        if tracks != [g[3] for g in S.GALLERIES] + ["nav_mobile_gallery"]:
+            raise ValueError("the Galleries menu does not start with Contemporary and end with Mobile Gallery")
+        mg_href, mg_cur = links[-1][0], bool(links[-1][1])
+        links = links[:-1]
+    if not links[0][0].endswith("gallery/"):
+        raise ValueError("the Galleries menu does not start with Contemporary")
+    R = links[0][0][:-len("gallery/")]
     cur = [t for _h, a, t in links if a]
-    current = ("mg" if cur[0] == "nav_mobile_gallery" else KEY_OF_TRACK.get(cur[0], "vg")) if cur else ("vg" if " is-current" in m.group(0) else None)
-    dd = S.galleries_menu(R, current, mg_href=mg_href)
+    current = "mg" if mg_cur else (KEY_OF_TRACK.get(cur[0], "vg") if cur else ("vg" if " is-current" in m.group(0) else None))
+    nav = S.galleries_menu(R, current) + S.mobile_gallery_pill(R, current, mg_href=mg_href)
     if len(MENU_RUN.findall(text)) != 1 or len(FOOT_RUN.findall(text)) > 1:
         raise ValueError("expected one phone Menu gallery run and at most one footer gallery run")
-    out = text.replace(m.group(0), dd, 1)
-    out = MENU_RUN.sub(lambda _m: "".join(S.menu_items(dd)), out, count=1)
+    out = text.replace(m.group(0), nav, 1)
+    out = MENU_RUN.sub(lambda _m: "".join(S.menu_items(nav)), out, count=1)
     out = FOOT_RUN.sub(lambda f: S.FOOT_GALLERIES.format(R=f.group(1)), out, count=1)
     return out, ("refreshed" if out != text else "already")
 
@@ -117,7 +130,8 @@ def patch(text, rel):
     if not m or len(PILLS.findall(navs[0])) != 1 or len(MENU.findall(text)) != 1 or len(FOOT.findall(text)) > 1:
         raise ValueError("expected one Artists’ Gallery + Mobile Gallery pill pair, one Menu pair and at most one footer pair")
     R, mg_href = m.group(1), m.group(3)
-    dd = S.galleries_menu(R, current_of(rel, bool(m.group(2)), bool(m.group(4))), mg_href=mg_href)
+    cur = current_of(rel, bool(m.group(2)), bool(m.group(4)))
+    dd = S.galleries_menu(R, cur) + S.mobile_gallery_pill(R, cur, mg_href=mg_href)
     out = text.replace(m.group(0), dd, 1)
     out = MENU.sub(lambda _m: "".join(S.menu_items(dd)), out, count=1)
     out = FOOT.sub(lambda f: S.FOOT_GALLERIES.format(R=f.group(1)), out, count=1)
