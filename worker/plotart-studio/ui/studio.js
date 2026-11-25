@@ -182,7 +182,8 @@
         <div class="st-f"><label for="f-medium">Main medium</label><select id="f-medium" name="medium">${['', ...ME.media].map(m => `<option value="${m}"${a.medium === m ? ' selected' : ''}>${m ? E(MEDIUM[m]) : 'Choose…'}</option>`).join('')}</select></div>
         ${f('statement', 'A one-line statement (optional)', a.statement, { area: 1, hint: 'Shown large under your name. Up to 400 characters.' })}
         ${f('bio', 'Your biography', a.bio, { area: 1, hint: 'In your own words: who you are and how you work. 40–2,400 characters. Press Enter at the end of a paragraph to start a new one; your paragraphs appear as you write them.' })}
-      </section></div><div>
+      </section>
+      ${ME.exhibitions_available ? cvCard(a) : ''}</div><div>
       <section class="st-card"><h3>Portrait (optional)</h3>
         <div class="st-drop" id="pdrop">${p ? `<img src="/api/images/${p.id}/view" alt="">` : '<span>Add a portrait photograph</span><small class="st-muted">JPEG, PNG or WebP · at least 800 px</small>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload a portrait"></div>
         ${p ? `${f('palt', 'Describe your portrait', p.alt, { req: 1, hint: 'A short line for people using screen readers, e.g. “The artist in her studio”.' })}<button class="st-btn st-btn--small st-btn--danger" data-act="rmp">Remove portrait</button>` : ''}
@@ -206,6 +207,7 @@
       track(el, async el => { await api('PUT', '/api/me/profile', { [el.name]: valOf(el) }); await refresh(); });
     }
     bindBar();
+    bindCv();
     // Open for Commissions (no name attribute: it has its own route, never the profile autosave above)
     $('#f-ofc', app)?.addEventListener('change', async e => {
       const box = e.target, err = $('#f-ofc-e', app);
@@ -223,6 +225,60 @@
     $('#pdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], '/api/me/portrait', $('#pdrop'), { portrait: true, done: async () => { await refresh(); profile(); } }));
     $('[data-act=rmp]', app)?.addEventListener('click', async () => { await api('DELETE', '/api/me/portrait'); await refresh(); profile(); say('Portrait removed'); });
     $('[name=palt]', app)?.addEventListener('change', async e => { try { await api('PATCH', `/api/images/${p.id}`, { alt: e.target.value, photographer: 'self' }); say('Saved'); } catch (x) { say(x.message, true); } });
+  }
+  /* Exhibitions & Achievements (Phase C, 25 Nov 2026): optional, separate from the biography, full review like it.
+     Plain text with three line forms ("## heading", "- list item", other lines = paragraphs): the same rule as
+     src/lib.js exhibitionBlocks and the published page, so the preview below the box is what visitors will see. */
+  function cvBlocks(text) {
+    const out = [];
+    for (const raw of String(text || '').replace(/\r\n?/g, '\n').split('\n')) {
+      const line = raw.trim();
+      if (!line) continue;
+      let m;
+      if ((m = line.match(/^#{1,3}\s+(.+)$/))) out.push(['h', m[1].trim()]);
+      else if ((m = line.match(/^[-\u2022*\u2013]\s+(.+)$/))) {
+        const last = out[out.length - 1];
+        if (last && last[0] === 'ul') last[1].push(m[1].trim()); else out.push(['ul', [m[1].trim()]]);
+      } else out.push(['p', line]);
+    }
+    return out;
+  }
+  const cvHtml = text => cvBlocks(text).map(([k, x]) => k === 'h' ? `<h3>${E(x)}</h3>`
+    : k === 'ul' ? `<ul>${x.map(i => `<li>${E(i)}</li>`).join('')}</ul>` : `<p>${E(x)}</p>`).join('');
+  function cvCard(a) {
+    return `<section class="st-card st-cv" aria-labelledby="cv-h">
+        <h3 id="cv-h">Exhibitions &amp; Achievements <span class="st-opt">Optional</span></h3>
+        <p class="st-muted st-cv-intro">Your professional record, in its own section on your gallery page after your biography: solo and group exhibitions, awards and distinctions, public, private and corporate collections, residencies, commissions, publications and other achievements. Leave it empty and the section won’t appear.</p>
+        <div class="st-cv-tools" role="toolbar" aria-label="Formatting" aria-controls="f-exhibitions">
+          <button type="button" class="st-btn st-btn--small" data-cv="h">Add a heading</button>
+          <button type="button" class="st-btn st-btn--small" data-cv="li">Add a list item</button>
+        </div>
+        <div class="st-f"><label for="f-exhibitions" class="st-cv-label">Exhibitions &amp; Achievements</label>
+          <textarea id="f-exhibitions" name="exhibitions" aria-describedby="f-exhibitions-h" spellcheck="true">${E(a.exhibitions)}</textarea>
+          <small id="f-exhibitions-h">Start a line with <b>##</b> for a heading (for example “## Solo exhibitions”) and with <b>-</b> for a list item. Every other line is a paragraph of its own. Up to 6,000 characters. Your biography is not changed.</small>
+          <span class="st-err" aria-live="polite"></span></div>
+        <div class="st-cv-prev"><p class="st-lab">How it will look on your gallery</p><div class="st-cv-out" data-cv-out></div></div>
+      </section>`;
+  }
+  function bindCv() {
+    const ta = $('#f-exhibitions', app); if (!ta) return;
+    const out = $('[data-cv-out]', app);
+    const paint = () => { const h = cvHtml(ta.value); out.innerHTML = h || '<p class="st-muted">Nothing yet. The section stays hidden until you add something.</p>'; };
+    ta.addEventListener('input', paint); paint();
+    app.querySelectorAll('[data-cv]').forEach(b => b.addEventListener('click', () => {
+      const mark = b.dataset.cv === 'h' ? '## ' : '- ';
+      const v = ta.value, at = ta.selectionStart ?? v.length;
+      const start = v.lastIndexOf('\n', at - 1) + 1;
+      const line = v.slice(start, v.indexOf('\n', start) < 0 ? v.length : v.indexOf('\n', start));
+      let nv, caret;
+      if (!line.trim()) { nv = v.slice(0, start) + mark + v.slice(start + line.length); caret = start + mark.length; }
+      else if (/^(#{1,3}|[-\u2022*\u2013])\s/.test(line)) {   // already marked: replace the mark
+        const bare = line.replace(/^(#{1,3}|[-\u2022*\u2013])\s+/, '');
+        nv = v.slice(0, start) + mark + bare + v.slice(start + line.length); caret = start + mark.length + bare.length;
+      } else { nv = v.slice(0, start) + mark + v.slice(start); caret = at + mark.length; }
+      ta.value = nv; ta.focus(); ta.setSelectionRange(caret, caret);
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+    }));
   }
   function f(name, label, val, o = {}) {
     const id = 'f-' + name;

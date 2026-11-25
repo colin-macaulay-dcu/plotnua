@@ -1256,3 +1256,7 @@ CREATE TABLE IF NOT EXISTS image_use_consents (
   created_at TEXT NOT NULL CHECK (length(created_at) BETWEEN 20 AND 30)
 );
 CREATE INDEX IF NOT EXISTS image_use_consents_artist ON image_use_consents(artist_id, scope, created_at);
+
+-- PlotArt Studio · migration 0024 · Exhibitions & Achievements (Phase C, development 25 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- See migrations/0024_exhibitions.sql.
+ALTER TABLE artists ADD COLUMN exhibitions TEXT CHECK (exhibitions IS NULL OR length(exhibitions) BETWEEN 1 AND 6000);

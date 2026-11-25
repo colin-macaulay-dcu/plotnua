@@ -47,7 +47,8 @@ MEDIA = ("painting", "drawing", "works_on_paper", "printmaking", "photography", 
 ARTIST_KEYS = {"slug", "display_name", "founding", "practice", "medium", "county", "county_public",
                "statement", "bio", "website", "instagram", "portrait",
                "open_for_commissions",   # optional (Open for Commissions, 13 Nov 2026): present only as true; absent = off
-               "open_to"}                # optional (opportunities shown publicly, 16 Nov 2026): known keys only; absent = none
+               "open_to",                # optional (opportunities shown publicly, 16 Nov 2026): known keys only; absent = none
+               "exhibitions"}            # optional (Exhibitions & Achievements, Phase C 25 Nov 2026): absent = no section
 WORK_KEYS = {"id", "slug", "title", "year", "medium", "materials", "h_cm", "w_cm", "d_cm", "price_eur",
              "price_on_request", "availability", "description", "order", "ai_involvement", "ai_note",
              "ai_founder_decision", "images"}
@@ -102,6 +103,29 @@ def sha256_file(p):
 
 
 # ------------------------------------------------------------------ export validation (always blocking)
+def exhibition_blocks(text):
+    """Exhibitions & Achievements (Phase C, 25 Nov 2026): plain text with three line forms, the same rule as the Studio
+    (worker/plotart-studio/src/lib.js exhibitionBlocks): "## heading", "- list item" ("-", "•", "*" or "–" then a space),
+    any other non-blank line a paragraph of its own. Returns [("h", text) | ("p", text) | ("ul", [items])]."""
+    out = []
+    for raw in str(text or "").replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        line = raw.strip()
+        if not line:
+            continue
+        m = re.match(r"^#{1,3}\s+(.+)$", line)
+        if m:
+            out.append(("h", m.group(1).strip())); continue
+        m = re.match(r"^[-\u2022*\u2013]\s+(.+)$", line)
+        if m:
+            if out and out[-1][0] == "ul":
+                out[-1][1].append(m.group(1).strip())
+            else:
+                out.append(("ul", [m.group(1).strip()]))
+            continue
+        out.append(("p", line))
+    return out
+
+
 def _text(v, lo, hi, what):
     if not isinstance(v, str) or not (lo <= len(v.strip()) <= hi):
         raise Refused("%s must be text of %d-%d characters" % (what, lo, hi))
@@ -129,6 +153,11 @@ def validate_export(g):
     _text(a.get("bio"), 40, 2400, "biography")
     if a.get("statement") is not None:
         _text(a["statement"], 10, 400, "statement")
+    if "exhibitions" in a:
+        _text(a["exhibitions"], 10, 6000, "exhibitions and achievements")
+        for k, x in exhibition_blocks(a["exhibitions"]):
+            if k == "h" and len(x) > 100:
+                raise Refused("a heading in exhibitions and achievements is longer than 100 characters")
     if a.get("practice") is not None:
         _text(a["practice"], 2, 60, "practice")
     if a.get("medium") not in MEDIA:

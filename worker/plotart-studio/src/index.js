@@ -72,6 +72,11 @@ async function load(env, artistId) {
 async function commissionsInstalled(env) {
   try { await env.DB.prepare('SELECT open_for_commissions FROM artists LIMIT 1').all(); return true; } catch { return false; }
 }
+/* Exhibitions & Achievements (Phase C, 25 Nov 2026): available once migration 0024 has added artists.exhibitions. Until
+   then the Studio hides the editor and refuses the field, and everything else works exactly as before. */
+async function exhibitionsInstalled(env) {
+  try { await env.DB.prepare('SELECT exhibitions FROM artists LIMIT 1').all(); return true; } catch { return false; }
+}
 async function latestVersion(env, artistId) {
   const v = await one(env, 'SELECT * FROM versions WHERE artist_id = ? ORDER BY version DESC LIMIT 1', artistId);
   return v ? { ...v, snap: JSON.parse(v.snapshot) } : null;
@@ -428,7 +433,7 @@ async function eraseOriginals(env, artistId, actor, why) {
     if (i.preview_key) { await env.IMAGES.delete(i.preview_key); objects++; }
   }
   const works = (await one(env, 'SELECT COUNT(*) AS n FROM artworks WHERE artist_id = ?', artistId)).n;
-  const ofc = await commissionsInstalled(env);
+  const ofc = await commissionsInstalled(env), exh = await exhibitionsInstalled(env);
   await env.DB.batch([
     env.DB.prepare('DELETE FROM images WHERE artist_id = ?').bind(artistId),
     env.DB.prepare('DELETE FROM artworks WHERE artist_id = ?').bind(artistId),
@@ -437,6 +442,8 @@ async function eraseOriginals(env, artistId, actor, why) {
       portrait_image_id=NULL, below_min_since=NULL, application_ref=NULL, updated_at=? WHERE id=? AND account_status='ended'`).bind(`ended-${artistId}@deleted.invalid`, now(), artistId),
     // Open for Commissions resets with the other profile details (only once migration 0011 has added the column)
     ...(ofc ? [env.DB.prepare("UPDATE artists SET open_for_commissions=0 WHERE id=? AND account_status='ended'").bind(artistId)] : []),
+    // Exhibitions & Achievements is cleared with the other profile details (only once migration 0024 has added the column)
+    ...(exh ? [env.DB.prepare("UPDATE artists SET exhibitions=NULL WHERE id=? AND account_status='ended'").bind(artistId)] : []),
     env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)')
       .bind(rid('pe'), artistId, 'originals_deleted', now(), actor, why, JSON.stringify({ images: imgs.length, storage_objects: objects, works })),
   ]);
@@ -495,6 +502,7 @@ const PROFILE = {
   county_public: v => (v ? 1 : 0),
   statement: v => L.text(v, 10, 400, 'Your statement', { optional: true }),
   bio: v => L.text(v, 40, 2400, 'Your biography', { optional: true }),
+  exhibitions: v => L.exhibitionsText(v),   // optional; full review, like the biography
   website: v => { if (!v) return null; if (!/^https:\/\/[^\s<>"']{4,200}$/.test(v)) throw new Bad('Your website must be a full https:// link'); return v; },
   instagram: v => { if (!v) return null; const h = String(v).replace(/^@/, ''); if (!/^[A-Za-z0-9._]{1,30}$/.test(h)) throw new Bad('Your Instagram name can use letters, numbers, dots and underscores'); return h; },
 };
@@ -1840,12 +1848,13 @@ async function route(req, env) {
     // the artist's own commercial terms (Phase 2): programme, rate and the date of any written variation; never the founder's note
     const tm = await termsFor(env, artist.id);
     const myTerms = { programme: AG.programmeOf(d.artist, tm), ...(tm ? { commission_bp: tm.commission_bp, variation_agreed_on: tm.variation_agreed_on || null } : {}) };
-    return json({ ok: true, artist: { ...a, email }, terms: myTerms, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
+    return json({ ok: true, artist: { ...a, email }, terms: myTerms, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), exhibitions_available: await exhibitionsInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
       portrait: (({ checks, ...i }) => i)(d.images.find(i => i.id === d.artist.portrait_image_id) || { checks: null }) });
   }
   if (p === '/api/me/profile' && m === 'PUT') {
     const f = clean(PROFILE, await req.json());
     if (!Object.keys(f).length) return json({ ok: true });
+    if ('exhibitions' in f && !(await exhibitionsInstalled(env))) throw new Bad('Exhibitions & Achievements isn’t available just yet. Please try again later.', 503);
     await env.DB.prepare(`UPDATE artists SET ${Object.keys(f).map(k => `${k}=?`).join(', ')}, updated_at=? WHERE id=?`).bind(...Object.values(f), now(), artist.id).run();
     await audit(env, artist.email, 'artist', 'profile', artist.id, { fields: Object.keys(f) });
     return json({ ok: true, saved_at: now() });

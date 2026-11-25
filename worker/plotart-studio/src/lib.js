@@ -139,6 +139,37 @@ export function isEmptyDraft(w, images) {
     w.price_eur == null && !w.price_on_request && !w.description && !w.ai_involvement && !w.ai_note &&
     !images.some(i => i.artwork_id === w.id && !i.deleted_at);
 }
+/* Exhibitions & Achievements (Phase C, 25 Nov 2026, after artist feedback): an optional section, separate from the
+   biography, for an artist's professional record (solo and group exhibitions, awards, collections, residencies,
+   commissions, publications ...). Plain text with three line forms, so artists can structure it without any markup:
+     "## Solo exhibitions"   a subheading
+     "- 2024 · Title, Gallery, Dublin"   a list item ("-", "•", "*" or "–" then a space)
+     any other line          a paragraph of its own (blank lines are ignored)
+   The same rule is in atlas-tools/plotart_gallery_pages.exhibition_blocks and in the Studio editor's live preview
+   (ui/studio.js); test/prove-exhibitions.mjs requires all three to agree. */
+export const EXHIBITIONS_MIN = 10, EXHIBITIONS_MAX = 6000, EXHIBITIONS_HEADING_MAX = 100;
+export function exhibitionBlocks(textIn) {
+  const out = [];
+  for (const raw of String(textIn || '').replace(/\r\n?/g, '\n').split('\n')) {
+    const line = raw.trim();
+    if (!line) continue;
+    let m;
+    if ((m = line.match(/^#{1,3}\s+(.+)$/))) out.push(['h', m[1].trim()]);
+    else if ((m = line.match(/^[-\u2022*\u2013]\s+(.+)$/))) {
+      const last = out[out.length - 1];
+      if (last && last[0] === 'ul') last[1].push(m[1].trim()); else out.push(['ul', [m[1].trim()]]);
+    } else out.push(['p', line]);
+  }
+  return out;
+}
+export function exhibitionsText(v, { optional = true } = {}) {
+  const t = text(v, EXHIBITIONS_MIN, EXHIBITIONS_MAX, 'Exhibitions & Achievements', { optional });
+  if (t === null) return null;
+  for (const [k, x] of exhibitionBlocks(t))
+    if (k === 'h' && x.length > EXHIBITIONS_HEADING_MAX) throw new Bad(`A heading in Exhibitions & Achievements is longer than ${EXHIBITIONS_HEADING_MAX} characters: “${x.slice(0, 40)}…”`);
+  return t;
+}
+
 export function snapshot(artist, works, images) {
   const byWork = {};
   for (const i of images) if (i.artwork_id && !i.deleted_at) (byWork[i.artwork_id] ||= []).push(i);
@@ -149,6 +180,8 @@ export function snapshot(artist, works, images) {
       medium: artist.medium || null, county: artist.county || null, county_public: !!artist.county_public,
       statement: artist.statement || null, bio: artist.bio || null, website: artist.website || null, instagram: artist.instagram || null,
       portrait: imgRef(portrait),
+      // Exhibitions & Achievements (Phase C, 25 Nov 2026): absent when empty, so every snapshot made before stays byte-for-byte the same.
+      ...(artist.exhibitions ? { exhibitions: artist.exhibitions } : {}),
       // Open for Commissions (13 Nov 2026): the artist's own on/off choice. A snapshot made before it existed has no key: off.
       open_for_commissions: artist.open_for_commissions === 1 || artist.open_for_commissions === true,
       // Opportunities shown publicly (migration 0015, 16 Nov 2026): only the kinds of opportunity the artist chose to show,
@@ -165,11 +198,11 @@ export function snapshot(artist, works, images) {
   };
 }
 
-const FULL_ARTIST = ['display_name', 'statement', 'bio', 'practice', 'medium'];
+const FULL_ARTIST = ['display_name', 'statement', 'bio', 'practice', 'medium', 'exhibitions'];
 const LIGHT_ARTIST = ['county', 'county_public', 'website', 'instagram'];
 const LIGHT_WORK = ['title', 'year', 'medium', 'materials', 'h_cm', 'w_cm', 'd_cm', 'description', 'price_eur', 'price_on_request'];
 const FULL_WORK = ['ai_involvement', 'ai_note'];
-const LABEL = { display_name: 'name', bio: 'biography', h_cm: 'height', w_cm: 'width', d_cm: 'depth', price_eur: 'price', price_on_request: 'price on request',
+const LABEL = { display_name: 'name', bio: 'biography', exhibitions: 'Exhibitions & Achievements', h_cm: 'height', w_cm: 'width', d_cm: 'depth', price_eur: 'price', price_on_request: 'price on request',
   county_public: 'show county', open_for_commissions: 'open for commissions', ai_involvement: 'AI declaration', ai_note: 'AI disclosure' };
 const lab = f => LABEL[f] || f.replace(/_/g, ' ');
 const eq = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
@@ -240,6 +273,7 @@ export function checklist(snap, { founding, programme = null, firstPublication =
   t(a.display_name, 2, 80, 'Your name', 'display_name');
   t(a.bio, 40, 2400, 'Your biography', 'bio');
   if (a.statement) t(a.statement, 10, 400, 'Your statement', 'statement');
+  if (a.exhibitions) { try { exhibitionsText(a.exhibitions, { optional: false }); } catch (e) { p.push({ area: 'profile', field: 'exhibitions', text: e.message }); } }
   if (!MEDIA.includes(a.medium)) p.push({ area: 'profile', field: 'medium', text: 'Choose your main medium in your profile' });
   if (a.portrait && !a.portrait.alt) p.push({ area: 'profile', field: 'portrait_alt', image_id: a.portrait.id, text: 'Describe your portrait photograph (for people using screen readers)' });
   if (!snap.works.length && firstPublication) p.push({ area: 'works', field: 'add', text: 'Add at least one artwork' });
@@ -282,7 +316,8 @@ export function exportGallery(snap, { version, approvedAt, licenceVersion, licen
     artist: { slug: a.slug, display_name: a.display_name, founding: a.founding, practice: a.practice, medium: a.medium,
       county: a.county, county_public: a.county_public, statement: a.statement, bio: a.bio, website: a.website,
       instagram: a.instagram, portrait: a.portrait ? img(a.portrait, 'portrait') : null,
-      ...(commissionsOpen(a) ? { open_for_commissions: true } : {}), ...(openTo(a).length ? { open_to: openTo(a) } : {}) },
+      ...(commissionsOpen(a) ? { open_for_commissions: true } : {}), ...(openTo(a).length ? { open_to: openTo(a) } : {}),
+      ...(a.exhibitions ? { exhibitions: a.exhibitions } : {}) },
     works: snap.works.map((w, i) => ({
       id: w.id, slug: w.slug, title: w.title, year: w.year, medium: w.medium, materials: w.materials, h_cm: w.h_cm, w_cm: w.w_cm,
       d_cm: w.d_cm, price_eur: w.price_eur, price_on_request: w.price_on_request, availability: w.availability,

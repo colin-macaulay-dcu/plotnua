@@ -5,6 +5,7 @@ import html
 import re
 import plotart_opportunities as OPP  # noqa: E402  (opportunities shown publicly, 16 Nov 2026)
 import plotart_seo as SEO
+import plotart_gallery as G  # noqa: E402  (exhibition_blocks, Phase C 25 Nov 2026)
 from urllib.parse import quote
 
 E = lambda s: html.escape(str(s), quote=True)
@@ -159,6 +160,26 @@ def empty_works(a):
 _SENTENCE_END = re.compile(r"[.!?…:;\"”’')\]]\s*$")
 
 
+# Exhibitions & Achievements (Phase C, 25 Nov 2026): its own section after "About", and a discreet link to it under the
+# artist's name; both only when the artist has written something. Same markup as the Studio preview (render.js).
+EXHIBITIONS_JUMP = '<p class="pa-ag-jump"><a href="#exhibitions">Exhibitions &amp; Achievements <span aria-hidden="true">\u2193</span></a></p>'
+
+
+def exhibitions_section(a):
+    if not a.get("exhibitions"):
+        return ""
+    body = "".join(
+        ("<h3>%s</h3>" % E(x)) if k == "h" else
+        ("<ul>%s</ul>" % "".join("<li>%s</li>" % E(i) for i in x)) if k == "ul" else
+        ("<p>%s</p>" % E(x))
+        for k, x in G.exhibition_blocks(a["exhibitions"]))
+    return """<section class="pa-ag-cv" id="exhibitions" aria-labelledby="agCvH"><div class="pa-wrap pa-ag-about-in">
+  <h2 id="agCvH">Exhibitions &amp; Achievements</h2>
+  <div class="pa-ag-cv-body">%s</div>
+</div></section>
+""" % body
+
+
 def paragraphs(text):
     """A biography's paragraphs (founder brief 18 Nov 2026): a blank line always starts a paragraph, and so does a single
     line break after the end of a sentence (artists press Enter once and expect a new paragraph). A line break in the
@@ -209,12 +230,13 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     if a.get("instagram"):
         links.append('<a href="https://www.instagram.com/%s/" rel="noopener nofollow" data-pa-track="artist_instagram">Instagram <span aria-hidden="true">↗</span></a>' % E(a["instagram"]))
     bio = "".join("<p>%s</p>" % E(p) for p in paragraphs(a["bio"]))
+    cv = exhibitions_section(a)
     return """%s
 <section class="pa-ag-hero%s"><div class="pa-wrap">
   <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Artists’ Gallery</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
   <div class="pa-ag-id">%s<div>
     %s<h1>%s</h1>
-    %s%s%s
+    %s%s%s%s
   </div></div>
 </div></section>
 %s
@@ -227,7 +249,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
   <h2 id="agAboutH">About %s</h2>
   <div class="pa-ag-bio">%s%s</div>
 </div></section>
-
+%s
 <section class="pa-ag-enq"><div class="pa-wrap pa-ag-enq-in">
   <p class="pa-ag-enq-t">Interested in %s's work?</p>
   <p class="pa-ag-enq-l">Send an enquiry through PlotArt and we'll put you in touch with the artist.</p>
@@ -238,12 +260,14 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
        E(name), (('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else ""),
        ('<p class="pa-ag-statement">%s</p>' % E(a["statement"])) if a.get("statement") else "",
+       EXHIBITIONS_JUMP if cv else "",
        OPP.artist_line(pkg),
        commission_block(pkg, enquiry_endpoint),
        ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
        ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),
        E(name.split(" ")[0] if " " in name else name), bio,
        ('<p class="pa-ag-links">%s</p>' % "".join(links)) if links else "",
+       cv,
        E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint))
 
 

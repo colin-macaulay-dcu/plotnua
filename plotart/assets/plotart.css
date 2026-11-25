@@ -759,6 +759,20 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-ag-about h2{ font-size:clamp(34px, 4vw, 52px); }
 .pa-ag-bio p{ margin:0 0 16px; max-width:62ch; color:var(--lime); font-size:18px; line-height:1.7; }
 .pa-ag-links{ display:flex; gap:22px; margin-top:22px !important; }
+/* Exhibitions & Achievements (Phase C, 25 Nov 2026): the artist's professional record, after "About", in the About layout.
+   Quiet: small uppercase subheadings, hairline-separated lists, no badges or icons; the artwork stays the colour. */
+.pa-ag-cv{ border-top:1px solid var(--line); scroll-margin-top:100px; }
+.pa-ag-cv .pa-wrap{ padding-top:clamp(52px, 6vw, 96px); padding-bottom:clamp(52px, 6vw, 96px); }
+.pa-ag-cv h2{ font-size:clamp(30px, 3.4vw, 44px); }
+.pa-ag-cv-body{ max-width:62ch; }
+.pa-ag-cv-body h3{ margin:34px 0 12px; font-family:var(--sans); font-size:12.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--stone); }
+.pa-ag-cv-body h3:first-child{ margin-top:6px; }
+.pa-ag-cv-body p{ margin:0 0 12px; color:var(--lime); font-size:17px; line-height:1.65; }
+.pa-ag-cv-body ul{ list-style:none; margin:0 0 14px; padding:0; border-top:1px solid var(--line); }
+.pa-ag-cv-body li{ padding:11px 0; border-bottom:1px solid var(--line); color:var(--lime); font-size:16.5px; line-height:1.5; }
+.pa-ag-jump{ margin:18px 0 0; font-size:14px; letter-spacing:.03em; }
+.pa-ag-jump a{ color:var(--stone); text-decoration:underline; text-underline-offset:.24em; text-decoration-thickness:1px; }
+.pa-ag-jump a:hover, .pa-ag-jump a:focus-visible{ color:var(--ivory); }
 .pa-ag-enq{ border-top:1px solid var(--line); background:#232426; }
 .pa-ag-enq .pa-wrap{ padding-top:clamp(44px, 5vw, 76px); padding-bottom:clamp(44px, 5vw, 76px); text-align:center; }
 .pa-ag-enq-t{ font-family:var(--serif); font-size:clamp(30px, 3.4vw, 44px); color:var(--ivory); margin:0 0 10px; }

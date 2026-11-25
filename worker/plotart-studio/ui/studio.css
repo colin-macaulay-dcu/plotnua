@@ -75,6 +75,19 @@ body.st{ background:var(--anth); min-height:100vh; }
   border:1px solid var(--line-2); border-radius:12px; }
 .st-f textarea{ min-height:120px; resize:vertical; line-height:1.55; }
 .st-f textarea[name=bio]{ min-height:300px; }   /* room to see several paragraphs at once */
+.st-f textarea[name=exhibitions]{ min-height:280px; font-variant-numeric:tabular-nums; }
+/* Exhibitions & Achievements (Phase C, 25 Nov 2026): editor card, formatting buttons and live preview */
+.st-cv .st-opt{ margin-left:8px; font-size:12px; font-weight:500; color:var(--mute); letter-spacing:.04em; }
+.st-cv-intro{ margin:0 0 14px; line-height:1.55; }
+.st-cv-tools{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; }
+.st-cv-label{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.st-cv-prev{ margin-top:4px; padding:16px 18px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.02); }
+.st-cv-out{ max-height:420px; overflow:auto; }
+.st-cv-out h3{ margin:18px 0 8px; font-size:11.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--stone); }
+.st-cv-out h3:first-child{ margin-top:4px; }
+.st-cv-out p{ margin:0 0 8px; color:var(--lime); font-size:15px; line-height:1.6; }
+.st-cv-out ul{ list-style:none; margin:0 0 10px; padding:0; border-top:1px solid var(--line); }
+.st-cv-out li{ padding:8px 0; border-bottom:1px solid var(--line); color:var(--lime); font-size:14.5px; line-height:1.45; }
 .st-diff .st-brk{ font-style:italic; font-size:.85em; padding:0 .3em; }
 .st-f input:focus, .st-f select:focus, .st-f textarea:focus{ outline:2px solid var(--terra-text); outline-offset:1px; border-color:transparent; }
 .st-grid3{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; }
