@@ -758,6 +758,23 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 @media (max-width:860px){ .pa-ag-about-in{ grid-template-columns:1fr; } }
 .pa-ag-about h2{ font-size:clamp(34px, 4vw, 52px); }
 .pa-ag-bio p{ margin:0 0 16px; max-width:62ch; color:var(--lime); font-size:18px; line-height:1.7; }
+/* Exhibitions & Achievements (Phase C; Dave King's feedback): the artist's own optional section, set apart from the statement
+   and the biography (its own band and heading), reached from a link under the statement. Absent when empty. */
+.pa-ag-jump{ margin:18px 0 0; }
+.pa-ag-jump a{ display:inline-flex; gap:8px; align-items:center; font-size:14px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ivory); text-decoration:none; border-bottom:1px solid rgba(237,235,231,.4); padding-bottom:3px; }
+.pa-ag-jump a:hover{ border-bottom-color:var(--ivory); }
+.pa-ag-xa{ background:rgba(237,235,231,.035); border-top:1px solid var(--line); border-bottom:1px solid var(--line); scroll-margin-top:24px; }
+.pa-ag-xa .pa-wrap{ padding-top:clamp(52px, 6vw, 96px); padding-bottom:clamp(52px, 6vw, 96px); }
+.pa-ag-xa-in{ display:grid; grid-template-columns:minmax(0, .8fr) minmax(0, 1.2fr); gap:clamp(24px, 5vw, 80px); align-items:start; }
+.pa-ag-xa h2{ font-size:clamp(34px, 4vw, 52px); }
+.pa-ag-xa-body h3{ font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--terra-text); margin:0 0 12px; }
+.pa-ag-xa-body > * + h3{ margin-top:32px; }
+.pa-ag-xa-body p{ margin:0 0 14px; max-width:62ch; color:var(--lime); font-size:17px; line-height:1.65; }
+.pa-ag-xa-body ul{ list-style:none; margin:0 0 14px; padding:0; max-width:62ch; }
+.pa-ag-xa-body li{ position:relative; padding:9px 0 9px 18px; border-top:1px solid var(--line); color:var(--lime); font-size:16.5px; line-height:1.55; }
+.pa-ag-xa-body li:last-child{ border-bottom:1px solid var(--line); }
+.pa-ag-xa-body li::before{ content:""; position:absolute; left:0; top:1.15em; width:6px; height:1px; background:var(--stone); }
+@media (max-width:820px){ .pa-ag-xa-in{ grid-template-columns:1fr; } }
 .pa-ag-links{ display:flex; gap:22px; margin-top:22px !important; }
 .pa-ag-enq{ border-top:1px solid var(--line); background:#232426; }
 .pa-ag-enq .pa-wrap{ padding-top:clamp(44px, 5vw, 76px); padding-bottom:clamp(44px, 5vw, 76px); text-align:center; }

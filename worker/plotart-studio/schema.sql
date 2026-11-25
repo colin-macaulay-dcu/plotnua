@@ -1383,25 +1383,35 @@ CREATE TABLE image_use_consents (
 );
 CREATE INDEX image_use_consents_artist ON image_use_consents(artist_id, scope, created_at);
 
--- PlotArt Studio · migration 0025 · Artist location (Phase C, development 25 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- PlotArt Studio · migration 0025 · Artist location and delivery coverage (Phase C, development 25 Nov 2026). NOT APPLIED IN PRODUCTION.
 CREATE TABLE IF NOT EXISTS artist_locations (
   artist_id TEXT PRIMARY KEY REFERENCES artists(id) ON DELETE CASCADE,
   country TEXT NOT NULL CHECK (length(country) = 2 AND country GLOB '[A-Z][A-Z]'),           -- ISO 3166-1 alpha-2: where the artist is based now
   county TEXT CHECK (county IS NULL OR county IN ('Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork', 'Derry', 'Donegal', 'Down', 'Dublin', 'Fermanagh', 'Galway', 'Kerry', 'Kildare', 'Kilkenny', 'Laois', 'Leitrim', 'Limerick', 'Longford', 'Louth', 'Mayo', 'Meath', 'Monaghan', 'Offaly', 'Roscommon', 'Sligo', 'Tipperary', 'Tyrone', 'Waterford', 'Westmeath', 'Wexford', 'Wicklow')),
   town TEXT CHECK (town IS NULL OR (length(town) BETWEEN 2 AND 60 AND town NOT GLOB '*[0-9]*')),   -- a town or city, never an address
-  delivers_local INTEGER NOT NULL DEFAULT 0 CHECK (delivers_local IN (0, 1)),
-  local_counties TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(local_counties) AND json_array_length(local_counties) <= 32),
-  delivers_nationwide INTEGER NOT NULL DEFAULT 0 CHECK (delivers_nationwide IN (0, 1)),
   show_location INTEGER NOT NULL DEFAULT 0 CHECK (show_location IN (0, 1)),                -- public only when the artist ticks it
   show_town INTEGER NOT NULL DEFAULT 0 CHECK (show_town IN (0, 1)),
-  show_delivery INTEGER NOT NULL DEFAULT 0 CHECK (show_delivery IN (0, 1)),
   confirmed_at TEXT NOT NULL CHECK (length(confirmed_at) BETWEEN 20 AND 30),
   confirmed_by TEXT NOT NULL CHECK (length(confirmed_by) BETWEEN 3 AND 200),                -- 'artist' or the founder's address
   updated_at TEXT NOT NULL CHECK (length(updated_at) BETWEEN 20 AND 30),
-  CHECK (country <> 'IE' OR (county IS NOT NULL AND county IN ('Carlow', 'Cavan', 'Clare', 'Cork', 'Donegal', 'Dublin', 'Galway', 'Kerry', 'Kildare', 'Kilkenny', 'Laois', 'Leitrim', 'Limerick', 'Longford', 'Louth', 'Mayo', 'Meath', 'Monaghan', 'Offaly', 'Roscommon', 'Sligo', 'Tipperary', 'Waterford', 'Westmeath', 'Wexford', 'Wicklow'))),                                                  -- based in Ireland: a county is required
+  CHECK (country <> 'IE' OR (county IS NOT NULL AND county IN ('Carlow', 'Cavan', 'Clare', 'Cork', 'Donegal', 'Dublin', 'Galway', 'Kerry', 'Kildare', 'Kilkenny', 'Laois', 'Leitrim', 'Limerick', 'Longford', 'Louth', 'Mayo', 'Meath', 'Monaghan', 'Offaly', 'Roscommon', 'Sligo', 'Tipperary', 'Waterford', 'Westmeath', 'Wexford', 'Wicklow'))),   -- based in the Republic: a county is required
   CHECK (country <> 'GB' OR county IS NULL OR county IN ('Antrim', 'Armagh', 'Derry', 'Down', 'Fermanagh', 'Tyrone')),                                -- Northern Ireland: one of its six counties
   CHECK (country IN ('IE', 'GB') OR county IS NULL),                                          -- elsewhere: no county
-  CHECK (delivers_local = 1 OR json_array_length(local_counties) = 0),
   CHECK (show_town = 0 OR (show_location = 1 AND town IS NOT NULL))
 );
 CREATE INDEX IF NOT EXISTS artist_locations_place ON artist_locations(country, county);
+CREATE TABLE IF NOT EXISTS artist_delivery (
+  artist_id TEXT PRIMARY KEY REFERENCES artists(id) ON DELETE CASCADE,
+  scope TEXT NOT NULL CHECK (scope IN ('none', 'counties', 'republic', 'northern_ireland', 'island', 'country')),   -- kept apart from location
+  counties TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(counties) AND json_array_length(counties) <= 32),
+  show_delivery INTEGER NOT NULL DEFAULT 0 CHECK (show_delivery IN (0, 1)),                -- public only when ticked (and the founder's switch)
+  confirmed_at TEXT NOT NULL CHECK (length(confirmed_at) BETWEEN 20 AND 30),
+  confirmed_by TEXT NOT NULL CHECK (length(confirmed_by) BETWEEN 3 AND 200),
+  updated_at TEXT NOT NULL CHECK (length(updated_at) BETWEEN 20 AND 30),
+  CHECK ((scope = 'counties') = (json_array_length(counties) > 0)),                         -- counties only with "chosen counties"
+  CHECK (scope <> 'none' OR show_delivery = 0)
+);
+
+-- PlotArt Studio · migration 0026 · Exhibitions & Achievements (Phase C, development 25 Nov 2026). NOT APPLIED IN PRODUCTION.
+
+ALTER TABLE artists ADD COLUMN achievements TEXT CHECK (achievements IS NULL OR length(achievements) BETWEEN 1 AND 6000);

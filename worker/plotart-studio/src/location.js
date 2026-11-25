@@ -5,12 +5,13 @@
    - county: one of the 32 counties of Ireland. Required when based in Ireland (IE, the 26 counties); optional for
      Northern Ireland (GB with one of its 6 counties, shown "Co. Antrim, Northern Ireland"); never for other countries.
    - town: optional town or city. Never an address: no digits (house numbers, Eircodes, postcodes), no street words.
-   - delivery: local (the home county plus any chosen counties) and/or nationwide ("anywhere in Ireland" for an artist
-     based on the island, otherwise anywhere in their country). The HOME county and the DELIVERY AREAS are kept apart.
-   - public: nothing is public unless the artist ticks it (show_location; show_town; show_delivery). Delivery is shown
-     publicly only once the founder has switched on public delivery (privacy notice update), whatever the artist ticked.
-   Founder decisions still open (provisional defaults used here, each a one-line change): nationwide = island of Ireland;
-   local delivery = chosen counties; Northern Ireland shown as "Co. X, Northern Ireland"; town public only when ticked. */
+   - delivery coverage is SEPARATE from location (its own table and its own validator, founder direction 25 Nov 2026):
+     chosen counties, the Republic of Ireland (26), Northern Ireland (6), the whole island (32), or (for an artist based
+     outside Ireland) anywhere in their own country. An artist based anywhere may cover any Irish county.
+   - public: nothing is public unless the artist ticks it (show_location; show_town; show_delivery). Delivery coverage is
+     shown publicly only once the founder has switched on public delivery (privacy notice update), whatever was ticked.
+   - Art for Hire's county filter finds artists BASED in the county AND artists based anywhere whose coverage includes it,
+     labelled separately; nobody willing to supply that county is excluded. A residential address is never stored. */
 import { Bad, COUNTIES, now } from './lib.js';
 
 export const NI_COUNTIES = ['Antrim', 'Armagh', 'Derry', 'Down', 'Fermanagh', 'Tyrone'];
@@ -35,71 +36,91 @@ export const onIsland = loc => !!loc && (loc.country === 'IE' || (loc.country ==
 
 const bool = v => (v === true || v === 1 || v === '1' || v === 'on' ? 1 : 0);
 const ADDRESS = /\d|\b(street|st\.|road|rd\.?|avenue|ave\.?|lane|ln\.?|drive|apartment|apt\.?|flat|unit|house|no\.)\b/i;
+export const SCOPES = ['none', 'counties', 'republic', 'northern_ireland', 'island', 'country'];
 
-/* The artist's (or founder's) answer, validated. Returns the row to store; throws Bad with a plain message. */
-export function validate(b) {
+/* WHERE THE ARTIST IS BASED. Returns the row to store; throws Bad with a plain message. */
+export function validateLocation(b) {
   if (!b || typeof b !== 'object') throw new Bad('Tell us where you’re based');
   const country = String(b.country || '').trim().toUpperCase();
   if (!COUNTRIES.includes(country)) throw new Bad('Choose the country where you’re based now');
-  let county = b.county === undefined || b.county === null || b.county === '' ? null : String(b.county).trim();
+  const county = b.county === undefined || b.county === null || b.county === '' ? null : String(b.county).trim();
   if (county !== null && !COUNTIES.includes(county)) throw new Bad('Choose a county from the list');
   if (country === 'IE' && (!county || !ROI_COUNTIES.includes(county))) throw new Bad('Choose the county where you’re based');
   if (country === 'GB' && county && !NI_COUNTIES.includes(county)) throw new Bad('That county is in Ireland: choose Ireland as your country');
   if (country !== 'IE' && country !== 'GB' && county) throw new Bad('A county is only needed when you’re based in Ireland or Northern Ireland');
-  let town = b.town === undefined || b.town === null ? '' : String(b.town).replace(/\s+/g, ' ').trim();
+  const town = b.town === undefined || b.town === null ? '' : String(b.town).replace(/\s+/g, ' ').trim();
   if (town && (town.length < 2 || town.length > 60 || /[<>]/.test(town) || ADDRESS.test(town)))
     throw new Bad('Give a town or city only, never your address');
-  const delivers_local = bool(b.delivers_local), delivers_nationwide = bool(b.delivers_nationwide);
-  let local = Array.isArray(b.local_counties) ? [...new Set(b.local_counties.map(String))] : [];
-  if (local.some(c => !COUNTIES.includes(c))) throw new Bad('Choose delivery counties from the list');
-  if (!delivers_local) local = [];
-  if (delivers_local && !county && !local.length) throw new Bad('Choose the counties you can deliver to');
-  local = COUNTIES.filter(c => local.includes(c) && c !== county);   // the home county is implied; stored once, in order
-  const show_location = bool(b.show_location), show_town = town ? bool(b.show_town) && show_location : 0;
-  return { country, county, town: town || null, delivers_local, local_counties: JSON.stringify(local), delivers_nationwide,
-    show_location, show_town, show_delivery: bool(b.show_delivery) };
+  const show_location = bool(b.show_location);
+  return { country, county, town: town || null, show_location, show_town: town ? bool(b.show_town) && show_location : 0 };
 }
 
-/* Save one artist's location (one row per artist; every change is in the audit log by the caller). */
-export function saveStatement(env, artistId, row, by) {
-  const at = now();
-  return env.DB.prepare(`INSERT INTO artist_locations (artist_id, country, county, town, delivers_local, local_counties, delivers_nationwide,
-      show_location, show_town, show_delivery, confirmed_at, confirmed_by, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
-    ON CONFLICT(artist_id) DO UPDATE SET country=excluded.country, county=excluded.county, town=excluded.town, delivers_local=excluded.delivers_local,
-      local_counties=excluded.local_counties, delivers_nationwide=excluded.delivers_nationwide, show_location=excluded.show_location,
-      show_town=excluded.show_town, show_delivery=excluded.show_delivery, confirmed_at=excluded.confirmed_at, confirmed_by=excluded.confirmed_by,
-      updated_at=excluded.updated_at`)
-    .bind(artistId, row.country, row.county, row.town, row.delivers_local, row.local_counties, row.delivers_nationwide,
-      row.show_location, row.show_town, row.show_delivery, at, by, at);
+/* WHERE THE ARTIST CAN DELIVER, kept apart from where they are based. loc: their location row (for "my country"). */
+export function validateDelivery(b, loc) {
+  if (!b || typeof b !== 'object') throw new Bad('Tell us where you can deliver');
+  const scope = String(b.scope || 'none');
+  if (!SCOPES.includes(scope)) throw new Bad('Choose where you can deliver');
+  let counties = Array.isArray(b.counties) ? [...new Set(b.counties.map(String))] : [];
+  if (counties.some(c => !COUNTIES.includes(c))) throw new Bad('Choose delivery counties from the list');
+  if (scope !== 'counties') counties = [];
+  if (scope === 'counties' && !counties.length) throw new Bad('Choose the counties you can deliver to');
+  if (scope === 'country' && (!loc || onIsland(loc))) throw new Bad('For Ireland, choose the Republic, Northern Ireland or the whole island');
+  return { scope, counties: JSON.stringify(COUNTIES.filter(c => counties.includes(c))), show_delivery: scope === 'none' ? 0 : bool(b.show_delivery) };
 }
+
+const upsert = (env, table, cols, artistId, row, by) => {
+  const at = now(), all = [...cols, 'confirmed_at', 'confirmed_by', 'updated_at'];
+  return env.DB.prepare(`INSERT INTO ${table} (artist_id, ${all.join(', ')}) VALUES (?, ${all.map(() => '?').join(', ')})
+    ON CONFLICT(artist_id) DO UPDATE SET ${all.map(c => `${c}=excluded.${c}`).join(', ')}`).bind(artistId, ...cols.map(c => row[c]), at, by, at);
+};
+export const saveLocation = (env, artistId, row, by) => upsert(env, 'artist_locations', ['country', 'county', 'town', 'show_location', 'show_town'], artistId, row, by);
+export const saveDelivery = (env, artistId, row, by) => upsert(env, 'artist_delivery', ['scope', 'counties', 'show_delivery'], artistId, row, by);
 
 /* Where the home county reads on a public page. */
-export function placeLine(loc, { withTown = true } = {}) {
+export function placeLine(loc) {
   if (!loc) return null;
-  const town = withTown && loc.show_town && loc.town ? loc.town + ', ' : '';
+  const town = loc.show_town && loc.town ? loc.town + ', ' : '';
   if (loc.country === 'IE') return `${town}Co. ${loc.county}, Ireland`;
   if (loc.country === 'GB' && loc.county) return `${town}Co. ${loc.county}, Northern Ireland`;
-  return `${town ? town : ''}${countryName(loc.country)}`;
+  return `${town}${countryName(loc.country)}`;
 }
-
-/* The ONLY public view of a location (publisher, artist profile, Art for Hire). Never a private field. */
-export function publicLocation(loc, { deliveryPublic = false } = {}) {
+/* The ONLY public view of a location: never an address, the town only when ticked, nothing when not shown. */
+export function publicLocation(loc) {
   if (!loc || !loc.show_location) return null;
-  const out = { country: loc.country, county: loc.county || null, line: placeLine(loc) };
-  if (loc.show_town && loc.town) out.town = loc.town;
-  if (deliveryPublic && loc.show_delivery) {
-    const local = JSON.parse(loc.local_counties || '[]');
-    out.delivery = { nationwide: !!loc.delivers_nationwide, area: onIsland(loc) ? 'Ireland' : countryName(loc.country),
-      counties: loc.delivers_local ? [...(loc.county ? [loc.county] : []), ...local] : [] };
-  }
-  return out;
+  return { country: loc.country, county: loc.county || null, line: placeLine(loc), ...(loc.show_town && loc.town ? { town: loc.town } : {}) };
 }
 
-/* Art for Hire's county filter: is this artist BASED in the county, or do they DELIVER there? (kept distinct) */
-export function relation(pub, county) {
-  if (!pub || !COUNTIES.includes(county)) return null;
-  if (pub.county === county) return 'based';
-  const d = pub.delivery;
-  if (d && (d.counties.includes(county) || (d.nationwide && d.area === 'Ireland'))) return 'delivers';
+/* The Irish counties a coverage includes. */
+export function covered(del, loc) {
+  if (!del) return [];
+  switch (del.scope) {
+    case 'counties': return JSON.parse(del.counties || '[]');
+    case 'republic': return ROI_COUNTIES.slice();
+    case 'northern_ireland': return NI_COUNTIES.slice();
+    case 'island': return COUNTIES.slice();
+    default: return [];
+  }
+}
+const SCOPE_LINE = { republic: 'Delivers anywhere in the Republic of Ireland', northern_ireland: 'Delivers anywhere in Northern Ireland',
+  island: 'Delivers anywhere on the island of Ireland' };
+export function deliveryLine(del, loc) {
+  if (!del || del.scope === 'none') return null;
+  if (SCOPE_LINE[del.scope]) return SCOPE_LINE[del.scope];
+  if (del.scope === 'country') return `Delivers anywhere in ${countryName(loc.country)}`;
+  const cs = covered(del, loc);
+  return `Delivers to ${cs.map(c => 'Co. ' + c).join(', ')}`;
+}
+/* The ONLY public view of delivery coverage: only when the artist ticks it AND the founder has switched public delivery on. */
+export function publicDelivery(del, loc, { deliveryPublic = false } = {}) {
+  if (!deliveryPublic || !del || !del.show_delivery || del.scope === 'none') return null;
+  return { scope: del.scope, counties: covered(del, loc), line: deliveryLine(del, loc) };
+}
+
+/* Art for Hire's county filter, for one artist: BASED here (home county, location public), or DELIVERS here (coverage
+   public and includes the county, wherever the artist is based), or null. Being based elsewhere never excludes. */
+export function relation(pubLoc, pubDel, county) {
+  if (!COUNTIES.includes(county)) return null;
+  if (pubLoc && pubLoc.county === county) return 'based';
+  if (pubDel && pubDel.counties.includes(county)) return 'delivers';
   return null;
 }

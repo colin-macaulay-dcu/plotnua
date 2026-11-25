@@ -4,6 +4,7 @@ packages (see plotart_gallery.py). Public fields only; the whole artwork image i
 import html
 import re
 import plotart_opportunities as OPP  # noqa: E402  (opportunities shown publicly, 16 Nov 2026)
+import plotart_achievements as XA  # noqa: E402  (Exhibitions & Achievements, Phase C)
 import plotart_seo as SEO
 from urllib.parse import quote
 
@@ -178,6 +179,16 @@ def paragraphs(text):
             out.append(cur)
     return out
 
+# Exhibitions & Achievements (Phase C): its own section after About, reached from a link under the statement; absent when
+# empty. The Studio's preview (worker/plotart-studio/src/render.js) writes exactly the same markup.
+XA_JUMP = '\n    <p class="pa-ag-jump"><a href="#exhibitions-achievements" data-pa-track="artist_achievements_jump">Exhibitions &amp; Achievements <span aria-hidden="true">↓</span></a></p>'
+
+
+def xa_section(text):
+    return ('<section class="pa-ag-xa" id="exhibitions-achievements" aria-labelledby="agXaH"><div class="pa-wrap pa-ag-xa-in">\n'
+            '  <h2 id="agXaH">Exhibitions &amp; Achievements</h2>\n  <div class="pa-ag-xa-body">\n%s\n  </div>\n</div></section>\n') % XA.to_html(text)
+
+
 def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     a = pkg["artist"]
     works = shown(pkg)
@@ -214,7 +225,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
   <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Artists’ Gallery</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
   <div class="pa-ag-id">%s<div>
     %s<h1>%s</h1>
-    %s%s%s
+    %s%s%s%s
   </div></div>
 </div></section>
 %s
@@ -227,7 +238,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
   <h2 id="agAboutH">About %s</h2>
   <div class="pa-ag-bio">%s%s</div>
 </div></section>
-
+%s
 <section class="pa-ag-enq"><div class="pa-wrap pa-ag-enq-in">
   <p class="pa-ag-enq-t">Interested in %s's work?</p>
   <p class="pa-ag-enq-l">Send an enquiry through PlotArt and we'll put you in touch with the artist.</p>
@@ -238,12 +249,14 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
        E(name), (('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else ""),
        ('<p class="pa-ag-statement">%s</p>' % E(a["statement"])) if a.get("statement") else "",
+       XA_JUMP if a.get("achievements") else "",
        OPP.artist_line(pkg),
        commission_block(pkg, enquiry_endpoint),
        ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
        ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),
        E(name.split(" ")[0] if " " in name else name), bio,
        ('<p class="pa-ag-links">%s</p>' % "".join(links)) if links else "",
+       xa_section(a["achievements"]) if a.get("achievements") else "",
        E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint))
 
 

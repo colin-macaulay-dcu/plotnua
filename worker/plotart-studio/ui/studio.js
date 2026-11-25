@@ -182,7 +182,10 @@
         <div class="st-f"><label for="f-medium">Main medium</label><select id="f-medium" name="medium">${['', ...ME.media].map(m => `<option value="${m}"${a.medium === m ? ' selected' : ''}>${m ? E(MEDIUM[m]) : 'Choose…'}</option>`).join('')}</select></div>
         ${f('statement', 'A one-line statement (optional)', a.statement, { area: 1, hint: 'Shown large under your name. Up to 400 characters.' })}
         ${f('bio', 'Your biography', a.bio, { area: 1, hint: 'In your own words: who you are and how you work. 40–2,400 characters. Press Enter at the end of a paragraph to start a new one; your paragraphs appear as you write them.' })}
-      </section></div><div>
+      </section>
+      ${ME.achievements_available ? `<section class="st-card"><h3>Exhibitions &amp; Achievements (optional)</h3>
+        ${f('achievements', 'Exhibitions, awards, collections, residencies, commissions, publications', a.achievements, { area: 1, hint: 'Its own section on your gallery page, separate from your statement and shown only when you’ve written something. Organise it your way: start a line with ## for a heading (for example ## Solo exhibitions), start a line with - for a list item, and leave a blank line between paragraphs. Up to 6,000 characters. PlotArt reviews changes before they appear.' })}
+      </section>` : ''}</div><div>
       <section class="st-card"><h3>Portrait (optional)</h3>
         <div class="st-drop" id="pdrop">${p ? `<img src="/api/images/${p.id}/view" alt="">` : '<span>Add a portrait photograph</span><small class="st-muted">JPEG, PNG or WebP · at least 800 px</small>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload a portrait"></div>
         ${p ? `${f('palt', 'Describe your portrait', p.alt, { req: 1, hint: 'A short line for people using screen readers, e.g. “The artist in her studio”.' })}<button class="st-btn st-btn--small st-btn--danger" data-act="rmp">Remove portrait</button>` : ''}
