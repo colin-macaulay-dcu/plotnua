@@ -276,7 +276,7 @@ export async function founderPlacement(env, founder, g, artworkId, action) {
   if (g === 'contemporary') {
     if (action === 'withdraw') {
       if (cur) throw new Bad('Already taken out of Contemporary', 409);
-      if (await one(env, 'SELECT position FROM homepage_features WHERE artwork_id = ?', w.id)) throw new Bad('This work is in Contemporaryists in Focus; change that selection first', 409);
+      if (await one(env, 'SELECT position FROM homepage_features WHERE artwork_id = ?', w.id)) throw new Bad('This work is one of the Artists in Focus in Contemporary; change that selection first', 409);
       await commit(env, [env.DB.prepare(`INSERT INTO artwork_placements (artwork_id, artist_id, gallery_id, state, proposed_by, proposed_at, closed_by, closed_at, updated_at)
         VALUES (?,?,'contemporary','withdrawn',?,?,?,?,?) ON CONFLICT(artwork_id, gallery_id) DO NOTHING`).bind(w.id, w.artist_id, founder, at, founder, at, at)], 0);
     } else if (action === 'restore') {
@@ -526,7 +526,10 @@ export async function adminView(env, published) {
 }
 export async function artistView(env, artist) {
   await need(env);
-  return { ...(await membershipView(env, artist.id)), ...(await placementView(env, artist.id)), ...(await consentsView(env, artist.id)) };
+  // status of each gallery (Phase C): the artist's card offers "Ask to join" only for a gallery the founder has opened
+  const st = await settings(env);
+  return { ...(await membershipView(env, artist.id)), ...(await placementView(env, artist.id)), ...(await consentsView(env, artist.id)),
+    status: Object.fromEntries(GALLERIES.map(g => [g, st[g].status])) };
 }
 /* For the publishing pipeline (Phase E): public identifiers only, and only what is valid now. */
 export async function pipeline(env, published) {

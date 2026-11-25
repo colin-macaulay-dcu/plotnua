@@ -1347,6 +1347,7 @@ async function route(req, env) {
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
     if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
     if (p === '/admin/featured') return html(A.ADMIN_HTML);
+    if (p === '/admin/galleries') return html(A.ADMIN_HTML);   // Three galleries (Phase C): the founder's management screen
     if (p === '/admin/homepage') return Response.redirect(new URL('/admin/featured', req.url).toString(), 302);   // the tab's earlier address
     // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
     /* Three galleries (Phase B, migration 0023): founder-only. Each route writes only the gallery tables and the audit log. */
@@ -1368,7 +1369,18 @@ async function route(req, env) {
       return json({ ok: true, installed: true, counties: L.COUNTIES,
         artists: county ? list.filter(x => x.county === county || x.covers.includes(county)).map(x => ({ ...x, relation: x.county === county ? 'based' : 'delivers' })) : list });
     }
-    if (p === '/api/admin/galleries' && m === 'GET') return json({ ok: true, ...(await G.adminView(env, await HP.published(env, VISIBLE_SQL))) });
+    if (p === '/api/admin/galleries' && m === 'GET') {
+      // Phase C (Track C, 25 Nov 2026): the founder's Galleries screen also needs who can be invited, each published artist's
+      // shown works (title and main photograph, for placements and Artists in Focus) and who holds Contemporary positions 01-25.
+      // Read-only; nothing here writes.
+      const pub = await HP.published(env, VISIBLE_SQL), v = await G.adminView(env, pub);
+      if (!v.installed) return json({ ok: true, ...v });
+      const people = await all(env, "SELECT id, slug, display_name, account_status FROM artists WHERE account_status IN ('invited','active') ORDER BY display_name COLLATE NOCASE");
+      const held = (await all(env, 'SELECT artist_id FROM gallery_positions WHERE artist_id IS NOT NULL')).map(r => r.artist_id);
+      return json({ ok: true, ...v, artists: people, held,
+        published: pub.map(a => ({ artist_id: a.artist_id, slug: a.slug, display_name: a.display_name,
+          works: a.works.map(w => ({ id: w.id, title: w.title, year: w.year, image: w.image })) })) });
+    }
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/targets$/)) && m === 'PUT') return json({ ok: true, gallery: await G.setTargets(env, me.email, mm[1], await req.json().catch(() => null)) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/status$/)) && m === 'POST') return json({ ok: true, ...(await G.setStatus(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL))) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/members$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPropose(env, me.email, mm[1], await req.json().catch(() => null))) });
@@ -1876,7 +1888,7 @@ async function route(req, env) {
     // the artist's own commercial terms (Phase 2): programme, rate and the date of any written variation; never the founder's note
     const tm = await termsFor(env, artist.id);
     const myTerms = { programme: AG.programmeOf(d.artist, tm), ...(tm ? { commission_bp: tm.commission_bp, variation_agreed_on: tm.variation_agreed_on || null } : {}) };
-    return json({ ok: true, artist: { ...a, email }, terms: myTerms, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), exhibitions_available: await exhibitionsInstalled(env), location_available: await locationInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
+    return json({ ok: true, artist: { ...a, email }, terms: myTerms, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), exhibitions_available: await exhibitionsInstalled(env), location_available: await locationInstalled(env), galleries_available: await G.installed(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
       portrait: (({ checks, ...i }) => i)(d.images.find(i => i.id === d.artist.portrait_image_id) || { checks: null }) });
   }
   /* Artist location and delivery coverage (Phase C): two separate answers, each validated on its own. Confirming a location

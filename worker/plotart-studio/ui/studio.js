@@ -109,14 +109,84 @@
           : `<ul class="st-list ok"><li>Everything needed is in place${s.unsubmitted.length ? `: submit your changes for ${pendingTier}` : ''}.</li></ul>`}
       </section>
       <section class="st-card st-os" id="os-card" aria-labelledby="os-h" hidden></section>
+      <section class="st-card st-yg" id="yg-card" aria-labelledby="yg-h" hidden></section>
       ${ME.opportunities === 'confirm' ? `<section class="st-card st-opp-ask" id="opp-confirm-home" aria-labelledby="opp-cf-h"><p class="st-muted" style="margin:0">Loading…</p></section>` : ''}
       ${ME.opportunities === 'unanswered' ? `<section class="st-card st-opp-ask" aria-labelledby="opp-ask-h"><h3 id="opp-ask-h">Opportunities &amp; delivery</h3>
         <p class="st-muted" style="margin:0">Let us know which future opportunities you’d like to hear about and how your work could travel. It takes a couple of minutes and doesn’t commit you to anything.</p>
         <div class="st-actions"><a class="st-btn st-btn--small" href="#/opportunities">Add your preferences</a></div></section>` : ''}`;
     $('[data-act=add]', app)?.addEventListener('click', addWork);
     onlineSalesCard($('#os-card', app));
+    galleriesCard($('#yg-card', app));
     const cf = $('#opp-confirm-home', app);
     if (cf) api('GET', '/api/opportunities').then(d => oppConfirm(cf, d, () => dashboard())).catch(() => { cf.remove(); });
+  }
+
+  /* ------------------------------------------------------------- Your galleries (Phase C, Track C, 25 Nov 2026)
+     Contemporary, Spaces and Being. The artist accepts or declines PlotArt's invitations, asks to join a gallery PlotArt has
+     opened, accepts or proposes works for a gallery they belong to, and answers image-use requests. Every decision is the
+     artist's own and can be undone; nothing here changes their own gallery, prices, agreements or Contemporary position.
+     Shown only once the three-gallery records are installed; on any error the card simply stays hidden. */
+  async function galleriesCard(box) {
+    if (!box || !ME.galleries_available) return;
+    let d; try { d = await api('GET', '/api/galleries'); } catch { return; }
+    if (!box.isConnected) return;
+    const T = { contemporary: 'Contemporary', spaces: 'Spaces', being: 'Being' };
+    const SC = { homepage_feature: 'a homepage feature', promotional_campaign: 'a promotional campaign', social_media: 'social media', editorial_feature: 'an editorial feature', video_feature: 'a video feature' };
+    const shown = WORKS.filter(w => !w.archived), title = id => (WORKS.find(w => w.id === id) || {}).title || 'An artwork';
+    const pl = (g, id) => d.placements.find(p => p.gallery_id === g && p.artwork_id === id);
+    const shut = new Set();   // works lists the artist has folded away (kept across redraws)
+    const btn = (label, data, solid) => `<button class="st-btn st-btn--small${solid ? ' st-btn--solid' : ''}" ${data}>${label}</button>`;
+    function workRows(g) {
+      return `<ul class="st-yg-works">${shown.map(w => { const p = pl(g, w.id), s = p ? p.state : null;
+        const [txt, acts] = s === 'live' ? ['In ' + T[g], btn('Take it out', `data-pw="withdraw" data-g="${g}" data-w="${w.id}"`)]
+          : s === 'founder_approved' ? ['PlotArt would like to include it', btn('Accept', `data-pw="accept" data-g="${g}" data-w="${w.id}"`, 1) + btn('Decline', `data-pw="decline" data-g="${g}" data-w="${w.id}"`)]
+          : s === 'artist_accepted' || s === 'proposed' ? ['Suggested by you · with PlotArt', btn('Withdraw', `data-pw="withdraw" data-g="${g}" data-w="${w.id}"`)]
+          : s === 'refused' ? ['Not included this time', '']
+          : ['Not in ' + T[g], btn('Suggest it', `data-pw="propose" data-g="${g}" data-w="${w.id}"`)];
+        return `<li><div><p class="st-work-t" style="margin:0">${E(w.title || 'Untitled')}</p><p class="st-work-s" style="margin:2px 0 0">${txt}</p></div><div class="st-row">${acts}</div></li>`; }).join('')}</ul>`;
+    }
+    function gallery(m) {
+      const g = m.gallery_id, open = d.status[g] === 'open';
+      let line = '', acts = '';
+      if (g === 'contemporary') line = m.state === 'live' ? 'Your gallery is part of Contemporary.' : 'Not part of Contemporary at the moment. Please get in touch if you’d like to discuss it.';
+      else if (m.state === 'live') { line = `You’re a member of ${T[g]}.${open ? '' : ' It hasn’t opened to visitors yet.'}`; acts = btn('Leave…', `data-ga="withdraw" data-g="${g}"`); }
+      else if (m.state === 'founder_approved') { line = `PlotArt has invited you to join ${T[g]}. Joining is optional and you can leave at any time; your own gallery doesn’t change.`; acts = btn('Accept', `data-ga="accept" data-g="${g}"`, 1) + btn('Decline', `data-ga="decline" data-g="${g}"`); }
+      else if (m.state === 'artist_accepted' || m.state === 'proposed') { line = 'You’ve asked to join. PlotArt will look at it.'; acts = btn('Withdraw request', `data-ga="withdraw" data-g="${g}"`); }
+      else if (m.state === 'refused') line = 'PlotArt hasn’t included your work in this gallery for now. Please get in touch if your work has changed.';
+      else if (open) { line = `You can ask to join ${T[g]}.`; acts = btn('Ask to join', `data-ga="request" data-g="${g}"`); }
+      else return '';
+      const works = g !== 'contemporary' && m.state === 'live' && shown.length;
+      return `<li class="st-yg-g"><div class="st-yg-top"><h4>${T[g]}</h4><div class="st-row">${acts}</div></div><p class="st-muted">${line}</p>
+        ${works ? `<details data-gw="${g}"${shut.has(g) ? '' : ' open'}><summary class="st-muted" style="cursor:pointer;margin-top:8px">Your works in ${T[g]}</summary>${workRows(g)}</details>` : ''}</li>`;
+    }
+    function draw() {
+      const reqs = d.requests.filter(r => r.status === 'open'), yes = d.answers.filter(a => a.answer === 'yes' && !d.answers.some(b => b.answer === 'no' && b.request_id === a.request_id && b.created_at > a.created_at));
+      const items = d.galleries.map(gallery).filter(Boolean);
+      if (!items.length && !reqs.length && !yes.length) { box.hidden = true; return; }
+      box.hidden = false;
+      box.innerHTML = `<h3 id="yg-h">Your galleries</h3><p class="st-muted" style="margin:0">PlotArt has three galleries: Contemporary, Spaces and Being. Your own gallery page stays the same whichever you belong to.</p>
+        <ul class="st-yg-list">${items.join('')}</ul>
+        ${reqs.map(r => `<div class="st-yg-req"><p><b>May PlotArt use ${plural(JSON.parse(r.artwork_ids).length, 'image', 'images')} for ${SC[r.scope] || 'a feature'}?</b></p>
+          <p class="st-muted">${JSON.parse(r.artwork_ids).map(id => E(title(id))).join(', ')} · ${E(r.purpose)} · ${E(r.channels)}${r.valid_until ? ' · until ' + E(r.valid_until) : ''}</p>
+          <p class="st-muted" style="font-size:13.5px">This is optional and only for this use. If you say no, or don’t answer, nothing changes.</p>
+          <div class="st-row">${btn('Yes, for this use', `data-iu="yes" data-id="${r.id}"`, 1)}${btn('No', `data-iu="no" data-id="${r.id}"`)}</div></div>`).join('')}
+        ${yes.length ? `<details data-perms style="margin-top:12px"><summary class="st-muted" style="cursor:pointer">Permissions you’ve given (${yes.length})</summary><ul class="st-yg-works">${yes.map(a => `<li><div><p class="st-work-t" style="margin:0">${E(SC[a.scope] || a.scope)}</p><p class="st-work-s" style="margin:2px 0 0">${JSON.parse(a.artwork_ids).map(id => E(title(id))).join(', ')} · ${E(a.purpose)}</p></div><div class="st-row">${btn('Withdraw', `data-iw="${a.id}"`)}</div></li>`).join('')}</ul></details>` : ''}`;
+    }
+    async function go(path, body, ok) { try { await api('POST', path, body); d = await api('GET', '/api/galleries'); say(ok); } catch (e) { say(e.message, true); try { d = await api('GET', '/api/galleries'); } catch {} } draw(); }
+    box.addEventListener('toggle', e => { const g = e.target.dataset && e.target.dataset.gw; if (g) e.target.open ? shut.delete(g) : shut.add(g); }, true);
+    box.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      const g = b.dataset.g;
+      if (b.dataset.ga) {
+        const a = b.dataset.ga;
+        if (a === 'withdraw' && !confirm(`Leave ${T[g]}? Your works there leave it too. Your own gallery doesn’t change.`)) return;
+        return go(`/api/galleries/${g}/${a}`, null, { accept: `Welcome to ${T[g]}`, decline: 'Invitation declined', request: 'Request sent to PlotArt', withdraw: 'Done' }[a]);
+      }
+      if (b.dataset.pw) return go(`/api/galleries/${g}/artworks/${b.dataset.w}/${b.dataset.pw}`, null, { accept: 'Accepted', decline: 'Declined', propose: 'Suggested to PlotArt', withdraw: 'Done' }[b.dataset.pw]);
+      if (b.dataset.iu) return go(`/api/image-use/${b.dataset.id}/answer`, { answer: b.dataset.iu }, b.dataset.iu === 'yes' ? 'Thank you · permission given for this use' : 'Answered no · nothing changes');
+      if (b.dataset.iw) { if (!confirm('Withdraw this permission? PlotArt won’t use these images in this way from now on.')) return; return go(`/api/image-use/consents/${b.dataset.iw}/withdraw`, null, 'Permission withdrawn'); }
+    });
+    draw();
   }
 
   /* ------------------------------------------------------------- Online sales (optional; 22 Nov 2026)

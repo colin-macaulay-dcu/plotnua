@@ -490,3 +490,67 @@ body.st{ background:var(--anth); min-height:100vh; }
 /* delivery counties: a compact grid within each province (Phase C) */
 .st-county-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(128px, 1fr)); gap:2px 12px; }
 .st-county-grid .st-check{ margin:0; }
+
+/* Three galleries (Phase C, Track C, 25 Nov 2026): the founder's Galleries screen and the artist's "Your galleries" card.
+   Same anthracite cards, chips and buttons as the rest of the Studio; no new colours. */
+.st-gm-tabs{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; margin:0 0 18px; }
+.st-gm-tabs button{ display:flex; flex-direction:column; gap:3px; align-items:flex-start; text-align:left; min-height:64px; padding:12px 16px; border-radius:14px;
+  border:1px solid var(--line-2); background:transparent; color:var(--stone); cursor:pointer; font:inherit; }
+.st-gm-tabs button b{ font-family:var(--serif); font-size:21px; font-weight:400; color:var(--ivory); }
+.st-gm-tabs button span{ font-size:13px; }
+.st-gm-tabs button em{ font-style:normal; color:#F2C9B8; font-weight:600; }
+.st-gm-tabs button[aria-current="true"]{ background:rgba(242,235,224,.08); border-color:rgba(242,235,224,.42); }
+.st-gm-tabs button:focus-visible{ outline:2px solid var(--ivory); outline-offset:2px; }
+.st-gm-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.st-gm-head h2{ margin:0; }
+.st-gm-ready{ display:grid; grid-template-columns:1fr 1fr 1.4fr; gap:22px; margin:16px 0 4px; align-items:start; }
+.st-gm-num{ margin:4px 0 8px; color:var(--stone); }
+.st-gm-num b{ font-family:var(--serif); font-weight:400; font-size:28px; color:var(--ivory); margin-right:4px; }
+.st-gm-meter{ display:block; height:4px; border-radius:4px; background:rgba(242,235,224,.1); overflow:hidden; }
+.st-gm-meter i{ display:block; height:100%; background:rgba(185,220,173,.75); }
+.st-gm-targets{ display:flex; flex-wrap:wrap; gap:8px 12px; align-items:flex-end; }
+.st-gm-targets .st-lab{ flex-basis:100%; margin:0; }
+.st-gm-targets label{ display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--stone); }
+.st-gm-targets input{ width:96px; }
+.st-gm-note{ font-size:13.5px; margin:10px 0 12px; }
+.st-gm-msg{ margin:0 0 12px; color:var(--stone); font-size:14px; }
+.st-gm-cols{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.15fr); gap:18px; margin-top:18px; align-items:start; }
+.st-gm-cols > div > .st-card + .st-card{ margin-top:18px; }
+.st-gm-h3{ font-family:var(--sans, inherit); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--stone); margin:18px 0 6px; }
+.st-gm-list, .st-gm-works, .st-gm-order, .st-gm-focuslist{ list-style:none; margin:0; padding:0; }
+.st-gm-person, .st-gm-work, .st-gm-focus{ display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:10px 14px; align-items:center; padding:12px 0; border-top:1px solid var(--line-2); }
+.st-gm-work, .st-gm-focus{ grid-template-columns:56px minmax(0, 1fr) auto; }
+.st-gm-work img, .st-gm-focus img, .st-gm-noimg{ width:56px; height:56px; object-fit:contain; background:#1d1e20; border-radius:6px; display:block; }
+.st-gm-person .st-work-t, .st-gm-work .st-work-t, .st-gm-focus .st-work-t{ margin:0; }
+.st-gm-person .st-work-s, .st-gm-work .st-work-s, .st-gm-focus .st-work-s{ margin:2px 0 0; }
+.st-gm-artist{ border-top:1px solid var(--line-2); padding:10px 0; }
+.st-gm-artist summary, .st-gm-closed summary{ cursor:pointer; color:var(--ivory); font-weight:600; min-height:32px; display:flex; align-items:center; gap:6px; }
+.st-gm-closed{ margin-top:16px; }
+.st-gm-invite, .st-gm-use{ margin-top:8px; }
+.st-gm-invite-row{ display:flex; flex-wrap:wrap; gap:0 14px; }
+.st-gm-invite-row .st-f{ flex:1 1 180px; }
+.st-gm-order li{ display:grid; grid-template-columns:40px minmax(0, 1fr) auto; gap:12px; align-items:center; padding:8px 0; border-top:1px solid var(--line-2); }
+.st-gm-pos{ font-variant-numeric:tabular-nums; color:var(--stone); font-size:13px; }
+.st-gm-oname{ color:var(--ivory); }
+.st-gm-save{ justify-content:space-between; margin-top:14px; }
+.st-gm-add{ margin-top:14px; }
+.st-gm-pick label{ display:flex; gap:10px; align-items:center; margin:6px 0; }
+.st-gm-pick legend{ font-size:13.5px; font-weight:600; color:var(--stone); margin-bottom:4px; }
+@media (max-width:900px){ .st-gm-cols{ grid-template-columns:1fr; } .st-gm-ready{ grid-template-columns:1fr 1fr; } .st-gm-targets{ grid-column:1 / -1; } }
+@media (max-width:560px){
+  .st-gm-tabs{ gap:6px; } .st-gm-tabs button{ padding:10px 10px; min-height:58px; } .st-gm-tabs button b{ font-size:18px; } .st-gm-tabs button span{ font-size:11.5px; }
+  .st-gm-person, .st-gm-work, .st-gm-focus{ grid-template-columns:minmax(0, 1fr); }
+  .st-gm-work, .st-gm-focus{ grid-template-columns:56px minmax(0, 1fr); }
+  .st-gm-work > .st-row, .st-gm-focus > .st-row, .st-gm-work > button{ grid-column:1 / -1; }
+}
+/* The artist's card */
+.st-yg-list{ list-style:none; margin:6px 0 0; padding:0; }
+.st-yg-g{ padding:14px 0; border-top:1px solid var(--line-2); }
+.st-yg-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.st-yg-top h4{ margin:0; font-family:var(--serif); font-weight:400; font-size:20px; color:var(--ivory); }
+.st-yg-g > p{ margin:6px 0 0; }
+.st-yg-works{ list-style:none; margin:10px 0 0; padding:0; }
+.st-yg-works li{ display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:8px 12px; align-items:center; padding:8px 0; border-top:1px dashed var(--line-2); }
+.st-yg-req{ margin-top:12px; padding:12px 14px; border:1px solid var(--line-2); border-radius:12px; }
+.st-yg-req p{ margin:0 0 6px; }
+@media (max-width:560px){ .st-yg-works li{ grid-template-columns:1fr; } }

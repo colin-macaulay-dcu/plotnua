@@ -890,12 +890,205 @@
   }
 
 
+  /* ---- Three galleries (Phase C, Track C, 25 Nov 2026): the founder's management of Contemporary, Spaces and Being.
+     Everything here calls the Phase B routes (galleries.js); nothing new is decided in the browser. Membership and placement
+     need the founder's approval AND the artist's acceptance; Artists in Focus and the order are the founder's alone. Opening a
+     gallery here records the decision in the Studio only: the public page opens in a separate, approved website release. */
+  async function galleries() {
+    let d = await api('GET', '/api/admin/galleries'), g = sessionStorage.getItem('pa-gal') || 'spaces', msg = '';
+    const TITLE = { contemporary: 'Contemporary', spaces: 'Spaces', being: 'Being' };
+    const STATUS = { open: 'Open', in_preparation: 'In preparation', paused: 'Paused' };
+    const MEMBER = { live: 'Member', founder_approved: 'Invited · waiting for the artist', artist_accepted: 'Asked to join · waiting for you',
+      proposed: 'Proposed · waiting for you', declined: 'Declined by the artist', withdrawn: 'Left or withdrawn', refused: 'Not accepted' };
+    const PLACE = { live: 'In this gallery', founder_approved: 'Offered · waiting for the artist', artist_accepted: 'Proposed by the artist · waiting for you',
+      proposed: 'Proposed', declined: 'Declined by the artist', withdrawn: 'Withdrawn', refused: 'Not accepted' };
+    const SCOPE = { homepage_feature: 'Homepage feature', promotional_campaign: 'Promotional campaign', social_media: 'Social media', editorial_feature: 'Editorial feature', video_feature: 'Video feature' };
+    const name = id => (d.artists.find(a => a.id === id) || d.memberships.find(m => m.artist_id === id) || {}).display_name || id;
+    const pubOf = id => d.published.find(p => p.artist_id === id);
+    const img = w => w && w.image ? `<img src="/api/admin/featured/image/${E(w.image.id)}" alt="" loading="lazy">` : '<span class="st-gm-noimg" aria-hidden="true"></span>';
+    let order = null, focus = null, dirtyO = false, dirtyF = false, inv = { artist_id: '', source: 'founder_curation', application_ref: '' };
+    const G = () => d.galleries.find(x => x.gallery_id === g);
+    function load() {
+      const x = G();
+      order = (x.order || []).map(o => o.artist_id);
+      for (const m of x.members) if (!order.includes(m.artist_id) && !(g === 'contemporary' && d.held.includes(m.artist_id))) order.push(m.artist_id);
+      focus = (x.features || []).map(f => ({ artist_id: f.artist_id, artwork_id: f.artwork_id }));
+      dirtyO = dirtyF = false;
+    }
+    const rows = st => d.memberships.filter(m => m.gallery_id === g && st.includes(m.state));
+    const placeOf = (wid) => d.placements.find(p => p.gallery_id === g && p.artwork_id === wid);
+    function statusCard(x) {
+      const isNew = g !== 'contemporary';
+      const bar = (n, t) => t ? `<span class="st-gm-meter" role="img" aria-label="${n} of ${t}"><i style="width:${Math.min(100, Math.round(100 * n / t))}%"></i></span>` : '';
+      return `<section class="st-card st-gm-status"><div class="st-gm-head"><h2>${TITLE[g]}</h2><span class="st-chip ${x.status === 'open' ? 'st-chip--live' : 'st-chip--light'}">${STATUS[x.status]}</span></div>
+        ${isNew ? `<div class="st-gm-ready">
+          <div><p class="st-lab">Artists</p><p class="st-gm-num"><b>${x.live_artists}</b> of ${x.target_artists}</p>${bar(x.live_artists, x.target_artists)}</div>
+          <div><p class="st-lab">Works</p><p class="st-gm-num"><b>${x.live_works}</b> of ${x.target_works}</p>${bar(x.live_works, x.target_works)}</div>
+          <form class="st-gm-targets" data-targets novalidate><p class="st-lab">Targets (advisory)</p>
+            <label>Artists <input class="st-in" type="number" min="0" max="500" name="target_artists" value="${x.target_artists}" inputmode="numeric"></label>
+            <label>Works <input class="st-in" type="number" min="0" max="5000" name="target_works" value="${x.target_works}" inputmode="numeric"></label>
+            <button class="st-btn st-btn--small" type="submit">Save targets</button></form></div>
+          <p class="st-muted st-gm-note">Counts include only published artists and works placed live in ${TITLE[g]}. ${x.status === 'open' ? `Opened ${when(x.opened_at)}.` : ''} Opening records your decision in the Studio; the public ${TITLE[g]} page opens only in a separate website release you approve.</p>
+          <div class="st-row">${x.status !== 'open' ? `<button class="st-btn st-btn--solid st-btn--small" data-status="open">Open ${TITLE[g]}…</button>` : ''}
+            ${x.status === 'open' ? '<button class="st-btn st-btn--small" data-status="paused">Pause</button>' : ''}
+            ${x.status !== 'in_preparation' ? '<button class="st-btn st-btn--small" data-status="in_preparation">Back to preparation</button>' : ''}</div>`
+        : `<p class="st-muted">Always open. Every artist is a member unless taken out, and every published work appears unless taken out here. Positions 01–25 stay in <a href="/admin/gallery">Gallery order</a>; Artists in Focus stays in <a href="/admin/featured">Featured Artists</a>.</p>
+          <p class="st-gm-num"><b>${x.live_artists}</b> published artists · <b>${x.live_works}</b> works</p>`}</section>`;
+    }
+    function membersCard() {
+      const reqs = rows(['artist_accepted', 'proposed']), wait = rows(['founder_approved']), closed = rows(['declined', 'withdrawn', 'refused']);
+      const live = G().members, liveIds = new Set(live.map(m => m.artist_id));
+      const unpub = rows(['live']).filter(m => !liveIds.has(m.artist_id));
+      const can = d.artists.filter(a => { const r = d.memberships.find(m => m.gallery_id === g && m.artist_id === a.id); return !r || ['declined', 'withdrawn', 'refused'].includes(r.state); })
+        .filter(a => g !== 'contemporary' || d.memberships.some(m => m.artist_id === a.id));   // Contemporary: only someone taken out can be invited back
+      const li = (id, state, acts, extra = '') => `<li class="st-gm-person"><div><p class="st-work-t">${E(name(id))}</p><p class="st-work-s">${E(MEMBER[state] || state)}${extra}</p></div><div class="st-row">${acts}</div></li>`;
+      return `<section class="st-card"><h2>Artists</h2>
+        ${reqs.length ? `<h3 class="st-gm-h3">Asked to join (${reqs.length})</h3><ul class="st-gm-list">${reqs.map(m => li(m.artist_id, m.state, `<button class="st-btn st-btn--solid st-btn--small" data-m="approve" data-a="${m.artist_id}">Approve</button><button class="st-btn st-btn--small" data-m="refuse" data-a="${m.artist_id}">Don’t accept</button>`)).join('')}</ul>` : ''}
+        <h3 class="st-gm-h3">Members (${live.length + unpub.length})</h3>
+        ${live.length + unpub.length ? `<ul class="st-gm-list">${live.map(m => li(m.artist_id, 'live', g === 'contemporary' && !d.memberships.some(r => r.artist_id === m.artist_id) ? '' : `<button class="st-btn st-btn--small" data-m="withdraw" data-a="${m.artist_id}">Withdraw…</button>`, ` · ${m.works} ${m.works === 1 ? 'work' : 'works'} shown`)).join('')}
+          ${unpub.map(m => li(m.artist_id, 'live', `<button class="st-btn st-btn--small" data-m="withdraw" data-a="${m.artist_id}">Withdraw…</button>`, ' · gallery not published yet')).join('')}</ul>` : `<p class="st-muted">No members yet. Nobody is added to ${TITLE[g]} automatically.</p>`}
+        ${wait.length ? `<h3 class="st-gm-h3">Invited (${wait.length})</h3><ul class="st-gm-list">${wait.map(m => li(m.artist_id, m.state, `<button class="st-btn st-btn--small" data-m="withdraw" data-a="${m.artist_id}">Cancel invitation</button>`, ` · ${when(m.founder_approved_at)}`)).join('')}</ul>` : ''}
+        <form class="st-gm-invite" data-invite novalidate><h3 class="st-gm-h3">Invite an artist to ${TITLE[g]}</h3>
+          <div class="st-gm-invite-row"><div class="st-f"><label for="gm-who">Artist</label><select id="gm-who" name="artist_id"><option value="">Choose…</option>${can.map(a => `<option value="${a.id}"${a.id === inv.artist_id ? ' selected' : ''}>${E(a.display_name)}${a.account_status === 'invited' ? ' (not signed in yet)' : ''}</option>`).join('')}</select></div>
+          <div class="st-f"><label for="gm-src">How</label><select id="gm-src" name="source">${[['founder_curation', 'Your curation'], ['founder_invitation', 'Invitation'], ['application', 'From an application']].map(([k, v]) => `<option value="${k}"${k === inv.source ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+          <div class="st-f" data-ref${inv.source === 'application' ? '' : ' hidden'}><label for="gm-ref">Application reference</label><input id="gm-ref" type="text" name="application_ref" value="${E(inv.application_ref)}" placeholder="PA-AP-… or F25-…" autocomplete="off" spellcheck="false"></div></div>
+          <p class="st-muted st-gm-note">The artist sees the invitation in their Studio and chooses whether to accept. No email is sent.</p>
+          <button class="st-btn st-btn--solid st-btn--small" type="submit"${can.length ? '' : ' disabled'}>Invite</button></form>
+        ${closed.length ? `<details class="st-gm-closed"><summary>Earlier decisions (${closed.length})</summary><ul class="st-gm-list">${closed.map(m => li(m.artist_id, m.state, '', m.closed_at ? ` · ${when(m.closed_at)}` : '')).join('')}</ul></details>` : ''}</section>`;
+    }
+    function worksCard() {
+      const members = G().members.map(m => pubOf(m.artist_id)).filter(Boolean);
+      if (g === 'contemporary') {
+        const pubs = d.published.filter(p => G().members.some(m => m.artist_id === p.artist_id) || d.placements.some(x => x.gallery_id === 'contemporary' && x.artist_id === p.artist_id));
+        return `<section class="st-card"><h2>Works</h2><p class="st-muted">Every published work is in Contemporary unless you take it out. Taking a work out never changes the artist’s own gallery.</p>
+          ${pubs.map(p => `<details class="st-gm-artist"><summary>${E(p.display_name)} <span class="st-muted">· ${p.works.length}</span></summary><ul class="st-gm-works">${p.works.map(w => { const out = placeOf(w.id);
+            return `<li class="st-gm-work">${img(w)}<div><p class="st-work-t">${E(w.title)}</p><p class="st-work-s">${out ? 'Taken out of Contemporary' : 'In Contemporary'}</p></div>
+            <button class="st-btn st-btn--small" data-w="${out ? 'restore' : 'withdraw'}" data-id="${w.id}">${out ? 'Put back' : 'Take out…'}</button></li>`; }).join('')}</ul></details>`).join('') || '<p class="st-muted">No published galleries yet.</p>'}</section>`;
+      }
+      return `<section class="st-card"><h2>Works</h2><p class="st-muted">Only members’ published works can be placed. You offer a work and the artist accepts it, or the artist proposes one and you approve it.</p>
+        ${members.length ? members.map(p => `<details class="st-gm-artist" open><summary>${E(p.display_name)}</summary><ul class="st-gm-works">${p.works.map(w => { const pl = placeOf(w.id), st = pl ? pl.state : null;
+          const acts = !st || ['declined', 'withdrawn', 'refused'].includes(st) ? `<button class="st-btn st-btn--small" data-w="place" data-id="${w.id}">Offer for ${TITLE[g]}</button>`
+            : st === 'artist_accepted' || st === 'proposed' ? `<button class="st-btn st-btn--solid st-btn--small" data-w="place" data-id="${w.id}">Approve</button><button class="st-btn st-btn--small" data-w="refuse" data-id="${w.id}">Don’t accept</button>`
+            : `<button class="st-btn st-btn--small" data-w="withdraw" data-id="${w.id}">${st === 'live' ? 'Withdraw…' : 'Cancel offer'}</button>`;
+          return `<li class="st-gm-work">${img(w)}<div><p class="st-work-t">${E(w.title)}${w.year ? ', ' + E(w.year) : ''}</p><p class="st-work-s">${st ? E(PLACE[st]) : 'Not in ' + TITLE[g]}</p></div><div class="st-row">${acts}</div></li>`; }).join('')}</ul></details>`).join('')
+          : `<p class="st-muted">Works can be placed once an artist is a member and their gallery is published.</p>`}</section>`;
+    }
+    function orderCard() {
+      const x = G();
+      return `<section class="st-card"><h2>Order</h2><p class="st-muted">${g === 'contemporary' ? 'Contemporary members without one of the 25 founding positions, from position 26. Positions 01–25 stay in Gallery order.' : `The order of artists in ${TITLE[g]}. Only members appear; nobody moves automatically.`}</p>
+        ${order.length ? `<ol class="st-gm-order">${order.map((id, i) => `<li><span class="st-gm-pos">${String((g === 'contemporary' ? 26 : 1) + i).padStart(2, '0')}</span><span class="st-gm-oname">${E(name(id))}</span>
+          <span class="st-row"><button class="st-btn st-btn--small" data-o="up" data-i="${i}" aria-label="Move ${E(name(id))} earlier"${i ? '' : ' disabled'}>↑</button><button class="st-btn st-btn--small" data-o="down" data-i="${i}" aria-label="Move ${E(name(id))} later"${i < order.length - 1 ? '' : ' disabled'}>↓</button></span></li>`).join('')}</ol>
+          <div class="st-row st-gm-save"><span class="st-muted">${dirtyO ? 'Unsaved order' : 'Saved'}</span><button class="st-btn st-btn--solid st-btn--small" data-save-order${dirtyO ? '' : ' disabled'}>Save order</button></div>` : '<p class="st-muted">No members to order yet.</p>'}</section>`;
+    }
+    function focusCard() {
+      if (g === 'contemporary') return '';
+      const placed = G().members.map(m => ({ p: pubOf(m.artist_id) })).filter(x => x.p).map(({ p }) => ({ p, works: p.works.filter(w => { const pl = placeOf(w.id); return pl && pl.state === 'live'; }) })).filter(x => x.works.length);
+      const card = (f, i) => { const p = pubOf(f.artist_id), w = p && p.works.find(x => x.id === f.artwork_id); if (!w) return '';
+        return `<li class="st-gm-focus">${img(w)}<div><p class="st-work-t">${E(p.display_name)}</p><p class="st-work-s"><i>${E(w.title)}</i></p></div>
+          <span class="st-row"><button class="st-btn st-btn--small" data-f="up" data-i="${i}" aria-label="Earlier"${i ? '' : ' disabled'}>↑</button><button class="st-btn st-btn--small" data-f="down" data-i="${i}" aria-label="Later"${i < focus.length - 1 ? '' : ' disabled'}>↓</button><button class="st-btn st-btn--small" data-f="rm" data-i="${i}">Remove</button></span></li>`; };
+      return `<section class="st-card"><h2>Artists in Focus · ${TITLE[g]}</h2><p class="st-muted">Up to 6 members, each with one of their works placed in ${TITLE[g]}. Separate from Contemporary’s selection.</p>
+        ${focus.length ? `<ol class="st-gm-focuslist">${focus.map(card).join('')}</ol>` : '<p class="st-muted">Nobody chosen yet.</p>'}
+        ${focus.length < 6 && placed.some(x => !focus.some(f => f.artist_id === x.p.artist_id)) ? `<div class="st-f st-gm-add"><label for="gm-focus">Add an artist and work</label><select id="gm-focus"><option value="">Choose…</option>${placed.filter(x => !focus.some(f => f.artist_id === x.p.artist_id))
+          .map(x => `<optgroup label="${E(x.p.display_name)}">${x.works.map(w => `<option value="${x.p.artist_id}|${w.id}">${E(w.title)}</option>`).join('')}</optgroup>`).join('')}</select></div>` : ''}
+        <div class="st-row st-gm-save"><span class="st-muted">${dirtyF ? 'Unsaved selection' : 'Saved'}</span><button class="st-btn st-btn--solid st-btn--small" data-save-focus${dirtyF ? '' : ' disabled'}>Save Artists in Focus</button></div></section>`;
+    }
+    function useCard() {
+      const open = d.open_requests;
+      return `<section class="st-card"><h2>Image use permissions</h2><p class="st-muted">Ask an artist before using a work’s image beyond their gallery (a campaign, social media, an editorial or video feature). Each request is for one use; the artist answers yes or no in their Studio, and can withdraw a yes later. Nothing is assumed from an earlier answer.</p>
+        ${open.length ? `<h3 class="st-gm-h3">Waiting for an answer (${open.length})</h3><ul class="st-gm-list">${open.map(r => `<li class="st-gm-person"><div><p class="st-work-t">${E(name(r.artist_id))} · ${E(SCOPE[r.scope])}${r.gallery_id ? ' · ' + TITLE[r.gallery_id] : ''}</p>
+          <p class="st-work-s">${E(r.purpose)} · ${E(r.channels)}${r.valid_until ? ' · until ' + E(r.valid_until) : ''} · asked ${when(r.requested_at)}</p></div>
+          <div class="st-row"><button class="st-btn st-btn--small" data-u="yes" data-id="${r.id}" data-artist="${r.artist_id}" title="The artist answered by email">They said yes</button><button class="st-btn st-btn--small" data-u="no" data-id="${r.id}" data-artist="${r.artist_id}">They said no</button><button class="st-btn st-btn--small" data-u="cancel" data-id="${r.id}">Cancel</button></div></li>`).join('')}</ul>` : '<p class="st-muted">No open requests.</p>'}
+        <details class="st-gm-closed" data-ask${open.length ? '' : ' open'}><summary>Ask for permission</summary><form class="st-gm-use" data-use novalidate>
+          <div class="st-gm-invite-row"><div class="st-f"><label for="gu-a">Artist</label><select id="gu-a" name="artist_id"><option value="">Choose…</option>${d.published.map(p => `<option value="${p.artist_id}">${E(p.display_name)}</option>`).join('')}</select></div>
+          <div class="st-f"><label for="gu-s">Use</label><select id="gu-s" name="scope">${Object.entries(SCOPE).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+          <div class="st-f"><label for="gu-g">Gallery</label><select id="gu-g" name="gallery_id"><option value="">Any (not tied to a gallery)</option>${Object.entries(TITLE).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div></div>
+          <fieldset class="st-f st-gm-pick"><legend>Artworks</legend><div data-works><p class="st-muted">Choose an artist first.</p></div></fieldset>
+          <div class="st-f"><label for="gu-p">What the image would be used for</label><textarea id="gu-p" name="purpose" maxlength="600" rows="3" placeholder="For example: one post introducing Spaces, with a link to the artist’s gallery"></textarea></div>
+          <div class="st-gm-invite-row"><div class="st-f"><label for="gu-c">Where it would appear</label><input id="gu-c" type="text" name="channels" maxlength="300" placeholder="For example: PlotArt Instagram"></div>
+          <div class="st-f"><label for="gu-v">Until (optional)</label><input id="gu-v" name="valid_until" type="date"></div></div>
+          <button class="st-btn st-btn--solid st-btn--small" type="submit">Send request to the artist’s Studio</button></form></details></section>`;
+    }
+    function draw() {
+      if (!d.installed) { app.innerHTML = `<h1 class="st-h1">Galleries</h1><section class="st-card"><h2>Not available yet</h2><p class="st-muted">Contemporary, Spaces and Being are managed here once the three-gallery records are installed (migrations 0023 and 0024). Until then everything works exactly as today.</p></section>`; return; }
+      const x = G();
+      app.innerHTML = `<h1 class="st-h1">Galleries</h1>
+        <p class="st-sub">Contemporary, Spaces and Being. An artist or work joins Spaces or Being only with your approval and the artist’s acceptance. Nothing here changes an artist’s own gallery, prices, agreements or Contemporary positions 01–25.</p>
+        <nav class="st-gm-tabs" aria-label="Gallery">${Object.entries(TITLE).map(([k, v]) => { const y = d.galleries.find(z => z.gallery_id === k), n = d.memberships.filter(m => m.gallery_id === k && ['artist_accepted', 'proposed'].includes(m.state)).length + d.placements.filter(p => p.gallery_id === k && ['artist_accepted', 'proposed'].includes(p.state)).length;
+          return `<button type="button" data-g="${k}"${k === g ? ' aria-current="true"' : ''}><b>${v}</b><span>${STATUS[y.status]}${n ? ` · <em>${n} waiting</em>` : ''}</span></button>`; }).join('')}</nav>
+        ${msg ? `<p class="st-gm-msg st-err" role="alert">${E(msg)}</p>` : ''}
+        ${statusCard(x)}<div class="st-gm-cols"><div>${membersCard()}${orderCard()}</div><div>${worksCard()}${focusCard()}</div></div>${useCard()}`;
+    }
+    async function act(fn, ok) { try { await fn(); d = await api('GET', '/api/admin/galleries'); load(); msg = ''; say(ok); } catch (e) { msg = e.message; say(e.message, true); } draw(); }
+    const confirmTyped = (word, text) => (prompt(`${text}\n\nType ${word} to confirm.`) || '').trim().toUpperCase() === word;
+    app.onclick = async e => {
+      if (location.pathname.replace(/\/$/, '') !== '/admin/galleries') { app.onclick = null; return; }
+      const b = e.target.closest('button'); if (!b || b.disabled || (b.type === 'submit' && b.form)) return;
+      if (b.dataset.g) { if ((dirtyO || dirtyF) && !confirm('Leave without saving the order or Artists in Focus?')) return; g = b.dataset.g; sessionStorage.setItem('pa-gal', g); msg = ''; inv = { artist_id: '', source: 'founder_curation', application_ref: '' }; load(); return draw(); }
+      if (b.dataset.status) {
+        const want = b.dataset.status, x = G();
+        if (want === 'open') {
+          const word = `OPEN ${TITLE[g].toUpperCase()}`;
+          if (!confirmTyped(word, `Open ${TITLE[g]} in the Studio? ${x.live_artists} of ${x.target_artists} artists and ${x.live_works} of ${x.target_works} works. The public page changes only in a separate release you approve.`)) return;
+          return act(() => api('POST', `/api/admin/galleries/${g}/status`, { status: 'open', confirm: word, below_target: !x.ready }), `${TITLE[g]} recorded as open`);
+        }
+        if (!confirm(want === 'paused' ? `Pause ${TITLE[g]}?` : `Move ${TITLE[g]} back to preparation?`)) return;
+        return act(() => api('POST', `/api/admin/galleries/${g}/status`, { status: want }), `${TITLE[g]}: ${STATUS[want].toLowerCase()}`);
+      }
+      if (b.dataset.m) {
+        const a = b.dataset.a, how = b.dataset.m;
+        if (how === 'withdraw' && !confirm(`Withdraw ${name(a)} from ${TITLE[g]}? Their works placed there, their order position and any Artists in Focus entry in ${TITLE[g]} go too. Their own gallery is not affected.`)) return;
+        return act(() => api('POST', `/api/admin/galleries/${g}/members/${a}/${how}`), { approve: 'Approved', refuse: 'Not accepted', withdraw: 'Withdrawn' }[how]);
+      }
+      if (b.dataset.w) {
+        const how = b.dataset.w;
+        if (how === 'withdraw' && !confirm(g === 'contemporary' ? 'Take this work out of Contemporary? It stays in the artist’s own gallery.' : `Withdraw this work from ${TITLE[g]}?`)) return;
+        return act(() => api('POST', `/api/admin/galleries/${g}/artworks/${b.dataset.id}/${how}`), { place: 'Saved', refuse: 'Not accepted', withdraw: 'Withdrawn', restore: 'Put back in Contemporary' }[how]);
+      }
+      if (b.dataset.o) { const i = +b.dataset.i, j = b.dataset.o === 'up' ? i - 1 : i + 1; [order[i], order[j]] = [order[j], order[i]]; dirtyO = true; return draw(); }
+      if (b.dataset.f) { const i = +b.dataset.i; if (b.dataset.f === 'rm') focus.splice(i, 1); else { const j = b.dataset.f === 'up' ? i - 1 : i + 1; [focus[i], focus[j]] = [focus[j], focus[i]]; } dirtyF = true; return draw(); }
+      if (b.hasAttribute('data-save-order')) return act(() => api('PUT', `/api/admin/galleries/${g}/order`, { artists: order }), 'Order saved');
+      if (b.hasAttribute('data-save-focus')) return act(() => api('PUT', `/api/admin/galleries/${g}/features`, { items: focus }), 'Artists in Focus saved');
+      if (b.dataset.u) {
+        if (b.dataset.u === 'cancel') { if (!confirm('Cancel this request? The artist will no longer see it.')) return; return act(() => api('POST', `/api/admin/image-use/requests/${b.dataset.id}/cancel`), 'Request cancelled'); }
+        if (!confirm(`Record that the artist answered ${b.dataset.u} by email?`)) return;
+        return act(() => api('POST', '/api/admin/image-use/record', { request_id: b.dataset.id, artist_id: b.dataset.artist, answer: b.dataset.u }), 'Answer recorded');
+      }
+    };
+    app.onchange = e => {
+      const t = e.target;
+      if (t.id === 'gm-src') { inv.source = t.value; app.querySelector('[data-ref]').hidden = t.value !== 'application'; }
+      if (t.id === 'gm-who') inv.artist_id = t.value;
+      if (t.id === 'gm-focus' && t.value) { const [artist_id, artwork_id] = t.value.split('|'); focus.push({ artist_id, artwork_id }); dirtyF = true; draw(); }
+      if (t.id === 'gu-a') { const p = pubOf(t.value), box = app.querySelector('[data-works]');
+        box.innerHTML = p ? p.works.map(w => `<label class="st-check"><input type="checkbox" name="artwork_ids" value="${w.id}" style="accent-color:var(--terra);width:20px;height:20px"> ${E(w.title)}</label>`).join('') : '<p class="st-muted">Choose an artist first.</p>'; }
+    };
+    app.oninput = e => { if (e.target.id === 'gm-ref') inv.application_ref = e.target.value; };
+    app.onsubmit = e => {
+      e.preventDefault(); const f = e.target, v = Object.fromEntries(new FormData(f).entries());
+      if (f.hasAttribute('data-targets')) return act(() => api('PUT', `/api/admin/galleries/${g}/targets`, { target_artists: +v.target_artists, target_works: +v.target_works }), 'Targets saved');
+      if (f.hasAttribute('data-invite')) {
+        if (!v.artist_id) return say('Choose an artist', true);
+        const body = { artist_id: v.artist_id, source: v.source, ...(v.source === 'application' ? { application_ref: (v.application_ref || '').trim() } : {}) };
+        inv = { artist_id: body.artist_id, source: body.source, application_ref: body.application_ref || '' };
+        return act(async () => { await api('POST', `/api/admin/galleries/${g}/members`, body); inv = { artist_id: '', source: 'founder_curation', application_ref: '' }; }, `Invited to ${TITLE[g]}`);
+      }
+      if (f.hasAttribute('data-use')) {
+        const ids = [...f.querySelectorAll('input[name="artwork_ids"]:checked')].map(i => i.value);
+        return act(() => api('POST', '/api/admin/image-use/requests', { artist_id: v.artist_id, scope: v.scope, gallery_id: v.gallery_id || null, artwork_ids: ids,
+          purpose: v.purpose, channels: v.channels, valid_until: v.valid_until || null }), 'Request sent to the artist’s Studio');
+      }
+    };
+    addEventListener('beforeunload', e => { if ((dirtyO || dirtyF) && location.pathname.startsWith('/admin/galleries')) { e.preventDefault(); e.returnValue = ''; } });
+    if (d.installed) load();
+    draw();
+  }
+
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : path === '/admin/featured' ? 'feat' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : path === '/admin/featured' ? 'feat' : path === '/admin/galleries' ? 'gals' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/featured') await featured(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/featured') await featured(); else if (path === '/admin/galleries') await galleries(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);
