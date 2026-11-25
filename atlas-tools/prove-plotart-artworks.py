@@ -339,6 +339,10 @@ def newcomer(slug, accepted, approved, first=None):
     n = copy.deepcopy(src)
     n["artist"].update(slug=slug, display_name="Aaa " + slug)
     n["publication"].update(licence_accepted_at=accepted, approved_at=approved)
+    # A newcomer is copied from a real export, so it must not inherit that artist's first_approved_at (25 Nov 2026:
+    # once Anna-Marie Savage's gallery was republished by the updated Studio, the copies carried her 12 Nov date and
+    # sorted among the real artists, so the fixture, not the ordering, failed). Only a date given here applies.
+    n["publication"].pop("first_approved_at", None)
     if first:
         n["publication"]["first_approved_at"] = first
     return n
