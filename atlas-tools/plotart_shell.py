@@ -61,18 +61,23 @@ def gallery_state(key):
 
 
 def galleries_menu(R, current, mg_href=None):
-    """The header's Galleries menu. current: a gallery key or "mg" marks that page's link (aria-current); "vg" (an artist's
-    gallery or artwork page, all of which are in Contemporary today) marks only the menu itself as the current section."""
-    keys = {g[0] for g in GALLERIES} | {"mg"}
+    """The header's Galleries menu: the three galleries. current: a gallery key marks that page's link (aria-current); "vg" (an
+    artist's gallery or artwork page, all of which are in Contemporary today) marks only the menu itself as the current section.
+    Mobile Gallery is no longer in this menu: it is its own pill again, after Living Gallery (founder decision, 25 Nov 2026;
+    mobile_gallery_pill). mg_href is accepted for compatibility and ignored."""
+    keys = {g[0] for g in GALLERIES}
     links = []
     for key, href, label, track in GALLERIES:
         links.append('<a class="pa-dd-link" href="%s%s"%s data-pa-track="%s">%s%s</a>' % (
             R, href, ' aria-current="page"' if key == current else "", track, label,
             PREP_NOTE if gallery_state(key) == "in_preparation" else ""))
-    links.append('<a class="pa-dd-link" href="%s"%s data-pa-track="nav_mobile_gallery">Mobile Gallery</a>' % (
-        mg_href or R + "mobile-gallery/", ' aria-current="page"' if current == "mg" else ""))
     return ('<details class="pa-dd%s" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary>'
             '<div class="pa-dd-panel">%s</div></details>') % (" is-current" if current in keys | {"vg"} else "", "".join(links))
+
+
+def mobile_gallery_pill(href, current=False):
+    """Mobile Gallery's own pill in the primary navigation, straight after Living Gallery (founder decision, 25 Nov 2026)."""
+    return '<a class="pa-pill" href="%s"%s data-pa-track="nav_mobile_gallery">Mobile Gallery</a>' % (href, ' aria-current="page"' if current else "")
 
 
 def menu_items(nav):
@@ -106,7 +111,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
               '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, " pa-pills--hire" if hire_nav else "", pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
         galleries_menu(R, current),
-        pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
+        pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery") + mobile_gallery_pill(R + "mobile-gallery/", current == "mg"),
         (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
         + (pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]) if services_nav else ""),
         '<a class="pa-pill pa-pill--out" href="%sindex.html" data-pa-track="cross_plotnua_home"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a>' % T)

@@ -51,8 +51,8 @@ CSS = CSS_BEGIN + """ · the Galleries menu (three-gallery expansion Phase A, 24
 .pa-dd-link:last-child{ margin-top:4px; border-top:1px solid rgba(237,235,231,.10); border-radius:0 0 10px 10px; padding-top:13px; }
 .pn-sm-link .pa-dd-note{ margin-left:auto; }
 @media (max-width:1180px){ .pa-dd{ display:flex; } :where(body.pa) .pa-pills .pa-pill--dd{ width:100%; min-height:44px; padding:0 8px; font-size:14px; }
-  .pa-pills.pa-pills--hire{ grid-template-columns:repeat(6, minmax(0, 1fr)); } }
-@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+  .pa-pills.pa-pills--hire{ grid-template-columns:repeat(7, minmax(0, 1fr)); } }   /* seven pills with Mobile Gallery (25 Nov 2026) */
+@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(4, minmax(0, 1fr)); } }   /* 4 + 3: no pill left alone */
 @media (max-width:860px){ :where(body.pa) .pa-pills .pa-pill--dd{ padding:0 4px; font-size:13px; letter-spacing:0; } }
 """ + CSS_END + "\n"
 JS_BEGIN, JS_END = "/* pa-galleries-nav:begin", "/* pa-galleries-nav:end */"
@@ -80,29 +80,48 @@ def current_of(rel, vg_cur, mg_cur):
 
 DD = re.compile(r'<details class="pa-dd(?: is-current)?" data-pa-dd><summary class="pa-pill pa-pill--dd">Galleries</summary><div class="pa-dd-panel">(.*?)</div></details>', re.S)
 DD_LINK = re.compile(r'<a class="pa-dd-link" href="([^"]*)"( aria-current="page")? data-pa-track="([a-z_]+)">')
-MENU_RUN = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_gallery_contemporary_menu">.*?data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>', re.S)
+MENU_RUN = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_gallery_contemporary_menu">.*?data-pa-track="nav_gallery_being_menu">.*?</a>'
+                      r'(?:<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>)?', re.S)
+MG_PILL = re.compile(r'<a class="pa-pill" href="([^"]*)"( aria-current="page")? data-pa-track="nav_mobile_gallery">Mobile Gallery</a>')
+MG_MENU = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>')
+LG_PILL = re.compile(r'<a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery">Living Gallery</a>')
+LG_MENU = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery_menu">Living Gallery</a>')
 FOOT_RUN = re.compile(r'<li><a href="([^"]*)gallery/">Contemporary(?: Art)?</a></li>.*?<li><a href="[^"]*mobile-gallery/">Mobile Gallery</a></li>', re.S)
 KEY_OF_TRACK = {t: k for k, _h, _l, t in S.GALLERIES}
 
 
 def refresh(text, rel):
-    """A page that already has the Galleries menu: rewrite the menu, its phone Menu links and the footer gallery links from the
-    shell's current markup (same base path, same current page, same Mobile Gallery address)."""
+    """A page that already has the Galleries menu: rewrite the menu, Mobile Gallery's own pill (straight after Living Gallery,
+    founder decision 25 Nov 2026), their phone Menu links and the footer gallery links from the shell's current markup (same
+    base path, same current page, same Mobile Gallery address). Works on the earlier layout (Mobile Gallery inside the
+    Galleries menu) and on the current one, so running it twice changes nothing."""
     ms = DD.findall(text)
     if len(ms) != 1:
         raise ValueError("expected one Galleries menu, found %d" % len(ms))
     m = DD.search(text)
     links = DD_LINK.findall(m.group(1))
-    if not links or links[0][2] != "nav_gallery_contemporary" or links[-1][2] != "nav_mobile_gallery" or not links[0][0].endswith("gallery/"):
-        raise ValueError("the Galleries menu does not start with Contemporary and end with Mobile Gallery")
-    R, mg_href = links[0][0][:-len("gallery/")], links[-1][0]
-    cur = [t for _h, a, t in links if a]
-    current = ("mg" if cur[0] == "nav_mobile_gallery" else KEY_OF_TRACK.get(cur[0], "vg")) if cur else ("vg" if " is-current" in m.group(0) else None)
-    dd = S.galleries_menu(R, current, mg_href=mg_href)
-    if len(MENU_RUN.findall(text)) != 1 or len(FOOT_RUN.findall(text)) > 1:
-        raise ValueError("expected one phone Menu gallery run and at most one footer gallery run")
+    if not links or links[0][2] != "nav_gallery_contemporary" or not links[0][0].endswith("gallery/"):
+        raise ValueError("the Galleries menu does not start with Contemporary")
+    R = links[0][0][:-len("gallery/")]
+    pills = MG_PILL.findall(text)
+    if links[-1][2] == "nav_mobile_gallery" and not pills:            # earlier layout: Mobile Gallery inside the menu
+        mg_href, mg_cur = links[-1][0], bool(links[-1][1])
+    elif links[-1][2] != "nav_mobile_gallery" and len(pills) == 1:     # current layout: its own pill
+        mg_href, mg_cur = pills[0][0], bool(pills[0][1])
+    else:
+        raise ValueError("expected Mobile Gallery exactly once: inside the Galleries menu or as its own pill")
+    cur = [t for _h, a, t in links if a and t != "nav_mobile_gallery"]
+    current = KEY_OF_TRACK.get(cur[0], "vg") if cur else ("vg" if " is-current" in m.group(0) and not mg_cur else None)
+    dd = S.galleries_menu(R, current)
+    pill = S.mobile_gallery_pill(mg_href, mg_cur)
+    if len(MENU_RUN.findall(text)) != 1 or len(FOOT_RUN.findall(text)) > 1 or len(LG_PILL.findall(text)) != 1 or len(LG_MENU.findall(text)) != 1:
+        raise ValueError("expected one phone Menu gallery run, one Living Gallery pill and Menu link, and at most one footer gallery run")
     out = text.replace(m.group(0), dd, 1)
+    out = MG_PILL.sub("", out)
+    out = LG_PILL.sub(lambda p: p.group(0) + pill, out, count=1)
     out = MENU_RUN.sub(lambda _m: "".join(S.menu_items(dd)), out, count=1)
+    out = MG_MENU.sub("", out)
+    out = LG_MENU.sub(lambda p: p.group(0) + "".join(S.menu_items(pill)), out, count=1)
     out = FOOT_RUN.sub(lambda f: S.FOOT_GALLERIES.format(R=f.group(1)), out, count=1)
     return out, ("refreshed" if out != text else "already")
 
