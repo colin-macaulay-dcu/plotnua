@@ -32,6 +32,7 @@ await fp.selectOption('section[data-g="spaces"] [data-placew]', { index: 1 }); a
 ap = await open(actx, '/#/galleries');
 await ap.click('section[data-g="spaces"] [data-p="accept"]'); await ap.waitForTimeout(800);
 check('G5 the founder places one of Ava’s works; it shows in Spaces only after Ava accepts', /Shown here/.test(await ap.$eval('section[data-g="spaces"]', e => e.textContent)));
+if (SHOTS) { await ap.addStyleTag({ content: '.st-top{position:static!important}' }); await ap.screenshot({ path: SHOTS + '/GAL-artist-galleries.png', fullPage: true }); }
 fp = await open(fctx, '/admin/galleries');
 await fp.click('section[data-g="spaces"] [data-act="order-init"]'); await fp.waitForTimeout(800);
 const spaces = await fp.$eval('section[data-g="spaces"]', e => e.textContent);
@@ -40,6 +41,7 @@ check('G6 the founder orders Spaces from 01, with readiness against its targets;
 await fp.fill('section[data-g="spaces"] [data-confirm]', 'OPEN'); await fp.click('section[data-g="spaces"] [data-act="open"]'); await fp.waitForTimeout(800);
 check('G7 opening needs the exact typed confirmation: "OPEN" alone is refused and Spaces stays In preparation', (await fp.$eval('section[data-g="spaces"] .st-pill', e => e.textContent)) === 'In preparation');
 if (SHOTS) await (await fp.$('section[data-g="spaces"]')).screenshot({ path: SHOTS + '/GAL-founder-spaces.png' });
+if (SHOTS) { await fp.addStyleTag({ content: '.st-top{position:static!important}' }); await fp.screenshot({ path: SHOTS + '/GAL-founder-dashboard.png', fullPage: true }); }
 const w = (await db.prepare("SELECT id FROM artworks WHERE artist_id='aava' ORDER BY ord LIMIT 1").first()).id;
 await fp.selectOption('#iu-w', [w]); await fp.fill('#iu-p', 'Homepage entrance for Spaces while the gallery is prepared'); await fp.fill('#iu-c', 'plotnua.ie homepage'); await fp.click('[data-act="iu"]'); await fp.waitForTimeout(800);
 ap = await open(actx, '/#/galleries');
