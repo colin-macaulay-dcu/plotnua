@@ -66,6 +66,8 @@ async function load(env, artistId) {
   const images = await all(env, 'SELECT * FROM images WHERE artist_id = ? AND deleted_at IS NULL ORDER BY ord', artistId);
   // the kinds of opportunity the artist has chosen to show (migration 0015): the only Opportunities data a snapshot carries
   if (artist) artist.open_to = await O.publicFor(env, artistId);
+  // where the artist is based (Phase C, migration 0025): ONLY the public view, and only when the artist has ticked it
+  if (artist) { try { artist.location = LOC.publicLocation(await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', artistId)); } catch { artist.location = null; } }
   return { artist, works, images };
 }
 /* Open for Commissions (founder approval 13 Nov 2026). Migration 0011 adds artists.open_for_commissions. Until it has run,

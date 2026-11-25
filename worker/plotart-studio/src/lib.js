@@ -187,6 +187,9 @@ export function snapshot(artist, works, images) {
       // Opportunities shown publicly (migration 0015, 16 Nov 2026): only the kinds of opportunity the artist chose to show,
       // in the fixed public order. Absent when there are none, so every snapshot made before stays byte-for-byte the same.
       ...(openTo(artist).length ? { open_to: openTo(artist) } : {}),
+      // Where the artist is based (Phase C, migration 0025): the public view only (country, county, optional town, the
+      // place line), present only when the artist chose to show it. Absent otherwise, so earlier snapshots stay the same.
+      ...(artist.location ? { location: artist.location } : {}),
     },
     works: works.filter(w => !w.archived && !isEmptyDraft(w, images)).sort((a, b) => a.ord - b.ord).map(w => ({
       id: w.id, slug: w.slug, title: w.title || null, year: w.year ?? null, medium: w.medium || null, materials: w.materials || null,
@@ -199,11 +202,11 @@ export function snapshot(artist, works, images) {
 }
 
 const FULL_ARTIST = ['display_name', 'statement', 'bio', 'practice', 'medium', 'exhibitions'];
-const LIGHT_ARTIST = ['county', 'county_public', 'website', 'instagram'];
+const LIGHT_ARTIST = ['county', 'county_public', 'website', 'instagram', 'location'];   // location: like the county
 const LIGHT_WORK = ['title', 'year', 'medium', 'materials', 'h_cm', 'w_cm', 'd_cm', 'description', 'price_eur', 'price_on_request'];
 const FULL_WORK = ['ai_involvement', 'ai_note'];
 const LABEL = { display_name: 'name', bio: 'biography', exhibitions: 'Exhibitions & Achievements', h_cm: 'height', w_cm: 'width', d_cm: 'depth', price_eur: 'price', price_on_request: 'price on request',
-  county_public: 'show county', open_for_commissions: 'open for commissions', ai_involvement: 'AI declaration', ai_note: 'AI disclosure' };
+  county_public: 'show county', location: 'where you’re based', open_for_commissions: 'open for commissions', ai_involvement: 'AI declaration', ai_note: 'AI disclosure' };
 const lab = f => LABEL[f] || f.replace(/_/g, ' ');
 const eq = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 const imgSig = w => (w.images || []).map(i => `${i.role}:${i.sha256}`).join('|');

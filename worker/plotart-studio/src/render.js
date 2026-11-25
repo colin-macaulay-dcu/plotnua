@@ -40,7 +40,7 @@ export function enquiryHref(p, w) {
   }
   return `mailto:${ENQUIRY_ADDRESS}?subject=${pyQuote(subj)}&body=${pyQuote(body)}`;
 }
-export const metaLine = a => [a.practice, a.county].filter(Boolean).join(' · ');
+export const metaLine = a => [a.practice, a.location ? a.location.line : a.county].filter(Boolean).join(' · ');   // Phase C: the confirmed public location, else the county as today
 
 // A published gallery with no works on show (founder decision 1 Nov 2026); identical to plotart_gallery_pages.empty_works.
 export function emptyWorks(a) {
