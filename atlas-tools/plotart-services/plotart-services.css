@@ -57,3 +57,6 @@ body.pa .pa-sv-about{ margin:0 0 24px; color:var(--stone); font-size:15.5px; lin
    as a placeholder card; and DropBy's light graphic takes the credit chip used on mobile, so the credit stays legible. */
 body.pa .pa-sv-media:not(.pa-sv-media--plain) + .pa-sv-body > .pa-sv-status:first-child{ margin-top:clamp(22px, 2.6vw, 32px); }
 body.pa .pa-sv-card--db .pa-sv-media figcaption{ padding:2px 8px; border-radius:999px; background:rgba(27,28,30,.62); }
+/* A logo plaque over a placeholder panel (N.I. Couriers, 25 Nov 2026) overlaps the panel's lower edge exactly as it
+   overlaps a photograph: the placeholder body's top padding is cancelled for the plaque. */
+body.pa .pa-sv-card--media .pa-sv-media--plain + .pa-sv-body > .pa-sv-logo:first-child{ margin-top:calc(-30px - clamp(22px, 2.6vw, 32px)); }
