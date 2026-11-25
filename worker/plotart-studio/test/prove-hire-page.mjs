@@ -104,12 +104,23 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
   const colourReleaseOk = (f, n, o) => [COLOUR_RELEASE[f], ...(LATER_PINS[f] || [])].includes(sha(n)) && (f !== 'plotart/assets/plotart.css'
     || (navBlock(n) !== '' && navBlock(n) === navBlock(o) && footRule(n) === footRule(o)
         && (marksBlock(n) === marksBlock(o) || onlyNeutralColourChange(marksBlock(o), marksBlock(n)))));
+  // 25 Nov 2026 (Track C): the approved Exhibitions & Achievements block on the artist's gallery page. Exempt ONLY as one
+  // block whose every rule styles that section (.pa-ag-cv…, .pa-ag-jump…); any other rule inside it, a second copy, or any
+  // change anywhere else in plotart.css still fails here.
+  const exhibitionsCss = c => {
+    const m = c.match(/\n\/\* Exhibitions & Achievements \(Phase C, 25 Nov 2026\)[^\n]*\n[^\n]*\*\/\n((?:[^\n]*\n)*?\.pa-ag-jump a:hover[^\n]*\})/g);
+    if (!m || m.length !== 1) return c;
+    const rules = m[0].split('*/\n')[1].split('\n').filter(Boolean);
+    const own = rules.every(r => r.slice(0, r.indexOf('{')).split(',').every(sel => /^\s*(body\.pa\s+)?\.pa-ag-(cv|cv-body|jump)\b/.test(sel)));
+    return own ? c.replace(m[0], '') : c;
+  };
   const wrong = changedFiles.filter(f => {
     if (f.startsWith('plotart/art-for-hire/') || OTHER_RELEASES.has(f)) return false;
     const o = old(f); if (o === null) return true;
     if (!existsSync(path.join(REPO, f))) return true;   // a deleted file is a change to explain, never a crash
     const raw = readFileSync(path.join(REPO, f), 'utf8');
     const n = brandOld(raw);
+    if (f === 'plotart/assets/plotart.css' && exhibitionsCss(raw) !== raw && exhibitionsCss(raw) === o) return false;   // main plus the approved E&A block, nothing else
     if (n === o || raw === o) return false;   // differs from main only by the approved header logo
     if (f in BRAND_PINS) return sha(n) !== BRAND_PINS[f];
     if (f in COLOUR_RELEASE) return !colourReleaseOk(f, n, o);
@@ -134,7 +145,7 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     }
     return !f.endsWith('.html') || strip(n) !== strip(o);
   });
-  check(`G1 against main, Art for Hire changes PlotArt only by the tab, the footer rule, the scoped nav block, the gallery-marks blocks in plotart.css and plotart.js, and its own folder (${changedFiles.length} file(s) differ); no gallery, gallery.json, image or other content changed`,
+  check(`G1 against main, Art for Hire changes PlotArt only by the tab, the footer rule, the scoped nav block, the gallery-marks blocks in plotart.css and plotart.js (plus, before Track C is released, the approved Exhibitions & Achievements block only), and its own folder (${changedFiles.length} file(s) differ); no gallery, gallery.json, image or other content changed`,
     wrong.length === 0, wrong.join(', '));
 }
 const pages = execSync('git ls-files plotart', { cwd: REPO }).toString().split('\n').filter(f => f.endsWith('.html') && !f.startsWith('plotart/art-for-hire/'));
