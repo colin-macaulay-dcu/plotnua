@@ -4,8 +4,8 @@ packages (see plotart_gallery.py). Public fields only; the whole artwork image i
 import html
 import re
 import plotart_opportunities as OPP  # noqa: E402  (opportunities shown publicly, 16 Nov 2026)
-import plotart_achievements as XA  # noqa: E402  (Exhibitions & Achievements, Phase C)
 import plotart_seo as SEO
+import plotart_gallery as G  # noqa: E402  (exhibition_blocks, Phase C 25 Nov 2026)
 from urllib.parse import quote
 
 E = lambda s: html.escape(str(s), quote=True)
@@ -160,6 +160,26 @@ def empty_works(a):
 _SENTENCE_END = re.compile(r"[.!?…:;\"”’')\]]\s*$")
 
 
+# Exhibitions & Achievements (Phase C, 25 Nov 2026): its own section after "About", and a discreet link to it under the
+# artist's name; both only when the artist has written something. Same markup as the Studio preview (render.js).
+EXHIBITIONS_JUMP = '<p class="pa-ag-jump"><a href="#exhibitions">Exhibitions &amp; Achievements <span aria-hidden="true">\u2193</span></a></p>'
+
+
+def exhibitions_section(a):
+    if not a.get("exhibitions"):
+        return ""
+    body = "".join(
+        ("<h3>%s</h3>" % E(x)) if k == "h" else
+        ("<ul>%s</ul>" % "".join("<li>%s</li>" % E(i) for i in x)) if k == "ul" else
+        ("<p>%s</p>" % E(x))
+        for k, x in G.exhibition_blocks(a["exhibitions"]))
+    return """<section class="pa-ag-cv" id="exhibitions" aria-labelledby="agCvH"><div class="pa-wrap pa-ag-about-in">
+  <h2 id="agCvH">Exhibitions &amp; Achievements</h2>
+  <div class="pa-ag-cv-body">%s</div>
+</div></section>
+""" % body
+
+
 def paragraphs(text):
     """A biography's paragraphs (founder brief 18 Nov 2026): a blank line always starts a paragraph, and so does a single
     line break after the end of a sentence (artists press Enter once and expect a new paragraph). A line break in the
@@ -178,16 +198,6 @@ def paragraphs(text):
         if cur:
             out.append(cur)
     return out
-
-# Exhibitions & Achievements (Phase C): its own section after About, reached from a link under the statement; absent when
-# empty. The Studio's preview (worker/plotart-studio/src/render.js) writes exactly the same markup.
-XA_JUMP = '\n    <p class="pa-ag-jump"><a href="#exhibitions-achievements" data-pa-track="artist_achievements_jump">Exhibitions &amp; Achievements <span aria-hidden="true">↓</span></a></p>'
-
-
-def xa_section(text):
-    return ('<section class="pa-ag-xa" id="exhibitions-achievements" aria-labelledby="agXaH"><div class="pa-wrap pa-ag-xa-in">\n'
-            '  <h2 id="agXaH">Exhibitions &amp; Achievements</h2>\n  <div class="pa-ag-xa-body">\n%s\n  </div>\n</div></section>\n') % XA.to_html(text)
-
 
 def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     a = pkg["artist"]
@@ -220,6 +230,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     if a.get("instagram"):
         links.append('<a href="https://www.instagram.com/%s/" rel="noopener nofollow" data-pa-track="artist_instagram">Instagram <span aria-hidden="true">↗</span></a>' % E(a["instagram"]))
     bio = "".join("<p>%s</p>" % E(p) for p in paragraphs(a["bio"]))
+    cv = exhibitions_section(a)
     return """%s
 <section class="pa-ag-hero%s"><div class="pa-wrap">
   <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Artists’ Gallery</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
@@ -249,14 +260,14 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
        E(name), (('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else ""),
        ('<p class="pa-ag-statement">%s</p>' % E(a["statement"])) if a.get("statement") else "",
-       XA_JUMP if a.get("achievements") else "",
+       EXHIBITIONS_JUMP if cv else "",
        OPP.artist_line(pkg),
        commission_block(pkg, enquiry_endpoint),
        ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
        ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),
        E(name.split(" ")[0] if " " in name else name), bio,
        ('<p class="pa-ag-links">%s</p>' % "".join(links)) if links else "",
-       xa_section(a["achievements"]) if a.get("achievements") else "",
+       cv,
        E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint))
 
 

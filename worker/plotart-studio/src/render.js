@@ -1,9 +1,9 @@
+import { exhibitionBlocks } from './lib.js';
 /* PlotArt Studio · gallery preview (Phase 2). A line-for-line port of atlas-tools/plotart_gallery_pages.py (Phase 1,
    approved design) so the artist previews EXACTLY what will be published. test/prove-studio.mjs renders the same
    gallery through both and requires identical markup (image file names and sizes aside). Images in a preview are
    the Studio's private preview copies, served only to the signed-in artist and the founder. */
 
-import * as XA from './achievements.js';
 const E = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
 const ENQUIRY_ADDRESS = 'hello@plotnua.ie';
 const STATUS = { available: 'Available', reserved: 'Reserved', sold: 'Sold', not_for_sale: 'Not for sale' };
@@ -48,17 +48,6 @@ export function emptyWorks(a) {
   return `<div class="pa-ag-empty"><p class="pa-ag-empty-t">New work coming soon</p><p class="pa-ag-empty-l">${E(first)} isn&#x27;t showing any works at the moment. You can still get in touch through PlotArt.</p></div>`;
 }
 
-/* Exhibitions & Achievements (Phase C): its own section after About, reached from a link under the statement; absent when
-   empty. The publisher (atlas-tools/plotart_gallery_pages.py) writes exactly the same markup. */
-export const XA_JUMP = '\n    <p class="pa-ag-jump"><a href="#exhibitions-achievements" data-pa-track="artist_achievements_jump">Exhibitions &amp; Achievements <span aria-hidden="true">↓</span></a></p>';
-export const xaSection = text => `<section class="pa-ag-xa" id="exhibitions-achievements" aria-labelledby="agXaH"><div class="pa-wrap pa-ag-xa-in">
-  <h2 id="agXaH">Exhibitions &amp; Achievements</h2>
-  <div class="pa-ag-xa-body">
-${XA.toHtml(text)}
-  </div>
-</div></section>
-`;
-
 export function artistBody(p) {
   const a = p.artist, works = shown(p), name = a.display_name;
   // one or two works sit larger and centred (founder decision 1 Nov 2026): the size hint follows the layout
@@ -81,12 +70,13 @@ export function artistBody(p) {
   if (a.instagram) links.push(`<a href="https://www.instagram.com/${E(a.instagram)}/" rel="noopener nofollow" data-pa-track="artist_instagram">Instagram <span aria-hidden="true">↗</span></a>`);
   const bio = paragraphs(a.bio).map(x => `<p>${E(x)}</p>`).join('');
   const meta = metaLine(a);
+  const cv = exhibitionsSection(a);
   return `
 <section class="pa-ag-hero${portrait ? ' has-portrait' : ''}"><div class="pa-wrap">
   <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Virtual Gallery</a><span aria-hidden="true">/</span><span aria-current="page">${E(name)}</span></nav>
   <div class="pa-ag-id">${portrait}<div>
     ${a.founding ? '<span class="pa-gcard-badge">Founding Artist</span>' : ''}<h1>${E(name)}</h1>
-    ${meta ? `<p class="pa-ag-meta">${E(meta)}</p>` : ''}${a.statement ? `<p class="pa-ag-statement">${E(a.statement)}</p>` : ''}${a.achievements ? XA_JUMP : ''}
+    ${meta ? `<p class="pa-ag-meta">${E(meta)}</p>` : ''}${a.statement ? `<p class="pa-ag-statement">${E(a.statement)}</p>` : ''}${cv ? EXHIBITIONS_JUMP : ''}
   </div></div>
 </div></section>
 
@@ -100,7 +90,7 @@ export function artistBody(p) {
   <h2 id="agAboutH">About ${E(name.includes(' ') ? name.split(' ')[0] : name)}</h2>
   <div class="pa-ag-bio">${bio}${links.length ? `<p class="pa-ag-links">${links.join('')}</p>` : ''}</div>
 </div></section>
-${a.achievements ? xaSection(a.achievements) : ''}
+${cv}
 <section class="pa-ag-enq"><div class="pa-wrap pa-ag-enq-in">
   <p class="pa-ag-enq-t">Interested in ${E(name)}'s work?</p>
   <p class="pa-ag-enq-l">Send an enquiry through PlotArt and we'll put you in touch with the artist.</p>
@@ -178,6 +168,21 @@ ${body}
 <footer class="pa-foot"><div class="pa-wrap"><p class="fine">${E(FINE)}</p></div></footer>
 </body>
 </html>`;
+}
+
+/* Exhibitions & Achievements (Phase C, 25 Nov 2026): its own section after "About", and a discreet link to it under the
+   artist's name; both only when the artist has written something. Same markup as
+   atlas-tools/plotart_gallery_pages.exhibitions_section. */
+const EXHIBITIONS_JUMP = '<p class="pa-ag-jump"><a href="#exhibitions">Exhibitions &amp; Achievements <span aria-hidden="true">↓</span></a></p>';
+export function exhibitionsSection(a) {
+  if (!a.exhibitions) return '';
+  const body = exhibitionBlocks(a.exhibitions).map(([k, x]) => k === 'h' ? `<h3>${E(x)}</h3>`
+    : k === 'ul' ? `<ul>${x.map(i => `<li>${E(i)}</li>`).join('')}</ul>` : `<p>${E(x)}</p>`).join('');
+  return `<section class="pa-ag-cv" id="exhibitions" aria-labelledby="agCvH"><div class="pa-wrap pa-ag-about-in">
+  <h2 id="agCvH">Exhibitions &amp; Achievements</h2>
+  <div class="pa-ag-cv-body">${body}</div>
+</div></section>
+`;
 }
 
 /* A biography's paragraphs (18 Nov 2026): a blank line always starts a paragraph, and so does a single line break after the
