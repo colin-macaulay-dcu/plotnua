@@ -1,7 +1,7 @@
 {
  "artist": {
   "bio": "Anna Marie Savage is a visual artist based in Omeath, Co. Louth, whose practice centres on abstract oil painting informed by environmental research, fieldwork and microscopy. Her work explores the relationship between human activity, environmental degradation and the often unseen ecological systems within our waterways.\nHer recent body of work, Uisce Salach (Dirty Water), investigates the environmental impact of illicit fuel dumping along the Irish border, developed through water sampling, photomicrography and collaboration with researchers at the University of Leeds. Her practice has since expanded into three-dimensional experimentation with laser-cut fluorescent acrylic, while painting remains central to her work.\nRecent solo exhibitions include Uisce Salach agus Dríodar at An Cultúrlann, Belfast (2025) and Uisce Salach at Watergate Theatre, Kilkenny (2025).\nShe received the Newgrange Gold Award at Surveyor 2025. In 2026, she was an award winner at the inaugural international Sidney Nolan Art Prize, receiving a residency at the Burren College of Art. The prize invited artists to explore humanity's relationship with the natural world and the environment. Her award-winning work, Uisce Salach I, reflects these concerns through its investigation of environmental damage along the Irish border.\nShe graduated with First Class Honours in Fine Art from the University of Ulster in 2009.",
-  "county": null,
+  "county": "Louth",
   "display_name": "Anna Marie Savage",
   "founding": true,
   "instagram": "anna_marie_savage",
@@ -71,14 +71,15 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-16T21:58:32.986Z",
+  "approved_at": "2026-11-25T21:51:06.481Z",
   "approved_by": "founder",
+  "first_approved_at": "2026-11-12T17:44:04.396Z",
   "licence_accepted_at": "2026-11-12T15:59:17.560Z",
   "licence_version": "PA-GPIL-2026-11",
   "permission_ref": "PA-PERM-aw9ehfcs0ct",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
