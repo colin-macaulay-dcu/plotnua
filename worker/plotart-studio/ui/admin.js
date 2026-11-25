@@ -873,7 +873,7 @@
     const reqs = d.open_requests;
     app.innerHTML = `<h1 class="st-h1">Galleries</h1><p class="st-sub">Contemporary, Spaces and Being. Membership and artwork placement need both your approval and the artist’s acceptance.</p>
       ${d.galleries.map(card).join('')}
-      <section class="st-card"><h2>Image use</h2><p class="st-muted">A specific request for each use (licence §3.2). No answer means no consent.</p>
+      <section class="st-card st-gx"><h2>Image use</h2><p class="st-muted">A specific request for each use (licence §3.2). No answer means no consent.</p>
         ${reqs.length ? `<ul class="st-list">${reqs.map(r => `<li class="st-row" style="justify-content:space-between"><span>${E(r.scope.replace(/_/g, ' '))} · ${E(r.purpose)} <span class="st-muted">· waiting for the artist</span></span><button class="st-btn st-btn--small" data-cancel="${r.id}">Cancel</button></li>`).join('')}</ul>` : '<p class="st-muted">No open requests.</p>'}
         <div class="st-f"><label for="iu-w">Artworks (one artist)</label><select id="iu-w" multiple size="6">${cw.map(w => `<option value="${w.artwork_id}" data-a="${w.artist_id}">${E(wl(w))}</option>`).join('')}</select></div>
         <div class="st-f"><label for="iu-s">Use</label><select id="iu-s"><option value="homepage_feature">Homepage feature</option><option value="promotional_campaign">Promotional campaign</option><option value="social_media">Social media</option><option value="editorial_feature">Editorial feature</option><option value="video_feature">Video feature</option></select></div>

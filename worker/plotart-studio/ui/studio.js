@@ -1173,7 +1173,7 @@
     const open = d.requests.filter(r => r.status === 'open'), yes = d.answers.filter(a => a.answer === 'yes' && !d.answers.some(b => b.request_id === a.request_id && b.answer === 'no' && b.created_at > a.created_at));
     app.innerHTML = `<h1 class="st-h1">Galleries</h1><p class="st-sub">PlotArt has three galleries: Contemporary, Spaces and Being. Joining a gallery, and showing a work in it, always needs your yes and PlotArt’s.</p>
       ${d.galleries.map(gal).join('')}
-      <section class="st-card"><h2>Image use</h2><p class="st-muted">PlotArt asks before each specific use of your images. No answer means no.</p>
+      <section class="st-card st-gx"><h2>Image use</h2><p class="st-muted">PlotArt asks before each specific use of your images. No answer means no.</p>
         ${open.length ? `<ul class="st-list">${open.map(r => `<li><p style="margin:0 0 8px"><strong>${E(r.scope.replace(/_/g, ' '))}</strong> · ${E(r.purpose)} <span class="st-muted">· ${E(r.channels)}${r.valid_until ? ' · until ' + E(r.valid_until) : ''}</span></p>
           <div class="st-actions"><button class="st-btn st-btn--small st-btn--solid" data-u="yes" data-r="${r.id}">Yes, for this use</button><button class="st-btn st-btn--small" data-u="no" data-r="${r.id}">No</button></div></li>`).join('')}</ul>` : '<p class="st-muted">No requests waiting.</p>'}
         ${yes.length ? `<h3>Permissions you have given</h3><ul class="st-list">${yes.map(a => `<li class="st-row" style="justify-content:space-between"><span>${E(a.scope.replace(/_/g, ' '))} <span class="st-muted">· ${E(a.created_at.slice(0, 10))}</span></span><button class="st-btn st-btn--small" data-wd="${a.id}">Withdraw</button></li>`).join('')}</ul>` : ''}

@@ -479,8 +479,9 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
     await fp.goto(S.url + '/admin/baskets', { waitUntil: 'load' }); await fp.waitForSelector('#basket-readiness', { timeout: 20000 });
     const tabs = await fp.$$eval('.st-tabs a', as => as.map(a => [a.textContent, a.getAttribute('aria-current')]));
     txt = await fp.textContent('#basket-readiness');
+    // Phase C (25 Nov 2026): the founder's Galleries and Locations tabs follow Featured Artists; the artist's Galleries tab follows Profile.
     check('U5a Review desk "Basket readiness" tab: every Review desk tab kept, this one current; the same readiness table with online purchase per artist; one dashboard (no second copy)',
-      tabs.length === 11 && tabs[0][0] === 'Review desk' && tabs[10][0] === 'Basket readiness' && tabs[10][1] === 'page' && tabs.filter(t => t[1]).length === 1
+      tabs.length === 13 && tabs[0][0] === 'Review desk' && tabs[4][0] === 'Galleries' && tabs[5][0] === 'Locations' && tabs[12][0] === 'Basket readiness' && tabs[12][1] === 'page' && tabs.filter(t => t[1]).length === 1
       && /Fia Founding \(Founding\)/.test(txt) && /Online purchase/.test(txt) && /of \d+ available artworks can be bought online/.test(txt) && (await fp.$$('#basket-readiness')).length === 1
       && /Open the Payment pilot page/.test(await fp.textContent('#app')), { tabs, txt: txt.slice(0, 600) });
     if (UISHOT) { await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab.png`, fullPage: true }); await fp.setViewportSize({ width: 390, height: 844 }); await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab-phone.png`, fullPage: true }); await fp.setViewportSize({ width: 1280, height: 900 }); }
@@ -501,7 +502,7 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
       fit.every(f => f.inside && !f.scroll && !f.page && f.font === '14px') && fit.find(f => f.w === 768).rows >= 2 && ph.wrap === 'nowrap' && ph.scroll && !ph.page && st === '13.5px', { fit, ph, st });
     await fp.setViewportSize({ width: 1280, height: 900 });
     const dk = await fp.goto(S.url + '/admin', { waitUntil: 'load' }).then(() => fp.$$eval('.st-tabs a', as => as.map(a => [a.textContent, a.getAttribute('href')])));
-    check('U5b the Review desk itself shows the Basket readiness tab, after Opportunities', dk.length === 11 && dk[9][0] === 'Opportunities' && dk[10][0] === 'Basket readiness' && dk[10][1] === '/admin/baskets', dk);
+    check('U5b the Review desk itself shows the Basket readiness tab, after Opportunities', dk.length === 13 && dk[11][0] === 'Opportunities' && dk[12][0] === 'Basket readiness' && dk[12][1] === '/admin/baskets', dk);
     await fc.close();
     // buyer: a discreet, collapsed "Seller and returns information" per artist, desktop and phone
     // every earlier work has been sold by now: three fresh synthetic works (one Gallery, two Founding), published, with offers
@@ -579,7 +580,7 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
       homes.new.after && /Online sales\s*Optional/.test(homes.new.text) && /Set up online sales/.test(homes.new.text) && /work exactly as now/.test(homes.new.text)
       && /\d of 5 steps done/.test(homes.nob.text) && /Next: /.test(homes.nob.text) && /Continue set-up/.test(homes.nob.text)
       && /Account set up for online sales/.test(homes.gal.text) && /can be bought online/.test(homes.gal.text) && /Manage online sales/.test(homes.gal.text) && homes.gal.btn === '/checkout-pilot', homes);
-    check('OS6 Studio tabs: “Online sales” after Enquiries; every earlier tab kept', homes.new.tabs.join('|') === 'Gallery|Works|Profile|Opportunities|Enquiries|Online sales|Agreement|Preview ↗', homes.new.tabs);
+    check('OS6 Studio tabs: “Online sales” after Enquiries; every earlier tab kept', homes.new.tabs.join('|') === 'Gallery|Works|Profile|Galleries|Opportunities|Enquiries|Online sales|Agreement|Preview ↗', homes.new.tabs);
     // the Online sales page: Studio tabs, the steps, the artworks line
     const pages = {};
     for (const [k, e, w] of [['new', NEW, 1200], ['gal', GAL, 1200], ['new-phone', NEW, 390]]) {
@@ -592,7 +593,7 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
       await c.close();
     }
     check('OS7 Online sales page: the Studio tabs with “Online sales” current (others lead back to the Studio); the heading says it is optional',
-      pages.new.tabs.length === 8 && pages.new.tabs.find(t => t[0] === 'Online sales')[2] === 'page' && pages.new.tabs.find(t => t[0] === 'Works')[1] === '/#/works' && pages.new.h1 === 'Online sales', pages.new.tabs);
+      pages.new.tabs.length === 9 && pages.new.tabs.find(t => t[0] === 'Online sales')[2] === 'page' && pages.new.tabs.find(t => t[0] === 'Works')[1] === '/#/works' && pages.new.h1 === 'Online sales', pages.new.tabs);
     check('OS8 “Account set-up”: five steps, the first marked Next for a new artist, all Done when set up; each jumps to its section',
       pages.new.steps.length === 5 && pages.new.steps[0] === 'next:Next' && pages.new.steps.slice(1).every(x => x === ':To do') && pages.gal.steps.every(x => x === 'done:Done') && pages.jump, pages);
     check('OS9 artwork eligibility on the page: how many available artworks can be bought online and why not, in plain words',

@@ -60,6 +60,11 @@ const rows = await lp.$$eval('tbody tr', trs => trs.map(t => [...t.children].map
 check('L1 the founder’s Locations tab filtered by Sligo: Ava "Based here" first, then Ben "Delivers here" (all-island)',
   rows.length === 2 && rows[0][0] === 'Ava Sample' && rows[0][1] === 'Based here' && rows[1][0] === 'Ben Sample' && rows[1][1] === 'Delivers here', JSON.stringify(rows));
 if (SHOTS) await lp.screenshot({ path: SHOTS + '/LOC-founder-sligo.png', fullPage: true });
+const home = await open(actx, '/#/');
+const hs = await home.$$eval('.st-card > h3', hs => hs.map(h => [h.textContent, getComputedStyle(h).textTransform, getComputedStyle(h).letterSpacing]));
+const bul = await home.$$eval('.st-list li', ls => ls.map(l => getComputedStyle(l, '::before').content));
+check('L3 the new screens’ styles stay on those screens: the Studio dashboard’s card headings and checklist keep their approved look',
+  hs.length >= 2 && hs.every(([, t, l]) => t === 'none' && !(parseFloat(l) > 0)) && bul.length > 0 && bul.every(c => c !== 'none'), JSON.stringify({ hs, bul }));
 check('L2 no script errors on any screen', !errs.length, errs.join(' | '));
 await b.close(); await mf.dispose();
 const fail = results.filter(x => !x).length;
