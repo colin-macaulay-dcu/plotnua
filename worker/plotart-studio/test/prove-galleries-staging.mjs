@@ -5,7 +5,7 @@
 //    the live, published PlotArt galleries in this repository: every published artist (plotart/artists/*/gallery.json, with
 //    their real artwork ids, works, prices, availability and images), the gallery positions shown on the live Contemporary
 //    Art page (01 is Leah Hewson), and the live Artists in Focus selection. Artists' email addresses are not public: each
-//    gets a synthetic address. 2. Everything the publisher and the founder read today is recorded. 3. Migration 0023 is
+//    gets a synthetic address. 2. Everything the publisher and the founder read today is recorded. 3. Migration 0024 (Spaces) is
 //    applied to that same database and the Phase B Studio code is started on it. 4. The same reads must be identical, every
 //    existing row must be unchanged, and the new galleries must be empty.
 import { readFileSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
@@ -21,7 +21,7 @@ const tmp = mkdtempSync(join(tmpdir(), 'pa-staging-')), MAIN = join(tmp, 'main')
 execFileSync('git', ['-C', ROOT, 'worktree', 'add', '-q', '--detach', MAIN, 'origin/main']);
 execFileSync('ln', ['-s', join(HERE, 'node_modules'), join(MAIN, 'worker/plotart-studio/node_modules')]);
 const mainSchema = readFileSync(join(MAIN, 'worker/plotart-studio/schema.sql'), 'utf8');
-const MIG = readFileSync(join(HERE, 'migrations/0023_three_galleries.sql'), 'utf8');
+const MIG = readFileSync(join(HERE, 'migrations/0024_spaces_identifier.sql'), 'utf8');   // production already carries 0023 (25 Nov 2026)
 console.log('PROVE · three galleries on a staging copy of the live PlotArt galleries');
 
 const callFor = (mod, mf, url) => async (method, path, email, headers = {}) => {
@@ -52,11 +52,11 @@ const beforeTables = await tablesOf(db), beforeRows = await dump(db, beforeTable
 check('S1 today’s production Studio serves the staging galleries (publisher and founder reads all answer)', Object.values(before).every(r => r.s === 200), JSON.stringify(Object.fromEntries(Object.entries(before).map(([k, v]) => [k, v.s]))));
 await mf.dispose();
 
-/* ---- 3. migration 0023 applied to the same database; the Phase B Studio started on it ---- */
+/* ---- 3. migration 0024 (production already carries 0023) applied to the same database; the Phase B Studio started on it ---- */
 const B = await import(join(HERE, 'test/local.mjs'));
 ({ mf, db, url } = await B.start({ port: 8822, persist: PERSIST, schemaSql: MIG }));
 const afterRows = await dump(db, beforeTables.filter(x => x !== 'audit'));
-check('S2 after migration 0023 every existing table and row of the staging galleries is byte-for-byte unchanged', afterRows === beforeRows);
+check('S2 after migration 0024 every existing table and row of the staging galleries is byte-for-byte unchanged', afterRows === beforeRows);
 const after = await readAll(B, mf, url);
 const norm = s => s.replace(/"generated_at":"[^"]*"/g, '"generated_at":"(time of the read)"');   // the hire catalogue stamps the time it was read; nothing else is a clock value
 check('S3 everything the publisher reads (gallery order, Artists in Focus, publication queue, hire catalogue) is identical with the Phase B code',
@@ -69,8 +69,8 @@ const call = callFor(B, mf, url);
 const g = JSON.parse((await call('GET', '/api/admin/galleries', B.FOUNDER)).t);
 const gal = k => g.galleries.find(x => x.gallery_id === k);
 check(`S5 Contemporary holds all 18 published artists and all ${shownWorks} works shown on the live site, as today`, gal('contemporary').members.length === 18 && gal('contemporary').live_works === shownWorks, `${gal('contemporary').members.length} / ${gal('contemporary').live_works}`);
-check('S6 Environment and Being are empty and In preparation (0 of 6 artists, 0 of 30 works); nobody was assigned to them',
-  ['environment', 'being'].every(k => gal(k).status === 'in_preparation' && gal(k).live_artists === 0 && gal(k).live_works === 0 && gal(k).ready === false)
+check('S6 Spaces and Being are empty and In preparation (0 of 6 artists, 0 of 30 works); nobody was assigned to them',
+  ['spaces', 'being'].every(k => gal(k).status === 'in_preparation' && gal(k).live_artists === 0 && gal(k).live_works === 0 && gal(k).ready === false)
   && (await db.prepare('SELECT COUNT(*) n FROM gallery_memberships').first()).n === 0 && (await db.prepare('SELECT COUNT(*) n FROM artwork_placements').first()).n === 0);
 const pipe = JSON.parse((await call('GET', '/api/pipeline/galleries', null, { Authorization: 'Bearer ' + B.PIPELINE_TOKEN })).t);
 check('S7 the new read-only pipeline view lists the same 18 Contemporary artists by public address and the other two galleries empty',

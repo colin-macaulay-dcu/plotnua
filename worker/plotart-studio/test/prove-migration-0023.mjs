@@ -14,7 +14,7 @@ const HERE = new URL('..', import.meta.url).pathname;
 const MIG_FILE = HERE + 'migrations/0023_three_galleries.sql';
 const MIG = readFileSync(MIG_FILE, 'utf8');
 const NEW = ['gallery_settings', 'gallery_memberships', 'artwork_placements', 'gallery_order', 'gallery_features', 'image_use_requests', 'image_use_consents'];
-const mainSchema = execFileSync('git', ['-C', HERE, 'show', 'origin/main:worker/plotart-studio/schema.sql'], { encoding: 'utf8' });
+const mainSchema = execFileSync('git', ['-C', HERE, 'show', 'b4ee6708:worker/plotart-studio/schema.sql']   /* the schema before 0023 (pinned 25 Nov 2026) */, { encoding: 'utf8' });
 const mf = new Miniflare({ modules: true, script: 'export default { fetch() { return new Response("") } }', d1Databases: { DB: 'mig23-test' } });
 const db = await mf.getD1Database('DB');
 const run = async sql => { for (const st of statements(sql)) await db.prepare(st).run(); };

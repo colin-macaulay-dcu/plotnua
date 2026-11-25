@@ -1,6 +1,6 @@
 /* PlotArt Studio · Three galleries: the gallery data model (Phase B, development 24 Nov 2026; migration 0023).
    One artist account, one Studio, one artwork inventory; an artist and individual works can belong to more than one of the
-   three galleries: Contemporary, Environment, Being.
+   three galleries: Contemporary, Spaces, Being (final curatorial identity, 25 Nov 2026; migration 0024).
 
    The rules, in one place:
    - Membership of a gallery needs BOTH the founder's approval and the artist's acceptance before it is live. It can begin
@@ -10,11 +10,11 @@
      and every work of a live Contemporary member is in Contemporary unless an explicit 'withdrawn' placement row takes
      it out. Nothing is ever written for existing artists or artworks; the first time an artist who has no rows is given
      any membership row, their Contemporary membership is first written down as it already was (live, 'existing_contemporary').
-   - Environment and Being start empty. Nobody is assigned to them automatically. A work is placed there only with
+   - Spaces and Being start empty. Nobody is assigned to them automatically. A work is placed there only with
      the founder's approval and the artist's acceptance, and only while the artist is a live member of that gallery.
    - Order: unlimited per gallery. Contemporary keeps positions 01-25 in gallery_positions (unchanged and still guarded
      by its own checks); gallery_order holds Contemporary positions from 26 and every position of the other two galleries.
-   - Artists in Focus: Environment and Being each have their own selection of up to six (gallery_features);
+   - Artists in Focus: Spaces and Being each have their own selection of up to six (gallery_features);
      Contemporary keeps homepage_features (featured.js), unchanged.
    - Image-use consent: per use, recorded, optional (licence PA-GPIL §3.2, no standing opt-in). image_use_consents is
      append-only: this module never updates or deletes a consent row; a withdrawal is a new 'no'.
@@ -25,11 +25,11 @@
    price, agreement, commission term, payment record, gallery position (01-25) or Featured Artists selection. */
 import { Bad, now, rid } from './lib.js';
 
-export const GALLERIES = ['contemporary', 'environment', 'being'];
-export const TITLES = { contemporary: 'Contemporary', environment: 'Environment', being: 'Being' };
+export const GALLERIES = ['contemporary', 'spaces', 'being'];
+export const TITLES = { contemporary: 'Contemporary', spaces: 'Spaces', being: 'Being' };
 export const DEFAULTS = {
   contemporary: { status: 'open', target_artists: 0, target_works: 0 },
-  environment: { status: 'in_preparation', target_artists: 6, target_works: 30 },
+  spaces: { status: 'in_preparation', target_artists: 6, target_works: 30 },
   being: { status: 'in_preparation', target_artists: 6, target_works: 30 },
 };
 export const SCOPES = ['homepage_feature', 'promotional_campaign', 'social_media', 'editorial_feature', 'video_feature'];
@@ -377,7 +377,7 @@ export async function saveOrder(env, founder, g, body) {
   return order(env, g);
 }
 
-/* ---- Artists in Focus for Environment and Being --------------------------------------------------------------- */
+/* ---- Artists in Focus for Spaces and Being --------------------------------------------------------------- */
 export async function features(env, g) {
   newGallery(g);
   return all(env, 'SELECT position, artist_id, artwork_id, updated_at FROM gallery_features WHERE gallery_id = ? ORDER BY position', g);
