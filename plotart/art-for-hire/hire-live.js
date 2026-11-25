@@ -41,6 +41,45 @@
   });
   let state = { listed: new Map(), validUntil: 0, enquiries: false };
 
+  /* Filters (Phase C, 25 Nov 2026): where, gallery and availability. They only ever NARROW what the live check shows: a card
+     is visible only while it is listed AND matches. Where = works in the chosen county (the artist's public county, or the
+     county the work is listed in) first, then, labelled separately, works whose artists deliver there. */
+  const bar = document.querySelector('[data-hire-filters]'), nomatch = $$('[data-hire-nomatch]'), countEl = document.querySelector('[data-hire-count]');
+  const choice = k => { const el = bar && bar.querySelector(`[data-hire-filter="${k}"]`); return el ? el.value : ''; };
+  const split = v => (v || '').split('|').filter(Boolean);
+  function relation(c, where) {
+    if (!where) return 'any';
+    if (c.dataset.hireIn === where) return 'in';
+    if (split(c.dataset.hireDelivers).includes(where)) return 'delivers';
+    return null;
+  }
+  function applyFilters() {
+    const where = choice('where'), gal = choice('gallery'), when = choice('when');
+    let shown = 0, inN = 0, delN = 0;
+    cards().forEach(c => {
+      const i = state.listed.get(c.dataset.hireWork), rel = i ? relation(c, where) : null;
+      const ok = !!i && !!rel && (!gal || split(c.dataset.hireGalleries).includes(gal)) && (!when || i.availability !== 'from');
+      c.hidden = !ok;
+      c.style.order = rel === 'delivers' ? '1' : '';
+      const lab = c.querySelector('[data-hire-rel]');
+      if (lab) { lab.hidden = !ok || !where; lab.textContent = rel === 'in' ? `In Co. ${where}` : rel === 'delivers' ? `Delivers to Co. ${where}` : ''; }
+      if (ok) { shown++; if (rel === 'in') inN++; if (rel === 'delivers') delN++; }
+    });
+    const listed = cards().filter(c => state.listed.has(c.dataset.hireWork)).length;
+    if (bar) bar.hidden = !listed;
+    nomatch.forEach(el => { el.hidden = !listed || shown > 0; });
+    const w = n => `${n} ${n === 1 ? 'work' : 'works'}`;
+    if (countEl) countEl.textContent = !listed ? '' : where && delN && inN ? `${w(shown)}: ${inN} in Co. ${where}, ${delN} from artists who deliver there`
+      : where && delN ? `${w(shown)} from artists who deliver to Co. ${where}`
+      : shown === listed ? `${listed} ${listed === 1 ? 'work' : 'works'}` : `${shown} of ${listed} works`;
+    return listed;
+  }
+  if (bar) {
+    bar.addEventListener('change', () => { if (fresh()) applyFilters(); });
+    bar.addEventListener('submit', e => e.preventDefault());
+  }
+  document.addEventListener('click', e => { if (e.target.closest('[data-hire-clear]') && bar) { bar.reset(); if (fresh()) applyFilters(); } });
+
   function setEnquiries(on) {
     state.enquiries = on;
     $$('[data-hire-closed]').forEach(el => { el.hidden = on || !cards().length; });   // nothing to enquire about: no note
@@ -49,6 +88,8 @@
   function hideAll(msg) {
     state = { listed: new Map(), validUntil: 0, enquiries: false };
     cards().forEach(c => { c.hidden = true; });
+    if (bar) bar.hidden = true;
+    nomatch.forEach(el => { el.hidden = true; });
     empty.forEach(el => { el.hidden = !staticEmpty; });
     section(false);
     cta(false);
@@ -70,12 +111,11 @@
       if (!r.ok || !j || j.ok !== true || !Array.isArray(j.items) || !(until > Date.now())) return hideAll(UNAVAILABLE);
       if (j.open !== true) return hideAll('Art for Hire isn’t open yet.');
       state.listed = new Map(j.items.map(i => [i.id, i])); state.validUntil = until;
-      let shown = 0;
       cards().forEach(c => {
         const i = state.listed.get(c.dataset.hireWork);
-        c.hidden = !i;
-        if (i) { shown++; const a = c.querySelector('[data-hire-availability]'); if (a) a.textContent = label(i); }
+        if (i) { const a = c.querySelector('[data-hire-availability]'); if (a) a.textContent = label(i); }
       });
+      const shown = applyFilters();   // listed works (the section and the hero button follow these, whatever is filtered)
       empty.forEach(el => { el.hidden = shown > 0; });
       section(shown > 0);
       cta(shown > 0);

@@ -78,6 +78,8 @@ def main():
     ap.add_argument("--api", required=True)
     ap.add_argument("--fixture", action="store_true")
     ap.add_argument("--form", action="store_true")
+    ap.add_argument("--facets", action="store_true", help="Phase C filters: give the fixture works public delivery counties and galleries")
+    ap.add_argument("--galleries-open", action="store_true", help="filters only: build as if Spaces and Being were open (a private copy of the launch switches; the navigation is unchanged)")
     a = ap.parse_args()
     prev = os.path.abspath(a.prev)
     shutil.rmtree(prev, ignore_errors=True)
@@ -88,6 +90,14 @@ def main():
         if os.path.exists(src):
             os.symlink(src, os.path.join(prev, f))
     cat = fixture(prev) if a.fixture else {"generated_at": "2026-11-10T22:00:00Z", "items": []}
+    if a.facets:   # synthetic: A (Dublin) delivers to Kildare and Wicklow; B (Galway) to Mayo; C (Cork) does not deliver
+        F = {"fixture-artist-a": ["Kildare", "Wicklow"], "fixture-artist-b": ["Mayo"]}
+        G = {"wfixa1": ["contemporary", "spaces"], "wfixb1": ["contemporary", "being"], "wfixc1": ["contemporary", "spaces"]}
+        for it in cat["items"]:
+            f = {"galleries": G.get(it["artwork_id"], ["contemporary"])}
+            if it["artist_slug"] in F:
+                f["delivers"] = F[it["artist_slug"]]
+            it["facets"] = f
     json.dump(cat, open(os.path.join(prev, "fixture-catalogue.json" if a.fixture else "catalogue.json"), "w"), indent=1)
     r = subprocess.run([sys.executable, os.path.join(REPO, "atlas-tools", "plotart-hire-nav.py"), prev, "--preview"], capture_output=True, text=True)
     if r.returncode:
@@ -95,6 +105,14 @@ def main():
     print(r.stdout.strip().splitlines()[-1])
     cmd = [sys.executable, os.path.join(REPO, "atlas-tools", "plotart-hire-page.py"), prev, "--catalogue",
            os.path.join(prev, "fixture-catalogue.json" if a.fixture else "catalogue.json"), "--api", a.api, "--preview"] + (["--enquiries-form"] if a.form else [])
+    if a.galleries_open:   # never the repository's switches: a private copy inside the preview folder
+        sw = json.load(open(os.path.join(REPO, "atlas-tools", "release", "plotart-launch-switches.json")))
+        sw.update({"spaces_gallery_state": "open", "being_gallery_state": "open"})
+        swp = os.path.join(prev, "preview-switches.json")
+        json.dump(sw, open(swp, "w"))
+        boot = ("import sys, pathlib, runpy; sys.path.insert(0, %r); import plotart_seo as S, plotart_shell as SH; S.SWITCHES = pathlib.Path(%r); SH.gallery_state = lambda k: 'in_preparation'; "
+                "sys.argv = %r; runpy.run_path(%r, run_name='__main__')") % (os.path.join(REPO, "atlas-tools"), swp, cmd[1:], cmd[1])
+        cmd = [sys.executable, "-c", boot]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode:
         sys.exit(r.stdout + r.stderr)

@@ -28,9 +28,15 @@ import plotart_business_rental as BUSINESS
 import plotart_hire_scenes as SCENES  # noqa: E402
 import plotart_opportunities as OPP  # noqa: E402  (artist opportunity lists, 16 Nov 2026)
 import plotart_seo as SEO  # noqa: E402
+import plotart_gallery as G  # noqa: E402  (the 32 counties)
 
 E = lambda s: html.escape(str(s), quote=True)
 PUBLIC_HIRE = os.path.join(HERE, "..", "worker", "plotart-studio", "public-hire")
+GALLERY_TITLES = {"contemporary": "Contemporary", "spaces": "Spaces", "being": "Being"}
+PROVINCES = (("Connacht", ("Galway", "Leitrim", "Mayo", "Roscommon", "Sligo")),
+             ("Leinster", ("Carlow", "Dublin", "Kildare", "Kilkenny", "Laois", "Longford", "Louth", "Meath", "Offaly", "Westmeath", "Wexford", "Wicklow")),
+             ("Munster", ("Clare", "Cork", "Kerry", "Limerick", "Tipperary", "Waterford")),
+             ("Ulster", ("Antrim", "Armagh", "Cavan", "Derry", "Donegal", "Down", "Fermanagh", "Monaghan", "Tyrone")))
 FORBIDDEN = {"handling_note", "artist_email", "email", "replacement_value", "price_eur", "fee", "private"}
 TITLE = "Art Rental for Offices & Businesses in Ireland | PlotArt"
 DESC = ("Explore business art rentals: monthly pricing, six-month terms, sale priority and business-funded transport and insurance. Download the artist guide and agreement template.")
@@ -62,17 +68,56 @@ def card(item, artist, w):
     rows.append(("Availability", None))
     dl = "".join('<dt>%s</dt><dd>%s</dd>' % (k, E(v)) if v is not None else '<dt>%s</dt><dd data-hire-availability>Checking…</dd>' % k for k, v in rows if v or k == "Availability")
     ref = "PA-%s-%s" % (artist["slug"], w["id"])
+    fx = facets(item, artist)
     # Links (11 Nov 2026): the title opens the work's page in the artist's gallery, the artist line opens the gallery itself.
     # data-hire-artist-slug / data-hire-slug let the artist's gallery mark this work while the live check lists it (plotart.js).
     gal = "../artists/%s/" % artist["slug"]
-    return ('<li class="pa-hire-card" data-hire-work="%s" data-hire-ref="%s" data-hire-title="%s" data-hire-artist="%s" data-hire-artist-slug="%s" data-hire-slug="%s" hidden>\n'
+    return ('<li class="pa-hire-card" data-hire-work="%s" data-hire-ref="%s" data-hire-title="%s" data-hire-artist="%s" data-hire-artist-slug="%s" data-hire-slug="%s"%s hidden>\n'
             '  <figure class="pa-hire-art"><a href="%s%s.html" tabindex="-1" aria-hidden="true"><img src="%s%s" srcset="%s" sizes="(max-width:639px) 92vw, (max-width:1100px) 44vw, 30vw" width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></a></figure>\n'
-            '  <p class="pa-hire-artist"><a href="%s">%s</a></p>\n  <h3><a href="%s%s.html">%s</a></h3>\n  <dl class="pa-hire-dl">%s</dl>\n'
+            '  <p class="pa-hire-artist"><a href="%s">%s</a></p>\n  <p class="pa-hire-rel" data-hire-rel hidden></p>\n  <h3><a href="%s%s.html">%s</a></h3>\n  <dl class="pa-hire-dl">%s</dl>\n'
             '  <p class="pa-hire-more"><a href="%s">See more by %s<span class="pa-sr"> in the Artists’ Gallery</span></a></p>\n'
             '  <button type="button" class="pa-btn pa-btn--ghost" data-hire-enquire aria-describedby="pa-hire-closed">Enquire about hire<span class="pa-sr"> of %s by %s</span></button>\n</li>') % (
-        E(w["id"]), E(ref), E(w["title"]), E(artist["display_name"]), E(artist["slug"]), E(w["slug"]),
+        E(w["id"]), E(ref), E(w["title"]), E(artist["display_name"]), E(artist["slug"]), E(w["slug"]), fx["attrs"],
         gal, E(w["slug"]), base, E(mid["file"]), E(srcset), mid["pixels"][0], mid["pixels"][1], E(img.get("alt") or w["title"]),
         gal, E(artist["display_name"]), gal, E(w["slug"]), E(w["title"]), dl, gal, E(artist["display_name"]), E(w["title"]), E(artist["display_name"]))
+
+
+def open_galleries():
+    """Galleries a visitor can filter by: Contemporary, and Spaces or Being only once its own launch switch says open."""
+    sw = SHELL.SEO.switches()
+    return [g for g in GALLERY_TITLES if g == "contemporary" or sw.get("%s_gallery_state" % g) == "open"]
+
+
+def facets(item, artist):
+    """Public facts for the filters (Phase C, 25 Nov 2026), all already public:
+    - in: the county the artist shows publicly on their gallery (published package), else the county the work is listed in;
+    - delivers: the counties the artist delivers to, present only when public delivery is switched on in the Studio;
+    - galleries: the galleries the work is in, limited to galleries open to visitors."""
+    loc = artist.get("location") or {}
+    where = loc.get("county") if loc.get("county") in G.COUNTIES else None
+    if not where:
+        c = re.sub(r"^(co\.|county)\s+", "", str((item.get("hire") or {}).get("county") or ""), flags=re.I).strip().title()
+        where = c if c in G.COUNTIES else None
+    fa = item.get("facets") or {}
+    delivers = [c for c in fa.get("delivers", []) if c in G.COUNTIES and c != where]
+    gals = [g for g in fa.get("galleries", []) if g in open_galleries()]
+    attrs = "".join(' %s="%s"' % (k, E(v)) for k, v in (("data-hire-in", where), ("data-hire-delivers", "|".join(delivers)), ("data-hire-galleries", "|".join(gals))) if v)
+    return {"in": where, "delivers": delivers, "galleries": gals, "attrs": attrs}
+
+
+def filters(rows):
+    """The filter bar (Phase C): built only from what the listed cards carry. Hidden until the live check shows works."""
+    fx = [facets(it, a) for it, a, w in rows]
+    places = {f["in"] for f in fx if f["in"]} | {c for f in fx for c in f["delivers"]}
+    gals = [g for g in GALLERY_TITLES if any(g in f["galleries"] for f in fx)]
+    where = "".join('<optgroup label="%s">%s</optgroup>' % (p, "".join('<option value="%s">Co. %s</option>' % (c, c) for c in cs if c in places))
+                    for p, cs in PROVINCES if any(c in places for c in cs))
+    sel = lambda k, lab, opts: ('<div class="pa-hire-fl"><label for="hfl-%s">%s</label><select id="hfl-%s" data-hire-filter="%s">%s</select></div>' % (k, lab, k, k, opts))
+    parts = [sel("where", "Where", '<option value="">Anywhere</option>' + where) if places else "",
+             sel("gallery", "Gallery", '<option value="">All galleries</option>' + "".join('<option value="%s">%s</option>' % (g, GALLERY_TITLES[g]) for g in gals)) if len(gals) > 1 else "",
+             sel("when", "Availability", '<option value="">Any time</option><option value="now">Available now</option>')]
+    return ('<form class="pa-hire-filters" data-hire-filters aria-label="Filter works for hire" hidden>%s<p class="pa-hire-count" data-hire-count aria-live="polite"></p></form>\n'
+            '  <p class="pa-hire-note" data-hire-nomatch hidden>No works match these choices. <button type="button" class="pa-hire-clear" data-hire-clear>Show all works</button></p>' % "".join(parts))
 
 
 def resolve(root, catalogue):
@@ -96,12 +141,18 @@ def resolve(root, catalogue):
             raise Refused("catalogue row %s: not an available work in %s's published gallery" % (wid, slug))
         if wid in seen:
             raise Refused("catalogue row %s appears twice" % wid)
+        fa = it.get("facets")
+        if fa is not None:     # Phase C filters (25 Nov 2026): public facets only, from the Studio's catalogue
+            if (not isinstance(fa, dict) or not set(fa) <= {"delivers", "galleries"}
+                    or not isinstance(fa.get("delivers", []), list) or any(c not in G.COUNTIES for c in fa.get("delivers", []))
+                    or not isinstance(fa.get("galleries", []), list) or any(g not in GALLERY_TITLES for g in fa.get("galleries", []))):
+                raise Refused("catalogue row %s: facets must be public delivery counties and gallery names only" % wid)
         seen.add(wid)
         out.append((it, pkg["artist"], w))
     return out
 
 
-def body(cards, api, form):
+def body(cards, api, form, bar=""):
     # Version 3 (founder approval, 11 Nov 2026). The hero's primary action ships as "How it works"; hire-live.js turns it into
     # "See works for hire" only while the live check is showing approved works (data-hire-cta).
     # Premium redesign (founder brief, 16 Nov 2026): one page with a clear path for each audience. Hero, then who it is for,
@@ -155,7 +206,7 @@ def body(cards, api, form):
 %(after)s
 %(next)s
 <script src="hire-live.js" data-api="%(api)s" data-enquiries="%(enq)s" defer></script>
-""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards), "opportunities": OPP.BEGIN + OPP.END, "works_hidden": "" if cards else " hidden",
+""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards, bar), "opportunities": OPP.BEGIN + OPP.END, "works_hidden": "" if cards else " hidden",
        "business_how": ' Renting for a workplace? See <a href="#business-rentals">Business rentals</a>.' if business_on else "", "next": NEXT % {"business": business_next(business_on)},
        "api": E(api), "enq": "on" if form else "off",
        "after": BUSINESS.REGION if business_on else ARTISTS_ONLY}
@@ -199,8 +250,8 @@ ARTISTS_ONLY = """<section class="afh3-artists" id="for-artists" aria-labelledby
 BEGIN, END = "<!-- pa-hire-catalogue:begin -->", "<!-- pa-hire-catalogue:end -->"
 
 
-def region(cards):
-    gallery = ('<ul class="pa-hire-grid" aria-label="Works available for hire">\n%s\n</ul>' % "\n".join(cards)) if cards else ""
+def region(cards, bar=""):
+    gallery = ('%s\n  <ul class="pa-hire-grid" aria-label="Works available for hire">\n%s\n</ul>' % (bar, "\n".join(cards))) if cards else ""
     # 22 Nov 2026 (founder brief): no public empty state. With no approved works the whole "Available to hire" section ships
     # hidden; hire-live.js shows it only while the live check is showing at least one approved work. The artists' mini
     # gallery above is the page's discovery area.
@@ -210,6 +261,7 @@ def region(cards):
 def build(root, catalogue, api, form=False, update=False):
     rows = resolve(root, catalogue)
     cards = [card(it, a, w) for it, a, w in rows]
+    bar = filters(rows) if rows else ""
     if update:      # scheduled publishing: the catalogue region only; the page itself is the approved code release
         ip = os.path.join(root, "plotart", "art-for-hire", "index.html")
         if not os.path.isfile(ip):
@@ -218,10 +270,10 @@ def build(root, catalogue, api, form=False, update=False):
         if page.count(BEGIN) != 1 or page.count(END) != 1:
             raise Refused("the released page has no single catalogue region")
         a, b = page.index(BEGIN), page.index(END) + len(END)
-        open(ip, "w", encoding="utf-8").write(page[:a] + region(cards) + page[b:])
+        open(ip, "w", encoding="utf-8").write(page[:a] + region(cards, bar) + page[b:])
         return len(cards)
     css_name = "art-for-hire.css?v=" + hashlib.sha256(open(os.path.join(PUBLIC_HIRE, "art-for-hire.css"), "rb").read()).hexdigest()[:12]
-    path, page = SHELL.artist_page("art-for-hire/index.html", TITLE, DESC, body(cards, api, form), scripts=("plotart.js",),
+    path, page = SHELL.artist_page("art-for-hire/index.html", TITLE, DESC, body(cards, api, form, bar), scripts=("plotart.js",),
                                    current="hire", hire_nav=True, fine=FINE, styles=(css_name, "../assets/plotart-opportunities.css"))
     # the artist opportunity list (16 Nov 2026): its own region, separate from the works catalogue; published artists only
     page = OPP.update(page, "art-for-hire/index.html", SEO.public_packages(root))

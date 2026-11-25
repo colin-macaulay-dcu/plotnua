@@ -1260,7 +1260,22 @@ async function route(req, env) {
     if (p === '/api/pipeline/garden' && m === 'GET') return json({ ok: true, ...(await pipelineGarden(env)) });   // Borrowed Garden noticeboard: approved, public fields only
     if (p === '/api/pipeline/hire-catalogue' && m === 'GET') {   // Art for Hire: separate from the gallery export; listed works only
       if (!(await H.installed(env))) return json({ ok: true, generated_at: now(), items: [] });
-      return json({ ok: true, ...(await H.catalogue(env)) });
+      const cat = await H.catalogue(env);
+      // Phase C filters (25 Nov 2026): public facets only. Delivery counties only while public delivery is switched on
+      // (DELIVERY_PUBLIC, off by default) and the artist ticked "show"; galleries from the three-gallery records when installed.
+      const gc = (await G.installed(env)) ? await G.contents(env, await HP.published(env, VISIBLE_SQL)) : null;
+      const delOn = env.DELIVERY_PUBLIC === 'true' && (await locationInstalled(env));
+      for (const it of cat.items) {
+        const f = {};
+        if (delOn) {
+          const loc = await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', it.artist_id), del = await one(env, 'SELECT * FROM artist_delivery WHERE artist_id = ?', it.artist_id);
+          const pd = LOC.publicDelivery(del, loc, { deliveryPublic: true });
+          if (pd && pd.counties.length) f.delivers = pd.counties;
+        }
+        if (gc) { const gs = G.GALLERIES.filter(g => gc[g].works.some(w => w.artwork_id === it.artwork_id && w.artist_id === it.artist_id)); if (gs.length) f.galleries = gs; }
+        if (Object.keys(f).length) it.facets = f;
+      }
+      return json({ ok: true, ...cat });
     }
     if (p === '/api/pipeline/gallery-order/result' && m === 'POST') {
       const b = await req.json();
