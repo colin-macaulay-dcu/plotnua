@@ -477,10 +477,11 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
     if (UISHOT) await fp.locator('#basket-readiness').screenshot({ path: `${UISHOT}/founder-readiness.png` });
     // the Review desk's Basket readiness tab: the same section, inside the Review desk header and tabs (22 Nov 2026)
     await fp.goto(S.url + '/admin/baskets', { waitUntil: 'load' }); await fp.waitForSelector('#basket-readiness', { timeout: 20000 });
+    // 25 Nov 2026 (Track C): the Review desk has 12 tabs (Galleries added after Gallery order); Basket readiness is still last
     const tabs = await fp.$$eval('.st-tabs a', as => as.map(a => [a.textContent, a.getAttribute('aria-current')]));
     txt = await fp.textContent('#basket-readiness');
     check('U5a Review desk "Basket readiness" tab: every Review desk tab kept, this one current; the same readiness table with online purchase per artist; one dashboard (no second copy)',
-      tabs.length === 11 && tabs[0][0] === 'Review desk' && tabs[10][0] === 'Basket readiness' && tabs[10][1] === 'page' && tabs.filter(t => t[1]).length === 1
+      tabs.length === 12 && tabs[0][0] === 'Review desk' && tabs[11][0] === 'Basket readiness' && tabs[11][1] === 'page' && tabs.filter(t => t[1]).length === 1
       && /Fia Founding \(Founding\)/.test(txt) && /Online purchase/.test(txt) && /of \d+ available artworks can be bought online/.test(txt) && (await fp.$$('#basket-readiness')).length === 1
       && /Open the Payment pilot page/.test(await fp.textContent('#app')), { tabs, txt: txt.slice(0, 600) });
     if (UISHOT) { await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab.png`, fullPage: true }); await fp.setViewportSize({ width: 390, height: 844 }); await fp.screenshot({ path: `${UISHOT}/review-desk-basket-tab-phone.png`, fullPage: true }); await fp.setViewportSize({ width: 1280, height: 900 }); }
@@ -501,7 +502,7 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
       fit.every(f => f.inside && !f.scroll && !f.page && f.font === '14px') && fit.find(f => f.w === 768).rows >= 2 && ph.wrap === 'nowrap' && ph.scroll && !ph.page && st === '13.5px', { fit, ph, st });
     await fp.setViewportSize({ width: 1280, height: 900 });
     const dk = await fp.goto(S.url + '/admin', { waitUntil: 'load' }).then(() => fp.$$eval('.st-tabs a', as => as.map(a => [a.textContent, a.getAttribute('href')])));
-    check('U5b the Review desk itself shows the Basket readiness tab, after Opportunities', dk.length === 11 && dk[9][0] === 'Opportunities' && dk[10][0] === 'Basket readiness' && dk[10][1] === '/admin/baskets', dk);
+    check('U5b the Review desk itself shows the Basket readiness tab, after Opportunities', dk.length === 12 && dk[10][0] === 'Opportunities' && dk[11][0] === 'Basket readiness' && dk[11][1] === '/admin/baskets', dk);
     await fc.close();
     // buyer: a discreet, collapsed "Seller and returns information" per artist, desktop and phone
     // every earlier work has been sold by now: three fresh synthetic works (one Gallery, two Founding), published, with offers
