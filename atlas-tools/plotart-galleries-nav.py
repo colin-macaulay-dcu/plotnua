@@ -91,8 +91,8 @@ KEY_OF_TRACK = {t: k for k, _h, _l, t in S.GALLERIES}
 
 
 def refresh(text, rel):
-    """A page that already has the Galleries menu: rewrite the menu, Mobile Gallery's own pill (straight after Living Gallery,
-    founder decision 25 Nov 2026), their phone Menu links and the footer gallery links from the shell's current markup (same
+    """A page that already has the Galleries menu: rewrite the menu, Mobile Gallery's own pill (straight after the Galleries
+    menu, before Living Gallery: founder decision 25 Nov 2026, the order of the homepage's Beyond the Gallery tiles), their phone Menu links and the footer gallery links from the shell's current markup (same
     base path, same current page, same Mobile Gallery address). Works on the earlier layout (Mobile Gallery inside the
     Galleries menu) and on the current one, so running it twice changes nothing."""
     ms = DD.findall(text)
@@ -116,12 +116,10 @@ def refresh(text, rel):
     pill = S.mobile_gallery_pill(mg_href, mg_cur)
     if len(MENU_RUN.findall(text)) != 1 or len(FOOT_RUN.findall(text)) > 1 or len(LG_PILL.findall(text)) != 1 or len(LG_MENU.findall(text)) != 1:
         raise ValueError("expected one phone Menu gallery run, one Living Gallery pill and Menu link, and at most one footer gallery run")
-    out = text.replace(m.group(0), dd, 1)
-    out = MG_PILL.sub("", out)
-    out = LG_PILL.sub(lambda p: p.group(0) + pill, out, count=1)
-    out = MENU_RUN.sub(lambda _m: "".join(S.menu_items(dd)), out, count=1)
+    out = MG_PILL.sub("", text)
+    out = out.replace(m.group(0), dd + pill, 1)
     out = MG_MENU.sub("", out)
-    out = LG_MENU.sub(lambda p: p.group(0) + "".join(S.menu_items(pill)), out, count=1)
+    out = MENU_RUN.sub(lambda _m: "".join(S.menu_items(dd + pill)), out, count=1)
     out = FOOT_RUN.sub(lambda f: S.FOOT_GALLERIES.format(R=f.group(1)), out, count=1)
     return out, ("refreshed" if out != text else "already")
 

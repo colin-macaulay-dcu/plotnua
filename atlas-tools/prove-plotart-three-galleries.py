@@ -57,7 +57,7 @@ FAULTS = [
     ("F7 the gallery tabs removed from Contemporary", "gallery/index.html", '<nav class="pa-gtabs"', '<nav class="pa-gtabs-gone"', "L21 gallery/index.html must carry the gallery tabs"),
     ("F8 the Contemporary heading reverted", "gallery/index.html", 'id="vgH">Contemporary.</h1>', 'id="vgH">Contemporary Art.</h1>', "L21 gallery/index.html must open with the shared heading block"),
     ("F9 an extra label under the homepage heading", "index.html", "A new home for Irish art.</h1>", "A new home for Irish art.</h1><p>Three curated galleries</p>", "L6 the homepage heading must be exactly"),
-    ("F10 'Real art. Real homes.' restored", "index.html", "Original art, at home.", "Real art. Real homes.", "L21 the homepage must present the Living Gallery"),
+    ("F10 'Real art. Real homes.' restored", "index.html", "<h3>Living Gallery</h3>", "<h3>Real art. Real homes.</h3>", "L21 the homepage must present the Living Gallery"),
     ("F11 Art for Hire enquiries wording removed", "index.html", " Hire enquiries are not yet open.</p>", "</p>", "L21 the homepage must say Art for Hire enquiries are not yet open"),
     ("F12 an Artists' Gallery pill back on an artwork page", "artists/carolyn-walsh/coastal-series-8.html", 'data-pa-track="nav_mobile_gallery">Mobile Gallery</a>',
      'data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="../../gallery/" data-pa-track="nav_virtual_gallery">Artists’ Gallery</a>', "L21 artists/carolyn-walsh/coastal-series-8.html must carry exactly one Galleries menu"),
@@ -83,12 +83,18 @@ FAULTS = [
     ("F36 a redirect chain (landscape/ → environment/)", "landscape/index.html", 'location.replace("../spaces/"', 'location.replace("../environment/"', "L21 landscape/index.html must be exactly the generated permanent redirect"),
     ("F37 the environment/ redirect made indexable", "environment/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 environment/index.html must be exactly the generated permanent redirect"),
     ("F38 the gallery heading style removed", "assets/plotart-galleries.css", ".pa-gt .pa-gt-tag{", ".pa-gt-tag-old{", "L21 the gallery heading block (pa-gt) must be styled once"),
-    # Mobile Gallery restored (25 Nov 2026): its own pill after Living Gallery, and an honest homepage section
+    # Mobile Gallery restored (25 Nov 2026): its own pill straight after the Galleries menu, before Living Gallery
     ("F39 the Mobile Gallery pill removed from a page", "about.html", '<a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a>', '', "L21 about.html must carry exactly one Galleries menu"),
-    ("F40 the Mobile Gallery pill moved before Living Gallery", "join.html", 'data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a>',
-     'data-pa-track="nav_living_gallery">Living Gallery</a>', "L21 join.html must carry exactly one Galleries menu"),
-    ("F41 the homepage claims Mobile Gallery appointments are available", "index.html", "so appointments can’t yet be arranged through PlotArt.", "and appointments are available now.", "L21 the homepage must present Mobile Gallery"),
-    ("F42 the homepage Mobile Gallery section removed", "index.html", '<section class="pa-sec pa-home-mg" aria-labelledby="homeMgH">', '<section class="pa-sec pa-home-xx" aria-labelledby="homeXxH">', "L21 the homepage must present Mobile Gallery"),
+    ("F40 the Mobile Gallery pill moved after Living Gallery", "join.html", '<a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="living-gallery.html" data-pa-track="nav_living_gallery">Living Gallery</a>',
+     '<a class="pa-pill" href="living-gallery.html" data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a>', "L21 join.html must carry exactly one Galleries menu"),
+    ("F41 the homepage claims Mobile Gallery appointments are available", "index.html", " so appointments can’t yet be arranged through PlotArt.", " and appointments are available now.", "L21 Beyond the Gallery must keep the Mobile Gallery and Living Gallery status sentences"),
+    ("F42 Beyond the Gallery heading changed", "index.html", '<h2 id="beyondH">Beyond the Gallery.</h2>', '<h2 id="beyondH">Experiences.</h2>', "L21 the homepage must carry 'Beyond the Gallery.'"),
+    ("F43 a prospective gallery named as taking part", "index.html", "We’re inviting galleries to join,", "With Artworld and The Doorway Gallery taking part,", "L21 Beyond the Gallery must not name a prospective gallery"),
+    ("F44 an artist's artwork on a Beyond tile", "index.html", 'src="assets/living/plotart-living-gallery-colin-macaulay-artwork.webp" width="1564"', 'src="artists/carolyn-walsh/img/coastal-series-8-1-600.webp" width="1564"', "L21 the living-gallery tile may show only its declared illustration"),
+    ("F45 the illustration label removed from the Mobile Gallery tile", "index.html", '<span class="pa-chip pa-chip--illus">AI-generated illustration</span> Painting by Colin MacAulay, PlotArt’s founder. Not from', '<span class="pa-chip">Photograph</span> Painting by Colin MacAulay, PlotArt’s founder. Not from', "L21 the mobile-gallery tile's picture must carry its illustration label"),
+    ("F46 the tiles reordered", "index.html", 'data-pa-beyond="mobile-gallery"', 'data-pa-beyond="mobile-gallery-x"', "L21 Beyond the Gallery must show Mobile Gallery, Living Gallery and Art for Hire, in that order"),
+    ("F47 Beyond the Gallery not straight after the three galleries", "index.html", "<!-- pa-galleries:end -->\n", "<!-- pa-galleries:end -->\n<p>x</p>\n", "L21 the homepage must carry 'Beyond the Gallery.' straight after the three galleries"),
+    ("F48 'Not offered for hire' dropped from the Art for Hire picture", "index.html", "PlotArt’s founder. Not offered for hire.", "PlotArt’s founder.", "L21 the Art for Hire picture must say"),
     ("F14 a Galleries menu link changed on the homepage", "index.html", 'href="being/" data-pa-track="nav_gallery_being">Being<span', 'href="being/" data-pa-track="nav_gallery_being">Beings<span', "L11 index.html must carry the one Galleries menu"),
 ]
 

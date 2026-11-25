@@ -63,7 +63,7 @@ def gallery_state(key):
 def galleries_menu(R, current, mg_href=None):
     """The header's Galleries menu: the three galleries. current: a gallery key marks that page's link (aria-current); "vg" (an
     artist's gallery or artwork page, all of which are in Contemporary today) marks only the menu itself as the current section.
-    Mobile Gallery is no longer in this menu: it is its own pill again, after Living Gallery (founder decision, 25 Nov 2026;
+    Mobile Gallery is no longer in this menu: it is its own pill again, straight after this menu (founder decisions 25 Nov 2026;
     mobile_gallery_pill). mg_href is accepted for compatibility and ignored."""
     keys = {g[0] for g in GALLERIES}
     links = []
@@ -76,7 +76,8 @@ def galleries_menu(R, current, mg_href=None):
 
 
 def mobile_gallery_pill(href, current=False):
-    """Mobile Gallery's own pill in the primary navigation, straight after Living Gallery (founder decision, 25 Nov 2026)."""
+    """Mobile Gallery's own pill in the primary navigation, straight after the Galleries menu and before Living Gallery and
+    Art for Hire, the order of the homepage's Beyond the Gallery tiles (founder decision, 25 Nov 2026)."""
     return '<a class="pa-pill" href="%s"%s data-pa-track="nav_mobile_gallery">Mobile Gallery</a>' % (href, ' aria-current="page"' if current else "")
 
 
@@ -110,8 +111,8 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
               '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt=""></a>\n'
               '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, " pa-pills--hire" if hire_nav else "", pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
-        galleries_menu(R, current),
-        pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery") + mobile_gallery_pill(R + "mobile-gallery/", current == "mg"),
+        galleries_menu(R, current) + mobile_gallery_pill(R + "mobile-gallery/", current == "mg"),
+        pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
         (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
         + (pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]) if services_nav else ""),
         '<a class="pa-pill pa-pill--out" href="%sindex.html" data-pa-track="cross_plotnua_home"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a>' % T)
