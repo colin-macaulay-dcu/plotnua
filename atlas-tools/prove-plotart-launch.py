@@ -159,7 +159,9 @@ if SERVICES_ON:
                                                   "hang-it-hung-wall-800.webp", "hang-it-logo.png",
                                                   # FastLane Couriers, 22 Nov 2026 (owner-supplied; ORG-FASTLANE / IPO-FASTLANE-20261122)
                                                   "fastlane-van-1077.jpg", "fastlane-van-1077.webp", "fastlane-van-800.webp",
-                                                  "fastlane-logo.png")}
+                                                  "fastlane-logo.png",
+                                                  # DropBy, 25 Nov 2026 (supplier-supplied; ORG-DROPBY / IPO-DROPBY-20261125)
+                                                  "dropby-promo-1284.jpg", "dropby-promo-1284.webp", "dropby-promo-800.webp")}
     PAGES.append(SERVICES_PAGE)
 # No prices on the Services page (Hang-It asked for its pricing to be removed, 19 Nov 2026): the ordinary L3 rule applies.
 ALLOWED |= {"assets/plotart-refine.css", "assets/plotart-refine.js"}   # Refine on All Artworks (founder approval 21 Nov 2026)

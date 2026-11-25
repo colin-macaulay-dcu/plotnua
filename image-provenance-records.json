@@ -25836,6 +25836,54 @@
       "source_sha256": "cb50138b915976a3adeb8cc3301c7b00fda0f41a4864bce0f32e23b008dc0d82",
       "subject": "artwork",
       "work_slug": "time-to-play"
+    },
+    {
+      "asset": "plotart/assets/services/dropby-promo-1284.jpg",
+      "sha256": "87835d36bdc21e15c45981647d8478fc9f3d4e8777f268de70a96ad82a651dbd",
+      "bytes": 74532,
+      "pixels": [
+        1284,
+        722
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-DROPBY",
+        "atlas_permission_ref": "IPO-DROPBY-20261125"
+      },
+      "supplier_label": "Logo",
+      "source": "DropBy's promotional graphic (logo tile, wordmark, 'Same-Day & Next-Day Delivery' strapline, tagline), supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: the 16:9 band holding the logo, wordmark, strapline and tagline, cropped, resized and recompressed, metadata stripped; not recoloured or redrawn."
+    },
+    {
+      "asset": "plotart/assets/services/dropby-promo-1284.webp",
+      "sha256": "2b1fb62249221454781c476a3a58cb3150f25dcdcb8075d10edabbce60670860",
+      "bytes": 36738,
+      "pixels": [
+        1284,
+        722
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-DROPBY",
+        "atlas_permission_ref": "IPO-DROPBY-20261125"
+      },
+      "supplier_label": "Logo",
+      "source": "DropBy's promotional graphic (logo tile, wordmark, 'Same-Day & Next-Day Delivery' strapline, tagline), supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: the 16:9 band holding the logo, wordmark, strapline and tagline, cropped, resized and recompressed, metadata stripped; not recoloured or redrawn."
+    },
+    {
+      "asset": "plotart/assets/services/dropby-promo-800.webp",
+      "sha256": "61ed5394ff643dcae8ee135d288cda063942edf756a4452249430629a7957e13",
+      "bytes": 22992,
+      "pixels": [
+        800,
+        450
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-DROPBY",
+        "atlas_permission_ref": "IPO-DROPBY-20261125"
+      },
+      "supplier_label": "Logo",
+      "source": "DropBy's promotional graphic (logo tile, wordmark, 'Same-Day & Next-Day Delivery' strapline, tagline), supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: the 16:9 band holding the logo, wordmark, strapline and tagline, cropped, resized and recompressed, metadata stripped; not recoloured or redrawn."
     }
   ],
   "legacy_undeclared": [

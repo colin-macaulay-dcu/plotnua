@@ -1,0 +1,40 @@
+{
+ "what": "DropBy image for the PlotArt Services listing; copies made 25 Nov 2026 from IMG_5077.jpeg, emailed by Cristian (Co-Founder, DropBy Limited) on 25 Nov 2026 'which you can use'. The file is a phone screenshot of a square promotional graphic: the copies are the 16:9 band (0,765)-(1284,1487) holding the logo tile, wordmark, strapline and tagline (black bars and the parcel below cropped away), resized and recompressed, metadata stripped. Nothing recoloured or redrawn.",
+ "rights": "image-rights-records.json ORG-DROPBY / IPO-DROPBY-20261125 (Atlas rec4xv5PszmpfqdeZ)",
+ "originals": {
+  "graphic": {
+   "supplied_as": "IMG_5077.jpeg (Gmail message 1a212d849ff23e9d)",
+   "sha256": "6d701fd2556f8c7c316fd54585520fd1453f29d4b95348c822087e91bb147987",
+   "pixels": [
+    1284,
+    2778
+   ]
+  }
+ },
+ "copies": {
+  "dropby-promo-1284.jpg": {
+   "sha256": "87835d36bdc21e15c45981647d8478fc9f3d4e8777f268de70a96ad82a651dbd",
+   "bytes": 74532,
+   "pixels": [
+    1284,
+    722
+   ]
+  },
+  "dropby-promo-1284.webp": {
+   "sha256": "2b1fb62249221454781c476a3a58cb3150f25dcdcb8075d10edabbce60670860",
+   "bytes": 36738,
+   "pixels": [
+    1284,
+    722
+   ]
+  },
+  "dropby-promo-800.webp": {
+   "sha256": "61ed5394ff643dcae8ee135d288cda063942edf756a4452249430629a7957e13",
+   "bytes": 22992,
+   "pixels": [
+    800,
+    450
+   ]
+  }
+ }
+}

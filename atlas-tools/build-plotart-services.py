@@ -89,7 +89,10 @@ PROVIDERS = [
     # No partner wording, bookings, prices, insurance, qualifications, launch date or present-tense nationwide coverage.
     {"key": "db", "publish": True, "name": "DropBy",
      "status": "Launching Soon",
-     "placeholder": "Same-day and next-day delivery",
+     # image (25 Nov 2026): DropBy's own promotional graphic, sent by Cristian "which you can use" (image-rights-records.json
+     # ORG-DROPBY / IPO-DROPBY-20261125); hosted as a 16:9 band (logo, wordmark, strapline, tagline), declared as Logo
+     "photo": {"dir": "dropby", "stem": "dropby-promo", "big": 1284, "w": 1284, "h": 722, "credit": "Image: DropBy", "kind": "Logo",
+               "alt": "DropBy logo and wordmark with the strapline Same-Day and Next-Day Delivery"},
      "what": "A new Irish same-day and next-day delivery marketplace.",
      "about": "Connecting individuals and businesses with independent couriers using bicycles, cars and vans.",
      "facts": [("Area", "Launching initially in Dublin, with plans to expand across Ireland."),
@@ -138,8 +141,9 @@ def card(p):
         ph = p["photo"]; base = "assets/services/" + ph["stem"]
         media = ('\n    <figure class="pa-sv-media"><picture>'
                  '<source type="image/webp" srcset="%(b)s-800.webp 800w, %(b)s-%(big)d.webp %(big)dw" sizes="(max-width:900px) 100vw, 46vw">'
-                 '<img src="%(b)s-%(big)d.jpg" width="%(w)d" height="%(h)d" alt="%(alt)s" data-kind="Photograph" loading="lazy" decoding="async"></picture>'
-                 '<figcaption>%(credit)s</figcaption></figure>') % dict(b=base, big=ph.get("big", 1600), w=ph["w"], h=ph["h"], alt=ph["alt"], credit=ph["credit"])
+                 '<img src="%(b)s-%(big)d.jpg" width="%(w)d" height="%(h)d" alt="%(alt)s" data-kind="%(kind)s" loading="lazy" decoding="async"></picture>'
+                 '<figcaption>%(credit)s</figcaption></figure>') % dict(b=base, big=ph.get("big", 1600), w=ph["w"], h=ph["h"], alt=ph["alt"],
+                                                                      credit=ph["credit"], kind=ph.get("kind", "Photograph"))
     elif "placeholder" in p:
         # a provider without image permission: a quiet anthracite panel with the kind of service in the PlotArt serif;
         # decorative (the provider's name is the card heading), never a photograph, logo or stock image
