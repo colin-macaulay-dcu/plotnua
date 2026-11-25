@@ -594,8 +594,9 @@ if os.path.exists(smp):
     need(_azlinks == _azwant and (bool(_az) == bool(_packages)), "L11 artist A-Z must match approved public names exactly")
 # Three galleries (24 Nov 2026): the Artists' Gallery and Mobile Gallery pills became the one Galleries menu, which must sit
 # straight after Discover PlotArt and be exactly the shell's (checked below, with its current link).
-# Mobile Gallery is its own pill again, straight after Living Gallery (founder decision, 25 Nov 2026).
-NAV_WANT = ["Discover PlotArt", "Living Gallery", "Mobile Gallery", "PlotNua ↗"]
+# Mobile Gallery is its own pill again, straight after the Galleries menu and before Living Gallery and Art for Hire, the order
+# of the homepage's Beyond the Gallery tiles (founder decisions, 25 Nov 2026).
+NAV_WANT = ["Discover PlotArt", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]
 if HIRE_ON:
     NAV_WANT.insert(3, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
 if SERVICES_ON:
@@ -621,9 +622,9 @@ for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
         mg_href = "index.html" if name.startswith("mobile-gallery/") else depth + "mobile-gallery/"
-        want_hrefs = [depth + "index.html", depth + "living-gallery.html", mg_href] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
+        want_hrefs = [depth + "index.html", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
         need(len(links) == len(want_hrefs) and [x[0] for x in links] == want_hrefs,
-             "L11 %s pills must link to the PlotArt homepage, the Living Gallery, Mobile Gallery, Art for Hire, Services and the PlotNua homepage" % name)
+             "L11 %s pills must link to the PlotArt homepage, Mobile Gallery, the Living Gallery, Art for Hire, Services and the PlotNua homepage" % name)
         _dd = SHELL.galleries_menu(depth, DD_CURRENT.get(name), mg_href=mg_href)
         need(nav is not None and nav.group(1).count("data-pa-dd") == 1 and re.match(r'<a class="pa-pill"[^>]*>Discover PlotArt</a>' + re.escape(_dd), nav.group(1)) is not None,
              "L11 %s must carry the one Galleries menu, exactly as the shell writes it, straight after Discover PlotArt" % name)
@@ -765,7 +766,7 @@ for _d, _, _fs in os.walk(PA):
             _t = open(os.path.join(_d, _f), encoding="utf-8").read()
             need(not _OLD.search(_t), "L21 %s still uses a former gallery name or links to a former gallery address" % _rp)
 # every PlotArt page with a header carries the one Galleries menu (the three galleries only), no Artists' Gallery pill, and
-# Mobile Gallery exactly once, as its own pill straight after Living Gallery (founder decision, 25 Nov 2026)
+# Mobile Gallery exactly once, as its own pill straight after the Galleries menu and before Living Gallery (founder decisions, 25 Nov 2026)
 for _d, _, _fs in os.walk(PA):
     for _f in _fs:
         if _f.endswith(".html"):
@@ -775,8 +776,8 @@ for _d, _, _fs in os.walk(PA):
                 _nv = _navm.group(1) if _navm else ""
                 need(_t.count("data-pa-dd") == 1 and 'data-pa-track="nav_virtual_gallery' not in _t
                      and len(re.findall(r'data-pa-track="nav_mobile_gallery"', _nv)) == 1
-                     and re.search(r'data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery">Mobile Gallery</a>', _nv) is not None,
-                     "L21 %s must carry exactly one Galleries menu (three galleries), no Artists’ Gallery pill, and the Mobile Gallery pill straight after Living Gallery" % os.path.relpath(os.path.join(_d, _f), PA))
+                     and re.search(r'</details><a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery">Living Gallery</a>', _nv) is not None,
+                     "L21 %s must carry exactly one Galleries menu (three galleries), no Artists’ Gallery pill, and the Mobile Gallery pill straight after the Galleries menu, before Living Gallery" % os.path.relpath(os.path.join(_d, _f), PA))
 # Beyond the Gallery (founder brief 25 Nov 2026): straight after the three galleries, the Mobile Gallery, Living Gallery and Art
 # for Hire, in that order, each with a picture, a status, a short text and one link to its own page. Every picture is the
 # founder's painting in a disclosed illustration; no gallery is named or implied to take part, and nothing claims a live service.

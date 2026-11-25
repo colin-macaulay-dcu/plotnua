@@ -83,11 +83,10 @@ FAULTS = [
     ("F36 a redirect chain (landscape/ → environment/)", "landscape/index.html", 'location.replace("../spaces/"', 'location.replace("../environment/"', "L21 landscape/index.html must be exactly the generated permanent redirect"),
     ("F37 the environment/ redirect made indexable", "environment/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 environment/index.html must be exactly the generated permanent redirect"),
     ("F38 the gallery heading style removed", "assets/plotart-galleries.css", ".pa-gt .pa-gt-tag{", ".pa-gt-tag-old{", "L21 the gallery heading block (pa-gt) must be styled once"),
-    # Mobile Gallery restored (25 Nov 2026): its own pill after Living Gallery, and an honest homepage section
+    # Mobile Gallery restored (25 Nov 2026): its own pill straight after the Galleries menu, before Living Gallery
     ("F39 the Mobile Gallery pill removed from a page", "about.html", '<a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a>', '', "L21 about.html must carry exactly one Galleries menu"),
-    ("F40 the Mobile Gallery pill moved before Living Gallery", "join.html", 'data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a>',
-     'data-pa-track="nav_living_gallery">Living Gallery</a>', "L21 join.html must carry exactly one Galleries menu"),
-    # Beyond the Gallery (founder brief 25 Nov 2026): replaces the standalone Mobile Gallery section
+    ("F40 the Mobile Gallery pill moved after Living Gallery", "join.html", '<a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="living-gallery.html" data-pa-track="nav_living_gallery">Living Gallery</a>',
+     '<a class="pa-pill" href="living-gallery.html" data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill" href="mobile-gallery/" data-pa-track="nav_mobile_gallery">Mobile Gallery</a>', "L21 join.html must carry exactly one Galleries menu"),
     ("F41 the homepage claims Mobile Gallery appointments are available", "index.html", " so appointments can’t yet be arranged through PlotArt.", " and appointments are available now.", "L21 Beyond the Gallery must keep the Mobile Gallery and Living Gallery status sentences"),
     ("F42 Beyond the Gallery heading changed", "index.html", '<h2 id="beyondH">Beyond the Gallery.</h2>', '<h2 id="beyondH">Experiences.</h2>', "L21 the homepage must carry 'Beyond the Gallery.'"),
     ("F43 a prospective gallery named as taking part", "index.html", "We’re inviting galleries to join,", "With Artworld and The Doorway Gallery taking part,", "L21 Beyond the Gallery must not name a prospective gallery"),
