@@ -474,3 +474,8 @@ body.st{ background:var(--anth); min-height:100vh; }
 
 /* Exhibitions & Achievements (Phase C): room to organise headings and lists */
 #f-achievements{ min-height:280px; }
+/* screen-reader only (Phase C location cards) */
+.st-sr{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+/* delivery counties: a compact grid within each province (Phase C) */
+.st-county-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(128px, 1fr)); gap:2px 12px; }
+.st-county-grid .st-check{ margin:0; }

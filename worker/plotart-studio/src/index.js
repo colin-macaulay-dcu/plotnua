@@ -20,7 +20,8 @@ import * as BG from './basket-staging-gallery.js';     // multi-artist basket on
 import * as CO from './checkout.js';   // managed checkout pilot (development 16 Nov 2026): test mode only, off by default
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import * as G from './galleries.js';
-import * as XA from './achievements.js';   // Exhibitions & Achievements (Phase C, migration 0026): the artist's optional free-form section   // Three galleries (Phase B, migration 0023): memberships, placements, order, Artists in Focus, image-use consent
+import * as XA from './achievements.js';
+import * as LOC from './location.js';   // Artist location and delivery coverage (Phase C, migration 0025), kept apart   // Exhibitions & Achievements (Phase C, migration 0026): the artist's optional free-form section   // Three galleries (Phase B, migration 0023): memberships, placements, order, Artists in Focus, image-use consent
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
@@ -70,6 +71,13 @@ async function load(env, artistId) {
 }
 /* Open for Commissions (founder approval 13 Nov 2026). Migration 0011 adds artists.open_for_commissions. Until it has run,
    Studio keeps working exactly as before and the switch is reported as not available yet. */
+async function locationInstalled(env) {
+  try { await env.DB.prepare('SELECT artist_id FROM artist_locations LIMIT 1').all(); await env.DB.prepare('SELECT artist_id FROM artist_delivery LIMIT 1').all(); return true; } catch { return false; }
+}
+const needLocation = async env => { if (!(await locationInstalled(env))) throw new Bad('Location and delivery aren’t available just yet. Please try again later.', 503); };
+async function locationOf(env, artistId) {
+  return { location: await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', artistId), delivery: await one(env, 'SELECT * FROM artist_delivery WHERE artist_id = ?', artistId) };
+}
 async function achievementsInstalled(env) {
   try { await env.DB.prepare('SELECT achievements FROM artists LIMIT 1').all(); return true; } catch { return false; }
 }
@@ -1339,6 +1347,24 @@ async function route(req, env) {
     if (p === '/admin/homepage') return Response.redirect(new URL('/admin/featured', req.url).toString(), 302);   // the tab's earlier address
     // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
     /* Three galleries (Phase B, migration 0023): founder-only. Each route writes only the gallery tables and the audit log. */
+    /* Artist location and delivery coverage (Phase C): the founder's read-only overview, filterable by county. */
+    if (p === '/api/admin/locations' && m === 'GET') {
+      if (!(await locationInstalled(env))) return json({ ok: true, installed: false, artists: [] });
+      const county = url.searchParams.get('county');
+      if (county && !L.COUNTIES.includes(county)) throw new Bad('Choose a county from the list');
+      const rows = await all(env, `SELECT a.id, a.slug, a.display_name, a.account_status, a.county AS profile_county, l.country, l.county, l.town, l.show_location, l.show_town,
+        l.confirmed_at, d.scope, d.counties AS delivery_counties, d.show_delivery FROM artists a LEFT JOIN artist_locations l ON l.artist_id = a.id
+        LEFT JOIN artist_delivery d ON d.artist_id = a.id WHERE a.account_status <> 'ended' ORDER BY a.display_name COLLATE NOCASE`);
+      const list = rows.map(r => {
+        const loc = r.country ? { country: r.country, county: r.county, town: r.town, show_location: r.show_location, show_town: r.show_town } : null;
+        const del = r.scope ? { scope: r.scope, counties: r.delivery_counties, show_delivery: r.show_delivery } : null;
+        return { id: r.id, slug: r.slug, name: r.display_name, status: r.account_status, confirmed: !!r.confirmed_at, place: loc ? LOC.placeLine({ ...loc, show_town: 1 }) : null,
+          county: loc ? loc.county : r.profile_county, public: !!(loc && loc.show_location), delivery: del ? LOC.deliveryLine(del, loc) : null, covers: del ? LOC.covered(del, loc) : [],
+          delivery_public: !!(del && del.show_delivery) };
+      });
+      return json({ ok: true, installed: true, counties: L.COUNTIES,
+        artists: county ? list.filter(x => x.county === county || x.covers.includes(county)).map(x => ({ ...x, relation: x.county === county ? 'based' : 'delivers' })) : list });
+    }
     if (p === '/api/admin/galleries' && m === 'GET') return json({ ok: true, ...(await G.adminView(env, await HP.published(env, VISIBLE_SQL))) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/targets$/)) && m === 'PUT') return json({ ok: true, gallery: await G.setTargets(env, me.email, mm[1], await req.json().catch(() => null)) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/status$/)) && m === 'POST') return json({ ok: true, ...(await G.setStatus(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL))) });
@@ -1847,8 +1873,33 @@ async function route(req, env) {
     // the artist's own commercial terms (Phase 2): programme, rate and the date of any written variation; never the founder's note
     const tm = await termsFor(env, artist.id);
     const myTerms = { programme: AG.programmeOf(d.artist, tm), ...(tm ? { commission_bp: tm.commission_bp, variation_agreed_on: tm.variation_agreed_on || null } : {}) };
-    return json({ ok: true, artist: { ...a, email }, terms: myTerms, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), achievements_available: await achievementsInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
+    return json({ ok: true, artist: { ...a, email }, terms: myTerms, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), achievements_available: await achievementsInstalled(env), location_available: await locationInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
       portrait: (({ checks, ...i }) => i)(d.images.find(i => i.id === d.artist.portrait_image_id) || { checks: null }) });
+  }
+  /* Artist location and delivery coverage (Phase C): two separate answers, each validated on its own. Confirming a location
+     in Ireland also keeps the existing profile county in step (county, county_public), so today's publishing is unchanged. */
+  if (p === '/api/me/location' && m === 'GET') {
+    if (!(await locationInstalled(env))) return json({ ok: true, installed: false });
+    const cur = await locationOf(env, artist.id), a = await one(env, 'SELECT county, county_public FROM artists WHERE id = ?', artist.id);
+    return json({ ok: true, installed: true, ...cur, profile_county: a.county || null, counties: L.COUNTIES, provinces: LOC.PROVINCES, ni_counties: LOC.NI_COUNTIES,
+      countries: LOC.COUNTRIES.map(c => [c, LOC.countryName(c)]).sort((x, y) => x[1].localeCompare(y[1], 'en-IE')), scopes: LOC.SCOPES });
+  }
+  if (p === '/api/me/location' && m === 'PUT') {
+    await needLocation(env);
+    const row = LOC.validateLocation(await req.json().catch(() => null));
+    const county = row.country === 'IE' || row.country === 'GB' ? row.county : null;
+    await env.DB.batch([LOC.saveLocation(env, artist.id, row, 'artist'),
+      env.DB.prepare('UPDATE artists SET county=?, county_public=?, updated_at=? WHERE id=?').bind(county, county && row.show_location ? 1 : 0, now(), artist.id)]);
+    await audit(env, artist.email, 'artist', 'location', artist.id, { country: row.country, county: row.county, town: !!row.town, public: !!row.show_location });
+    return json({ ok: true, ...(await locationOf(env, artist.id)) });
+  }
+  if (p === '/api/me/delivery' && m === 'PUT') {
+    await needLocation(env);
+    const loc = await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', artist.id);
+    const row = LOC.validateDelivery(await req.json().catch(() => null), loc);
+    await LOC.saveDelivery(env, artist.id, row, 'artist').run();
+    await audit(env, artist.email, 'artist', 'delivery', artist.id, { scope: row.scope, counties: JSON.parse(row.counties).length, public: !!row.show_delivery });
+    return json({ ok: true, ...(await locationOf(env, artist.id)) });
   }
   if (p === '/api/me/profile' && m === 'PUT') {
     const f = clean(PROFILE, await req.json());
