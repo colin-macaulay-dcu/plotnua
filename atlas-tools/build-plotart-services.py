@@ -97,6 +97,20 @@ PROVIDERS = [
                                       "packaging and handling requirements."),
                ("Watch this space", "An exciting new Irish delivery marketplace preparing for its official launch.")],
      "links": [("https://www.dropbycouriers.com/", "Discover DropBy", "services_dropby_web", True)]},
+    # N.I. Couriers, added 25 Nov 2026 (founder brief): Michael Murphy authorised the listing by email the same day
+    # ("Fell free to add our details.") — Atlas Organisation ORG-NICOURIERS (recIy6hMan7ytOVz8). Text-only: no image
+    # permission yet. Website, telephone, coverage and imagery requested; add them when supplied. Overnight parcel
+    # services are discontinued — never advertise them. No insurance, art-handling experience, nationwide availability or prices.
+    {"key": "ni", "publish": True, "name": "N.I. Couriers",
+     "placeholder": "Dedicated same-day delivery",
+     "what": "Dedicated same-day, direct-drive and time-critical delivery services.",
+     "facts": [("Area", "Based in County Antrim, Northern Ireland. Contact N.I. Couriers directly to discuss delivery "
+                        "destinations and geographical coverage."),
+               ("Delivery services", "Dedicated same-day, direct-drive transport for time-critical deliveries."),
+               ("Artwork deliveries", "Contact N.I. Couriers directly to discuss artwork transport and individual "
+                                      "handling requirements."),
+               ("Quotations", "Contact N.I. Couriers directly for a quotation.")],
+     "links": [("mailto:michael@nicouriers.com", "Email michael@nicouriers.com", "services_nicouriers_email", False)]},
 ]
 
 
