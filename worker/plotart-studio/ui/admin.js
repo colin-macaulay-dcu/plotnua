@@ -810,6 +810,7 @@
     });
     const bind = (id, k) => $(id).addEventListener('change', e => { f[k] = e.target.value; draw(); });
     bind('#of-status', 'status'); bind('#of-int', 'interest'); bind('#of-county', 'county'); bind('#of-reach', 'reach');
+    locationOverview();
     app.querySelectorAll('[data-int]').forEach(b => b.addEventListener('click', () => { f.interest = f.interest === b.dataset.int ? '' : b.dataset.int; $('#of-int').value = f.interest; draw(); }));
     $('#of-reset').addEventListener('click', () => { Object.keys(f).forEach(k => { f[k] = ''; }); ['#of-status', '#of-int', '#of-county', '#of-reach'].forEach(s => { $(s).value = ''; }); draw(); });
     draw();
@@ -819,6 +820,32 @@
      Artists' Gallery, each shown with the published artwork the founder chooses, in her order. Arrange, preview, then save;
      saving publishes through the usual protected route. Only published work can be chosen, and each artist appears once.
      The complete collection below the section is never changed from here. */
+
+  /* ---- Where artists are based (Phase C, Track C, 25 Nov 2026): the founder's read-only overview of each artist's location
+     and delivery coverage (GET /api/admin/locations), under Opportunities & delivery. Shown only once migration 0025 has
+     run. A county filter lists artists based there, then, labelled separately, artists who deliver there. Never an address. */
+  async function locationOverview() {
+    let d; try { d = await api('GET', '/api/admin/locations'); } catch { return; }
+    if (!d.installed || location.pathname.replace(/\/$/, '') !== '/admin/opportunities') return;
+    const box = document.createElement('section'); box.className = 'st-card st-loc-ov'; box.setAttribute('aria-labelledby', 'lo-h');
+    app.appendChild(box);
+    const row = a => `<li class="st-gm-person"><div><p class="st-work-t">${E(a.name)}</p>
+      <p class="st-work-s">${a.place ? E(a.place) + (a.public ? ' · they chose to show it' : ' · private') : a.county ? 'Co. ' + E(a.county) + ' (profile county; location not confirmed yet)' : 'Not given yet'}</p>
+      <p class="st-work-s">${a.delivery ? E(a.delivery) + (a.delivery_public ? ' · they chose to show it' : ' · private') : 'No delivery areas given'}</p></div></li>`;
+    async function draw(county) {
+      if (county) d = await api('GET', '/api/admin/locations?county=' + encodeURIComponent(county)); else d = await api('GET', '/api/admin/locations');
+      const based = d.artists.filter(a => !county || a.relation === 'based'), del = county ? d.artists.filter(a => a.relation === 'delivers') : [];
+      box.innerHTML = `<h3 class="st-opp-h3" id="lo-h">Where artists are based</h3>
+        <p class="st-muted" style="margin:0 0 10px">From each artist’s Studio: where they live and work now, and where they can deliver. Read-only. Delivery areas stay private on the public site until public delivery is switched on.</p>
+        <div class="st-f" style="max-width:320px"><label for="lo-c">County</label><select id="lo-c"><option value="">All artists</option>${d.counties.map(c => `<option${c === county ? ' selected' : ''}>${E(c)}</option>`).join('')}</select></div>
+        ${county ? `<h4 class="st-gm-h3">Based in Co. ${E(county)} (${based.length})</h4>` : ''}
+        <ul class="st-gm-list">${based.map(row).join('') || '<li class="st-muted" style="padding:10px 0">Nobody.</li>'}</ul>
+        ${county ? `<h4 class="st-gm-h3">Deliver to Co. ${E(county)} (${del.length})</h4><ul class="st-gm-list">${del.map(row).join('') || '<li class="st-muted" style="padding:10px 0">Nobody.</li>'}</ul>` : ''}`;
+      box.querySelector('#lo-c').addEventListener('change', e => draw(e.target.value));
+    }
+    await draw('');
+  }
+
   async function featured() {
     let d = await api('GET', '/api/admin/featured');
     if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Featured Artists</h1><section class="st-card"><p class="st-muted">Featured Artists isn’t set up yet (migration 0016).</p></section>'; return; }
