@@ -25884,6 +25884,22 @@
       },
       "supplier_label": "Logo",
       "source": "DropBy's logo tile and 'DropBy' wordmark, cropped from the promotional graphic supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: a 16:9 crop of the logo and wordmark only, resized and recompressed, metadata stripped; not recoloured or redrawn."
+    },
+    {
+      "asset": "plotart/assets/services/nicouriers-logo.png",
+      "sha256": "ba1bb97a92891b3a53fec4f595497cdb5a249e51367f6a5c5d3a40beb6eacbcc",
+      "bytes": 28485,
+      "pixels": [
+        461,
+        130
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-NICOURIERS",
+        "atlas_permission_ref": "IPO-NICOURIERS-20261125"
+      },
+      "supplier_label": "Logo",
+      "source": "N.I. Couriers' (NiC) logo, from Michael Murphy's email of 25 Nov 2026 (sha256 febf1b30093891e9…, 809 × 228 PNG); use founder-confirmed 25 Nov 2026; PlotNua copy resized only (transparency kept), not recoloured, cropped or redrawn."
     }
   ],
   "legacy_undeclared": [

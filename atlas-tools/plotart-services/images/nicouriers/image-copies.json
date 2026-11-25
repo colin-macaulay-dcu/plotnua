@@ -1,0 +1,24 @@
+{
+ "what": "N.I. Couriers logo for the PlotArt Services listing; copy made 25 Nov 2026 from image001.png in Michael Murphy's email of 25 Nov 2026 (Gmail 1a21256628ac31fd). Use founder-confirmed 25 Nov 2026 (Michael told the founder to go ahead). Resized to 130 px high with its transparency kept; not recoloured, cropped or redrawn.",
+ "rights": "image-rights-records.json ORG-NICOURIERS / IPO-NICOURIERS-20261125 (Atlas recSJKxtqmckFhLJq)",
+ "originals": {
+  "logo": {
+   "supplied_as": "image001.png (Gmail message 1a21256628ac31fd)",
+   "sha256": "febf1b30093891e9e7fe137c2e6f2847780fc954553a7e1d9c4666b2c81dbe6f",
+   "pixels": [
+    809,
+    228
+   ]
+  }
+ },
+ "copies": {
+  "nicouriers-logo.png": {
+   "sha256": "ba1bb97a92891b3a53fec4f595497cdb5a249e51367f6a5c5d3a40beb6eacbcc",
+   "bytes": 28485,
+   "pixels": [
+    461,
+    130
+   ]
+  }
+ }
+}

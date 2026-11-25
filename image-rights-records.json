@@ -1557,6 +1557,48 @@
       },
       "public_visibility": "PUBLISHABLE",
       "hold_reason": null
+    },
+    {
+      "organisation_record": "recIy6hMan7ytOVz8",
+      "organisation_code": "ORG-NICOURIERS",
+      "organisation_name": "N.I. Couriers",
+      "permission_outcome": "Granted — Founder Confirmed",
+      "permitted_domain": "nicouriers.com",
+      "required_credit": null,
+      "permitted_delivery_hosts": null,
+      "evidence": "Founder confirmation, 25 November 2026 (15:11): Michael Murphy of N.I. Couriers told the founder to go ahead and was delighted for PlotArt to use the company logo. The logo file is image001.png from Michael's email of 25 November 2026 (Gmail 1a21256628ac31fd), in which he also authorised the listing (\"Fell free to add our details.\"). Recorded in Atlas Image Permission Outreach IPO-NICOURIERS-20261125 (recSJKxtqmckFhLJq) as Granted — Founder Confirmed.",
+      "conditions": [],
+      "note": "SCOPE AND TERMS (no attribution is required for the logo, so none is listed for the gate): only the NiC logo, hosted on plotnua.ie as a resized copy, not recoloured, cropped or redrawn; only on N.I. Couriers' listing on the PlotArt Art Services & Providers page; N.I. Couriers is not described as a PlotArt partner; removed promptly on request. HOSTED, NOT HOTLINKED: supplied by email, not served from nicouriers.com. The copy and the original's hash are kept in atlas-tools/plotart-services/images/nicouriers/ (image-copies.json); the copy is declared in image-provenance-records.json as a SUPPLIER_IMAGE labelled Logo whose rights_ref is this record. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and regenerate; P4 then refuses the hosted copy.",
+      "atlas_permission_record": "recSJKxtqmckFhLJq",
+      "atlas_permission_ref": "IPO-NICOURIERS-20261125",
+      "permission_date": "2026-11-25",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "IPO-NICOURIERS-20261125",
+        "record": "recSJKxtqmckFhLJq",
+        "date": "2026-11-25",
+        "scope": [
+          "feature",
+          "imagery",
+          "logo",
+          "hosting"
+        ],
+        "conditions": [
+          "named-images-only",
+          "remove-on-request"
+        ],
+        "asked": "The founder asked Michael Murphy whether PlotArt could use the NiC logo on the listing (25 November 2026).",
+        "answered": "Michael told the founder to go ahead and was delighted for PlotArt to use it (founder confirmation, 25 November 2026)."
+      },
+      "listing_review": {
+        "state": "CONFIRMED",
+        "confirmed_at": "2026-11-25",
+        "requested_by": "founder",
+        "requested_in": "Gmail 1a21256628ac31fd (25 Nov 2026)",
+        "note": "Michael Murphy authorised the listing by email (\"Fell free to add our details.\"); published 25 Nov 2026."
+      },
+      "public_visibility": "PUBLISHABLE",
+      "hold_reason": null
     }
   ]
 }

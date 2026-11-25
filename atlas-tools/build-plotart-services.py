@@ -106,6 +106,9 @@ PROVIDERS = [
     # services are discontinued — never advertise them. No insurance, art-handling experience, nationwide availability or prices.
     {"key": "ni", "publish": True, "name": "N.I. Couriers",
      "placeholder": "Dedicated same-day delivery",
+     # logo (25 Nov 2026): the NiC logo from Michael's email; the founder confirmed Michael told him to go ahead and was
+     # delighted for it to be used (image-rights-records.json ORG-NICOURIERS / IPO-NICOURIERS-20261125); no photograph yet
+     "logo": {"dir": "nicouriers", "file": "nicouriers-logo.png", "w": 461, "h": 130, "alt": "N.I. Couriers", "plaque": "white"},
      "what": "Dedicated same-day, direct-drive and time-critical delivery services.",
      "facts": [("Area", "Based in County Antrim, Northern Ireland. Contact N.I. Couriers directly to discuss delivery "
                         "destinations and geographical coverage."),
