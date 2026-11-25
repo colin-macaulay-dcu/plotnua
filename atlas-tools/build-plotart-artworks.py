@@ -128,7 +128,7 @@ def render(packages, path=PATH):
     home = (ROOT / "plotart/index.html").read_text()
     header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0).replace(' aria-current="page"', "")
     footer = re.search(r'<footer class="pa-foot">.*?</footer>', home, re.S).group(0)
-    head = home.split("<head>", 1)[1].split("</head>", 1)[0].replace('\n<link rel="stylesheet" href="assets/plotart-join.css">', '').replace('\n<link rel="stylesheet" href="assets/plotart-home.css">', '').replace('\n<link rel="stylesheet" href="assets/plotart-galleries.css">', '')  # the Join styles (14 Nov 2026) and featured-artwork styles (17 Nov 2026) belong to the homepage only
+    head = home.split("<head>", 1)[1].split("</head>", 1)[0].replace('\n<link rel="stylesheet" href="assets/plotart-join.css">', '').replace('\n<link rel="stylesheet" href="assets/plotart-home.css">', '').replace('\n<link rel="stylesheet" href="assets/plotart-galleries.css">', '').replace('\n<link rel="stylesheet" href="assets/plotart-beyond.css">', '')  # the Join styles (14 Nov 2026) and featured-artwork styles (17 Nov 2026) belong to the homepage only
     head = re.sub(r"<title>.*?</title>", "<title>" + html.escape(title) + "</title>", head)
     for kind, key, value in [("name", "description", description), ("property", "og:title", title), ("property", "og:description", description),
                              ("name", "twitter:title", title), ("name", "twitter:description", description), ("property", "og:url", SEO.canonical(path))]:
