@@ -1347,6 +1347,7 @@ async function route(req, env) {
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
     if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
     if (p === '/admin/featured') return html(A.ADMIN_HTML);
+    if (p === '/admin/locations' || p === '/admin/galleries') return html(A.ADMIN_HTML);   // Phase C founder tabs
     if (p === '/admin/homepage') return Response.redirect(new URL('/admin/featured', req.url).toString(), 302);   // the tab's earlier address
     // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
     /* Three galleries (Phase B, migration 0023): founder-only. Each route writes only the gallery tables and the audit log. */

@@ -819,6 +819,86 @@
      Artists' Gallery, each shown with the published artwork the founder chooses, in her order. Arrange, preview, then save;
      saving publishes through the usual protected route. Only published work can be chosen, and each artist appears once.
      The complete collection below the section is never changed from here. */
+  /* Locations (Phase C): where each artist is based and where they deliver, filterable by county (read-only). */
+  async function locations() {
+    const county = new URLSearchParams(location.search).get('county') || '';
+    const d = await api('GET', '/api/admin/locations' + (county ? '?county=' + encodeURIComponent(county) : ''));
+    if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Locations</h1><p class="st-sub">Available once the location records are installed (migration 0025).</p>'; return; }
+    const yes = b => b ? 'Shown' : '<span class="st-muted">Private</span>';
+    app.innerHTML = `<h1 class="st-h1">Locations</h1>
+      <p class="st-sub">Where each artist is based and, separately, where they can deliver. Read-only: artists set these in their Studio. Never an address.</p>
+      <div class="st-card"><div class="st-f" style="max-width:320px;margin:0"><label for="loc-f">County</label><select id="loc-f"><option value="">All artists</option>${d.counties.map(c => `<option${c === county ? ' selected' : ''}>${c}</option>`).join('')}</select></div>
+      ${county ? `<p class="st-muted" style="margin:12px 0 0">Artists based in Co. ${E(county)}, then artists based elsewhere who deliver there.</p>` : ''}</div>
+      <div class="st-card" style="overflow-x:auto"><table class="st-table"><thead><tr><th>Artist</th>${county ? '<th>In Co. ' + E(county) + '</th>' : ''}<th>Based in</th><th>On gallery</th><th>Delivers</th><th>Delivery public</th></tr></thead><tbody>
+      ${(county ? [...d.artists].sort((a, b) => (a.relation === 'based' ? 0 : 1) - (b.relation === 'based' ? 0 : 1)) : d.artists).map(a => `<tr><td>${E(a.name)}</td>${county ? `<td>${a.relation === 'based' ? 'Based here' : 'Delivers here'}</td>` : ''}
+        <td>${a.place ? E(a.place) : a.county ? `Co. ${E(a.county)} <span class="st-muted">(profile county, not yet confirmed)</span>` : '<span class="st-muted">Not given</span>'}</td><td>${a.place ? yes(a.public) : '—'}</td>
+        <td>${a.delivery ? E(a.delivery) : '<span class="st-muted">Not given</span>'}</td><td>${a.delivery ? yes(a.delivery_public) : '—'}</td></tr>`).join('') || `<tr><td colspan="6" class="st-muted">No artist ${county ? 'is based in or delivers to Co. ' + E(county) : 'yet'}.</td></tr>`}
+      </tbody></table></div>`;
+    $('#loc-f').addEventListener('change', e => { location.search = e.target.value ? '?county=' + encodeURIComponent(e.target.value) : ''; });
+  }
+
+  /* Galleries (Phase C): the three galleries on the Phase B records. Spaces and Being stay In preparation until the founder
+     opens them (typed confirmation); opening here never publishes: the public page follows the site's launch switch. */
+  async function galleries() {
+    const d = await api('GET', '/api/admin/galleries');
+    if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Galleries</h1><p class="st-sub">Available once the three-gallery records are installed.</p>'; return; }
+    const ST = { live: 'Member', founder_approved: 'Invited, waiting for the artist', artist_accepted: 'Requested by the artist', proposed: 'Proposed', declined: 'Declined', refused: 'Refused', withdrawn: 'Withdrawn' };
+    const PS = { live: 'Shown', founder_approved: 'Proposed, waiting for the artist', artist_accepted: 'Proposed by the artist', withdrawn: 'Taken out', declined: 'Declined', refused: 'Refused' };
+    const C = d.galleries.find(g => g.gallery_id === 'contemporary'), all = C.members, cw = C.works;   // every published artist and shown work (Contemporary by default)
+    const wl = w => `${w.title || w.work} · ${w.artist_name || w.artist}`;
+    const workName = id => { const w = cw.find(x => x.artwork_id === id); return w ? wl(w) : id; };
+    const card = g => {
+      const mem = d.memberships.filter(m => m.gallery_id === g.gallery_id), pl = d.placements.filter(p => p.gallery_id === g.gallery_id), isC = g.gallery_id === 'contemporary';
+      return `<section class="st-card" data-g="${g.gallery_id}"><div class="st-row" style="justify-content:space-between;align-items:baseline"><h2 style="margin:0">${E(g.title)}</h2>
+        <span class="st-pill${g.status === 'open' ? ' st-pill--ok' : ''}">${g.status === 'open' ? 'Open' : g.status === 'paused' ? 'Paused' : 'In preparation'}</span></div>
+        <p class="st-muted">${g.live_artists} live ${g.live_artists === 1 ? 'artist' : 'artists'} · ${g.live_works} ${g.live_works === 1 ? 'work' : 'works'}${isC ? '' : ` · target ${g.target_artists} artists and ${g.target_works} works · ${g.ready ? 'ready to open' : 'not yet ready'}`}</p>
+        ${isC ? '<p class="st-muted">Every published artist is in Contemporary with all their shown works, as today. Positions 01–25 stay in Gallery order.</p>' : `
+        <h3>Members</h3>${mem.length ? `<ul class="st-list">${mem.map(m => `<li class="st-row" style="justify-content:space-between"><span>${E(m.display_name)} <span class="st-muted">· ${ST[m.state] || m.state}</span></span><span>
+          ${m.state === 'artist_accepted' ? `<button class="st-btn st-btn--small st-btn--solid" data-mact="approve" data-a="${m.artist_id}">Approve</button><button class="st-btn st-btn--small" data-mact="refuse" data-a="${m.artist_id}">Refuse</button>` : ''}
+          ${['live', 'founder_approved'].includes(m.state) ? `<button class="st-btn st-btn--small" data-mact="withdraw" data-a="${m.artist_id}">Withdraw</button>` : ''}</span></li>`).join('')}</ul>` : '<p class="st-muted">No members yet.</p>'}
+        <div class="st-row"><select data-inv aria-label="Invite an artist to ${E(g.title)}"><option value="">Invite a published artist…</option>${all.filter(a => !mem.some(m => m.artist_id === a.artist_id && ['live', 'founder_approved'].includes(m.state))).map(a => `<option value="${a.artist_id}">${E(a.display_name)}</option>`).join('')}</select>
+          <button class="st-btn st-btn--small" data-act="invite">Invite</button></div>
+        <h3>Artworks</h3>${pl.length ? `<ul class="st-list">${pl.map(p => `<li class="st-row" style="justify-content:space-between"><span>${E(workName(p.artwork_id))} <span class="st-muted">· ${PS[p.state] || p.state}</span></span><span>
+          ${p.state === 'artist_accepted' ? `<button class="st-btn st-btn--small st-btn--solid" data-pact="place" data-w="${p.artwork_id}">Approve</button><button class="st-btn st-btn--small" data-pact="refuse" data-w="${p.artwork_id}">Refuse</button>` : ''}
+          ${['live', 'founder_approved'].includes(p.state) ? `<button class="st-btn st-btn--small" data-pact="withdraw" data-w="${p.artwork_id}">Withdraw</button>` : ''}</span></li>`).join('')}</ul>` : '<p class="st-muted">No artworks placed yet.</p>'}
+        ${g.members.length ? `<div class="st-row"><select data-placew aria-label="Place a member's artwork"><option value="">Place a member’s artwork…</option>${cw.filter(w => g.members.some(a => a.artist_id === w.artist_id) && !pl.some(p => p.artwork_id === w.artwork_id && ['live', 'founder_approved', 'artist_accepted'].includes(p.state))).map(w => `<option value="${w.artwork_id}">${E(wl(w))}</option>`).join('')}</select><button class="st-btn st-btn--small" data-act="place">Place</button></div>` : ''}
+        <h3>Order</h3>${g.order.length ? `<ol class="st-list" data-order>${g.order.map(o => `<li class="st-row" data-id="${o.artist_id}" style="justify-content:space-between"><span>${String(o.position).padStart(2, '0')} · ${E(o.display_name)}</span><span><button class="st-btn st-btn--small" data-mv="-1" aria-label="Move up">↑</button><button class="st-btn st-btn--small" data-mv="1" aria-label="Move down">↓</button></span></li>`).join('')}</ol><button class="st-btn st-btn--small" data-act="order">Save order</button>`
+          : `<p class="st-muted">Live members appear here in order once they have joined.</p>`}
+        ${g.members.length && !g.order.length ? `<button class="st-btn st-btn--small" data-act="order-init">Order the live members</button>` : ''}
+        <h3>Status</h3><div class="st-row">${g.status === 'open' ? `<button class="st-btn st-btn--small" data-act="prep">Return to In preparation</button>`
+          : `<input data-confirm placeholder="Type OPEN ${E(g.title.toUpperCase())}" aria-label="Type OPEN ${E(g.title.toUpperCase())} to open"><label class="st-check"><input type="checkbox" data-below> Open below the target</label><button class="st-btn st-btn--small" data-act="open">Open in the Studio</button>`}</div>
+        <p class="st-muted">Opening here records the decision in the Studio only; the public page stays In preparation until the site’s launch switch is released with your approval.</p>`}
+      </section>`;
+    };
+    const reqs = d.open_requests;
+    app.innerHTML = `<h1 class="st-h1">Galleries</h1><p class="st-sub">Contemporary, Spaces and Being. Membership and artwork placement need both your approval and the artist’s acceptance.</p>
+      ${d.galleries.map(card).join('')}
+      <section class="st-card"><h2>Image use</h2><p class="st-muted">A specific request for each use (licence §3.2). No answer means no consent.</p>
+        ${reqs.length ? `<ul class="st-list">${reqs.map(r => `<li class="st-row" style="justify-content:space-between"><span>${E(r.scope.replace(/_/g, ' '))} · ${E(r.purpose)} <span class="st-muted">· waiting for the artist</span></span><button class="st-btn st-btn--small" data-cancel="${r.id}">Cancel</button></li>`).join('')}</ul>` : '<p class="st-muted">No open requests.</p>'}
+        <div class="st-f"><label for="iu-w">Artworks (one artist)</label><select id="iu-w" multiple size="6">${cw.map(w => `<option value="${w.artwork_id}" data-a="${w.artist_id}">${E(wl(w))}</option>`).join('')}</select></div>
+        <div class="st-f"><label for="iu-s">Use</label><select id="iu-s"><option value="homepage_feature">Homepage feature</option><option value="promotional_campaign">Promotional campaign</option><option value="social_media">Social media</option><option value="editorial_feature">Editorial feature</option><option value="video_feature">Video feature</option></select></div>
+        <div class="st-f"><label for="iu-p">What the use is</label><input id="iu-p" type="text" maxlength="600"></div><div class="st-f"><label for="iu-c">Where it would appear</label><input id="iu-c" type="text" maxlength="300"></div>
+        <button class="st-btn st-btn--solid" data-act="iu">Send request to the artist</button></section>`;
+    const run = async (f, ok) => { try { await f(); say(ok); await galleries(); } catch (e) { say(e.message, true); } };
+    app.querySelectorAll('section[data-g]').forEach(sec => {
+      const g = sec.dataset.g, base = `/api/admin/galleries/${g}`;
+      sec.querySelectorAll('[data-mact]').forEach(b => b.addEventListener('click', () => run(() => api('POST', `${base}/members/${b.dataset.a}/${b.dataset.mact}`), 'Saved')));
+      sec.querySelectorAll('[data-pact]').forEach(b => b.addEventListener('click', () => run(() => api('POST', `${base}/artworks/${b.dataset.w}/${b.dataset.pact}`), 'Saved')));
+      sec.querySelector('[data-act="invite"]')?.addEventListener('click', () => { const a = sec.querySelector('[data-inv]').value; if (a) run(() => api('POST', `${base}/members`, { artist_id: a }), 'Invitation recorded: it waits for the artist'); });
+      sec.querySelector('[data-act="place"]')?.addEventListener('click', () => { const w = sec.querySelector('[data-placew]').value; if (w) run(() => api('POST', `${base}/artworks/${w}/place`), 'Proposed: it waits for the artist'); });
+      sec.querySelectorAll('[data-mv]').forEach(b => b.addEventListener('click', () => { const li = b.closest('li'), to = +b.dataset.mv < 0 ? li.previousElementSibling : li.nextElementSibling; if (to) (+b.dataset.mv < 0 ? to.before(li) : to.after(li)); }));
+      sec.querySelector('[data-act="order"]')?.addEventListener('click', () => run(() => api('PUT', `${base}/order`, { artists: [...sec.querySelectorAll('[data-order] li')].map(li => li.dataset.id) }), 'Order saved'));
+      sec.querySelector('[data-act="order-init"]')?.addEventListener('click', () => run(() => api('PUT', `${base}/order`, { artists: d.galleries.find(x => x.gallery_id === g).members.map(a => a.artist_id) }), 'Order saved'));
+      sec.querySelector('[data-act="open"]')?.addEventListener('click', () => run(() => api('POST', `${base}/status`, { status: 'open', confirm: sec.querySelector('[data-confirm]').value, below_target: sec.querySelector('[data-below]').checked }), 'Opened in the Studio'));
+      sec.querySelector('[data-act="prep"]')?.addEventListener('click', () => run(() => api('POST', `${base}/status`, { status: 'in_preparation' }), 'Returned to In preparation'));
+    });
+    app.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', () => run(() => api('POST', `/api/admin/image-use/requests/${b.dataset.cancel}/cancel`), 'Request cancelled')));
+    $('[data-act="iu"]', app).addEventListener('click', () => {
+      const sel = [...$('#iu-w').selectedOptions]; if (!sel.length) return say('Choose the artworks', true);
+      run(() => api('POST', '/api/admin/image-use/requests', { artist_id: sel[0].dataset.a, artwork_ids: sel.map(o => o.value), scope: $('#iu-s').value, purpose: $('#iu-p').value, channels: $('#iu-c').value }), 'Request sent: it waits for the artist');
+    });
+  }
+
   async function featured() {
     let d = await api('GET', '/api/admin/featured');
     if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Featured Artists</h1><section class="st-card"><p class="st-muted">Featured Artists isn’t set up yet (migration 0016).</p></section>'; return; }
@@ -893,9 +973,9 @@
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : path === '/admin/featured' ? 'feat' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : path === '/admin/featured' ? 'feat' : path === '/admin/locations' ? 'locs' : path === '/admin/galleries' ? 'gals' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/featured') await featured(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/featured') await featured(); else if (path === '/admin/locations') await locations(); else if (path === '/admin/galleries') await galleries(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

@@ -1146,6 +1146,48 @@
   }
 
   /* ------------------------------------------------------------- router */
+  /* Galleries (Phase C): the artist's own memberships, artwork placements and image-use requests. Every step needs both the
+     artist and PlotArt: nothing is placed in a gallery, and no image is used, without the artist's own yes. */
+  async function galleriesView() {
+    let d;
+    try { d = await api('GET', '/api/galleries'); } catch (e) { app.innerHTML = `<h1 class="st-h1">Galleries</h1><p class="st-sub">${E(e.status === 503 ? 'Galleries will appear here once they are ready.' : e.message)}</p>`; return; }
+    const MS = { none: 'Not a member', founder_approved: 'PlotArt has invited you', artist_accepted: 'You asked to join: PlotArt will decide', live: 'You’re a member', declined: 'You declined', refused: 'Not at this time', withdrawn: 'You left', proposed: 'Proposed' };
+    const PS = { founder_approved: 'PlotArt would like to show this here', artist_accepted: 'You proposed this: PlotArt will decide', live: 'Shown here', withdrawn: 'Taken out', declined: 'You declined', refused: 'Not chosen' };
+    const works = WORKS.filter(w => !w.archived);
+    const plFor = (g, id) => d.placements.find(p => p.gallery_id === g && p.artwork_id === id);
+    const gal = g => {
+      if (g.gallery_id === 'contemporary') return `<section class="st-card"><h2>${E(g.title)}</h2><p class="st-muted">Your published works are shown in Contemporary, as today.</p></section>`;
+      const live = g.state === 'live';
+      return `<section class="st-card" data-g="${g.gallery_id}"><div class="st-row" style="justify-content:space-between;align-items:baseline"><h2 style="margin:0">${E(g.title)}</h2><span class="st-pill">${E(MS[g.state] || g.state)}</span></div>
+        <div class="st-actions">${g.state === 'founder_approved' ? '<button class="st-btn st-btn--solid" data-m="accept">Accept the invitation</button><button class="st-btn" data-m="decline">Decline</button>'
+          : g.state === 'artist_accepted' ? '<button class="st-btn" data-m="withdraw">Withdraw my request</button>'
+          : live ? '<button class="st-btn" data-m="withdraw">Leave this gallery</button>'
+          : g.state === 'refused' ? '' : '<button class="st-btn" data-m="request">Ask to join</button>'}</div>
+        ${live || d.placements.some(p => p.gallery_id === g.gallery_id) ? `<h3>Your works in ${E(g.title)}</h3><ul class="st-list">${works.map(w => { const p = plFor(g.gallery_id, w.id), st = p ? p.state : null;
+          return `<li class="st-row" style="justify-content:space-between"><span>${E(w.title || 'Untitled')}${st ? ` <span class="st-muted">· ${E(PS[st] || st)}</span>` : ''}</span><span>
+            ${st === 'founder_approved' ? `<button class="st-btn st-btn--small st-btn--solid" data-p="accept" data-w="${w.id}">Accept</button><button class="st-btn st-btn--small" data-p="decline" data-w="${w.id}">Decline</button>`
+              : ['live', 'artist_accepted'].includes(st) ? `<button class="st-btn st-btn--small" data-p="withdraw" data-w="${w.id}">Withdraw</button>`
+              : live && st !== 'refused' ? `<button class="st-btn st-btn--small" data-p="propose" data-w="${w.id}">Propose for ${E(g.title)}</button>` : ''}</span></li>`; }).join('')}</ul>` : ''}
+      </section>`;
+    };
+    const open = d.requests.filter(r => r.status === 'open'), yes = d.answers.filter(a => a.answer === 'yes' && !d.answers.some(b => b.request_id === a.request_id && b.answer === 'no' && b.created_at > a.created_at));
+    app.innerHTML = `<h1 class="st-h1">Galleries</h1><p class="st-sub">PlotArt has three galleries: Contemporary, Spaces and Being. Joining a gallery, and showing a work in it, always needs your yes and PlotArt’s.</p>
+      ${d.galleries.map(gal).join('')}
+      <section class="st-card"><h2>Image use</h2><p class="st-muted">PlotArt asks before each specific use of your images. No answer means no.</p>
+        ${open.length ? `<ul class="st-list">${open.map(r => `<li><p style="margin:0 0 8px"><strong>${E(r.scope.replace(/_/g, ' '))}</strong> · ${E(r.purpose)} <span class="st-muted">· ${E(r.channels)}${r.valid_until ? ' · until ' + E(r.valid_until) : ''}</span></p>
+          <div class="st-actions"><button class="st-btn st-btn--small st-btn--solid" data-u="yes" data-r="${r.id}">Yes, for this use</button><button class="st-btn st-btn--small" data-u="no" data-r="${r.id}">No</button></div></li>`).join('')}</ul>` : '<p class="st-muted">No requests waiting.</p>'}
+        ${yes.length ? `<h3>Permissions you have given</h3><ul class="st-list">${yes.map(a => `<li class="st-row" style="justify-content:space-between"><span>${E(a.scope.replace(/_/g, ' '))} <span class="st-muted">· ${E(a.created_at.slice(0, 10))}</span></span><button class="st-btn st-btn--small" data-wd="${a.id}">Withdraw</button></li>`).join('')}</ul>` : ''}
+      </section>`;
+    const run = async (f, ok) => { try { await f(); say(ok); await galleriesView(); } catch (e) { say(e.message, true); } };
+    app.querySelectorAll('section[data-g]').forEach(sec => {
+      const g = sec.dataset.g;
+      sec.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => run(() => api('POST', `/api/galleries/${g}/${b.dataset.m}`), 'Saved')));
+      sec.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => run(() => api('POST', `/api/galleries/${g}/artworks/${b.dataset.w}/${b.dataset.p}`), 'Saved')));
+    });
+    app.querySelectorAll('[data-u]').forEach(b => b.addEventListener('click', () => run(() => api('POST', `/api/image-use/${b.dataset.r}/answer`, { answer: b.dataset.u }), 'Answer recorded')));
+    app.querySelectorAll('[data-wd]').forEach(b => b.addEventListener('click', () => run(() => api('POST', `/api/image-use/consents/${b.dataset.wd}/withdraw`), 'Permission withdrawn')));
+  }
+
   async function render() {
     await flushPhotoEdits(); await flushEdits();
     const full = location.hash || '#/', [h, qs] = full.split('?'), q = new URLSearchParams(qs || '');
@@ -1165,6 +1207,7 @@
       else if (h === '#/agreement') await agreementView();
       else if (h === '#/hire') await hireView();
       else if (h === '#/opportunities') await opportunities();
+      else if (h === '#/galleries') await galleriesView();
       else dashboard();
       window.scrollTo(0, 0);
       if (q.get('fix')) requestAnimationFrame(() => focusFix(q.get('fix'), q.get('img')));

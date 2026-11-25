@@ -50,6 +50,7 @@
     state = { listed: new Map(), validUntil: 0, enquiries: false };
     cards().forEach(c => { c.hidden = true; });
     empty.forEach(el => { el.hidden = !staticEmpty; });
+    if (filterForm) filterForm.hidden = true;
     section(false);
     cta(false);
     setEnquiries(false);
@@ -77,6 +78,7 @@
         if (i) { shown++; const a = c.querySelector('[data-hire-availability]'); if (a) a.textContent = label(i); }
       });
       empty.forEach(el => { el.hidden = shown > 0; });
+      applyFilter();
       section(shown > 0);
       cta(shown > 0);
       setEnquiries(FORM_BUILT && j.enquiries === true);
@@ -85,6 +87,36 @@
     } catch { hideAll(UNAVAILABLE); }
     finally { clearTimeout(timer); }
   }
+  /* ---------------------------------------------------------------- filters (Phase C)
+     County: artists BASED in the county first, then artists based elsewhere who DELIVER there (each card says which);
+     nobody who supplies the county is left out. Gallery and availability narrow further. Only cards the live check is
+     showing are ever counted or shown: filtering never reveals a card the check has hidden. */
+  const filterForm = document.querySelector('[data-hire-filter]');
+  const fval = k => { const el = filterForm && filterForm.querySelector(`[data-hire-f="${k}"]`); return el ? el.value : ''; };
+  function applyFilter() {
+    if (!filterForm) return;
+    const county = fval('county'), gal = fval('gallery'), av = fval('avail');
+    const live = cards().filter(c => state.listed.has(c.dataset.hireWork));
+    filterForm.hidden = !live.length;
+    let n = 0;
+    const rank = { based: 0, delivers: 1, '': 0 };
+    for (const c of live) {
+      const i = state.listed.get(c.dataset.hireWork), covers = (c.dataset.hireCovers || '').split(' ').filter(Boolean);
+      const rel = !county ? '' : c.dataset.hireCounty === county ? 'based' : covers.includes(county) ? 'delivers' : null;
+      const avail = (i && i.availability) || c.dataset.hireAvail;
+      const ok = rel !== null && (!gal || (c.dataset.hireGalleries || 'contemporary').split(' ').includes(gal)) && (!av || avail === av);
+      c.hidden = !ok; c.dataset.hireRank = ok ? rank[rel] : 9;
+      const r = c.querySelector('[data-hire-rel]');
+      if (r) { r.hidden = !(ok && rel); r.textContent = rel === 'based' ? `Based in Co. ${county}` : rel === 'delivers' ? `Delivers to Co. ${county}` : ''; }
+      if (ok) n++;
+    }
+    const grid = live.length && live[0].parentNode;
+    if (grid) [...grid.children].sort((a, b) => (+a.dataset.hireRank || 0) - (+b.dataset.hireRank || 0)).forEach(el => grid.appendChild(el));
+    const cnt = filterForm.querySelector('[data-hire-count]');
+    if (cnt) cnt.textContent = !n ? 'No works match these choices yet.' : `${n} ${n === 1 ? 'work' : 'works'}` + (county ? `: artists based in Co. ${county}, then artists who deliver there` : '');
+  }
+  if (filterForm) { filterForm.addEventListener('change', applyFilter); filterForm.addEventListener('submit', e => e.preventDefault()); }
+
   // the answer expires on its own: if no new check succeeds in time, everything is hidden again
   setInterval(() => { if (state.validUntil && !fresh()) hideAll(UNAVAILABLE); }, 5000);
 

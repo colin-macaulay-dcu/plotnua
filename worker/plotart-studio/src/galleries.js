@@ -340,7 +340,7 @@ export async function contents(env, published) {
         ? !pl.some(p => p.artwork_id === w.id && p.artist_id === a.artist_id && p.gallery_id === 'contemporary')
         : pl.some(p => p.artwork_id === w.id && p.artist_id === a.artist_id && p.gallery_id === g && p.state === 'live'));
       out[g].artists.push({ artist_id: a.artist_id, slug: a.slug, display_name: a.display_name, works: works.length });
-      out[g].works.push(...works.map(w => ({ artist_id: a.artist_id, artist: a.slug, work: w.slug, artwork_id: w.id })));
+      out[g].works.push(...works.map(w => ({ artist_id: a.artist_id, artist: a.slug, work: w.slug, artwork_id: w.id, title: w.title || null, artist_name: a.display_name })));
     }
   }
   return out;
@@ -518,7 +518,7 @@ export async function consentsView(env, artistId) {
 export async function adminView(env, published) {
   if (!(await installed(env))) return { installed: false, galleries: GALLERIES.map(g => ({ gallery_id: g, title: TITLES[g], ...DEFAULTS[g] })) };
   const c = await contents(env, published), r = await readiness(env, published);
-  return { installed: true, galleries: await Promise.all(GALLERIES.map(async g => ({ ...r[g], members: c[g].artists, order: await shownOrder(env, g, c),
+  return { installed: true, galleries: await Promise.all(GALLERIES.map(async g => ({ ...r[g], members: c[g].artists, works: c[g].works, order: await shownOrder(env, g, c),
     features: g === 'contemporary' ? null : await shownFeatures(env, g, c) }))),
     memberships: await all(env, 'SELECT m.*, a.display_name, a.slug FROM gallery_memberships m JOIN artists a ON a.id = m.artist_id ORDER BY m.gallery_id, a.display_name'),
     placements: await all(env, `SELECT p.* ${PLACEMENTS} ORDER BY p.gallery_id, p.artist_id`),

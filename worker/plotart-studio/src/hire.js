@@ -11,6 +11,7 @@
 
    Screen and photo choices record the artist's WILLINGNESS TO DISCUSS permission. They are never a licence: any permission
    is agreed in writing between the artist and the hirer (Artist Terms 2.4–2.5). */
+import * as LOC from './location.js';   // Phase C: public delivery coverage for the Art for Hire filters
 import { Bad, now, rid } from './lib.js';
 import * as A from './assets.js';
 import * as R from './hire-rules.js';
@@ -188,6 +189,22 @@ export async function listedRows(env, { artistId = null, artworkId = null } = {}
 export const isListed = async (env, artworkId) => (await listedRows(env, { artworkId })).length === 1;
 export async function catalogue(env) {
   const items = await listedRows(env);
+  // Phase C (Art for Hire filters): the galleries each work is shown in (public identifiers only), and the artist's delivery
+  // coverage ONLY when the founder has switched public delivery on (LOCATION_DELIVERY_PUBLIC = on, after the privacy notice).
+  for (const it of items) {
+    try {
+      const pl = (await env.DB.prepare("SELECT gallery_id, state FROM artwork_placements WHERE artwork_id = ?").bind(it.artwork_id).all()).results;
+      it.galleries = ['contemporary', 'spaces', 'being'].filter(g => g === 'contemporary' ? !pl.some(p => p.gallery_id === g && p.state === 'withdrawn') : pl.some(p => p.gallery_id === g && p.state === 'live'));
+    } catch { it.galleries = ['contemporary']; }
+    if (env.LOCATION_DELIVERY_PUBLIC === 'on') {
+      try {
+        const loc = await env.DB.prepare('SELECT * FROM artist_locations WHERE artist_id = ?').bind(it.artist_id).first();
+        const del = await env.DB.prepare('SELECT * FROM artist_delivery WHERE artist_id = ?').bind(it.artist_id).first();
+        const pub = LOC.publicDelivery(del, loc, { deliveryPublic: true });
+        if (pub) it.coverage = { counties: pub.counties, line: pub.line };
+      } catch { /* not installed: no coverage */ }
+    }
+  }
   return { generated_at: now(), notice: SCREEN_NOTICE, pilot_notice: PILOT_NOTICE, items };
 }
 

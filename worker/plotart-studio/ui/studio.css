@@ -490,3 +490,14 @@ body.st{ background:var(--anth); min-height:100vh; }
 /* delivery counties: a compact grid within each province (Phase C) */
 .st-county-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(128px, 1fr)); gap:2px 12px; }
 .st-county-grid .st-check{ margin:0; }
+/* Galleries and Locations screens (Phase C): plain rows, small section labels, styled inputs */
+section[data-g] .st-list, .st-card > .st-list{ list-style:none; margin:0 0 12px; padding:0; }
+section[data-g] .st-list > li, .st-card > .st-list > li{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px 14px; padding:10px 0; border-top:1px solid rgba(237,235,231,.12); text-align:left; }
+section[data-g] .st-list > li > span:first-child{ flex:1 1 240px; }
+section[data-g] h3, .st-card > h3{ font-family:var(--sans, 'Hanken Grotesk', system-ui, sans-serif); font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--stone, #B8B6B2); margin:22px 0 8px; }
+section[data-g] .st-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+section[data-g] select, section[data-g] input[data-confirm], #iu-p, #iu-c, #iu-s, #iu-w, #loc-f{ min-height:44px; padding:0 14px; border-radius:12px; border:1px solid rgba(237,235,231,.22); background:rgba(0,0,0,.25); color:inherit; font:inherit; max-width:100%; }
+section[data-g] select{ flex:1 1 260px; }
+#iu-w{ padding:8px; min-height:140px; }
+section[data-g] .st-list > li, .st-card > .st-list > li{ list-style:none; }
+section[data-g] .st-list > li::marker, .st-card > .st-list > li::marker{ content:""; }
