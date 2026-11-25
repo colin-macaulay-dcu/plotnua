@@ -247,7 +247,7 @@
     : k === 'ul' ? `<ul>${x.map(i => `<li>${E(i)}</li>`).join('')}</ul>` : `<p>${E(x)}</p>`).join('');
   function cvCard(a) {
     return `<section class="st-card st-cv" aria-labelledby="cv-h">
-        <h3 id="cv-h">Exhibitions &amp; Achievements <span class="st-opt">Optional</span></h3>
+        <h3 id="cv-h">Exhibitions &amp; Achievements <span class="st-cv-optional">(optional)</span></h3>
         <p class="st-muted st-cv-intro">Your professional record, in its own section on your gallery page after your biography: solo and group exhibitions, awards and distinctions, public, private and corporate collections, residencies, commissions, publications and other achievements. Leave it empty and the section won’t appear.</p>
         <div class="st-cv-tools" role="toolbar" aria-label="Formatting" aria-controls="f-exhibitions">
           <button type="button" class="st-btn st-btn--small" data-cv="h">Add a heading</button>
