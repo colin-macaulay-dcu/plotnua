@@ -310,7 +310,7 @@ def home_band():
 <section class="pa-jn-band" aria-labelledby="joinInviteH"><div class="pa-wrap pa-jn-band-grid">
   <div class="pa-jn-band-head"><p class="pa-jn-k">For artists</p>
   <h2 id="joinInviteH">Artist Submissions</h2></div>
-  <div class="pa-jn-band-body"><p class="pa-jn-lede">PlotArt presents a carefully curated collection of original Irish art. We welcome expressions of interest from artists whose work may complement our Contemporary, Environment or Being galleries.</p>
+  <div class="pa-jn-band-body"><p class="pa-jn-lede">PlotArt presents a carefully curated collection of original Irish art. We welcome expressions of interest from artists whose work may complement our Contemporary, Spaces or Being galleries.</p>
   <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="home_join">Submit Your Portfolio</a><a class="pa-jn-link" href="gallery/" data-pa-track="home_join_gallery">Explore the gallery</a></div>
   <p class="pa-jn-status"><span class="pa-open-badge">{BADGE}</span></p></div>
 </div></section>

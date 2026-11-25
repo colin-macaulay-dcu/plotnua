@@ -2,9 +2,9 @@
 """PlotArt · Galleries menu (three-gallery expansion, Phase A; founder approval 24 Nov 2026).
 
 Replaces the "Artists’ Gallery" and "Mobile Gallery" pills of every PlotArt page under ROOT/plotart with the one
-"Galleries" menu that atlas-tools/plotart_shell.py now writes (Contemporary · Environment · Being · Mobile
+"Galleries" menu that atlas-tools/plotart_shell.py now writes (Contemporary · Spaces · Being · Mobile
 Gallery), and makes the same change to the phone Menu and the footer. A page that already has the menu is REFRESHED to the
-shell's current markup (final gallery identity, 24 Nov 2026: Contemporary · Environment · Being):
+shell's current markup (final gallery identity, 24 Nov 2026: Contemporary · Spaces · Being):
 the menu, its phone Menu links and the footer gallery links are rewritten from the shell, nothing else. Everything else on each page is left byte-for-byte
 as it was. The menu's styles and behaviour live between the pa-galleries-nav markers in plotart.css and plotart.js.
 
@@ -31,7 +31,7 @@ NAV = re.compile(r'<nav class="pa-pills[^"]*" aria-label="PlotArt">(.*?)</nav>',
 
 CSS_BEGIN, CSS_END = "/* ==== pa-galleries-nav:begin", "/* ==== pa-galleries-nav:end ==== */"
 CSS = CSS_BEGIN + """ · the Galleries menu (three-gallery expansion Phase A, 24 Nov 2026). One header item, a <details>
-   menu: Contemporary, Environment, Being, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
+   menu: Contemporary, Spaces, Being, Mobile Gallery. The summary is styled as a pill; the panel drops below it.
    Scoped to .pa-dd, so nothing else changes. ==== */
 .pa-dd{ position:relative; }
 .pa-dd > summary{ list-style:none; cursor:pointer; }

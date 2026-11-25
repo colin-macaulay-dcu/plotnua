@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.plotart.gallery-entrances.v1",
   "note": "Homepage gallery entrance artwork for the galleries in preparation (three-gallery Phase A, founder refinement 24 Nov 2026). Each gallery's artwork is null until the founder supplies an authorised work; the entrance then shows the neutral in-preparation panel. To show a work, set artwork to {artist_slug, image (an artists/<slug>/img/<work>-<size>.webp file with an ARTIST_SUPPLIED_ARTWORK provenance record), width, height, alt, credit, consent_ref (the artist's recorded per-use yes for this homepage use, licence §3.2)}. The work is always shown whole (never cropped), the gallery stays 'In preparation' and its holding page shows no artwork (guard L21).",
-  "environment": {"artwork": null},
+  "spaces": {"artwork": null},
   "being": {"artwork": null}
 }
