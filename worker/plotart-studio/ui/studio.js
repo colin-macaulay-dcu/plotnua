@@ -188,10 +188,10 @@
         <div class="st-drop" id="pdrop">${p ? `<img src="/api/images/${p.id}/view" alt="">` : '<span>Add a portrait photograph</span><small class="st-muted">JPEG, PNG or WebP · at least 800 px</small>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload a portrait"></div>
         ${p ? `${f('palt', 'Describe your portrait', p.alt, { req: 1, hint: 'A short line for people using screen readers, e.g. “The artist in her studio”.' })}<button class="st-btn st-btn--small st-btn--danger" data-act="rmp">Remove portrait</button>` : ''}
       </section>
-      <section class="st-card"><h3>Where you’re based</h3>
+      ${ME.location_available ? '<section class="st-card" id="loc-card" aria-live="polite"><h3>Where you’re based</h3><p class="st-muted">Loading…</p></section><section class="st-card" id="del-card"></section>' : `<section class="st-card"><h3>Where you’re based</h3>
         <div class="st-f"><label for="f-county">County</label><select id="f-county" name="county">${['', ...ME.counties].map(c => `<option${a.county === c ? ' selected' : ''} value="${c}">${c || 'Choose…'}</option>`).join('')}</select></div>
         <label class="st-check"><input type="checkbox" name="county_public"${a.county_public ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show my county on my gallery</label>
-      </section>
+      </section>`}
       <section class="st-card"><h3>Links (optional)</h3>
         ${f('website', 'Website', a.website, { type: 'url', hint: 'A full link starting https://' })}
         ${f('instagram', 'Instagram name', a.instagram, { hint: 'Without the @' })}
@@ -208,6 +208,7 @@
     }
     bindBar();
     bindCv();
+    if (ME.location_available) locationCards(app);
     // Open for Commissions (no name attribute: it has its own route, never the profile autosave above)
     $('#f-ofc', app)?.addEventListener('change', async e => {
       const box = e.target, err = $('#f-ofc-e', app);
@@ -279,6 +280,57 @@
       ta.value = nv; ta.focus(); ta.setSelectionRange(caret, caret);
       ta.dispatchEvent(new Event('input', { bubbles: true }));
     }));
+  }
+  /* Where you're based, and where you can deliver (Phase C): two separate answers, each saved with its own button. Never an
+     address. Public only when ticked; delivery areas appear publicly once PlotArt switches them on. */
+  async function locationCards(root) {
+    const lc = $('#loc-card', root), dc = $('#del-card', root);
+    let d;
+    try { d = await api('GET', '/api/me/location'); } catch (e) { lc.innerHTML = '<h3>Where you’re based</h3><p class="st-err">Location isn’t available just now.</p>'; return; }
+    if (!d.installed) { lc.remove(); dc.remove(); return; }
+    const NI = d.ni_counties, ROI = d.counties.filter(c => !NI.includes(c));
+    const L0 = d.location || (d.profile_county ? { country: NI.includes(d.profile_county) ? 'GB' : 'IE', county: d.profile_county, show_location: 0 } : { country: 'IE' });
+    const D0 = d.delivery || { scope: 'none', counties: '[]', show_delivery: 0 };
+    const opts = (list, cur) => Object.entries(d.provinces).map(([p, cs]) => { const c = cs.filter(x => list.includes(x)); return c.length ? `<optgroup label="${p}">${c.map(x => `<option${x === cur ? ' selected' : ''}>${x}</option>`).join('')}</optgroup>` : ''; }).join('');
+    const paintLoc = (L) => {
+      const onIsland = L.country === 'IE' || L.country === 'GB';
+      lc.innerHTML = `<h3>Where you’re based</h3>
+        <p class="st-muted" style="margin:0 0 14px">Where you live and work now (not where you were born). PlotArt never shows an address.</p>
+        <div class="st-f"><label for="loc-country">Country</label><select id="loc-country"><option value="IE"${L.country === 'IE' ? ' selected' : ''}>Ireland</option><option value="GB"${L.country === 'GB' ? ' selected' : ''}>Northern Ireland (United Kingdom)</option>
+          <optgroup label="Other countries">${d.countries.filter(([c]) => c !== 'IE' && c !== 'GB').map(([c, n]) => `<option value="${c}"${L.country === c ? ' selected' : ''}>${E(n)}</option>`).join('')}</optgroup></select></div>
+        ${onIsland ? `<div class="st-f"><label for="loc-county">County</label><select id="loc-county"><option value="">${L.country === 'IE' ? 'Choose…' : 'Not given'}</option>${opts(L.country === 'IE' ? ROI : NI, L.county)}</select></div>` : ''}
+        <div class="st-f"><label for="loc-town">Town or city (optional)</label><input id="loc-town" type="text" maxlength="60" value="${E(L.town || '')}"><small>A town or city only, never your address.</small></div>
+        <label class="st-check"><input type="checkbox" id="loc-show"${L.show_location ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show where I’m based on my gallery page</label>
+        <label class="st-check"><input type="checkbox" id="loc-showtown"${L.show_town ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Include my town or city</label>
+        <div class="st-actions"><button class="st-btn st-btn--solid" type="button" id="loc-save">Save where I’m based</button></div><p class="st-err" id="loc-msg" aria-live="polite"></p>`;
+      $('#loc-country', lc).addEventListener('change', e => paintLoc({ ...read(), country: e.target.value, county: '' }));
+      $('#loc-save', lc).addEventListener('click', async () => {
+        const msg = $('#loc-msg', lc); msg.textContent = '';
+        try { const r = await api('PUT', '/api/me/location', read()); d.location = r.location; msg.textContent = 'Saved.'; paintDel(dState()); }
+        catch (e) { msg.textContent = e.message; }
+      });
+    };
+    const read = () => ({ country: $('#loc-country', lc).value, county: $('#loc-county', lc)?.value || null, town: $('#loc-town', lc).value, show_location: $('#loc-show', lc).checked, show_town: $('#loc-showtown', lc).checked });
+    const SC = [['none', 'I don’t deliver (collection or by arrangement)'], ['counties', 'Chosen counties'], ['republic', 'Anywhere in the Republic of Ireland'],
+      ['northern_ireland', 'Anywhere in Northern Ireland'], ['island', 'Anywhere on the island of Ireland'], ['country', 'Anywhere in my own country']];
+    const dState = () => ({ scope: dc.querySelector('input[name="del-scope"]:checked')?.value || D0.scope, counties: [...dc.querySelectorAll('input[name="del-county"]:checked')].map(i => i.value), show_delivery: !!$('#del-show', dc)?.checked });
+    const paintDel = (S) => {
+      const loc = d.location, abroad = loc && loc.country !== 'IE' && !(loc.country === 'GB' && loc.county);
+      const picked = Array.isArray(S.counties) ? S.counties : JSON.parse(S.counties || '[]');
+      dc.innerHTML = `<h3>Where you can deliver</h3>
+        <p class="st-muted" style="margin:0 0 14px">Separate from where you’re based. Art for Hire visitors looking in a county will see artists based there and, listed separately, artists who deliver there.</p>
+        <fieldset class="st-f" style="border:0;padding:0;margin:0 0 12px"><legend class="st-sr">Delivery coverage</legend>${SC.filter(([k]) => k !== 'country' || abroad).map(([k, t]) => `<label class="st-check"><input type="radio" name="del-scope" value="${k}"${S.scope === k ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> ${t}</label>`).join('')}</fieldset>
+        ${S.scope === 'counties' ? `<div class="st-f" role="group" aria-label="Counties you deliver to">${Object.entries(d.provinces).map(([p, cs]) => `<p class="st-muted" style="margin:12px 0 6px">${p}</p><div class="st-county-grid">${cs.map(c => `<label class="st-check"><input type="checkbox" name="del-county" value="${c}"${picked.includes(c) ? ' checked' : ''} style="accent-color:var(--terra);width:18px;height:18px"> ${c}</label>`).join('')}</div>`).join('')}</div>` : ''}
+        ${S.scope !== 'none' ? `<label class="st-check"><input type="checkbox" id="del-show"${S.show_delivery ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show my delivery areas publicly (once PlotArt switches this on)</label>` : ''}
+        <div class="st-actions"><button class="st-btn st-btn--solid" type="button" id="del-save">Save where I can deliver</button></div><p class="st-err" id="del-msg" aria-live="polite"></p>`;
+      dc.querySelectorAll('input[name="del-scope"]').forEach(i => i.addEventListener('change', () => paintDel(dState())));
+      $('#del-save', dc).addEventListener('click', async () => {
+        const msg = $('#del-msg', dc); msg.textContent = '';
+        try { const r = await api('PUT', '/api/me/delivery', dState()); d.delivery = r.delivery; msg.textContent = 'Saved.'; }
+        catch (e) { msg.textContent = e.message; }
+      });
+    };
+    paintLoc(L0); paintDel(D0);
   }
   function f(name, label, val, o = {}) {
     const id = 'f-' + name;
