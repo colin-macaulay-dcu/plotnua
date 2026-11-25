@@ -27,7 +27,7 @@
     "assets/plotart-opportunities.css": "20b1e80014b9955eeb3b0fc518242e19b543e7f1ffb51aa3c98b278d97406dab",
     "assets/plotart-refine.css": "52d72700ae8bf3127bdf5586f24b203eb66d7b38a0b7fc7c78a50993d6de5c86",
     "assets/plotart-refine.js": "d3198b7685b6d5fec4155b8b0ad83653da075e8d7052a29a2a85245e88fa3933",
-    "assets/plotart-services.css": "ad627501c42f0da0565347b8d3c6fff745d629d2cad94c33f1e6635496363976",
+    "assets/plotart-services.css": "484bdfe5776da979ab0236a7d02a01f4d0013c64e420c007e21ad2e0d61bae50",
     "assets/plotart-wall-size.css": "82e9bc4e4652fc9042d4fae072a7d44ab768f0d00e19418d05bcdecaf1cde1c5",
     "assets/plotart-wall-size.js": "4f5d108eb5184d4bec0e1c23503f4c3c40b7aad05021a09621c7c9f5c92cf709",
     "assets/plotart.css": "47a151e6ebbf4975cc061059956b2eead3e595205dccc744c2b0813a0c21fbad",
@@ -67,10 +67,10 @@
     "opportunities/index.html": "22a95dafd24ac63a5477c71922604d15be8041e1ce8914a9837413b6b74f1e24",
     "places-and-spaces/index.html": "bf82ac562be6189863275863740d33c655ddb4b7fe69dacddb262c657ce5ca59",
     "portraiture/index.html": "06cd3b8e90167fc35db820b7862c571c239595f071617800ed50fc86d04b6025",
-    "services.html": "4845872bb108680a421d0ff2ba8943b7f0a862bccdc7dd2b2a6fedc21f41411c",
-    "assets/services/dropby-promo-1284.jpg": "87835d36bdc21e15c45981647d8478fc9f3d4e8777f268de70a96ad82a651dbd",
-    "assets/services/dropby-promo-1284.webp": "2b1fb62249221454781c476a3a58cb3150f25dcdcb8075d10edabbce60670860",
-    "assets/services/dropby-promo-800.webp": "61ed5394ff643dcae8ee135d288cda063942edf756a4452249430629a7957e13"
+    "services.html": "563be08c22d1c077923572f945df5cb948a7043982fc9b37eafe03ecc1a01287",
+    "assets/services/dropby-logo-969.jpg": "d37de20354bc117078b3504d0539e4a11210943c97354829da00fee2be075a67",
+    "assets/services/dropby-logo-969.webp": "8e9e4ddf0eb73be4c409ba3615e6ab94d12205b3ec9e93ea2191f260b0cc9cdc",
+    "assets/services/dropby-logo-800.webp": "d11aa998a2743619836d9f6ef0850f0c57e1eea3f6cbb89b526f8787e7577846"
   },
   "outside_grid": {
     "gallery/index.html": "80a1ac28238575bc1a1749c614e1ae1c7b9387a2a10b42cc0cca132fe79d05c5"

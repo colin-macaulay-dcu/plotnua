@@ -1,5 +1,5 @@
 {
- "what": "DropBy image for the PlotArt Services listing; copies made 25 Nov 2026 from IMG_5077.jpeg, emailed by Cristian (Co-Founder, DropBy Limited) on 25 Nov 2026 'which you can use'. The file is a phone screenshot of a square promotional graphic: the copies are the 16:9 band (0,765)-(1284,1487) holding the logo tile, wordmark, strapline and tagline (black bars and the parcel below cropped away), resized and recompressed, metadata stripped. Nothing recoloured or redrawn.",
+ "what": "DropBy image for the PlotArt Services listing; copies made 25 Nov 2026 from IMG_5077.jpeg, emailed by Cristian (Co-Founder, DropBy Limited) on 25 Nov 2026 'which you can use'. The file is a phone screenshot of a square promotional graphic: the copies are the 16:9 crop (157,755)-(1126,1300) holding only the logo tile and 'DropBy' wordmark (strapline, tagline, parcel and black bars not used), resized and recompressed, metadata stripped. Nothing recoloured or redrawn.",
  "rights": "image-rights-records.json ORG-DROPBY / IPO-DROPBY-20261125 (Atlas rec4xv5PszmpfqdeZ)",
  "originals": {
   "graphic": {
@@ -12,28 +12,28 @@
   }
  },
  "copies": {
-  "dropby-promo-1284.jpg": {
-   "sha256": "87835d36bdc21e15c45981647d8478fc9f3d4e8777f268de70a96ad82a651dbd",
-   "bytes": 74532,
-   "pixels": [
-    1284,
-    722
-   ]
-  },
-  "dropby-promo-1284.webp": {
-   "sha256": "2b1fb62249221454781c476a3a58cb3150f25dcdcb8075d10edabbce60670860",
-   "bytes": 36738,
-   "pixels": [
-    1284,
-    722
-   ]
-  },
-  "dropby-promo-800.webp": {
-   "sha256": "61ed5394ff643dcae8ee135d288cda063942edf756a4452249430629a7957e13",
-   "bytes": 22992,
+  "dropby-logo-800.webp": {
+   "sha256": "d11aa998a2743619836d9f6ef0850f0c57e1eea3f6cbb89b526f8787e7577846",
+   "bytes": 12006,
    "pixels": [
     800,
     450
+   ]
+  },
+  "dropby-logo-969.jpg": {
+   "sha256": "d37de20354bc117078b3504d0539e4a11210943c97354829da00fee2be075a67",
+   "bytes": 34462,
+   "pixels": [
+    969,
+    545
+   ]
+  },
+  "dropby-logo-969.webp": {
+   "sha256": "8e9e4ddf0eb73be4c409ba3615e6ab94d12205b3ec9e93ea2191f260b0cc9cdc",
+   "bytes": 14438,
+   "pixels": [
+    969,
+    545
    ]
   }
  }

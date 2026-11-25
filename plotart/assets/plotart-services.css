@@ -53,3 +53,7 @@ body.pa .pa-sv-logo--white{ background:#FFFFFF; padding:8px 12px; }
 body.pa .pa-sv-status{ align-self:flex-start; display:inline-flex; align-items:center; margin:0 0 14px; padding:5px 12px;
   border:1px solid var(--line-2); border-radius:999px; font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory); }
 body.pa .pa-sv-about{ margin:0 0 24px; color:var(--stone); font-size:15.5px; line-height:1.6; max-width:60ch; }
+/* A photo card without a logo plaque whose body opens with the status label (DropBy, 25 Nov 2026): the same top spacing
+   as a placeholder card; and DropBy's light graphic takes the credit chip used on mobile, so the credit stays legible. */
+body.pa .pa-sv-media:not(.pa-sv-media--plain) + .pa-sv-body > .pa-sv-status:first-child{ margin-top:clamp(22px, 2.6vw, 32px); }
+body.pa .pa-sv-card--db .pa-sv-media figcaption{ padding:2px 8px; border-radius:999px; background:rgba(27,28,30,.62); }

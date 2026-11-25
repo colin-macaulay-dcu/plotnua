@@ -1520,12 +1520,12 @@
       "permitted_delivery_hosts": null,
       "evidence": "PlotNua asked DropBy (24 November 2026, Gmail thread 1a203a22b8ae36b5) for its company logo and any photographs or promotional imagery it was happy for PlotArt to use. Cristian, Co-Founder of DropBy Limited (info@dropbycouriers.com), replied on 25 November 2026 (Gmail 1a212d849ff23e9d), attaching IMG_5077.jpeg: \"Please see picture attached which you can use.\" Founder confirmed 25 November 2026. Recorded in Atlas Image Permission Outreach IPO-DROPBY-20261125 (rec4xv5PszmpfqdeZ) as Granted — Founder Confirmed.",
       "conditions": [
-        "One image only: IMG_5077.jpeg, DropBy's promotional graphic, supplied by DropBy for its listing. Hosted on plotnua.ie as copies of a 16:9 band (logo tile, wordmark, strapline, tagline): phone-screenshot black bars and the lower part of the graphic (parcel) cropped away, resized and recompressed, metadata stripped; nothing recoloured or redrawn.",
+        "One image only: IMG_5077.jpeg, DropBy's promotional graphic, supplied by DropBy for its listing. Hosted on plotnua.ie as copies of a 16:9 crop of the logo tile and 'DropBy' wordmark only (the strapline, tagline, parcel and phone-screenshot black bars are not used), resized and recompressed, metadata stripped; nothing recoloured or redrawn.",
         "Only on DropBy's listing on the PlotArt Art Services & Providers page; credit 'Image: DropBy' with the image.",
         "DropBy is not described as a PlotArt partner.",
         "If DropBy asks for the image to be changed or removed, PlotNua does so promptly."
       ],
-      "note": "HOSTED, NOT HOTLINKED: supplied as an email attachment, not served from dropbycouriers.com. Copies and the original's hash are kept in atlas-tools/plotart-services/images/dropby/ (image-copies.json); each published copy is declared in image-provenance-records.json as a SUPPLIER_IMAGE labelled Logo whose rights_ref is this record. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and regenerate; P4 then refuses every hosted copy.",
+      "note": "HOSTED, NOT HOTLINKED: supplied as an email attachment, not served from dropbycouriers.com. Copies and the original's hash are kept in atlas-tools/plotart-services/images/dropby/ (image-copies.json); each published copy is declared in image-provenance-records.json as a SUPPLIER_IMAGE labelled Logo (logo tile and wordmark) whose rights_ref is this record. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and regenerate; P4 then refuses every hosted copy.",
       "atlas_permission_record": "rec4xv5PszmpfqdeZ",
       "atlas_permission_ref": "IPO-DROPBY-20261125",
       "permission_date": "2026-11-25",

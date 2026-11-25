@@ -25838,41 +25838,9 @@
       "work_slug": "time-to-play"
     },
     {
-      "asset": "plotart/assets/services/dropby-promo-1284.jpg",
-      "sha256": "87835d36bdc21e15c45981647d8478fc9f3d4e8777f268de70a96ad82a651dbd",
-      "bytes": 74532,
-      "pixels": [
-        1284,
-        722
-      ],
-      "class": "SUPPLIER_IMAGE",
-      "rights_ref": {
-        "organisation_code": "ORG-DROPBY",
-        "atlas_permission_ref": "IPO-DROPBY-20261125"
-      },
-      "supplier_label": "Logo",
-      "source": "DropBy's promotional graphic (logo tile, wordmark, 'Same-Day & Next-Day Delivery' strapline, tagline), supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: the 16:9 band holding the logo, wordmark, strapline and tagline, cropped, resized and recompressed, metadata stripped; not recoloured or redrawn."
-    },
-    {
-      "asset": "plotart/assets/services/dropby-promo-1284.webp",
-      "sha256": "2b1fb62249221454781c476a3a58cb3150f25dcdcb8075d10edabbce60670860",
-      "bytes": 36738,
-      "pixels": [
-        1284,
-        722
-      ],
-      "class": "SUPPLIER_IMAGE",
-      "rights_ref": {
-        "organisation_code": "ORG-DROPBY",
-        "atlas_permission_ref": "IPO-DROPBY-20261125"
-      },
-      "supplier_label": "Logo",
-      "source": "DropBy's promotional graphic (logo tile, wordmark, 'Same-Day & Next-Day Delivery' strapline, tagline), supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: the 16:9 band holding the logo, wordmark, strapline and tagline, cropped, resized and recompressed, metadata stripped; not recoloured or redrawn."
-    },
-    {
-      "asset": "plotart/assets/services/dropby-promo-800.webp",
-      "sha256": "61ed5394ff643dcae8ee135d288cda063942edf756a4452249430629a7957e13",
-      "bytes": 22992,
+      "asset": "plotart/assets/services/dropby-logo-800.webp",
+      "sha256": "d11aa998a2743619836d9f6ef0850f0c57e1eea3f6cbb89b526f8787e7577846",
+      "bytes": 12006,
       "pixels": [
         800,
         450
@@ -25883,7 +25851,39 @@
         "atlas_permission_ref": "IPO-DROPBY-20261125"
       },
       "supplier_label": "Logo",
-      "source": "DropBy's promotional graphic (logo tile, wordmark, 'Same-Day & Next-Day Delivery' strapline, tagline), supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: the 16:9 band holding the logo, wordmark, strapline and tagline, cropped, resized and recompressed, metadata stripped; not recoloured or redrawn."
+      "source": "DropBy's logo tile and 'DropBy' wordmark, cropped from the promotional graphic supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: a 16:9 crop of the logo and wordmark only, resized and recompressed, metadata stripped; not recoloured or redrawn."
+    },
+    {
+      "asset": "plotart/assets/services/dropby-logo-969.jpg",
+      "sha256": "d37de20354bc117078b3504d0539e4a11210943c97354829da00fee2be075a67",
+      "bytes": 34462,
+      "pixels": [
+        969,
+        545
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-DROPBY",
+        "atlas_permission_ref": "IPO-DROPBY-20261125"
+      },
+      "supplier_label": "Logo",
+      "source": "DropBy's logo tile and 'DropBy' wordmark, cropped from the promotional graphic supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: a 16:9 crop of the logo and wordmark only, resized and recompressed, metadata stripped; not recoloured or redrawn."
+    },
+    {
+      "asset": "plotart/assets/services/dropby-logo-969.webp",
+      "sha256": "8e9e4ddf0eb73be4c409ba3615e6ab94d12205b3ec9e93ea2191f260b0cc9cdc",
+      "bytes": 14438,
+      "pixels": [
+        969,
+        545
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-DROPBY",
+        "atlas_permission_ref": "IPO-DROPBY-20261125"
+      },
+      "supplier_label": "Logo",
+      "source": "DropBy's logo tile and 'DropBy' wordmark, cropped from the promotional graphic supplied by DropBy (Cristian, Co-Founder) for this listing, 25 Nov 2026 (sha256 6d701fd2556f8c7c…, 1284 × 2778 phone screenshot); PlotNua copy: a 16:9 crop of the logo and wordmark only, resized and recompressed, metadata stripped; not recoloured or redrawn."
     }
   ],
   "legacy_undeclared": [

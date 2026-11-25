@@ -90,9 +90,9 @@ PROVIDERS = [
     {"key": "db", "publish": True, "name": "DropBy",
      "status": "Launching Soon",
      # image (25 Nov 2026): DropBy's own promotional graphic, sent by Cristian "which you can use" (image-rights-records.json
-     # ORG-DROPBY / IPO-DROPBY-20261125); hosted as a 16:9 band (logo, wordmark, strapline, tagline), declared as Logo
-     "photo": {"dir": "dropby", "stem": "dropby-promo", "big": 1284, "w": 1284, "h": 722, "credit": "Image: DropBy", "kind": "Logo",
-               "alt": "DropBy logo and wordmark with the strapline Same-Day and Next-Day Delivery"},
+     # ORG-DROPBY / IPO-DROPBY-20261125); hosted as a 16:9 crop of the logo tile and wordmark only, declared as Logo
+     "photo": {"dir": "dropby", "stem": "dropby-logo", "big": 969, "w": 969, "h": 545, "credit": "Image: DropBy", "kind": "Logo",
+               "alt": "DropBy logo"},
      "what": "A new Irish same-day and next-day delivery marketplace.",
      "about": "Connecting individuals and businesses with independent couriers using bicycles, cars and vans.",
      "facts": [("Area", "Launching initially in Dublin, with plans to expand across Ireland."),
