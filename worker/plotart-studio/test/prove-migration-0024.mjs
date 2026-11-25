@@ -89,6 +89,22 @@ await mf.dispose();
   await g.mf.dispose();
 }
 
+/* ---- the closing check (revision 2): it passes on a complete run and catches an incomplete one ---- */
+check('E1 the closing check is the last statement and passed on the complete run above (the run did not fail)',
+  /AS closing_check;\s*$/.test(MIG) && MIG.lastIndexOf('closing_check') > MIG.lastIndexOf('CREATE INDEX'));
+{
+  // Simulate an incomplete result: the same file with one table's CREATE missing. Locally each statement runs on its own
+  // (no import transaction), so this shows what the closing check sees if a run were ever left part-way.
+  const i = MIG.indexOf('CREATE TABLE gallery_order'), j = MIG.indexOf(');', i) + 2;
+  const broken = MIG.slice(0, i) + MIG.slice(j);
+  const g = await fresh();
+  let err = ''; try { await g.run(broken); } catch (e) { err = String(e.message || e); }
+  const left = (await objects(g.db)).filter(o => o.type === 'table' && SEVEN.includes(o.name)).length;
+  check('E2 an incomplete recreation (one table missing) makes the closing check fail, so the run cannot report success',
+    /malformed JSON|JSON/i.test(err) && left === 6, `${err.slice(0, 160)} · tables left ${left}`);
+  await g.mf.dispose();
+}
+
 /* ---- new installs and the migration check ---- */
 const block = s => s.slice(s.indexOf('\n', s.indexOf('-- @@DDL-BEGIN')) + 1, s.indexOf('-- @@DDL-END')).trim();
 const SCHEMA = readFileSync(HERE + 'schema.sql', 'utf8');
@@ -102,7 +118,7 @@ check('R2 schema.sql carries the migration (its table definitions) for new insta
   await mf2.dispose();
 }
 const sha = execFileSync('sha256sum', [MIG_FILE], { encoding: 'utf8' }).split(' ')[0];
-const DESC = 'Recreates the seven empty three-gallery tables with the final identifier spaces in place of environment (refuses at its first statement if any of them holds a row); changes no other table or row.';
+const DESC = 'Recreates the seven empty three-gallery tables with the final identifier spaces in place of environment (refuses at its first statement if any of them holds a row; a closing check verifies the result); changes no other table or row.';
 let cls = '';
 try { cls = execFileSync('python3', [HERE + '../../atlas-tools/release/studio/migration-check.py', MIG_FILE, sha, SEVEN.join(','), DESC], { encoding: 'utf8' }); } catch (e) { cls = String(e.stdout || e); }
 check('C1 the production migration check accepts it with the seven tables declared and classes it DESTRUCTIVE (so it waits for the founder’s Approve)',

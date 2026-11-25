@@ -25,6 +25,12 @@
 --   (3) the founder has approved this exact file (SHA-256);
 --   (4) it runs through studio-d1-migration; the new Studio (with 'spaces') is deployed only after it.
 -- Re-running it is harmless while the tables are empty. Rollback: the Time Travel restore point (the tables were empty).
+--
+-- Revision 2 (25 Nov 2026, founder review of the safeguards): a closing check (step 4) verifies the result inside the same
+-- run. wrangler d1 execute --remote --file sends the whole file through D1's import API, which wrangler documents as
+-- returning the database to its original state if execution fails; the closing check makes any failure explicit and
+-- would also catch an incomplete result, which the workflow's fingerprint comparison alone would not (a missing declared
+-- table counts as a "declared table changed"). Nothing else differs from revision 1 (SHA 5dc8dfbb…, superseded).
 
 -- 1 · the guard: refuses unless all seven tables are empty (nothing has been dropped yet if it refuses)
 SELECT CASE WHEN ((SELECT COUNT(*) FROM gallery_settings) + (SELECT COUNT(*) FROM gallery_memberships) + (SELECT COUNT(*) FROM artwork_placements) + (SELECT COUNT(*) FROM gallery_order) + (SELECT COUNT(*) FROM gallery_features) + (SELECT COUNT(*) FROM image_use_requests) + (SELECT COUNT(*) FROM image_use_consents)) = 0 THEN 'the seven gallery tables are empty' ELSE json('REFUSED: a gallery table holds records; migration 0024 must not run') END AS guard;
@@ -155,3 +161,11 @@ CREATE TABLE image_use_consents (
 );
 CREATE INDEX image_use_consents_artist ON image_use_consents(artist_id, scope, created_at);
 -- @@DDL-END
+
+-- 4 · the closing check (revision 2): all seven tables and their five indexes exist, every table carries 'spaces' and none
+-- 'environment'. If not, it fails, so the run fails visibly instead of passing with a partly recreated schema.
+SELECT CASE WHEN (SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name IN ('gallery_settings', 'gallery_memberships', 'artwork_placements', 'gallery_order', 'gallery_features', 'image_use_requests', 'image_use_consents')
+                    AND sql LIKE '%''spaces''%' AND sql NOT LIKE '%''environment''%') = 7
+             AND (SELECT COUNT(*) FROM sqlite_master WHERE type = 'index' AND name IN ('gallery_memberships_gallery', 'artwork_placements_gallery', 'artwork_placements_artist', 'image_use_requests_artist', 'image_use_consents_artist')) = 5
+       THEN 'the seven gallery tables and five indexes are in place with spaces'
+       ELSE json('REFUSED: the gallery tables are not all in place; restore from the Time Travel bookmark') END AS closing_check;
