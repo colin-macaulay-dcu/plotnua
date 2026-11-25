@@ -471,3 +471,6 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-dv-off{ margin:10px 0 0; padding:12px 14px; border-radius:12px; border:1px solid rgba(207,133,102,.45); background:rgba(207,133,102,.08); }
 .st-dv-off p{ margin:0 0 4px; }
 @media (max-width:359px){ .st-dv-choice{ grid-template-columns:1fr; } }
+
+/* Exhibitions & Achievements (Phase C): room to organise headings and lists */
+#f-achievements{ min-height:280px; }
