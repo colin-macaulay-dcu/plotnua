@@ -113,7 +113,7 @@ export function artworkBody(p, w, prev, next) {
   const av = w.availability;
   const cta = ['available', 'reserved'].includes(av)
     ? `<a class="pa-btn pa-btn--solid" href="${E(enquiryHref(p, w))}" data-pa-track="artwork_enquiry">${av === 'available' ? 'Enquire about this work' : 'Ask to be told if it becomes available'}</a>` +
-      `<p class="pa-aw-cta-note">Your enquiry comes to PlotArt and is passed to ${E(a.display_name)}. The artist is the seller and arranges any sale with you directly.</p>`
+      `<p class="pa-aw-cta-note">Your enquiry is passed to ${E(a.display_name)} through PlotArt. Nothing is paid until you have agreed the price and delivery with the artist.</p>`
     : `<a class="pa-btn pa-btn--ghost" href="${E(enquiryHref(p))}" data-pa-track="artwork_enquiry_other">Ask about ${E(a.display_name)}'s other work</a>`;
   const ai = w.ai_involvement && w.ai_involvement !== 'none' ? `<p class="pa-aw-ai"><strong>AI disclosure.</strong> ${E(w.ai_note)}</p>` : '';
   const nav = `<nav class="pa-aw-pn" aria-label="More works by ${E(a.display_name)}">${prev ? `<a href="${E(prev.slug)}.html" rel="prev"><span aria-hidden="true">←</span> ${E(prev.title)}</a>` : '<span></span>'}<a href="index.html">All works</a>${next ? `<a href="${E(next.slug)}.html" rel="next">${E(next.title)} <span aria-hidden="true">→</span></a>` : '<span></span>'}</nav>`;
@@ -127,9 +127,9 @@ export function artworkBody(p, w, prev, next) {
       <p class="pa-aw-artist"><a href="index.html">${E(a.display_name)}</a>${a.founding ? ' <span class="pa-gcard-badge">Founding Artist</span>' : ''}</p>
       <h1>${E(w.title)}</h1>
       <p class="pa-aw-price is-${av.replace(/_/g, '-')}">${E(priceLine(w))}</p>
+      <div class="pa-aw-cta">${cta}</div>
       <dl class="pa-aw-dl">${dl}</dl>
       ${w.description ? `<p class="pa-aw-desc">${E(w.description)}</p>` : ''}
-      <div class="pa-aw-cta">${cta}</div>
       ${ai}
     </div>
   </div>

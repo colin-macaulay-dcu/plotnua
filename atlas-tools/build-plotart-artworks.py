@@ -73,7 +73,7 @@ BODY = '''
 <p class="pa-eyebrow">PlotArt · Available artworks</p>
 <h1>Discover original Irish art for sale.</h1>
 <p class="pa-lede">Explore original artwork by artists based or working in Ireland. Every piece is shown whole, with the artist’s own description, dimensions and asking price. When a work stays with you, enquire directly with the artist about buying it.</p>
-<p class="pa-coll-how">PlotArt introduces you to the artist. It doesn’t sell or deliver artwork: the artist is the seller and arranges any sale with you directly.</p>
+<p class="pa-coll-how">Each artist is the seller of their own work. Selected works can be bought online through PlotArt’s secure checkout, with delivery and returns shown before you pay; for any work, you can enquire with the artist.</p>
 <div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a></div>
 </div></section>
 <section class="pa-coll-wall" aria-labelledby="collH"><div class="pa-wrap">
@@ -97,7 +97,7 @@ LARGE_BODY = '''
 <p class="pa-eyebrow">PlotArt · Large artworks</p>
 <h1>Large original artworks for sale in Ireland.</h1>
 <p class="pa-lede">Original paintings and works of 100 cm or more on their longest side, by artists based or working in Ireland. A large work can hold a whole wall: above a sofa, at the end of a hallway, in a reception area or a meeting room. It is seen from across the room and changes the space around it.</p>
-<p class="pa-coll-how">Every work is shown whole, with the artist’s own dimensions and asking price. PlotArt introduces you to the artist. It doesn’t sell, deliver or install artwork: the artist is the seller and arranges any sale with you directly.</p>
+<p class="pa-coll-how">Every work is shown whole, with the artist’s own dimensions and asking price. The artist is the seller and arranges delivery: PlotArt doesn’t deliver or install artwork. Selected works can be bought online through PlotArt’s secure checkout; for any work, you can enquire with the artist.</p>
 <div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../artworks/">Browse All Artworks →</a></div>
 </div></section>
 <section class="pa-coll-wall" aria-labelledby="collH"><div class="pa-wrap">

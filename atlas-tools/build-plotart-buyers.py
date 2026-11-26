@@ -26,6 +26,14 @@ CSS = '''/* PlotArt buyer pages: editorial reading and uncropped original work. 
 .pa-guide-works li{margin:0!important;min-width:0}.pa-guide-art{display:flex;align-items:center;justify-content:center;min-height:320px;background:rgba(237,235,231,.025);padding:18px}
 .pa-guide-art img{display:block;width:100%;height:360px;object-fit:contain;object-position:center}.pa-guide-works h3{font-family:var(--serif);font-size:27px;font-weight:400;margin:20px 0 10px}
 .pa-guide-works p{font-size:14px;line-height:1.6;margin-bottom:8px}.pa-guide-related{display:flex;gap:14px;flex-wrap:wrap;padding:40px var(--gut) 60px}
+.pa-guide-available{padding-top:0}.pa-band{border-top:1px solid var(--line,rgba(237,235,231,.14));padding-top:34px;max-width:1080px}
+.pa-band-h{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--stone,#b8b6b2);margin:0 0 18px}
+.pa-band-list{list-style:none!important;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 22px;padding:0!important;margin:0 0 18px}
+.pa-band-list li{margin:0!important;min-width:0}.pa-band-art{display:flex;align-items:center;justify-content:center;aspect-ratio:1;background:rgba(237,235,231,.025);padding:12px}
+.pa-band-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.pa-band-label{font-size:12px;letter-spacing:.06em;color:var(--stone,#b8b6b2);margin:12px 0 4px}.pa-band-t{font-family:var(--serif);font-size:21px;line-height:1.2;margin:0 0 4px}
+.pa-band-t a{text-decoration:none}.pa-band-m{font-size:14px;line-height:1.5;margin:0}.pa-band-more{font-size:15px;margin:0}
+@media(max-width:900px){.pa-band-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.pa-guide-hero{padding:44px 0 38px}.pa-guide-section{padding:40px 0}.pa-guide-works{grid-template-columns:1fr;gap:38px}.pa-guide-art img{height:auto;max-height:520px}.pa-guide-art{min-height:0}.pa-guide-callout{padding:20px}.pa-guide-jumps{gap:12px 20px}.pa-guide-actions .pa-btn{max-width:100%;white-space:normal}}
 '''
 
@@ -41,7 +49,7 @@ BUY = '''
 <p class="pa-eyebrow">Start with the artist</p><h2>Where can you buy original Irish art?</h2>
 <p>You can explore work through an artist’s own studio or website, a physical gallery, an exhibition or an online gallery. The useful starting point is a particular artist and a particular work: who made it, what it is, whether it is available and who will arrange the sale.</p>
 <p>PlotArt brings individual artists’ galleries together online. You can read their biographies, see each artwork in full and check its stated medium, dimensions, asking price and availability. When a piece interests you, send an enquiry through PlotArt to the artist.</p>
-<div class="pa-guide-callout"><h3>How buying through PlotArt works</h3><p>PlotArt introduces buyers to artists. It is not the seller and does not deliver artwork. The artist arranges any sale with you directly, including collection or delivery. An enquiry is a way to ask questions; it is not a purchase or a reservation.</p></div>
+<div class="pa-guide-callout"><h3>How buying through PlotArt works</h3><p>Each artist is the seller of their own work. Selected works can be bought online through PlotArt’s secure checkout, where you see the delivery cost, the seller’s details and the returns arrangements before you pay. For any work, you can enquire with the artist and agree the sale directly, including collection or delivery. An enquiry is a way to ask questions; it is not a purchase or a reservation.</p></div>
 <p>For names you already know, use <a href="gallery/">the A–Z of artists in the Artists’ Gallery</a>. If you are beginning with a style, explore <a href="abstract-contemporary-art-ireland.html">abstract and contemporary Irish art</a>. To see every work currently on offer in one place, browse <a href="artworks/">all available artworks</a>.</p>
 </div></section>
 <section class="pa-guide-section" id="original-or-print"><div class="pa-wrap pa-guide-reading">

@@ -276,10 +276,14 @@ def basket_block(w, origin):
     """Multi-artist basket (21 Nov 2026; off unless the founder sets basket_origin in plotart-gallery-config.json). Hidden
     until pa-basket.js confirms with the checkout Worker that this work can be bought online right now; otherwise the page
     is exactly the enquiry page it was. Without JavaScript nothing is shown."""
+    # Sprint 1 (founder approval 26 Nov 2026): "Buy online" is the first choice only for a work the checkout confirms live;
+    # the note says what happens next (the basket, then payment), and the work's own delivery, cancellation and seller
+    # details fill the list from the checkout's answer (pa-basket.js). Nothing here is shown until then.
     return ('<div class="pa-basket" data-pa-basket-origin="%s" data-pa-artwork="%s" hidden>'
-            '<a class="pa-btn pa-btn--ghost" href="%s/basket?add=%s" data-pa-track="artwork_basket_add">Add to basket</a>'
-            '<p class="pa-aw-cta-note">Or buy online: one secure card payment for works from several artists. Each artist is the seller. '
-            'Online purchase delivers in the Republic of Ireland only; for delivery elsewhere, please enquire.</p></div>') % (
+            '<a class="pa-btn pa-btn--solid" href="%s/basket?add=%s" data-pa-track="artwork_basket_add">Buy online</a>'
+            '<p class="pa-aw-cta-note">Adds this work to your PlotArt basket, where you see the delivery cost and the total before paying securely by card. '
+            'Online purchase delivers in the Republic of Ireland only; for delivery elsewhere, please enquire.</p>'
+            '<ul class="pa-aw-assure" aria-label="Buying this work online" hidden></ul></div>') % (
         E(origin), E(w["id"]), E(origin), E(w["id"]))
 
 
@@ -305,7 +309,7 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
     avail = w["availability"]
     if avail in ("available", "reserved"):
         cta = ('<a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artwork_enquiry"%s>%s</a>'
-               '<p class="pa-aw-cta-note">Your enquiry comes to PlotArt and is passed to %s. The artist is the seller and arranges any sale with you directly.</p>%s') % (
+               '<p class="pa-aw-cta-note">Your enquiry is passed to %s through PlotArt. Nothing is paid until you have agreed the price and delivery with the artist.</p>%s') % (
             E(enquiry_href(pkg, w)), " data-pa-enquire" if enquiry_endpoint else "",
             "Enquire about this work" if avail == "available" else "Ask to be told if it becomes available", E(a["display_name"]),
             enquiry_form(pkg, w, enquiry_endpoint))
@@ -331,9 +335,9 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
       <p class="pa-aw-artist"><a href="index.html">%s</a>%s</p>
       <h1>%s</h1>
       <p class="pa-aw-price is-%s">%s</p>
+      <div class="pa-aw-cta">%s</div>
       <dl class="pa-aw-dl">%s</dl>
       %s
-      <div class="pa-aw-cta">%s</div>
       %s
     </div>
   </div>
@@ -342,9 +346,9 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
 """ % (E(a["display_name"]), E(w["title"]), E(d["file"]), E(srcset(im, "img/")), d["pixels"][0], d["pixels"][1], E(im["alt"]), views,
        E(a["display_name"]), E(w["title"]), credit,
        E(a["display_name"]), ' <span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
-       E(w["title"]), avail.replace("_", "-"), E(price_line(w)), dl,
+       E(w["title"]), avail.replace("_", "-"), E(price_line(w)), cta, dl,   # the buttons directly under the price (Sprint 1, 26 Nov 2026)
        ('<p class="pa-aw-desc">%s</p>' % E(w["description"])) if w.get("description") else "",
-       cta, ai, nav)
+       ai, nav)
 
 
 # ---- The Virtual Gallery collection: Direction C2 "The Curated Collection" (founder approval 5 Nov 2026) ----

@@ -17,7 +17,7 @@ B7  sitemap: exactly the generated region for the switches; the entry appears on
 B8  synchronisation through the pipeline's own functions: a sale, a price change and a work re-measured below 100 cm
     all change the region, and the content-only boundary accepts exactly those regions and refuses tampering
 B9  no style classification by PlotArt: the page adds no "abstract" (or other style) label of its own
-B10 no service claims: the page says PlotArt doesn't sell, deliver or install, and never offers delivery,
+B10 no service claims: the page says the artist is the seller and PlotArt doesn't deliver or install, and never offers delivery,
     installation, consultancy or purchasing services; it links to the art size calculator
 B11 fairness: works alternate between artists while more than one artist still has works to show
 B12 All Available Artworks, the buying guide and the art size calculator each link to the large collection once;
@@ -232,7 +232,11 @@ check("B9 the page adds no style label of its own (abstract, figurative, landsca
 
 # B10
 vis = re.sub(r"\s+", " ", html.unescape(re.sub(r"<script.*?</script>|<[^>]+>", " ", page.split("<main", 1)[1].split("</main>")[0], flags=re.S)))
-check("B10 says PlotArt doesn't sell, deliver or install artwork", "It doesn’t sell, deliver or install artwork" in vis)
+# Sprint 1 (founder approval 26 Nov 2026): selected works can now be bought online through PlotArt's secure checkout,
+# so the page no longer says PlotArt doesn't sell; it still says the artist is the seller and PlotArt doesn't deliver or install.
+check("B10 says the artist is the seller, PlotArt doesn't deliver or install, and selected works can be bought through the secure checkout",
+      "The artist is the seller and arranges delivery: PlotArt doesn’t deliver or install artwork." in vis
+      and "Selected works can be bought online through PlotArt’s secure checkout; for any work, you can enquire with the artist." in vis)
 check("B10 no delivery, installation, consultancy or purchasing service is offered",
       not re.search(r"\b(?:we|PlotArt) (?:deliver|install|arrange|advise|curate|source|consult)|our (?:delivery|installation|consultan|advisory|curation)|free delivery|book a consultation|buy now|add to (?:cart|basket)", vis, re.I))
 check("B10 links to the art size calculator", 'href="../art-size-calculator.html"' in page)

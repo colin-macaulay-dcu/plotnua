@@ -12,10 +12,12 @@ admin "Publish" button (or, with --instant, the automatic availability/removal p
                                         (<!-- pa-vg-collection:begin --> ... <!-- pa-vg-collection:end -->)
                                         and the Featured Artists region (17 Nov 2026, moved from the homepage;
                                         <!-- pa-featured-artists:begin --> ... end), the latter exactly as its selection
-                                        renders from the published galleries (plotart_featured). The PlotArt homepage
-                                        (plotart/index.html) is no longer generated and is refused like any other page.
+                                        renders from the published galleries (plotart_featured).
   plotart/<buyer guide or artworks/index.html>   only inside its generated collection region, and exactly the
-                                        region the approved public exports produce (plotart_search_content)
+                                        region the approved public exports produce (plotart_search_content). Since
+                                        Sprint 1 (26 Nov 2026) the same holds for the homepage's availability line
+                                        (plotart/index.html) and the living-room guide's price-band recommendations;
+                                        everything else on those pages is refused as before.
   plotart/<opportunity page>            only inside its generated opportunity region, and exactly the region the
                                         published packages produce (plotart_opportunities: living-gallery.html,
                                         art-for-hire/index.html, mobile-gallery/index.html, opportunities/index.html)

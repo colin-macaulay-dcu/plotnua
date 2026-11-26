@@ -813,6 +813,14 @@ body.pa .pa-ag-cv-body h3:first-child{ margin-top:6px; }
 .pa-aw-desc{ color:var(--lime); line-height:1.7; margin:0 0 24px; }
 .pa-aw-cta .pa-btn{ width:100%; justify-content:center; }
 .pa-aw-cta-note{ margin:12px 0 0; font-size:13.5px; color:var(--mute); line-height:1.55; }
+/* Commercial Conversion Sprint 1 (26 Nov 2026): the buttons sit directly under the price. When the checkout confirms a
+   work can be bought online, pa-basket.js shows "Buy online" first and lists the work's own delivery, cancellation and
+   seller details from the checkout (never a generic claim); the enquiry button stays, as the second choice. */
+.pa-aw-cta{ margin:0 0 26px; }
+.pa-basket{ margin:0 0 14px; }
+.pa-aw-assure{ list-style:none; margin:12px 0 0; padding:0; font-size:13.5px; line-height:1.55; color:var(--stone); }
+.pa-aw-assure li{ padding:7px 0; border-top:1px solid var(--line); }
+.pa-aw-assure li:last-child{ border-bottom:1px solid var(--line); }
 .pa-aw-ai{ margin:22px 0 0; padding:14px 16px; border-radius:10px; border:1px solid var(--line-2); font-size:14px; color:var(--stone); }
 .pa-aw-pn{ display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; margin-top:clamp(36px, 5vw, 64px); padding-top:22px; border-top:1px solid var(--line); font-size:14.5px; }
 .pa-aw-pn a{ color:var(--stone); text-decoration:underline; text-decoration-thickness:1px; text-decoration-color:rgba(237,235,231,.38); text-underline-offset:4px; } .pa-aw-pn a:hover{ color:var(--ivory); text-decoration-color:currentColor; }
@@ -897,8 +905,17 @@ body.pa .pa-ag-cv-body h3:first-child{ margin-top:6px; }
   .pa-ag-cap{ padding:16px 16px 0; }
   .pa-ag-grid:has(> .pa-ag-work:only-child) .pa-ag-art, .pa-ag-grid:has(> .pa-ag-work:nth-child(2):last-child) .pa-ag-art{ padding:0; }
   .pa-aw-frame{ padding:0; min-height:0; background:none; border:0; border-radius:0; }
-  .pa-aw-frame img{ max-height:82svh; box-shadow:0 22px 40px -22px rgba(0,0,0,.75), 0 3px 8px -3px rgba(0,0,0,.4); }
-  .pa-aw-dl dd{ overflow-wrap:anywhere; }   /* a long unbroken value (e.g. Monoprint/Acrylic/Lacquer) wraps instead of widening the page */
+  .pa-aw-frame img{ max-height:var(--pa-aw-phone-max, 64svh); box-shadow:0 22px 40px -22px rgba(0,0,0,.75), 0 3px 8px -3px rgba(0,0,0,.4); }
+  .pa-aw-dl dd{ overflow-wrap:anywhere; }
+  /* Sprint 1 (26 Nov 2026): on a phone the price and first button come within the first screen for more works, by
+     tightening spacing only. The artwork is never cropped: it keeps its proportions, whole, and only a very tall
+     portrait is scaled to at most 64svh (it was 82svh). */
+  .pa-aw .pa-wrap{ padding-top:16px; }
+  .pa-aw .pa-crumb{ margin-bottom:14px; }
+  .pa-aw-in{ gap:16px; }
+  .pa-aw-artist{ margin-bottom:6px; }
+  .pa-aw-info h1{ margin-bottom:8px; }
+  .pa-aw-price{ margin-bottom:14px; }   /* a long unbroken value (e.g. Monoprint/Acrylic/Lacquer) wraps instead of widening the page */
 }
 
 /* Published artists only: a crawlable alphabetic route alongside the curated wall. */
