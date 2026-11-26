@@ -884,6 +884,10 @@
     let d = await api('GET', '/api/admin/featured');
     if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Featured Artists</h1><section class="st-card"><p class="st-muted">Featured Artists isn’t set up yet (migration 0016).</p></section>'; return; }
     let sel = d.items.filter(i => i.shown).map(i => ({ artist_id: i.artist_id, artwork_id: i.artwork_id })), msg = '';
+    // Contemporary's Gallery Showcase (draft or published), read only: a discreet note when a work is in both; never a block
+    let inShow = () => false;
+    try { const s = await api('GET', '/api/admin/showcase'); const c = s && s.installed && s.galleries.find(x => x.gallery_id === 'contemporary');
+      if (c) { const ids = new Set([...c.draft, ...c.published].map(r => r.artwork_id)); inShow = id => ids.has(id); } } catch { /* showcase not available: no note */ }
     // earlier homepage choices (single artworks, or an artist listed twice) are shown as artists and need one save to confirm
     const earlier = d.items.some(i => i.earlier_kind !== 'artist' || i.repeat);
     let dirty = earlier;
@@ -896,7 +900,7 @@
     const img = w => `<img src="/api/admin/featured/image/${E(w.image.id)}" alt="${E(w.image.alt)}" loading="lazy">`;
     const card = (it, i) => { const x = info(it); if (!x) return ''; return `<li class="st-fa-card${replacing === i ? ' st-fa-card--replacing' : ''}">
         <span class="st-hp-frame">${img(x.w)}</span>
-        <p class="st-fa-credit"><i>${E(x.w.title)}</i>${x.w.year ? ', ' + E(x.w.year) : ''} · ${E(x.g.display_name)}</p>
+        <p class="st-fa-credit"><i>${E(x.w.title)}</i>${x.w.year ? ', ' + E(x.w.year) : ''} · ${E(x.g.display_name)}</p>${inShow(x.w.id) ? '<p class="st-sc-dup">Also in the Contemporary Gallery Showcase.</p>' : ''}
         <p class="st-hp-t">${E(x.g.display_name)}</p>${x.g.practice ? `<p class="st-fa-prac">${E(x.g.practice)}</p>` : ''}
         ${x.g.intro ? `<p class="st-fa-intro">${E(x.g.intro)}</p>` : '<p class="st-fa-intro st-muted">No biography published: no introduction is shown.</p>'}
         <p class="st-fa-view">View Gallery →</p>
@@ -980,9 +984,13 @@
       const x = SCG(); if (!x) return '';
       const arts = x.artists, workOf = (a, w) => { const ar = arts.find(z => z.artist_id === a); return ar && ar.works.find(z => z.artwork_id === w); };
       const prep = x.status !== 'open';
+      // Artists in Focus for this gallery, including unsaved edits on this page (Spaces, Being); Contemporary's is curated on the Featured tab
+      const fset = new Set(g !== 'contemporary' && Array.isArray(focus) ? focus.map(f => f.artwork_id) : (x.focus_artworks || []));
+      const inFocus = w => fset.has(w);
       const slot = (it, i) => { const ar = arts.find(z => z.artist_id === it.artist_id), w = workOf(it.artist_id, it.artwork_id);
         return `<div class="st-sc-slot"><p class="st-lab">${SIDE[it.position]}</p>
           <div class="st-sc-img">${w && w.image ? `<img src="/api/admin/featured/image/${E(w.image.id)}" alt="">` : `<span class="st-gm-noimg" aria-hidden="true"></span>`}</div>
+          ${w && inFocus(it.artwork_id) ? `<p class="st-sc-dup">Also chosen for Artists in Focus. Both selections can stay; the choice is yours.</p>` : ''}
           ${it.artwork_id && !w ? `<p class="st-err" style="margin:6px 0">“${E(it.title || 'This artwork')}” can’t be used: ${E(it.reason || 'it is not eligible for this gallery')}.</p>` : ''}
           <div class="st-f" style="margin:8px 0 0"><label class="st-sr" for="sc-a-${i}">Artist, ${SIDE[it.position].toLowerCase()}</label><select id="sc-a-${i}" data-sc-a="${i}"><option value="">Choose an artist…</option>${arts.map(a => `<option value="${a.artist_id}"${a.artist_id === it.artist_id ? ' selected' : ''}>${E(a.display_name)}</option>`).join('')}</select>
           <label class="st-sr" for="sc-w-${i}">Artwork, ${SIDE[it.position].toLowerCase()}</label><select id="sc-w-${i}" data-sc-w="${i}"${ar ? '' : ' disabled'}><option value="">${ar ? 'Choose an artwork…' : 'Choose an artist first'}</option>${ar ? ar.works.map(w2 => `<option value="${w2.artwork_id}"${w2.artwork_id === it.artwork_id ? ' selected' : ''}>${E(w2.title)}${w2.year ? ' (' + w2.year + ')' : ''}</option>`).join('') : ''}</select></div>
@@ -1077,8 +1085,9 @@
     function focusCard() {
       if (g === 'contemporary') return '';
       const placed = G().members.map(m => ({ p: pubOf(m.artist_id) })).filter(x => x.p).map(({ p }) => ({ p, works: p.works.filter(w => { const pl = placeOf(w.id); return pl && pl.state === 'live'; }) })).filter(x => x.works.length);
+      const sx = SCG(), inShow = id => !!sx && (show || []).some(s => s.artwork_id === id);
       const card = (f, i) => { const p = pubOf(f.artist_id), w = p && p.works.find(x => x.id === f.artwork_id); if (!w) return '';
-        return `<li class="st-gm-focus">${img(w)}<div><p class="st-work-t">${E(p.display_name)}</p><p class="st-work-s"><i>${E(w.title)}</i></p></div>
+        return `<li class="st-gm-focus">${img(w)}<div><p class="st-work-t">${E(p.display_name)}</p><p class="st-work-s"><i>${E(w.title)}</i></p>${inShow(w.id) ? '<p class="st-sc-dup">Also in the Gallery Showcase.</p>' : ''}</div>
           <span class="st-row"><button class="st-btn st-btn--small" data-f="up" data-i="${i}" aria-label="Earlier"${i ? '' : ' disabled'}>↑</button><button class="st-btn st-btn--small" data-f="down" data-i="${i}" aria-label="Later"${i < focus.length - 1 ? '' : ' disabled'}>↓</button><button class="st-btn st-btn--small" data-f="rm" data-i="${i}">Remove</button></span></li>`; };
       return `<section class="st-card"><h2>Artists in Focus · ${TITLE[g]}</h2><p class="st-muted">Up to 6 members, each with one of their works placed in ${TITLE[g]}. Separate from Contemporary’s selection.</p>
         ${focus.length ? `<ol class="st-gm-focuslist">${focus.map(card).join('')}</ol>` : '<p class="st-muted">Nobody chosen yet.</p>'}

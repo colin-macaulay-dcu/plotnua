@@ -81,6 +81,17 @@ async function stage(env, g, st, published, elig) {
   return out;
 }
 
+/* Artists in Focus for a gallery: Contemporary's comes from homepage_features (the Featured Artists curation), Spaces' and
+   Being's from gallery_features. Read only, to tell the founder when a showcase artwork is also in Artists in Focus. The
+   overlap is allowed: it is a discreet notice, never a block, and neither selection is changed here. */
+async function focusArtworks(env, g) {
+  const table = g === 'contemporary' ? 'homepage_features' : 'gallery_features';
+  if (!(await one(env, "SELECT name FROM sqlite_master WHERE type='table' AND name=?", table))) return [];
+  const rows = g === 'contemporary' ? await all(env, 'SELECT artwork_id FROM homepage_features ORDER BY position')
+    : await all(env, 'SELECT artwork_id FROM gallery_features WHERE gallery_id = ? ORDER BY position', g);
+  return [...new Set(rows.map(r => r.artwork_id).filter(Boolean))];
+}
+
 /* The founder's view: for each gallery, its status, the draft, the published showcase (with vacancies explained) and the
    eligible works to choose from, grouped by artist. */
 export async function view(env, published) {
@@ -97,7 +108,10 @@ export async function view(env, published) {
     }
     artists.sort((x, y) => x.display_name.localeCompare(y.display_name, 'en-IE'));
     const same = JSON.stringify(draft.map(d => [d.position, d.artwork_id])) === JSON.stringify(pub.map(d => [d.position, d.artwork_id]));
-    out.push({ gallery_id: g, title: G.TITLES[g], status: s[g].status, draft, published: pub, vacant: pub.filter(p => !p.eligible), unpublished_changes: !same, artists });
+    const focus = await focusArtworks(env, g);
+    for (const r of [...draft, ...pub]) r.in_focus = focus.includes(r.artwork_id);
+    out.push({ gallery_id: g, title: G.TITLES[g], status: s[g].status, draft, published: pub, vacant: pub.filter(p => !p.eligible), unpublished_changes: !same, artists,
+      focus_artworks: focus, also_in_focus: draft.filter(r => r.in_focus).map(r => ({ position: r.position, side: r.side, artwork_id: r.artwork_id, title: r.title })) });
   }
   return { installed: true, positions: POS, galleries: out };
 }

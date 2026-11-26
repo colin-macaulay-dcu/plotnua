@@ -79,6 +79,10 @@ let r = await call('PUT', '/api/admin/showcase/contemporary', FOUNDER, { items: 
 v = r.j;
 check('S2 saving a draft never publishes: the pipeline is unchanged and the founder sees "the draft differs from the published showcase"',
   r.s === 200 && gc().draft.map(d => d.artwork_id).join() === 'wacai1,waann2,waben1' && gc().unpublished_changes === true && JSON.stringify(await pipe()) === JSON.stringify(p0), r.t);
+// Duplication with Artists in Focus: Ben's waben1 is also one of Contemporary's Artists in Focus (homepage_features)
+check('D1 a showcase artwork that is also in Artists in Focus is allowed: the draft saves, and the work is marked for a discreet notice (Right only)',
+  r.s === 200 && gc().draft.map(d => `${d.side}:${d.in_focus}`).join() === 'Left:false,Centre:false,Right:true'
+  && JSON.stringify(gc().also_in_focus.map(x => x.side)) === '["Right"]' && gc().focus_artworks.join() === 'waben1', JSON.stringify(gc().draft));
 const bad = [
   await call('PUT', '/api/admin/showcase/contemporary', FOUNDER, { items: [{ position: 1, artist_id: 'aann', artwork_id: 'waben1' }] }),        // another artist's work
   await call('PUT', '/api/admin/showcase/contemporary', FOUNDER, { items: [{ position: 1, artist_id: TEST, artwork_id: 'watestacct1' }] }),     // test account
@@ -95,6 +99,9 @@ let p1 = await pipe();
 check('S4 Publish makes the draft the published showcase, through the publishing workflow; the pipeline sends gallery addresses and artwork ids only, left to right',
   r.s === 200 && 'publish' in r.j && JSON.stringify(p1.galleries[0].items) === JSON.stringify([{ position: 1, artist: 'cai-test', work: 'wacai1' }, { position: 2, artist: 'ann-test', work: 'waann2' }, { position: 3, artist: 'ben-test', work: 'waben1' }])
   && !!(await db.prepare("SELECT 1 FROM audit WHERE action='gallery_showcase_published'").first()), r.t);
+check('D2 publishing with the overlap is not blocked, and neither selection is removed or replaced: the work stays in both',
+  r.s === 200 && p1.galleries[0].items.some(i => i.work === 'waben1')
+  && (await db.prepare("SELECT artwork_id FROM homepage_features").all()).results.map(x => x.artwork_id).join() === 'waben1');
 check('S5 Artists in Focus, Gallery order, memberships and placements are untouched by the showcase', (await others()) === o0);
 // a routine artist publication: Ben publishes an update in which the showcase work is sold
 const lv = await db.prepare("SELECT version, snapshot FROM versions WHERE artist_id='aben' ORDER BY version DESC").first();
@@ -126,6 +133,11 @@ const sp2 = await call('POST', '/api/admin/showcase/spaces/publish', FOUNDER);
 const p4 = await pipe();
 check('S9 Spaces: a showcase can be prepared privately from works placed in Spaces, but it cannot be published while Spaces is in preparation, and the pipeline sends nothing for it',
   sp1.s === 200 && sp2.s === 409 && /in preparation/.test(sp2.j.error || '') && p4.galleries.find(x => x.gallery === 'spaces').items.length === 0 && p4.galleries.find(x => x.gallery === 'spaces').status === 'in_preparation', JSON.stringify([sp1.s, sp2.s]));
+const fs1 = await call('PUT', '/api/admin/galleries/spaces/features', FOUNDER, { items: [{ artist_id: 'aben', artwork_id: 'waben2' }] });
+const gsp = (await view()).galleries.find(x => x.gallery_id === 'spaces');
+check('D3 Spaces uses its own Artists in Focus: the same work in both is noted, and saving either selection is not refused',
+  fs1.s === 200 && gsp.draft.length === 1 && gsp.draft[0].in_focus === true && gsp.focus_artworks.join() === 'waben2'
+  && gc().draft.every(d => d.artwork_id !== 'waben2' || d.in_focus === false), JSON.stringify([fs1.s, fs1.t, gsp.draft]));
 check('S10 the pipeline route needs the pipeline token', (await call('GET', '/api/pipeline/gallery-showcase', 'ann@example.test')).s >= 400);
 
 /* ---- U · the founder's panel and notice ---- */
@@ -158,6 +170,33 @@ check('U3 the founder chooses artist and artwork per position, swaps positions, 
   JSON.stringify({ prev1, prev2, draftRows, p5: p5.galleries[0].items }));
 check('U4 still: Artists in Focus, Gallery order, memberships and placements were not changed by any showcase action (Spaces membership and placement made by the test itself excepted)',
   JSON.stringify(JSON.parse(await others()).slice(0, 2)) === JSON.stringify(JSON.parse(o0).slice(0, 2)));
+// D · the discreet notice in the Studio, on both sides, and never a block
+await db.prepare("INSERT INTO homepage_features (position, kind, artist_id, artwork_id, updated_at) VALUES (2,'artist','aann','waann1',?)").bind(new Date().toISOString()).run();
+await pg.goto(url + '/admin/galleries', { waitUntil: 'networkidle' }); await pg.waitForTimeout(700);
+await pg.locator('.st-gm-tabs button[data-g="contemporary"]').click(); await pg.waitForTimeout(400);
+const dup1 = await pg.locator('.st-sc .st-sc-dup').allInnerTexts();
+await pg.locator('.st-sc-slots').screenshot({ path: '/tmp/showcase-dup-contemporary.png' }).catch(() => {});
+const dupRole = await pg.locator('.st-sc .st-sc-dup[role="alert"], .st-sc-alert .st-sc-dup').count();
+// non-blocking: swap and save with the overlap present; the selection is kept as chosen
+await pg.click('[data-sc="swap"][data-i="1"][data-j="0"]'); await pg.waitForTimeout(150);
+const dupAfterSwap = await pg.locator('.st-sc-slot').nth(1).locator('.st-sc-dup').count();
+await pg.click('[data-sc-save]'); await pg.waitForTimeout(700);
+const draftD = (await db.prepare("SELECT position, artwork_id FROM gallery_showcase WHERE gallery_id='contemporary' AND stage='draft' ORDER BY position").all()).results.map(x => `${x.position}:${x.artwork_id}`).join();
+check('D4 Contemporary panel: a discreet note on the slot whose work is also in Artists in Focus, which follows the work when positions are swapped; saving is not blocked and nothing is removed',
+  dup1.length === 1 && /Also chosen for Artists in Focus/.test(dup1[0]) && dupRole === 0 && dupAfterSwap === 1 && draftD === '1:waben2,2:waann1'
+  && (await db.prepare("SELECT artwork_id FROM homepage_features ORDER BY position").all()).results.map(x => x.artwork_id).join() === 'waben1,waann1', JSON.stringify({ dup1, dupRole, dupAfterSwap, draftD }));
+await pg.goto(url + '/admin/featured', { waitUntil: 'networkidle' }); await pg.waitForTimeout(700);
+const dupF = await pg.locator('.st-fa-card .st-sc-dup').allInnerTexts();
+check('D5 Featured Artists (Contemporary Artists in Focus) shows the same discreet note on the card whose work is in the Contemporary showcase',
+  dupF.length === 1 && /Also in the Contemporary Gallery Showcase/.test(dupF[0]), JSON.stringify(dupF));
+await pg.goto(url + '/admin/galleries', { waitUntil: 'networkidle' }); await pg.waitForTimeout(700);
+await pg.locator('.st-gm-tabs button[data-g="spaces"]').click(); await pg.waitForTimeout(400);
+await pg.locator('.st-gm-focus').first().screenshot({ path: '/tmp/showcase-dup-spaces-focus.png' }).catch(() => {});
+const spShow = await pg.locator('.st-sc .st-sc-dup').count(), spFocus = await pg.locator('.st-gm-focus .st-sc-dup').count();
+await pg.locator('.st-gm-focus [data-f="rm"]').first().click(); await pg.waitForTimeout(200);
+const spShowAfter = await pg.locator('.st-sc .st-sc-dup').count();
+check('D6 Spaces: the note shows on both the showcase slot and the Artists in Focus entry, and follows unsaved edits (removing the focus entry clears it)',
+  spShow === 1 && spFocus === 1 && spShowAfter === 0, JSON.stringify({ spShow, spFocus, spShowAfter }));
 await b.close(); await mf.dispose();
 console.log(`\n${results.filter(Boolean).length}/${results.length} passed`);
 process.exit(results.every(Boolean) ? 0 : 1);

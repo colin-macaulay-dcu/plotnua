@@ -582,3 +582,6 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-sc-alert{ border:1px solid rgba(217,120,94,.65); border-radius:12px; padding:12px 16px; margin:10px 0 14px; color:var(--ivory); }
 .st-sc-alert h2{ margin-top:0; }
 @media (max-width:720px){ .st-sc-slots, .st-sc-preview{ grid-template-columns:1fr; } }
+
+/* Gallery Showcase / Artists in Focus overlap: a discreet, non-blocking note */
+.st-sc-dup{margin:6px 0 0;font-size:12px;line-height:1.4;color:var(--mute);font-style:italic}
