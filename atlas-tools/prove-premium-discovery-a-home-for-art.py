@@ -165,6 +165,14 @@ def seo_gr2_home(h):
     homepage's canonical URL. Declared mapping applied to the BASE links; nothing else is relaxed."""
     return "/" + h[len("index.html"):] if h == "index.html" or h.startswith(("index.html#", "index.html?")) else h
 
+COOKIEBOT_OLD, COOKIEBOT_NEW = "8a5219c1-0f84-4a7e-9c17-d22fab76adc1", "b8abbc45-15b0-4d27-8f95-83ebd240a305"
+def cookiebot_id(v):
+    """Analytics restore (26 Nov 2026): the Cookiebot domain group moved from the suspended trial account
+    (8a5219c1…) to the active account (b8abbc45…). Declared mapping applied to the BASE head only; this
+    snapshot is fingerprinted against a historical commit, so it is not edited. Nothing else is relaxed."""
+    if isinstance(v, list): return [cookiebot_id(x) for x in v]
+    return v.replace(COOKIEBOT_OLD, COOKIEBOT_NEW) if isinstance(v, str) else v
+
 def die(m): raise Refused(m)
 
 # ---------------------------------------------------------------- extraction
@@ -247,7 +255,7 @@ R6_HERO_SHA256 = "f9f81ed103d6bdd4024d1cd1794e21df2c657f1733d2c710a79ccafcc3f4c5
 def check(new, base):
     nh = head(new)                                                     # P1
     for k in nh:
-        if nh[k] != base["head"][k]: die("P1 head changed: %s" % k)
+        if nh[k] != cookiebot_id(base["head"][k]): die("P1 head changed: %s" % k)
     want = sorted((Counter(base["img"]) - Counter(R6_IMG_REMOVED) + Counter(R6_IMG_ADDED)).elements())   # P2
     if imgs(new) != want: die("P2 the set of <img> tags differs from BASE + the declared Release 6 changes")
     if hashlib.sha256(hero(new).encode("utf-8")).hexdigest() != R6_HERO_SHA256: die("P2 the hero is not the approved Release 6 slider")
