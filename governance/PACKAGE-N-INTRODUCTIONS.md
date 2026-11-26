@@ -11,9 +11,11 @@ Status: **development only**, on branch `dev/plotnua-package-n`. Nothing is merg
 | Placements | NOOK Prefab, The Pod Factory and Arctic Wellness showcases; Garden room prices; Garden saunas; Garden Retreat discovery | every page is byte-identical while the switch is off |
 | Airtable table | `Introduction Requests` (schema in `worker/garden-lead/AIRTABLE-SCHEMA.md`) | **not created** |
 | Founder notice | Resend, to the founder only. Carries the reference, supplier, county and timeframe; no name, email or description | needs the `RESEND_API_KEY` secret, `NOTIFY_TO` and `NOTIFY_FROM` |
+| Retention | daily cron deletes expired rows (section 2A) | `INTRO_RETENTION_ENABLED` ships `"false"`; it also runs whenever writes are on |
+| Deploy workflow | `.github/workflows/garden-lead-deploy.yml` | closed-only; approval in `studio-production.` |
 
 **Two forms**
-- **General form.** This is what every placement shows today. The homeowner gives PlotNua permission to review the request and reply. Nothing goes to a supplier without the homeowner's separate, later permission.
+- **General form.** This is what every placement shows today. Founder wording of 26 Nov 2026, subject to data protection review: "I agree that PlotNua may use the information I provide to review my enquiry and contact me about my project. My contact details will not be shared with a supplier without my further permission."
 - **Supplier-specific form.** Shown only for a supplier listed in *both* the config and the Worker allow-list, which requires a written agreement on file. It uses the approved sentence: "I agree that PlotNua may share my enquiry and contact details with [supplier name] so they can contact me about this project."
 
 **Controls**
@@ -26,126 +28,152 @@ Status: **development only**, on branch `dev/plotnua-package-n`. Nothing is merg
 - While the public route is closed, every record is marked `test_record`.
 - There is no automatic supplier forwarding: there is no supplier address in the code.
 
-## 2 · Privacy notice amendment: draft V20 (NOT applied)
+## 2 · Privacy notice V20: complete draft for review (NOT applied)
 
-Apply through a `privacy_v20_layer.py` / `prove-privacy-v20.py` pair, as V19 was, at the same time as activation. Set `INTRO_PRIVACY_VERSION` to the version label.
+The live notice is V19. V20 is applied with a `privacy_v20_layer.py` and `prove-privacy-v20.py` pair, in the same way as V19, before public activation (step E). At that point `INTRO_PRIVACY_VERSION` is set to the V20 label. Wording follows the notice's existing style: Cloudflare is named as the host, and the email service is described rather than named, as in §10 today.
 
-**New §6A "Introduction requests"** (anchor `id="introductions"`)
+### New section, inserted after §6: "6A. Introduction Requests" (`id="introductions"`)
 
-> Some PlotNua pages let you request an introduction. It is free and you are under no obligation.
+> Some PlotNua pages let you request an introduction. It is free, and you are under no obligation to buy anything.
 >
-> **What we collect:**
+> **What we collect.** We collect:
 > - your name;
 > - your email address;
 > - your county;
 > - your project timeframe;
-> - optionally, a short description of your project.
+> - if you choose to add one, a short description of your project.
 >
-> We also record the page you used, the date, a reference number and the wording of the permission you gave. We do not ask for your phone number, Eircode or address.
+> We also record the page you used, the date, a reference number, and the wording of the permission you gave. We do not ask for your phone number, Eircode or address.
 >
-> **General requests.** If you ask for an introduction without a named supplier, you allow PlotNua to use your details to review your request and reply to you. We will not share your details with any supplier unless you later give us separate permission for that named supplier.
+> **Requests that do not name a supplier.** You agree that PlotNua may use the information you provide to review your enquiry and contact you about your project. Your contact details will not be shared with a supplier without your further permission. If we later think a particular supplier could help, we will ask you first, naming that supplier. We will share your details only if you agree.
 >
-> **Requests to a named supplier.** If the form names a supplier and you tick the box agreeing that we may share your enquiry and contact details with them, a person at PlotNua sends your name, email address, county, timeframe and description to that supplier so they can contact you about the project. It is not sent automatically. Named-supplier forms appear only for suppliers that have agreed in writing to receive introductions. From then on, the supplier handles your details as an independent controller under its own privacy policy.
+> **Requests to a named supplier.** Some forms name a supplier. These appear only for suppliers that have agreed in writing to receive introductions. If you agree that PlotNua may share your enquiry and contact details with that supplier, a person at PlotNua sends them your name, email address, county, timeframe and, if you added one, your project description, so that they can contact you about your project. This is not done automatically. From that point the supplier is independent of PlotNua. It handles your details under its own privacy policy, and any conversation you have with it is between you and the supplier.
 >
-> **Referral fees.** Where a commercial referral arrangement exists, PlotNua may receive a referral fee. Such arrangements do not determine our editorial recommendations.
+> **Referral fees.** PlotNua researches suppliers independently. Where a commercial referral arrangement exists, PlotNua may receive a referral fee. Such arrangements do not determine our editorial recommendations.
 >
-> **Who processes your details:**
-> - Cloudflare, which hosts our introduction service;
-> - Airtable, which holds our records of requests;
-> - Resend, which sends PlotNua an internal notice that a request has arrived. The notice does not contain your name, email or description.
+> **How it works.** Requests are received by a PlotNua service hosted on infrastructure provided by Cloudflare and recorded in Airtable. When a request arrives, an email delivery service acting for PlotNua under its data processing terms sends PlotNua a short internal notice. The notice contains the reference, county, timeframe and any supplier named. It does not include your name, email address or description.
 >
-> These providers may process data outside the EEA under appropriate safeguards, such as standard contractual clauses.
+> **How long we keep it.** Introduction requests are deleted automatically 12 months after they are made. We keep a request for longer only while it is still active, or where we must keep a record for legal or accounting reasons. In that case we record the reason and delete the request when the reason no longer applies.
 >
-> **Legal basis:**
-> - your consent, for sharing your details with a named supplier;
-> - steps taken at your request, and our legitimate interest in replying, for reviewing and answering your request.
->
-> You can withdraw consent at any time. Withdrawal does not affect anything already shared.
->
-> **How long we keep it:** up to 12 months from your request, unless the request is still active or a longer period is required for legal or accounting reasons.
+> **Your choices.** You can ask us at any time to delete your request. If you gave permission for your details to be shared with a supplier, you can withdraw it at any time. Withdrawing does not affect anything already shared before you withdrew. To do either, contact hello@plotnua.ie.
 
-**Consequential edits**
-- **§2 Information We Collect:** add "introduction requests".
-- **§10 Third-Party Services:** add Resend if it is not already listed. It is listed for PlotArt; confirm the wording covers PlotNua.
-- **§11 Legal Basis:** cross-reference §6A.
-- **§12 Retention:** add "Introduction requests are kept for up to 12 months, as described in Section 6A."
-- **§17 Changes:** add the V20 entry.
+### Changes to existing sections
 
-## 3 · Unresolved legal and data protection questions (founder / adviser)
+- **§2 Information We Collect.** After the Borrowed Garden sentence, add: "If you request an introduction, we collect the information described in Section 6A."
+- **§3 How We Use Your Information.** Add to the list: "to review introduction requests, reply to you and, only with your permission, introduce you to a supplier you have agreed to".
+- **§10 Third-Party Services and Links.** Add after the PlotArt Founding 25 sentence: "Introduction requests described in Section 6A are received by a PlotNua service hosted on infrastructure provided by Cloudflare and recorded in Airtable, in their own table; PlotNua's internal notice of a new request is sent by an email delivery service acting for PlotNua under its data processing terms."
+- **§11 Legal Basis for Processing.** Add: "For introduction requests (Section 6A): steps taken at your request, and PlotNua's legitimate interest in responding to enquiries, to review your request and reply; and your consent to share your details with a supplier you name or later agree to."
+- **§12 How Long We Keep Information.** Add: "Introduction requests are deleted automatically 12 months after they are made, unless the request is still active or a record must be kept for legal or accounting reasons, as described in Section 6A."
+- **§17 Changes to This Policy.** Change "Last updated" to the month V20 is published.
+- **Version marker.** Use `V20 · Introduction requests, privacy notice 2026-12-INTRODUCTIONS-V1`.
 
-1. **Lawful basis for general requests.** The draft uses pre-contract steps plus legitimate interest; consent is the alternative. The UI checkbox is framed as agreement either way. Confirm the choice.
-2. **Controller roles.** The draft treats PlotNua and each supplier as independent controllers after a hand-over, not as joint controllers. This needs confirmation, and a short data-sharing clause in each supplier agreement.
-3. **Supplier agreement terms.** Before any supplier is added to the allow-list, the written agreement should cover:
-   - the receiving address;
-   - use limited to responding to that homeowner;
-   - GDPR handling;
-   - no onward marketing;
-   - a response expectation;
-   - any referral fee, as a separate commercial term.
-4. **Separate consent for a later-named supplier** (general requests). Decide the method, for example an email reply quoting the exact sentence, recorded in `supplier_consent_at`. Also decide who records it.
-5. **Transfers.** Confirm SCC/DPF coverage in the Airtable and Resend DPAs for this purpose, and that both are listed as processors.
-6. **Retention.** Is 12 months right for unsuccessful requests? What legal or accounting basis justifies keeping a record linked to a paid referral fee (for example 6 years for accounting)? Should a minimised record be kept in that case?
-7. **Disclosure placement and the existing "no commercial arrangement" statements.**
-   - `garden-room-prices-ireland.html` says "PlotNua has no commercial arrangement with any of them", guarded by `check-commercial-disclosure.py`.
-   - The supplier pages say "there is no paid placement".
-   - The new conditional referral-fee line is consistent with both today. If NOOK's affiliate programme or TimberIN's code becomes an active arrangement covering a listed maker, the guard will require the founder to change one statement or the other.
-8. **Consumer-law/CCPC transparency.** Confirm that the referral-fee wording is sufficient where a fee actually applies, or whether that supplier's page needs its own specific statement.
-9. **DPIA-lite.** The processing is low-volume and low-risk, but a short record of processing (ROPA) entry is advisable before going live.
-10. **Yard Box Phase A.** Yard Box sits in the separate Phase A lead Worker (switched off) without a written agreement to receive enquiries. It must not be switched on until it has one.
+## 2A · Retention: what actually happens
 
-## 4 · Production release proposal (each step needs its own founder approval)
+`delete_after` is **enforced, not just recorded**. The Worker's daily scheduled run (`purgeExpired()`, 03:23 UTC, declared in `wrangler.toml` `[triggers]`) does three things:
 
-**A. Website (inert)**
-- Merge this branch through the normal release route: `atlas-tools/release/request-release.sh introductions-n1 --no-wait`, then approval in website-production.
-- Because the switch is off, no page changes. Only builder wiring, proofs and docs ship.
+1. It lists rows in `Introduction Requests` matching `AND({delete_after}, IS_BEFORE({delete_after}, TODAY()), NOT({retain_reason}))`.
+2. It re-checks each returned row itself, so a wrong formula cannot widen the deletion.
+3. It **deletes** matching rows through the Airtable API, in batches of 10. Rows are deleted, not anonymised.
 
-**B. Airtable**
-- Create the `Introduction Requests` table exactly as in the schema, in the existing base. No new paid service is needed.
+Scope and safeguards:
+- It touches no other table.
+- It starts as soon as `INTRO_WRITES_ENABLED` is `"true"`. `INTRO_RETENTION_ENABLED` keeps it running if writes are later switched off.
+- Proved by I47–I55, and the mutation set catches dropping the re-check, ignoring `retain_reason`, oversized batches, running with the switches off, and stopping after one page.
 
-**C. Worker deploy (still closed)**
-- The garden-lead Worker has no deploy workflow today. Proposed: add `garden-lead-deploy.yml`, modelled on `studio-deploy.yml`, with:
-  - a dry run;
-  - a `garden-lead-production` approval environment;
-  - a check that the commit is on main;
-  - a live-settings comparison.
-- Alternatively, a one-off manual `wrangler deploy`.
-- With every `INTRO_*` switch false, the deploy changes nothing visible. Verify with the preview key: the route answers `not_open` without the key, and writes nothing while writes are off.
+**Residual copies outside the mechanism:**
+- **Airtable's trash.** Airtable keeps deleted records restorable for a limited period, which depends on the plan. Records in the trash become unrecoverable once that period ends.
+- **Airtable snapshots and revision history,** if the base uses them.
+- **Supplier copies.** An email the founder forwards to a supplier is in the founder's mailbox and the supplier's. The supplier's copy falls under its own policy.
+- **Notices.** The founder notice contains no personal data.
 
-**D. Private end-to-end test**
-- Set `INTRO_WRITES_ENABLED=true`, add the `RESEND_API_KEY` secret, set `NOTIFY_TO` (founder) and `NOTIFY_FROM` (a verified plotnua.ie sender) and `INTRO_NOTIFY_ENABLED=true`. The public route stays off.
-- Submit one request with the preview key, then confirm:
-  - one `test_record` row exists with the correct `delete_after`;
-  - one founder email arrives, with no personal data in it;
-  - the reply carries the reference.
-- Delete the test row.
+These should be stated in the ROPA entry (question 9).
 
-**E. Privacy V20**
-- Apply the layer and proof, then release, **before** step F.
+## 3 · Decisions: the ten legal and data protection questions
 
-**F. Public activation of general requests**
-- Set `INTRO_PUBLIC_ENABLED=true` (Worker) and `"public": true` (config).
-- Run `python3 atlas-tools/plotnua_introductions.py --apply` for the guide and discovery fenced regions, and rebuild the three supplier showcases.
+| # | Question | Proposed resolution | Risk if wrong | Specialist advice? | Blocks public activation? |
+|---|---|---|---|---|---|
+| 1 | Lawful basis for general requests | Pre-contract steps plus legitimate interest; the checkbox records agreement | Low: consent is the fallback, and the wording already works as consent | Light review | Yes (the privacy text depends on it) |
+| 2 | Controller roles after hand-over | Independent controllers, not joint | Medium: a joint-controller finding needs an arrangement under Art. 26 | **Yes** | No for general requests; **yes for supplier-specific** |
+| 3 | Terms in each supplier agreement | A short confirmation: receiving address; use only to respond to that homeowner; GDPR handling; no marketing; any fee agreed separately | Medium: misuse by a supplier | Light review of the template | No for general; **yes per supplier** |
+| 4 | Permission for a supplier named later (general requests) | Email the homeowner naming the supplier, and record the reply and date in `supplier_consent_at` | Medium: sharing without valid consent | No | No (manual process; nothing is shared until it exists) |
+| 5 | Transfers (Cloudflare, Airtable, email service) | Rely on each provider's DPA, SCCs or Data Privacy Framework (DPF) certification, already used for PlotNua's registers | Low: existing processors | No (confirm the DPAs are on file) | Yes (confirmation only) |
+| 6 | Retention length and the accounting exception | 12 months, deleted automatically; `retain_reason` set only where a fee is invoiced (keep a minimised record for accounting) | Low | Accountant: how long fee records must be kept | No |
+| 7 | "No commercial arrangement" statements vs the referral-fee line | Keep both. They are consistent while no arrangement is active, and the existing guard forces a decision if one becomes active | Medium: misleading statement if an arrangement starts without updating the pages | No | No (guarded) |
+| 8 | Is the referral-fee wording enough where a fee applies? | Generic line now; add a supplier-specific statement on that supplier's page when its fee agreement starts | Medium: consumer-law transparency | Light review | No for general; **yes per supplier with a fee** |
+| 9 | Record of processing (ROPA) / short DPIA | A one-page ROPA entry before going live (purpose, data, recipients, retention, transfers, residual copies) | Low | No | **Yes** (quick to do) |
+| 10 | Yard Box Phase A route | Stays off (all its switches are proved closed by the deploy guard) until Yard Box agrees in writing | High if opened without agreement | No | No (separate route, closed) |
+
+**Before public activation of general requests:** decide questions 1 and 5, complete question 9, publish V20.
+**Before each supplier-specific activation:** resolve questions 2, 3 and 8 for that supplier.
+
+## 4 · Production release (each step needs its own founder approval)
+
+**A. Website merge (inert) · approved in principle 26 Nov 2026.**
+- Released through `atlas-tools/release/request-release.sh`; approve in website-production.
+- Ships builder wiring, proofs, docs, the Worker source and the deploy workflow.
+- No public page changes: proved byte-identical, and nothing is deployed to Cloudflare.
+
+**B. Airtable table (prepared).**
+- Create `Introduction Requests` in the existing PlotNua base from `worker/garden-lead/airtable-introduction-requests.json`. That file is the exact create-table API payload (22 fields; names and choices proved against the Worker by I56).
+- It can be done through the Airtable connector or the Airtable interface; no new service.
+- After creation, read the schema back and compare names, types and choices.
+
+**C. Worker deploy, still closed (prepared).**
+- Run `garden-lead-deploy.yml` with the merged main commit: first a dry run, then the real run. Each waits for your approval in `studio-production.`.
+- The workflow:
+  - refuses unless every switch ships `"false"` and the allow-list is empty;
+  - reads the live settings (it handles a first deployment);
+  - deploys with `--keep-vars`;
+  - re-reads the settings;
+  - runs `outside-check.sh` (5 checks, nothing written);
+  - rolls back an existing version on failure.
+- Uses the existing token `STUDIO_CF_DEPLOY_TOKEN`; no new secret.
+- **Founder console actions afterwards** (secrets never pass through GitHub):
+  - `AIRTABLE_BASE` variable;
+  - `AIRTABLE_TOKEN` secret, scoped to this base, with create, read and delete on records;
+  - `LEAD_PREVIEW_KEY` secret.
+
+**D. Private end-to-end test (prepared).**
+1. At the Cloudflare console, set:
+   - `INTRO_WRITES_ENABLED=true`;
+   - `INTRO_NOTIFY_ENABLED=true`;
+   - `RESEND_API_KEY` (the existing key, or a new restricted key on the same account; no new service);
+   - `NOTIFY_TO` (founder);
+   - `NOTIFY_FROM` (the verified plotnua.ie sender).
+
+   `INTRO_PUBLIC_ENABLED` stays `false`.
+2. Run `PNL_PREVIEW_KEY=… node worker/garden-lead/test/e2e-private.mjs`. It sends ONE marked test request through the preview gate, and checks that the public route is still closed.
+3. Check by hand:
+   - one row with `test_record` ticked and `delete_after` 12 months ahead;
+   - one founder email with no name, email or description;
+   - the reference shown.
+4. Prove retention: set that row's `delete_after` to yesterday, and confirm the next 03:23 UTC run deletes it.
+5. Note: this step changes switches at the console. A later run of the closed-only deploy workflow refuses while they are on, which is intended.
+
+**E. Privacy V20.** Add the layer and proof, then release, before step F.
+
+**F. Public general requests.**
+- Set `INTRO_PUBLIC_ENABLED=true` and config `"public": true`.
+- Run `plotnua_introductions.py --apply`, then rebuild the three supplier showcases.
 - Run the gate, then release.
 
-**G. Supplier-specific introductions, one supplier at a time**
-- Only after that supplier's written agreement (section 3, question 3) is on file:
-  - add the same slug to `INTRO_SUPPLIERS` and to config `suppliers`, with the agreement reference;
-  - rebuild;
-  - deploy the Worker and release the site.
-- `prove-plotnua-introductions.py` P07 fails if the two lists differ.
+**G. Supplier-specific introductions, one supplier at a time.**
+- Only after that supplier's confirmation (questions 2, 3 and 8).
+- Add the same slug to `INTRO_SUPPLIERS` and to the config, then rebuild, deploy and release.
+- P07 refuses if the two lists differ.
 
-**Rollback:** set `INTRO_PUBLIC_ENABLED=false` (immediate, no site release needed), then set `"public": false` and rebuild.
+**Rollback:** set `INTRO_PUBLIC_ENABLED=false` at the console (immediate), then set `"public": false` and rebuild.
 
 ## 5 · Tests on this branch
 
 | Suite | Result |
 |---|---|
 | Worker: Yard Box lead behaviour / mutations | 43/43 · 18/18 caught |
-| Worker: introductions behaviour / mutations | 46/46 · 14/14 caught |
+| Worker: introductions, including retention and the Airtable spec / mutations | 57/57 · 19/19 caught |
 | Pages: `prove-plotnua-introductions.py` | 26/26 |
 | `plotnua_introductions.py --check` | OK (off, 6 placements, 0 suppliers) |
-| Supplier builders `--check` (NOOK, Pod Factory, Arctic Wellness) | CHECK OK |
-| Journey Contract (93 checks) | HELD |
+| Supplier builders `--check` | CHECK OK |
+| Journey Contract | HELD |
 | First lead / referral attribution | 35/35 · 8/8 |
-| Image Rights Gate (all 32 steps, locally) | 32/32 |
-| Browser payload checked against the real Worker handler | 200 received |
+| Deploy guard / settings reader / outside check (local) | pass / 4 cases / 5/5 |
+| Image Rights Gate (all steps, locally) | see the release report |
