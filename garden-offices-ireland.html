@@ -2,26 +2,55 @@
 <html lang="en-IE">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script data-cookieconsent="ignore">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'denied',
+    personalization_storage: 'denied', security_storage: 'granted',
+    wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+<script data-cookieconsent="ignore">
+/* PlotNua intention events: supplier_outbound_click, whatsapp_click, email_click. Statistics consent only; no personal data. */
+(function(){
+  var SUP=/(^|\.)(arcticwellness\.ie|donmodularhomes\.ie|elmlandscaping\.ie|gardenroomireland\.ie|gardenhouse24\.ie|nookprefab\.com|superiorpergola\.ie|themobilepods\.ie|thepodfactory\.ie|shomera\.ie|irishsaunacompany\.com|polaris-sauna\.ie|summerhouse24\.ie|pineca\.ie|ognyx\.com|conceptmodular\.ie|allinonecabins\.ie|triqbriq\.de|timbertrove\.com|oodhouse\.com|powersheds\.com|yardbox\.co\.uk|apexverandas\.ie|accesslifts\.ie|tanktribe\.ie)$/i;
+  var NOT=/(^|\.)(plotnua\.ie|facebook\.com|instagram\.com|linkedin\.com|tiktok\.com|pinterest\.com|x\.com|twitter\.com|youtube\.com|google\.com|googleapis\.com|gstatic\.com|cookiebot\.com|gov\.ie|irishstatutebook\.ie)$/i;
+  document.addEventListener('click',function(e){
+    try{
+      var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+      if(!a||typeof gtag!=='function'||!(window.Cookiebot&&Cookiebot.consent&&Cookiebot.consent.statistics))return;
+      var p=location.pathname,u=new URL(a.getAttribute('href'),location.href);
+      if(u.protocol==='mailto:'){gtag('event','email_click',{page:p});return;}
+      var h=u.hostname.toLowerCase().replace(/^www\./,'');
+      if(h==='wa.me'||/(^|\.)whatsapp\.com$/.test(h)){gtag('event','whatsapp_click',{page:p});return;}
+      if(!/^https?:$/.test(u.protocol)||u.hostname===location.hostname||NOT.test(h)||a.hasAttribute('data-outbound'))return;
+      if(/^\/suppliers\//.test(p)||SUP.test(h))gtag('event','supplier_outbound_click',{supplier_domain:h,page:p});
+    }catch(_){}
+  },true);
+})();
+</script>
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-PKKJ0RK6N8');</script>
-<title>Garden Offices in Ireland: Designs, Makers & Practicalities | PlotNua</title>
-<meta name="description" content="Explore garden offices in Ireland, from compact workspaces to creative studios. Discover researched makers and what to check before choosing.">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-PKKJ0RK6N8',{content_group:'PlotNua'});</script>
+<title>Garden Offices in Ireland: Makers &amp; What to Check | PlotNua</title>
+<meta name="description" content="Planning a garden office in Ireland? Layouts, researched makers, planning, year-round comfort and the costs a garden office quote may leave out.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://plotnua.ie/garden-offices-ireland.html">
 <!-- SEO Opportunity 1 (founder approval, 11 Nov 2026): share tags with PlotNua's standard brand share card, as on the price guide. -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
-<meta property="og:title" content="Garden Offices in Ireland: Designs, Makers &amp; Practicalities | PlotNua">
-<meta property="og:description" content="Explore garden offices in Ireland, from compact workspaces to creative studios. Discover researched makers and what to check before choosing.">
+<meta property="og:title" content="Garden Offices in Ireland: Makers &amp; What to Check | PlotNua">
+<meta property="og:description" content="Planning a garden office in Ireland? Layouts, researched makers, planning, year-round comfort and the costs a garden office quote may leave out.">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://plotnua.ie/garden-offices-ireland.html">
 <meta property="og:locale" content="en_IE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Garden Offices in Ireland: Designs, Makers &amp; Practicalities | PlotNua">
-<meta name="twitter:description" content="Explore garden offices in Ireland, from compact workspaces to creative studios. Discover researched makers and what to check before choosing.">
+<meta name="twitter:title" content="Garden Offices in Ireland: Makers &amp; What to Check | PlotNua">
+<meta name="twitter:description" content="Planning a garden office in Ireland? Layouts, researched makers, planning, year-round comfort and the costs a garden office quote may leave out.">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <script type="application/ld+json">
 {
@@ -32,7 +61,7 @@
       "@id": "https://plotnua.ie/garden-offices-ireland.html#webpage",
       "url": "https://plotnua.ie/garden-offices-ireland.html",
       "name": "Garden Offices in Ireland",
-      "description": "Explore garden offices in Ireland, from compact workspaces to creative studios. Discover researched makers and what to check before choosing.",
+      "description": "Planning a garden office in Ireland? Layouts, researched makers, planning, year-round comfort and the costs a garden office quote may leave out.",
       "inLanguage": "en-IE",
       "dateModified": "2026-11-09",
       "about": [
@@ -158,15 +187,19 @@
 <nav class="pn-hdr-dest" aria-label="Main"><details class="pn-hdr-menu" data-pn-menu><summary class="pn-hdr-menu-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-hdr-panel"><a class="pn-hdr-btn is-primary" href="discoveries.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.25"/><path d="m12.9 7.1-1.75 4.05L7.1 12.9l1.75-4.05Z"/></svg><span>Discovery Library</span></a><a class="pn-hdr-btn is-secondary is-art" href="plotart/"><img class="pn-hdr-art" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" width="20" height="20" alt="" decoding="async"><span>PlotArt</span></a><a class="pn-hdr-btn is-secondary is-grid" href="gridnua/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.75" y="2.75" width="14.5" height="14.5" rx="3"/><path d="M7.6 2.75v14.5M12.4 2.75v14.5M2.75 7.6h14.5M2.75 12.4h14.5"/><rect class="pn-grid-core" x="8.2" y="8.2" width="3.6" height="3.6" rx=".8" fill="currentColor" stroke="none"/></svg><span>GridNua</span></a><a class="pn-hdr-btn is-secondary is-myplot" href="your-plot.html?myplot=1" data-myplot aria-label="My Plot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-heart" d="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg><span>My Plot</span><span class="pn-hdr-count" aria-hidden="true" hidden></span></a><p class="pn-hdr-panel-k">Talk to PlotNua</p><div class="pn-hdr-panel-contact"><a class="pn-hdr-pl pn-hdr-pl--wa" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="pn-hdr-wa-ico" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="22" height="22"></span><span>WhatsApp</span></a><a class="pn-hdr-pl" href="contact.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="2.75" y="4.5" width="14.5" height="11" rx="2"/><path d="m3.5 5.5 6.5 5 6.5-5"/></svg><span>Contact</span></a></div></div></details></nav>
 <!-- PLOTNUA HEADER v2 · ROW · END -->
 <main id="pn-main">
-<section class="hero"><div class="wrap"><div class="eyebrow">A PlotNua guide</div><h1>A Garden Office That Works for You</h1><p class="lead">A garden office could give your working day a place of its own. Imagine stepping out of the house and into a quiet room at the end of the garden.</p><div class="actions"><a class="button" href="#possibilities">Explore the possibilities</a><a class="button" href="discovery-living-in-the-garden.html">Discover garden rooms</a></div></div><p class="hero-ai">AI-generated illustration</p></section>
+<section class="hero"><div class="wrap"><div class="eyebrow">A PlotNua guide</div><h1>Garden Offices in Ireland: A Workspace That Works for You</h1><p class="lead">A garden office could give your working day a place of its own. Imagine stepping out of the house and into a quiet room at the end of the garden.</p><div class="actions"><a class="button" href="#possibilities">Explore the possibilities</a><a class="button" href="discovery-living-in-the-garden.html">Discover garden rooms</a></div></div><p class="hero-ai">AI-generated illustration</p></section>
 <section class="section" id="possibilities"><div class="wrap"><div class="eyebrow">Garden offices in Ireland</div><h2>One garden. Different ways to work.</h2><p class="intro">Start with the space you need, rather than a particular product. A garden office might be a single desk away from household distractions, or a more flexible room for work and creative projects.</p><div class="grid">
 <article class="card"><h3>A compact workspace</h3><p>A desk, a chair, reliable connectivity and enough room to think. Consider light, ventilation, power and the space needed to move comfortably.</p></article>
 <article class="card"><h3>A creative studio</h3><p>For drawing, designing or making. Think about storage, daylight, surfaces and the equipment your work requires.</p></article>
 <article class="card"><h3>A shared office</h3><p>Two people working from home? Check desk positions, acoustic separation, heating and how the room will be used throughout the day.</p></article>
 <article class="card"><h3>A flexible garden room</h3><p>Work on weekdays, other uses at weekends. Confirm that the design and proposed use suit your property and circumstances.</p></article>
 </div></div></section>
-<section class="section"><div class="wrap"><div class="eyebrow">Research before choosing</div><h2>Explore makers, not just photographs.</h2><p class="intro">PlotNua's researched maker guides help you understand published specifications and questions to ask. A listing is not a supplier endorsement, and a headline price is not necessarily an installed price.</p><div class="grid">
-<article class="card"><h3><a href="concept-modular-garden-offices.html">Concept Modular garden offices</a></h3><p>Compare published Standard and Signature office specifications, and identify installation and site costs to confirm.</p></article>
+<section class="section"><div class="wrap"><div class="eyebrow">Research before choosing</div><h2>Explore makers, not just photographs.</h2><p class="intro">PlotNua's researched maker guides help you understand published specifications and questions to ask. A listing is not a supplier endorsement, and a headline price is not necessarily an installed price. Below are garden office models PlotNua has checked, each with the price as its maker states it and the date it was checked.</p><div class="grid">
+<article class="card"><h3><a href="concept-modular-garden-offices.html">Concept Modular garden offices</a></h3><p>Compare published Standard and Signature office specifications, and identify installation and site costs to confirm. Published at €17,800 (Standard) and €19,900 (Signature), both excluding VAT; checked 26 October 2026.</p></article>
+<article class="card"><h3><a href="triq-cube.html">TRIQ QUBE, a 9 m² solid-timber garden office</a></h3><p>TRIQBRIQ AG publishes €22,700 for the kit, a German-market price stated as including VAT and logistics. No Irish price has been established. Checked 12 October 2026.</p></article>
+<article class="card"><h3><a href="suppliers/the-pod-factory.html">The Pod Factory&rsquo;s Pod 17 garden studio</a></h3><p>Steel-framed, built in Co. Meath and craned into place. The Pod Factory publishes no prices: each pod is quoted per project. Checked 11 November 2026.</p></article>
+<article class="card"><h3><a href="suppliers/gardenhouse24.html">Gardenhouse24&rsquo;s Q-BIC compact garden office</a></h3><p>The Q-BIC 44 A is listed as a kit at €5,335, with optional installation by the supplier from €1,620. Checked 4 November 2026.</p></article>
+<article class="card"><h3><a href="suppliers/nook-prefab.html">NOOK Prefab&rsquo;s factory-finished garden rooms</a></h3><p>The NOOK 10 starts from €39,000 ex works; VAT, delivery, foundations and installation are extra. Confirmed by NOOK on 11 November 2026.</p></article>
 <article class="card"><h3><a href="discovery-living-in-the-garden.html#explore-makers">Explore more garden-room makers</a></h3><p>See a wider range of garden buildings, with availability and pricing qualifications where researched.</p></article>
 </div></div></section>
 <section class="section"><div class="wrap"><div class="eyebrow">Before you decide</div><h2>The practical questions matter.</h2><div class="grid">

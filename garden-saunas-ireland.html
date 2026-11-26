@@ -2,26 +2,55 @@
 <html lang="en-IE">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script data-cookieconsent="ignore">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'denied',
+    personalization_storage: 'denied', security_storage: 'granted',
+    wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+<script data-cookieconsent="ignore">
+/* PlotNua intention events: supplier_outbound_click, whatsapp_click, email_click. Statistics consent only; no personal data. */
+(function(){
+  var SUP=/(^|\.)(arcticwellness\.ie|donmodularhomes\.ie|elmlandscaping\.ie|gardenroomireland\.ie|gardenhouse24\.ie|nookprefab\.com|superiorpergola\.ie|themobilepods\.ie|thepodfactory\.ie|shomera\.ie|irishsaunacompany\.com|polaris-sauna\.ie|summerhouse24\.ie|pineca\.ie|ognyx\.com|conceptmodular\.ie|allinonecabins\.ie|triqbriq\.de|timbertrove\.com|oodhouse\.com|powersheds\.com|yardbox\.co\.uk|apexverandas\.ie|accesslifts\.ie|tanktribe\.ie)$/i;
+  var NOT=/(^|\.)(plotnua\.ie|facebook\.com|instagram\.com|linkedin\.com|tiktok\.com|pinterest\.com|x\.com|twitter\.com|youtube\.com|google\.com|googleapis\.com|gstatic\.com|cookiebot\.com|gov\.ie|irishstatutebook\.ie)$/i;
+  document.addEventListener('click',function(e){
+    try{
+      var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+      if(!a||typeof gtag!=='function'||!(window.Cookiebot&&Cookiebot.consent&&Cookiebot.consent.statistics))return;
+      var p=location.pathname,u=new URL(a.getAttribute('href'),location.href);
+      if(u.protocol==='mailto:'){gtag('event','email_click',{page:p});return;}
+      var h=u.hostname.toLowerCase().replace(/^www\./,'');
+      if(h==='wa.me'||/(^|\.)whatsapp\.com$/.test(h)){gtag('event','whatsapp_click',{page:p});return;}
+      if(!/^https?:$/.test(u.protocol)||u.hostname===location.hostname||NOT.test(h)||a.hasAttribute('data-outbound'))return;
+      if(/^\/suppliers\//.test(p)||SUP.test(h))gtag('event','supplier_outbound_click',{supplier_domain:h,page:p});
+    }catch(_){}
+  },true);
+})();
+</script>
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-PKKJ0RK6N8');</script>
-<title>Garden Saunas in Ireland: Makers, Models &amp; Prices | PlotNua</title>
-<meta name="description" content="Compare garden saunas in Ireland: barrel, cube and cabin kits, bespoke and installed saunas, each maker&#39;s published prices, and what to check first.">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-PKKJ0RK6N8',{content_group:'PlotNua'});</script>
+<title>Garden Saunas in Ireland: 8 Makers, Prices &amp; Kits | PlotNua</title>
+<meta name="description" content="Garden saunas in Ireland from eight makers: barrel, cube and cabin kits, made-to-order and installed saunas, published prices and heaters, checked 12 Nov.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://plotnua.ie/garden-saunas-ireland.html">
 <!-- Garden Saunas in Ireland guide (founder instruction, 12 Nov 2026: local build, not released). Share tags use PlotNua's standard brand share card. -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
-<meta property="og:title" content="Garden Saunas in Ireland: Makers, Models &amp; Prices | PlotNua">
-<meta property="og:description" content="Compare garden saunas in Ireland: barrel, cube and cabin kits, bespoke and installed saunas, each maker&#39;s published prices, and what to check first.">
+<meta property="og:title" content="Garden Saunas in Ireland: 8 Makers, Prices &amp; Kits | PlotNua">
+<meta property="og:description" content="Garden saunas in Ireland from eight makers: barrel, cube and cabin kits, made-to-order and installed saunas, published prices and heaters, checked 12 Nov.">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://plotnua.ie/garden-saunas-ireland.html">
 <meta property="og:locale" content="en_IE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Garden Saunas in Ireland: Makers, Models &amp; Prices | PlotNua">
-<meta name="twitter:description" content="Compare garden saunas in Ireland: barrel, cube and cabin kits, bespoke and installed saunas, each maker&#39;s published prices, and what to check first.">
+<meta name="twitter:title" content="Garden Saunas in Ireland: 8 Makers, Prices &amp; Kits | PlotNua">
+<meta name="twitter:description" content="Garden saunas in Ireland from eight makers: barrel, cube and cabin kits, made-to-order and installed saunas, published prices and heaters, checked 12 Nov.">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <script type="application/ld+json">
 {
@@ -267,7 +296,7 @@
 <article class="card"><h3>Outside and inside sizes</h3><p>Compare the external size with your garden, and the bench length with the people who will use it. Makers measure differently: some give a footprint, others a diameter and a length.</p></article>
 </div></div></section>
 
-<section class="section" id="planning"><div class="wrap"><div class="eyebrow">Planning</div><h2>Garden saunas and planning permission.</h2>
+<section class="section" id="planning"><div class="wrap"><div class="eyebrow">Planning</div><h2>Do I need planning permission for a garden sauna in Ireland?</h2>
 <p class="intro">A sauna cabin is a structure you put up, so the rules on development apply. It can only be built without planning permission if it fits Class 3 of the exempted-development rules for houses, which covers a &ldquo;greenhouse, garage, store, shed or other similar structure&rdquo;, and meets every one of its conditions:</p>
 <ul class="plist">
 <li>nothing in front of the front wall of the house;</li>

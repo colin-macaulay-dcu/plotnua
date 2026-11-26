@@ -324,7 +324,7 @@ def state(src):
 
 PRESERVE = [
   ('<h1>Garden Retreat</h1>', 1),
-  ('<title>Garden Saunas, Hot Tubs &amp; Cold Plunges in Ireland | PlotNua</title>', 1),
+  ('<title>Hot Tubs, Cold Plunges &amp; Saunas for Irish Gardens | PlotNua</title>', 1),   # SEO package, 26 Nov 2026
   ('<link rel="canonical" href="https://plotnua.ie/discovery-garden-retreat.html">', 1),
   ('mycabin.ie', None), ('gardenhouse24.ie', None), ('timbertrove.com', None),
   ('PlotNua has no commercial relationship with the three suppliers compared here', 1),

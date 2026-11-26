@@ -158,8 +158,10 @@ HERO_ILLUSTRATION = {
 # Both figures pairs and both counts come from the same published evidence as the page. The
 # kit figure is its published lower bound only, so the first "\u20acX to \u20acY" range on the page stays
 # the installed range (prove-matching-eligibility E7 compares it with production).
-DESCRIPTION_FMT = ("Independent research on garden room prices in Ireland: %d advertised prices from "
-                   "%d suppliers. Installed rooms ran from %s to %s; kits from %s.")
+# SEO and analytics package (founder approval, 26 Nov 2026, §3.2): the approved wording names both published
+# ranges in full. Every figure is still the published evidence's own (counts, installed range, kit range).
+DESCRIPTION_FMT = ("Garden room prices in Ireland from %d advertised prices by %d suppliers: installed rooms "
+                   "%s\u2013%s, kits %s\u2013%s. What each price covers.")
 _DESC_CONTEXT = {}   # the kit range and research totals of the last render(), for description(t)
 
 
@@ -171,7 +173,7 @@ def description(t, kit=None, tot=None):
         die("the meta description needs the published kit range and the research totals")
     e = lambda n: "\u20ac{:,}".format(int(n))
     return DESCRIPTION_FMT % (tot["relevant"], tot["relevantOrganisations"], e(t["minEur"]), e(t["maxEur"]),
-                              e(kit["minEur"]))
+                              e(kit["minEur"]), e(kit["maxEur"]))
 
 
 EXTRAS = ROOT / "atlas-tools" / "garden-room-extras-evidence.json"

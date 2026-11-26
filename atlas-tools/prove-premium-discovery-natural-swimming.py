@@ -61,7 +61,10 @@ ADDED_FILE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "natural-swi
 ADDED_LINKS = ["#lg-ch01", "#lg-ch02", "#lg-ch03", "#lg-ch04", "#lg-ch05", "#lg-ch06", "#sources", "#ns-professionals",
                "#in-ireland", "#before-you-go-further", "your-plot.html?myplot=1", "https://wa.me/353834036695",
                # DISC-034 reciprocal exit (founder finalisation instruction, 4 Nov 2026): one added closing-panel link
-               "discovery-the-water-wall.html"]
+               "discovery-the-water-wall.html",
+               # SEO and analytics package (founder approval 26 Nov 2026, section 3.5 link 12): one closing-panel exit
+               # to the Underground Swimming Pool, in the same form as the two above (link only, no text block)
+               "discovery-underground-swimming-pool.html"]
 ADDED_IDS = ["lg-ch01", "lg-ch02", "lg-ch03", "lg-ch04", "lg-ch05", "lg-ch06", "ns-professionals"]
 ADDED_IMGS = []     # only already-approved assets may be added; declared in ADDED_FILE
 PLACEHOLDER = re.compile(r"\bto research\b|\bTBC\b|\bTBD\b|lorem|placeholder|coming soon", re.I)

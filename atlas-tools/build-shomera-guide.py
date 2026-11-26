@@ -19,9 +19,9 @@ DATA = ROOT / 'atlas-tools/maker-pages'
 PAGE = 'shomera-garden-rooms.html'
 PROFILE = {
     'template': 'shomera.html',
-    'title': 'Shomera Garden Rooms: Classic & Contemporary Compared | PlotNua',
+    'title': 'Shomera Garden Room Prices: 6 Models From €28,450 | PlotNua',   # SEO package, founder approval 26 Nov 2026
     'h1': 'Shomera garden rooms',
-    'description': 'Compare Shomera Classic and Contemporary garden studios: six published starting prices, installation scope, VAT questions and what to confirm for your garden.',
+    'description': 'Shomera Classic and Contemporary garden rooms: six published starting prices from €28,450 to €46,450, sizes, what installation covers, and VAT to confirm.',
     'lead': 'Classic and Contemporary compared: published prices, installation scope and questions for your quotation.',
     'about': 'Shomera Classic and Contemporary garden studios',
 }

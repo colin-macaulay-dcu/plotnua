@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script data-cookieconsent="ignore">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'denied',
+    personalization_storage: 'denied', security_storage: 'granted',
+    wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+<script data-cookieconsent="ignore">
+/* PlotNua intention events: supplier_outbound_click, whatsapp_click, email_click. Statistics consent only; no personal data. */
+(function(){
+  var SUP=/(^|\.)(arcticwellness\.ie|donmodularhomes\.ie|elmlandscaping\.ie|gardenroomireland\.ie|gardenhouse24\.ie|nookprefab\.com|superiorpergola\.ie|themobilepods\.ie|thepodfactory\.ie|shomera\.ie|irishsaunacompany\.com|polaris-sauna\.ie|summerhouse24\.ie|pineca\.ie|ognyx\.com|conceptmodular\.ie|allinonecabins\.ie|triqbriq\.de|timbertrove\.com|oodhouse\.com|powersheds\.com|yardbox\.co\.uk|apexverandas\.ie|accesslifts\.ie|tanktribe\.ie)$/i;
+  var NOT=/(^|\.)(plotnua\.ie|facebook\.com|instagram\.com|linkedin\.com|tiktok\.com|pinterest\.com|x\.com|twitter\.com|youtube\.com|google\.com|googleapis\.com|gstatic\.com|cookiebot\.com|gov\.ie|irishstatutebook\.ie)$/i;
+  document.addEventListener('click',function(e){
+    try{
+      var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+      if(!a||typeof gtag!=='function'||!(window.Cookiebot&&Cookiebot.consent&&Cookiebot.consent.statistics))return;
+      var p=location.pathname,u=new URL(a.getAttribute('href'),location.href);
+      if(u.protocol==='mailto:'){gtag('event','email_click',{page:p});return;}
+      var h=u.hostname.toLowerCase().replace(/^www\./,'');
+      if(h==='wa.me'||/(^|\.)whatsapp\.com$/.test(h)){gtag('event','whatsapp_click',{page:p});return;}
+      if(!/^https?:$/.test(u.protocol)||u.hostname===location.hostname||NOT.test(h)||a.hasAttribute('data-outbound'))return;
+      if(/^\/suppliers\//.test(p)||SUP.test(h))gtag('event','supplier_outbound_click',{supplier_domain:h,page:p});
+    }catch(_){}
+  },true);
+})();
+</script>
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
@@ -9,13 +38,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-PKKJ0RK6N8');
+  gtag('config', 'G-PKKJ0RK6N8', { content_group: 'PlotNua' });
 </script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Garden Room Prices &amp; Costs in Ireland (2026) | PlotNua</title>
-<meta name="description" content="Independent research on garden room prices in Ireland: 206 advertised prices from 17 suppliers. Installed rooms ran from €28,450 to €43,650; kits from €3,624.">
+<title>Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua</title>
+<meta name="description" content="Garden room prices in Ireland from 206 advertised prices by 17 suppliers: installed rooms €28,450–€43,650, kits €3,624–€25,891. What each price covers.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/garden-room-prices-ireland.html">
 
@@ -31,7 +60,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PlotNua">
-<meta property="og:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">
+<meta property="og:title" content="Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua">
 <meta property="og:description" content="Independent research on what garden rooms cost in Ireland: installed rooms and kits, what each price covers, and how to compare quotes.">
 <meta property="og:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
@@ -41,7 +70,7 @@
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">
+<meta name="twitter:title" content="Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua">
 <meta name="twitter:description" content="Independent research on what garden rooms cost in Ireland: installed rooms and kits, what each price covers, and how to compare quotes.">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 
@@ -99,7 +128,7 @@
       "@id": "https://plotnua.ie/garden-room-prices-ireland.html#webpage",
       "url": "https://plotnua.ie/garden-room-prices-ireland.html",
       "name": "Garden Room Prices in Ireland",
-      "description": "Independent research on garden room prices in Ireland: 206 advertised prices from 17 suppliers. Installed rooms ran from \u20ac28,450 to \u20ac43,650; kits from \u20ac3,624.",
+      "description": "Garden room prices in Ireland from 206 advertised prices by 17 suppliers: installed rooms \u20ac28,450\u2013\u20ac43,650, kits \u20ac3,624\u2013\u20ac25,891. What each price covers.",
       "inLanguage": "en-IE",
       "dateModified": "2026-11-08",
       "about": [
@@ -271,7 +300,7 @@
 </div>
 <p class="pr-answer-note">Each range runs from the lowest to the highest price advertised in that group of PlotNua&rsquo;s research. It is not a typical Irish price, and not the lowest or highest price on the Irish market. Neither is an all-in quotation: delivery, the connection to your house&rsquo;s electricity and VAT can sit outside an installed price, and a kit price leaves putting the building up to you or a builder you hire.</p>
 <p class="pr-small pr-makers-link">See the garden rooms PlotNua publishes, with their makers, specifications and prices. <a href="discovery-living-in-the-garden.html#explore-makers">Compare garden rooms in Ireland by maker&nbsp;&rarr;</a></p><!-- /PN-PRICES:LEAD -->
-          <p class="pd-small">This guide covers detached garden rooms and garden offices. It does not price extensions or attached sunrooms. Exploring a workspace specifically? <a href="garden-offices-ireland.html">See PlotNua’s garden offices in Ireland guide</a>.</p>
+          <p class="pd-small">This guide covers detached garden rooms and garden offices. It does not price extensions or attached sunrooms. Exploring a workspace specifically? <a href="garden-offices-ireland.html">See PlotNua’s garden offices in Ireland guide</a>. Looking for a sauna instead? Compare <a href="garden-saunas-ireland.html">garden saunas in Ireland, with each maker’s published prices</a>. For a room attached to the house, see <a href="discovery-extend-the-house.html#sunrooms-and-conservatories">extensions and attached sunrooms</a>.</p>
           <!-- PN-PRICES:SPECIALISED --><p class="pr-specialised">Some specialised garden buildings in PlotNua&rsquo;s research are advertised at substantially higher prices. These are not included in the comparison above because their pricing and installation arrangements differ.</p><!-- /PN-PRICES:SPECIALISED -->
           <p>So treat these ranges as a guide to what is advertised, then use the checklist further down to turn any price into one you can actually compare.</p>
         </div>

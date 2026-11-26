@@ -61,7 +61,7 @@
  },
  "homepage_baseline": {
   "atlas_figures_block": "bcd17b3f0692f79399501b2a6e19a2b6d318631129a718580baf95011577fa3e",
-  "analytics_and_consent": "1981b2b3c613e3da30f33d2ded67fb39c31b470c2b21f6d456ad7e2bcc73eb2d",
+  "analytics_and_consent": "8c6b11d90d441ebdc024adbdca0041d054e0f28b138eee70265caa2eeb819857",
   "analytics_and_consent_count": 3
  },
  "baseline_note": "Atlas figures block and analytics/consent tags as they stood when H6 was mounted. The daily Atlas workflow changes the figures: re-run --mount (which re-records the baseline) only after reviewing that diff."

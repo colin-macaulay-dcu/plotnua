@@ -178,6 +178,8 @@ HEAD = """<!DOCTYPE html>
 <link rel="stylesheet" href="../assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
 """
+sys.path.insert(0, str(ROOT / "atlas-tools")); from seo_pn_analytics import transform as _seo_pn  # SEO and analytics package (founder approval, 26 Nov 2026)
+HEAD = _seo_pn(HEAD)
 
 
 def page():

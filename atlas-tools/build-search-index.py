@@ -650,7 +650,9 @@ SUPPLIER_PROFILE_PAGES = {
         "id": "info-superior-pergola-ireland",
         "title": "Supplier profile: Superior Pergola Ireland",
         "standfirst": "Made-to-measure aluminium pergolas, verandas and porches.",
-        "page_must_contain": ["Superior Pergola Ireland", "made-to-measure",
+        # SEO and analytics package (26 Nov 2026): the page's new meta description no longer says "made-to-measure";
+        # the standfirst's claim is now pinned to the page's own product text ("made to measure").
+        "page_must_contain": ["Superior Pergola Ireland", "made to measure",
                               "aluminium pergolas, verandas and porches"],
     },    # Arctic Wellness showcase (founder brief, 10 Nov 2026: complete its search integration).
     "suppliers/arctic-wellness.html": {

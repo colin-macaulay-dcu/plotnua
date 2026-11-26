@@ -293,7 +293,10 @@ console.log('\nCLUSTER 2 CLAIM GUARDS\n');
 {
   const toks = {
     'H1': '<h1>Garden Retreat</h1>',
-    'title': '<title>Garden Saunas, Hot Tubs &amp; Cold Plunges in Ireland | PlotNua</title>',
+    // Re-pinned 26 Nov 2026 (SEO and analytics package, founder approval, section 3.2): the title leads with hot tubs
+    // so the saunas guide owns "garden sauna". Previous value:
+    // '<title>Garden Saunas, Hot Tubs &amp; Cold Plunges in Ireland | PlotNua</title>'
+    'title': '<title>Hot Tubs, Cold Plunges &amp; Saunas for Irish Gardens | PlotNua</title>',
     'canonical': '<link rel="canonical" href="https://plotnua.ie/discovery-garden-retreat.html">',
     'no-commercial-relationship note': 'PlotNua has no commercial relationship with the three suppliers compared here',
     // 14 Oct 2026 (final publication consistency corrections): MyCabin, held

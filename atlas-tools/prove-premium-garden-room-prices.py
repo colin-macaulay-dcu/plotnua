@@ -148,6 +148,24 @@ GR9_ADDED = [
 ]
 ADDED_TEXT.update({x: GR9 for x in GR9_ADDED})
 ADDED_LINKS.update({"garden-offices-ireland.html": 1})
+# SEO and analytics package, PlotNua half (founder approval, 26 Nov 2026). Section 3.2: the approved title (and its
+# Open Graph / Twitter copies) and the builder-written meta description (checked below). Section 3.5: two contextual
+# links in the scope note, to the existing saunas guide and to the extensions Discovery's sunrooms section. Wording as
+# declared; no figure, name or claim word added (CLAIM_WORDS unchanged). Analytics (consent default, click listener,
+# content group) is inline script with no src, so G1's script list is unchanged by it.
+SEO_PN = "SEO and analytics package (founder approval 26 Nov 2026)"
+SEO_PN_HEAD = {
+    "<title>Garden Room Prices &amp; Costs in Ireland (2026) | PlotNua</title>":
+        "<title>Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua</title>",
+    '<meta property="og:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">':
+        '<meta property="og:title" content="Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua">',
+    '<meta name="twitter:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">':
+        '<meta name="twitter:title" content="Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua">',
+}
+SEO_PN_ADDED = ["Looking for a sauna instead?", "Compare", "garden saunas in Ireland, with each maker\u2019s published prices",
+                "For a room attached to the house, see", "extensions and attached sunrooms"]
+ADDED_TEXT.update({x: SEO_PN for x in SEO_PN_ADDED})
+ADDED_LINKS.update({"garden-saunas-ireland.html": 1, "discovery-extend-the-house.html#sunrooms-and-conservatories": 1})
 ADDED_IDS = {"short-answer", "why-it-is-hard", "garden-homes",
              "what-may-cost-extra",   # Stage 2 item 5 (6 Nov 2026), inside the EXTRAS region
              "what-affects-prices",   # SEO-GR3 (8 Nov 2026): the new section
@@ -260,15 +278,18 @@ def main():
     dm = re.search(r'<meta name="description" content="([^"]*)">', t)
     new_desc = dm.group(1) if dm else ""
     # SEO-GR3 (8 Nov 2026): the approved wording names both published ranges and the research totals.
-    if not re.fullmatch(r"Independent research on garden room prices in Ireland: \d+ advertised prices from "
-                        r"\d+ suppliers\. Installed rooms ran from €[\d,]+ to €[\d,]+; kits from €[\d,]+\.",
+    # SEO and analytics package (26 Nov 2026): the approved wording now gives both ranges in full; G5 (the builder's
+    # check) still proves every figure in it is the published evidence's own.
+    if not re.fullmatch(r"Garden room prices in Ireland from \d+ advertised prices by \d+ suppliers: installed rooms "
+                        r"€[\d,]+–€[\d,]+, kits €[\d,]+–€[\d,]+\. What each price covers\.",
                         new_desc):
         bad("G1 the meta description is not the approved figure-bearing wording")
     ld_desc = json.dumps(new_desc, ensure_ascii=True)[1:-1]
     base["head"]["metas"] = sorted(m.replace(old_desc, new_desc) if 'name="description"' in m else m
                                    for m in base["head"]["metas"])
-    base["head"]["title"] = [GR3_HEAD.get(x, x) for x in base["head"]["title"]]
-    base["head"]["metas"] = sorted(GR3_HEAD.get(m, m) for m in base["head"]["metas"])
+    seo_pn = lambda x: SEO_PN_HEAD.get(GR3_HEAD.get(x, x), GR3_HEAD.get(x, x))   # GR3, then the SEO package
+    base["head"]["title"] = [seo_pn(x) for x in base["head"]["title"]]
+    base["head"]["metas"] = sorted(seo_pn(m) for m in base["head"]["metas"])
     base["head"]["jsonld"] = [x.replace('"dateModified": "2026-10-20"', '"dateModified": "%s"' % bdate0)
                                 .replace(old_desc, ld_desc)
                               for x in base["head"]["jsonld"]]

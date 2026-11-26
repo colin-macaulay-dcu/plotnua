@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script data-cookieconsent="ignore">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'denied',
+    personalization_storage: 'denied', security_storage: 'granted',
+    wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+<script data-cookieconsent="ignore">
+/* PlotNua intention events: supplier_outbound_click, whatsapp_click, email_click. Statistics consent only; no personal data. */
+(function(){
+  var SUP=/(^|\.)(arcticwellness\.ie|donmodularhomes\.ie|elmlandscaping\.ie|gardenroomireland\.ie|gardenhouse24\.ie|nookprefab\.com|superiorpergola\.ie|themobilepods\.ie|thepodfactory\.ie|shomera\.ie|irishsaunacompany\.com|polaris-sauna\.ie|summerhouse24\.ie|pineca\.ie|ognyx\.com|conceptmodular\.ie|allinonecabins\.ie|triqbriq\.de|timbertrove\.com|oodhouse\.com|powersheds\.com|yardbox\.co\.uk|apexverandas\.ie|accesslifts\.ie|tanktribe\.ie)$/i;
+  var NOT=/(^|\.)(plotnua\.ie|facebook\.com|instagram\.com|linkedin\.com|tiktok\.com|pinterest\.com|x\.com|twitter\.com|youtube\.com|google\.com|googleapis\.com|gstatic\.com|cookiebot\.com|gov\.ie|irishstatutebook\.ie)$/i;
+  document.addEventListener('click',function(e){
+    try{
+      var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+      if(!a||typeof gtag!=='function'||!(window.Cookiebot&&Cookiebot.consent&&Cookiebot.consent.statistics))return;
+      var p=location.pathname,u=new URL(a.getAttribute('href'),location.href);
+      if(u.protocol==='mailto:'){gtag('event','email_click',{page:p});return;}
+      var h=u.hostname.toLowerCase().replace(/^www\./,'');
+      if(h==='wa.me'||/(^|\.)whatsapp\.com$/.test(h)){gtag('event','whatsapp_click',{page:p});return;}
+      if(!/^https?:$/.test(u.protocol)||u.hostname===location.hostname||NOT.test(h)||a.hasAttribute('data-outbound'))return;
+      if(/^\/suppliers\//.test(p)||SUP.test(h))gtag('event','supplier_outbound_click',{supplier_domain:h,page:p});
+    }catch(_){}
+  },true);
+})();
+</script>
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
@@ -9,13 +38,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-PKKJ0RK6N8');
+  gtag('config', 'G-PKKJ0RK6N8', { content_group: 'PlotNua' });
 </script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Garden Rooms in Ireland: Compare Makers &amp; Prices | PlotNua</title>
-<meta name="description" content="Compare garden rooms and garden offices in Ireland. Explore researched makers, understand advertised prices, and check installation, specifications and planning.">
+<title>Garden Rooms in Ireland: Makers, Prices &amp; Rules | PlotNua</title>
+<meta name="description" content="Garden rooms, garden offices and garden homes in Ireland: researched makers, what advertised prices cover, and the 2026 planning exemptions explained.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-living-in-the-garden.html">
 <link rel="preload" as="image" type="image/webp" imagesrcset="assets/disc008/img/DISC-008-BEFORE-960w-20261111.webp 960w, assets/disc008/img/DISC-008-BEFORE-20261111.webp 1672w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
@@ -1287,6 +1316,8 @@ body.pn-id.pn-pd .litg-hero.pn-hero-compare :is(.pn-compare__possible,.pn-compar
     </div>
 
     <p>The building does not decide what happens inside it.</p>
+    <p>Some are built for one purpose, such as a garden sauna:
+      <a href="garden-saunas-ireland.html">compare garden saunas in Ireland</a> and what each maker publishes.</p>
   </section>
 </div>
 
