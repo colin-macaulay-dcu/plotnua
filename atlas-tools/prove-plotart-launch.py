@@ -1120,7 +1120,7 @@ for _rel in OPP.PAGES:
         continue
     _doc = open(_fp, encoding="utf-8").read()
     try:
-        need(_doc == OPP.update(_doc, _rel, _pk), "L19 %s: the opportunity list differs from the published galleries" % _rel)
+        need(_doc == OPP.update(_doc, _rel, _pk, FEAT.choices(os.path.dirname(PA))), "L19 %s: the opportunity list differs from the published galleries" % _rel)
     except ValueError as _e:
         need(False, "L19 %s: %s" % (_rel, _e))
     need(not re.search(r"(?i)\b(?:participating artists?|confirmed (?:artists?|placements?)|now booking|book now|available now)\b", visible_text(OPP.REGION.search(_doc).group(0) if OPP.REGION.search(_doc) else "")),

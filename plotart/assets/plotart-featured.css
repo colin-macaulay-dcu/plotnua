@@ -110,4 +110,12 @@ body.pa .pa-gl{ margin-bottom:clamp(56px, 6vw, 96px); }
 body.pa .pa-gl .pa-fa-item.is-textonly .pa-fa-text{ margin-top:0; }
 @media (max-width:899px){
   body.pa .pa-op-text .pa-fa-intro{ font-size:15px; }
+  /* phones and tablets (founder refinement 26 Nov 2026): every opening artwork sits in the same band, bottom-aligned and
+     never cropped, so the captions and artist introductions beneath all start on one line */
+  body.pa .pa-op-row, body.pa .pa-op-row.n-1, body.pa .pa-op-row.n-2{ align-items:flex-start; }
+  body.pa .pa-op-art{ height:clamp(280px, 52vw, 420px); align-items:flex-end; justify-content:center; }
+  body.pa .pa-op-art img{ max-width:100%; max-height:100%; }
+}
+@media (max-width:639px){
+  body.pa .pa-op-art{ height:min(92vw, 380px); }
 }

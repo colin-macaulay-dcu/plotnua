@@ -27,6 +27,7 @@ and the page records it (data-pa-opening / data-pa-curated, and a held list), so
 exactly (arrangement_in), which is how the guards prove the page is what the published galleries render.
 """
 import html
+import os
 import re
 
 import plotart_gallery_pages as P
@@ -49,9 +50,9 @@ OPENING = [("carmel-marrinan", "wg1by72jg3b"), ("daniel-chester", "wfhtcyurvgf")
 
 
 def intro(bio, words=INTRO_WORDS):
-    """The start of the artist's published biography, verbatim: whole sentences of the first paragraph up to the word
-    limit (at least the first sentence; a second and third are added while the total stays within it). A first sentence
-    longer than the limit is shortened at a word with an ellipsis. A leading one-to-three-word heading line without a full
+    """The start of the artist's published biography, verbatim: whole sentences up to the word limit (at least the first
+    sentence; later ones are added while the total stays within it, and the excerpt always ends at a complete sentence).
+    Only a first sentence longer than the limit is shortened, at a comma or word, with an ellipsis. A leading one-to-three-word heading line without a full
     stop (e.g. "Statement") is skipped. Whitespace is normalised only. No biography: no introduction (never invented)."""
     lo, hi = words
     if not isinstance(bio, str) or not bio.strip():
@@ -69,11 +70,10 @@ def intro(bio, words=INTRO_WORDS):
         n += k
         if n >= lo:
             break
-    if lo <= n <= hi or (n <= hi and len(out) == len(sents)):
-        return " ".join(out)
-    # still short (the next sentence is long) or one over-long sentence: continue verbatim and stop at a comma or word
-    # within the limit, marked with an ellipsis
-    words_ = " ".join(sents).split()[:hi - 4]
+    if n <= hi:
+        return " ".join(out)       # whole sentences only (founder refinement 26 Nov 2026), even when a little short
+    # a single first sentence longer than the limit: shortened verbatim at a comma or word, marked with an ellipsis
+    words_ = sents[0].split()[:hi - 4]
     text = " ".join(words_)
     cut = max(text.rfind(","), text.rfind(";"))
     if cut > 0 and len(text[:cut].split()) >= lo:
@@ -238,6 +238,26 @@ def arrangement_in(doc):
     return {"opening": [{"artist": s, "work": w} for s, w in OPEN_ITEM.findall(region(doc))],
             "rest": [{"artist": s, "work": None if w == "auto" else w} for s, w in CUR_ITEM.findall(reg)],
             "held": [x for x in (h.group(1).split(",") if h else []) if x]}
+
+
+def choices_in(doc):
+    """The founder's representative artwork for each artist, as published on the gallery page: {gallery address: artwork
+    id}. Opening-row artists: their opening work; everyone else: the work chosen in Curate (artists left on Automatic are
+    absent). Other PlotArt pages that show an artist's artwork (Living Gallery, Art for Hire, the opportunity lists) use
+    the same choice, so each artist's image is curated once (founder requirement, 26 Nov 2026)."""
+    a = arrangement_in(doc)
+    out = {x["artist"]: x["work"] for x in a["rest"] if x["work"]}
+    out.update({x["artist"]: x["work"] for x in a["opening"]})
+    return out
+
+
+def choices(root):
+    """choices_in() for the gallery page under root; {} when the page or its regions are missing."""
+    path = root / "plotart" / PAGE if hasattr(root, "__truediv__") else os.path.join(str(root), "plotart", PAGE)
+    try:
+        return choices_in(open(path, encoding="utf-8").read())
+    except (OSError, ValueError):
+        return {}
 
 
 def shown_artists(doc):

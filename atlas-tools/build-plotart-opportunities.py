@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 import plotart_opportunities as OPP
+import plotart_featured as FEAT
 import plotart_seo as SEO
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -88,7 +89,7 @@ def render(packages, path=PATH):
     # one level down: every relative link in the shared header and footer gains ../
     fix = lambda s: re.sub(r'(href|src|srcset)="(?!https?:|/|#|mailto:)([^"]+)"', lambda m: '%s="../%s"' % (m.group(1), m.group(2)), s)
     header, footer = fix(header), fix(footer)
-    inner = OPP.content(path, packages)
+    inner = OPP.content(path, packages, FEAT.choices(ROOT))
     region = OPP.BEGIN + ("\n" + inner + "\n" if inner else "") + OPP.END
     robots = SEO.head(path, title, desc) + ("\n" + com_jsonld() if path == OPP.COMMISSIONS else "")
     return """<!DOCTYPE html>
@@ -133,7 +134,7 @@ def main():
             got = page.read_text(encoding="utf-8")
             if OPP.outside(got) != OPP.outside(want):
                 raise SystemExit("ARTIST OPPORTUNITIES · plotart/%s differs from its reviewed source outside the generated lists" % path)
-            if got != OPP.update(got, path, packages):
+            if got != OPP.update(got, path, packages, FEAT.choices(ROOT)):
                 raise SystemExit("ARTIST OPPORTUNITIES · the lists on plotart/%s differ from what the published galleries produce" % path)
             continue
         page.parent.mkdir(parents=True, exist_ok=True)

@@ -22,6 +22,7 @@ Each page holds ONE generated region (BEGIN ... END). Everything outside it is f
 launch manifest; the content pipeline may change only the region, and only to exactly what update() produces from the
 published packages (atlas-tools/release/plotart-content-boundary.py checks that).
 """
+import plotart_featured as FEAT   # the founder's representative artworks (one curated gallery, 26 Nov 2026)
 import html
 import re
 from pathlib import Path
@@ -107,23 +108,36 @@ def listed(packages, key):
     return sorted(out, key=_surname)
 
 
-def thumb(pkg):
-    """The listing thumbnail (founder decision 16 Nov 2026): the main photograph of the FIRST work in the artist's own
-    published gallery order, at its smallest published size. Only an approved package's own artwork is ever used: never
-    the portrait, never anything generated or unpublished. None when the gallery has no such photograph."""
+def _rep(pkg, choice=None):
+    """(work, main image) for the artist: the founder's representative artwork from Curate while it is eligible (shown and
+    available in the approved gallery, with a main photograph), else their first eligible work; with none eligible, the
+    main photograph of the FIRST work in their own published order (founder decision 16 Nov 2026). The same choice the
+    gallery page shows (founder requirement 26 Nov 2026: curate each artist's image once). Only an approved package's own
+    artwork is ever used: never the portrait, never anything generated or unpublished."""
+    w, im = FEAT.representative(pkg, choice)
+    if w is not None:
+        return w, im
     for w in pkg.get("works") or []:
         for im in w.get("images") or []:
             if im.get("role") == "main" and im.get("derivatives"):
-                d = min(im["derivatives"], key=lambda x: x["long_edge"])
-                return d["file"], (im.get("alt") or w.get("title") or "").strip(), w.get("title") or ""
-    return None
+                return w, im
+    return None, None
 
 
-def _rows(pkgs, base, commission_page=False):
+def thumb(pkg, choice=None):
+    """The listing thumbnail: the representative artwork (_rep) at its smallest published size; None when there is none."""
+    w, im = _rep(pkg, choice)
+    if im is None:
+        return None
+    d = min(im["derivatives"], key=lambda x: x["long_edge"])
+    return d["file"], (im.get("alt") or w.get("title") or "").strip(), w.get("title") or ""
+
+
+def _rows(pkgs, base, commission_page=False, choices=None):
     def line(p):
         a = p["artist"]
         what = a.get("practice") or MEDIUM.get(a.get("medium"), "")
-        t = thumb(p)
+        t = thumb(p, (choices or {}).get(a["slug"]))
         img = ('<img class="pa-opp-thumb" src="%sartists/%s/img/%s" alt="%s" width="80" height="80" loading="lazy" decoding="async">'
                % (base, E(a["slug"]), E(t[0]), E(t[1] or ("Artwork by " + a["display_name"])))) if t else '<span class="pa-opp-thumb" aria-hidden="true"></span>'
         # on the Commissions page, an artist whose "Open for commissions" is on links straight to their commission enquiry
@@ -144,22 +158,21 @@ HIRE_INVITE = ("<h3>Interested in hiring a work?</h3><p>Explore the artists abov
                "Availability, rental terms and arrangements are agreed directly with the artist.</p>")
 
 
-def gallery_image(pkg):
+def gallery_image(pkg, choice=None):
     """The thumb() artwork at a card size: (src file, srcset, width, height, alt), or None."""
-    for w in pkg.get("works") or []:
-        for im in w.get("images") or []:
-            if im.get("role") == "main" and im.get("derivatives"):
-                ds = sorted(im["derivatives"], key=lambda x: x["long_edge"])
-                mid = next((d for d in ds if d["long_edge"] >= 600), ds[-1])
-                return mid, ds, (im.get("alt") or w.get("title") or "").strip()
-    return None
+    w, im = _rep(pkg, choice)
+    if im is None:
+        return None
+    ds = sorted(im["derivatives"], key=lambda x: x["long_edge"])
+    mid = next((d for d in ds if d["long_edge"] >= 600), ds[-1])
+    return mid, ds, (im.get("alt") or w.get("title") or "").strip()
 
 
-def _gallery(pkgs, base, key="art_for_hire"):
+def _gallery(pkgs, base, key="art_for_hire", choices=None):
     def card(p):
         a = p["artist"]
         what = a.get("practice") or MEDIUM.get(a.get("medium"), "")
-        g = gallery_image(p)
+        g = gallery_image(p, (choices or {}).get(a["slug"]))
         root = "%sartists/%s/img/" % (base, E(a["slug"]))
         if g:
             mid, ds, alt = g
@@ -186,7 +199,7 @@ LIVING_SAID = ("Discover Irish artists interested in seeing their work displayed
                "how you could become part of the Living Gallery. Every arrangement is agreed directly with the artist.")   # founder wording, 22 Nov 2026
 
 
-def section(key, packages, base, hub, commission_page=False, gallery=False):
+def section(key, packages, base, hub, commission_page=False, gallery=False, choices=None):
     label, head, said, page, anchor = OPPORTUNITIES[key]
     pkgs = listed(packages, key)
     if not pkgs and not hub:
@@ -196,31 +209,33 @@ def section(key, packages, base, hub, commission_page=False, gallery=False):
         return ('<section class="pa-opp pa-afg pa-lgg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
                 '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
                 '  <p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>\n</div></section>'
-                % (sid, key, key, E(head), E(LIVING_SAID), _gallery(pkgs, base, key), E(base)))
+                % (sid, key, key, E(head), E(LIVING_SAID), _gallery(pkgs, base, key, choices), E(base)))
     if gallery:      # the Art for Hire page's artwork-led mini gallery (22 Nov 2026)
         return ('<section class="pa-opp pa-afg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
                 '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
                 '  <div class="pa-afg-invite">%s</div>\n  <p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>\n</div></section>'
-                % (sid, key, key, E(head), E(HIRE_SAID), _gallery(pkgs, base), HIRE_INVITE, E(base)))
+                % (sid, key, key, E(head), E(HIRE_SAID), _gallery(pkgs, base, choices=choices), HIRE_INVITE, E(base)))
     about = {"art_for_hire": "About Art for Hire", "commissions": "About commissions"}.get(key, "About the " + label)
     more = ('<p class="pa-opp-more"><a href="%s">%s →</a></p>' % (E(base + page), E(about))) if hub and page else \
            ('<p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>' % E(base)) if not hub else ""
-    body = _rows(pkgs, base, commission_page) if pkgs else '<p class="pa-opp-none">No artists are listed here yet.</p>'
+    body = _rows(pkgs, base, commission_page, choices) if pkgs else '<p class="pa-opp-none">No artists are listed here yet.</p>'
     return ('<section class="pa-opp" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap pa-opp-in">\n'
             '  <h2 id="opp-%s-h">%s</h2>\n  <p class="pa-opp-said">%s %s</p>\n  %s\n  %s\n</div></section>'
             % (sid, key, key, E(head), E(said), E(NOTE), body, more))
 
 
-def content(path, packages):
+def content(path, packages, choices=None):
+    """choices: {gallery address: artwork id}, the founder's representative artworks (plotart_featured.choices_in of the
+    gallery page); None or {} = each artist's first eligible work."""
     hub = path == HUB
     base = "../" * path.count("/")
-    return "\n".join(s for s in (section(k, packages, base, hub, path == COMMISSIONS, gallery=path in GALLERY_PAGES) for k in PAGES[path]) if s)
+    return "\n".join(s for s in (section(k, packages, base, hub, path == COMMISSIONS, gallery=path in GALLERY_PAGES, choices=choices) for k in PAGES[path]) if s)
 
 
-def update(document, path, packages):
+def update(document, path, packages, choices=None):
     if document.count(BEGIN) != 1 or document.count(END) != 1 or not REGION.search(document):
         raise Refused("Missing or duplicate opportunity region in plotart/" + path)
-    inner = content(path, packages)
+    inner = content(path, packages, choices)
     return REGION.sub(lambda m: BEGIN + ("\n" + inner + "\n" if inner else "") + END, document, count=1)
 
 
@@ -231,12 +246,14 @@ def outside(document):
     return REGION.sub(BEGIN + "<!-- opportunity artists -->" + END, document, count=1)
 
 
-def refresh(root, packages):
-    """Rewrite every opportunity region from the published packages (the content pipeline, after each gallery change)."""
+def refresh(root, packages, choices=None):
+    """Rewrite every opportunity region from the published packages (the content pipeline, after each gallery change),
+    with the representative artworks published on the gallery page unless given."""
+    ch = FEAT.choices(root) if choices is None else choices
     for path in PAGES:
         dest = Path(root) / "plotart" / path
         if dest.exists():
-            dest.write_text(update(dest.read_text(encoding="utf-8"), path, packages), encoding="utf-8")
+            dest.write_text(update(dest.read_text(encoding="utf-8"), path, packages, ch), encoding="utf-8")
 
 
 def artist_line(pkg, base="../../"):

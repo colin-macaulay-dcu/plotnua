@@ -22,6 +22,7 @@ sys.path.insert(0, HERE)
 import plotart_gallery as G            # noqa: E402
 import plotart_gallery_pages as P      # noqa: E402
 import plotart_opportunities as OPP    # noqa: E402
+import plotart_featured as FEAT    # noqa: E402
 import plotart_shell as S              # noqa: E402
 
 ARGS = sys.argv[1:]
@@ -241,7 +242,8 @@ def _thumbs_ok(doc, path):
                 or not os.path.isfile(os.path.join(ROOT, "plotart", os.path.normpath(os.path.join(os.path.dirname(path), img.group(1))))):
             return False
     return True
-live_ok = all(OPP.REGION.search(before[p]).group(0) == (OPP.BEGIN + ("\n" + OPP.content(p, published) + "\n" if OPP.content(p, published) else "") + OPP.END)
+_ch = FEAT.choices(ROOT)   # the representative artworks the gallery page publishes (curated once, 26 Nov 2026)
+live_ok = all(OPP.REGION.search(before[p]).group(0) == (OPP.BEGIN + ("\n" + OPP.content(p, published, _ch) + "\n" if OPP.content(p, published, _ch) else "") + OPP.END)
               for p in OPP.PAGES)
 listed_keys = sum(1 for k in OPP.KEYS if OPP.listed(published, k))
 check("O4f today: the four pages carry exactly the lists the published galleries produce (%d artists showing); every row is one link to the gallery with an approved artwork thumbnail (80x80, lazy, approved alt, never the portrait); unlisted kinds say so"

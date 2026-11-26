@@ -130,7 +130,9 @@ def main(base, rel, instant):
                 a, b = show(base, path).decode(), show(rel, path).decode()
                 names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()
                 packages = [json.loads(show(rel, n)) for n in names if re.fullmatch(r"plotart/artists/[a-z0-9-]+/gallery.json", n)]
-                if b != OPP.update(a, path.removeprefix("plotart/"), packages):
+                # with the representative artworks the same commit's gallery page publishes (curated once, 26 Nov 2026)
+                ch = FEAT.choices_in(show(rel, "plotart/" + FEAT.PAGE).decode())
+                if b != OPP.update(a, path.removeprefix("plotart/"), packages, ch):
                     refused.append(path + ": differs from the exact opportunity lists the published galleries produce")
             except (ValueError, TypeError) as e:
                 refused.append(path + ": " + str(e))

@@ -331,8 +331,8 @@ def publish_item(q, final=True):
             sm = Path(ROOT) / "sitemap.xml"
             sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
             C.refresh(ROOT, published())
-            OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
             regrid()                            # the founder's arrangement: opening row and Explore the Gallery, published work only
+            OPP.refresh(ROOT, published())     # the opportunity lists (only published artists, only what they chose to show), with the same representative artworks
     except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
         why = "refused: %s: %s" % (type(e).__name__, e)
     if why is None:
@@ -382,18 +382,23 @@ def curation_sync(final=True):
         if ARRANGEMENT is None:
             return 0, False
         before = open(os.path.join(ROOT, page), encoding="utf-8").read()
+        opp = {q: open(os.path.join(ROOT, "plotart", q), encoding="utf-8").read() for q in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", q))}
         regrid()
+        OPP.refresh(ROOT, published())     # the representative artworks mirror to Living Gallery, Art for Hire and the lists
         after = open(os.path.join(ROOT, page), encoding="utf-8").read()
         blank = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
         if P.vg_region(before) is None or blank(before) != blank(after):
             raise ValueError("the arrangement update would change the page outside its two generated regions")
+        for q, b in opp.items():
+            if OPP.outside(b) != OPP.outside(open(os.path.join(ROOT, "plotart", q), encoding="utf-8").read()):
+                raise ValueError("the arrangement update would change plotart/%s outside its opportunity region" % q)
     except Exception as e:                           # noqa: BLE001
-        subprocess.run(["git", "checkout", "-q", "--", page], cwd=ROOT)
+        subprocess.run(["git", "checkout", "-q", "--", page, *["plotart/" + q for q in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", q))]], cwd=ROOT)
         print("PLOTART CONTENT · gallery arrangement · FAILED · %s" % e)
         return 1, False
     if not git("status", "--porcelain"):
         return 0, False
-    git("add", page)
+    git("add", page, *["plotart/" + q for q in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", q))])
     git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
         "PlotArt content: gallery arrangement (founder's Curate in PlotArt Studio)")
     why = guards(base, False)

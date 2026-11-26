@@ -27,6 +27,7 @@ import plotart_shell as SHELL  # noqa: E402
 import plotart_business_rental as BUSINESS
 import plotart_hire_scenes as SCENES  # noqa: E402
 import plotart_opportunities as OPP  # noqa: E402  (artist opportunity lists, 16 Nov 2026)
+import plotart_featured as FEAT  # noqa: E402  (representative artworks, 26 Nov 2026)
 import plotart_seo as SEO  # noqa: E402
 import plotart_gallery as G  # noqa: E402  (the 32 counties)
 
@@ -276,7 +277,7 @@ def build(root, catalogue, api, form=False, update=False):
     path, page = SHELL.artist_page("art-for-hire/index.html", TITLE, DESC, body(cards, api, form, bar), scripts=("plotart.js",),
                                    current="hire", hire_nav=True, fine=FINE, styles=(css_name, "../assets/plotart-opportunities.css"))
     # the artist opportunity list (16 Nov 2026): its own region, separate from the works catalogue; published artists only
-    page = OPP.update(page, "art-for-hire/index.html", SEO.public_packages(root))
+    page = OPP.update(page, "art-for-hire/index.html", SEO.public_packages(root), FEAT.choices(root))
     out = os.path.join(root, "plotart", "art-for-hire")
     os.makedirs(out, exist_ok=True)
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(page)
