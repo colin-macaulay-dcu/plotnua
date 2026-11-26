@@ -12,7 +12,8 @@ import privacy_v17_layer as V17  # noqa: E402
 
 bad = []
 ok = lambda c, m: None if c else bad.append(m)
-priv = (ROOT / "privacy.html").read_text(encoding="utf-8")
+import privacy_v19_layer as V19  # noqa: E402
+priv = V19.without_v19((ROOT / "privacy.html").read_text(encoding="utf-8"))   # V19 (26 Nov 2026) sits on top: read the page beneath it
 APPLIED = V.MARKER in priv
 if not APPLIED:
     try:
