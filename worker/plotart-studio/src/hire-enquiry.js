@@ -34,8 +34,10 @@ export const EXPLAIN = [
   'Film and television screen-use arrangements cannot be made through PlotArt until its legal review is complete.',
 ];
 
+const allowed = (env, o) => !!o && (o === env.ORIGIN || String(env.EXTRA_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean).includes(o));   // EXTRA_ORIGINS: plotart.ie (domain migration R1); empty = unchanged
+const galleryBase = env => String(env.PUBLIC_GALLERY_URL || 'https://plotnua.ie/plotart').replace(/\/$/, '');   // public artwork links in emails (domain migration R1)
 function cors(env, origin, methods) {
-  const ok = origin && origin === env.ORIGIN;
+  const ok = allowed(env, origin);
   return { 'Access-Control-Allow-Origin': ok ? origin : 'null', 'Vary': 'Origin', 'Access-Control-Allow-Methods': methods,
     'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '600', 'X-Content-Type-Options': 'nosniff' };
 }
@@ -74,7 +76,7 @@ const dublinToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/D
 export async function hireEnquiry(req, env, origin) {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env, origin, 'POST') });
   if (req.method !== 'POST') return reply(env, origin, 405, { ok: false });
-  if (origin !== env.ORIGIN) return bad(env, origin, 'Refused', 403);
+  if (!allowed(env, origin)) return bad(env, origin, 'Refused', 403);
   if (!open(env)) return bad(env, origin, 'Hire enquiries aren’t open yet. Please email hello@plotnua.ie.', 503);
   const ip = req.headers.get('CF-Connecting-IP') || 'local', t = Date.now();
   const hh = (hits.get(ip) || []).filter(x => t - x < BURST_MS);
@@ -151,7 +153,7 @@ export async function hireEnquiry(req, env, origin) {
       `Reply to this email to answer ${name} directly (your reply goes to ${email}). You decide whether to go ahead.\n\n` +
       `Remember:\n- ${EXPLAIN[0]}\n- The hire fee, insurance, transport and return are for you and the hirer to agree, in writing.\n` +
       `- Your screen and photo choices are only a willingness to discuss. Nothing has been licensed. Any permission must be agreed by you in writing.\n- ${EXPLAIN[4]}\n\n` +
-      `Reference: ${ref}\nArtwork: https://plotnua.ie/plotart/artists/${hit.artist_slug}/${hit.work_slug}.html\n\nPlotArt · part of PlotNua` });
+      `Reference: ${ref}\nArtwork: ${galleryBase(env)}/artists/${hit.artist_slug}/${hit.work_slug}.html\n\nPlotArt · part of PlotNua` });
   await send(env, { to: email, replyTo: env.REPLY_TO || 'hello@plotnua.ie', subject: `Your PlotArt hire enquiry · ${ref}`,
     text: `Hello ${name},\n\nThank you. Your hire enquiry about “${title}” has been passed to ${artist.display_name}, who will reply to you by email if they can help.\n\n` +
       EXPLAIN.map(x => `- ${x}`).join('\n') + `\n\nReference: ${ref}\n\nHow we handle hire enquiries: https://plotnua.ie/privacy.html#plotart-hire-enquiries\n\nPlotArt · part of PlotNua` });

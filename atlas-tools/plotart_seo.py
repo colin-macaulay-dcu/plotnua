@@ -138,6 +138,10 @@ def update_sitemap(document, packages, launch):
     """Replace exactly the PlotArt region; everything outside it is byte-identical."""
     if document.count(BEGIN) != 1 or document.count(END) != 1 or not REGION.search(document):
         raise ValueError("Missing or duplicate PlotArt sitemap region")
+    if launch.get("plotart_domain_sitemap"):
+        # domain migration R1 cutover (off until the founder approves): PlotArt is listed only in
+        # https://plotart.ie/sitemap.xml, so PlotNua's sitemap keeps an empty PlotArt region
+        return REGION.sub(lambda m: BEGIN + "\n  " + END, document, count=1)
     return REGION.sub(lambda m: sitemap_block(packages, launch), document, count=1)
 
 

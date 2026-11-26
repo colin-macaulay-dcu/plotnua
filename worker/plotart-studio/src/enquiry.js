@@ -18,8 +18,10 @@ const DAILY_PER_ARTIST = 40, DAILY_TOTAL = 300, BURST = 5, BURST_MS = 10 * 60_00
 const hits = new Map();
 const now = () => new Date().toISOString();
 
+const allowed = (env, o) => !!o && (o === env.ORIGIN || String(env.EXTRA_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean).includes(o));   // EXTRA_ORIGINS: plotart.ie (domain migration R1); empty = unchanged
+const galleryBase = env => String(env.PUBLIC_GALLERY_URL || 'https://plotnua.ie/plotart').replace(/\/$/, '');   // public artwork links in emails (domain migration R1)
 function cors(env, origin) {
-  const ok = origin && origin === env.ORIGIN;
+  const ok = allowed(env, origin);
   return { 'Access-Control-Allow-Origin': ok ? origin : 'null', 'Vary': 'Origin', 'Access-Control-Allow-Methods': 'POST',
     'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '600', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
 }
@@ -61,7 +63,7 @@ const G_DAILY_PER_LISTING = 10, G_DAILY_TOTAL = 200;
 async function gardenEnquiry(req, env, origin) {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env, origin) });
   if (req.method !== 'POST') return reply(env, origin, 405, { ok: false });
-  if (origin !== env.ORIGIN) return reply(env, origin, 403, { ok: false, error: 'Refused' });
+  if (!allowed(env, origin)) return reply(env, origin, 403, { ok: false, error: 'Refused' });
   if (env.GARDEN_ENQUIRIES_ENABLED !== 'true') return reply(env, origin, 503, { ok: false, error: 'Contact through the noticeboard isn’t open yet. Please email hello@plotnua.ie.' });
   const ip = req.headers.get('CF-Connecting-IP') || 'local', t = Date.now();
   const h = (hits.get(ip) || []).filter(x => t - x < BURST_MS);
@@ -106,7 +108,7 @@ export default {
     if (url.pathname !== '/v1/enquiry') return new Response('Not found', { status: 404 });
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env, origin) });
     if (req.method !== 'POST') return reply(env, origin, 405, { ok: false });
-    if (origin !== env.ORIGIN) return reply(env, origin, 403, { ok: false, error: 'Refused' });
+    if (!allowed(env, origin)) return reply(env, origin, 403, { ok: false, error: 'Refused' });
     if (env.ENQUIRIES_ENABLED !== 'true') return reply(env, origin, 503, { ok: false, error: 'Enquiries aren’t open yet. Please email hello@plotnua.ie.' });
     const ip = req.headers.get('CF-Connecting-IP') || 'local', t = Date.now();
     const h = (hits.get(ip) || []).filter(x => t - x < BURST_MS);
@@ -169,7 +171,7 @@ export default {
         (commission ? `${name} has asked through your PlotArt gallery about commissioning a new work from you.\n\n`
           : `${name} has sent an enquiry about ${about} through your PlotArt gallery.\n\n`) +
         `"${message}"\n\nReply to this email to answer ${name} directly (your reply goes to ${email}).\n\n` +
-        `Reference: ${ref}${work ? `\nArtwork: https://plotnua.ie/plotart/artists/${g.artist.slug}/${work.slug}.html` : ''}\n\n` +
+        `Reference: ${ref}${work ? `\nArtwork: ${galleryBase(env)}/artists/${g.artist.slug}/${work.slug}.html` : ''}\n\n` +
         `${closingLine(commission, !commission && await isGalleryArtist(env, g.artist))}\n\nPlotArt · part of PlotNua` });
     await send(env, { to: email, replyTo: env.REPLY_TO || 'hello@plotnua.ie', subject: commission ? `Your PlotArt commission enquiry · ${ref}` : `Your PlotArt enquiry · ${ref}`,
       text: `Hello ${name},\n\nThank you. Your enquiry about ${commission ? `a commission from ${g.artist.display_name}` : work ? `“${work.title}”` : `work by ${g.artist.display_name}`} has been passed to ${g.artist.display_name}, who will reply to you by email.\n\n` +
