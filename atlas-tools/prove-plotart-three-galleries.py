@@ -76,7 +76,9 @@ FAULTS = [
     ("F30 the Places & Spaces redirect pointed elsewhere", "places-and-spaces/index.html", 'location.replace("../spaces/"', 'location.replace("../gallery/"', "L21 places-and-spaces/index.html must be exactly the generated permanent redirect"),
     # final curatorial identity (25 Nov 2026): the founder's exact wording, the shared heading block, Environment retired
     ("F31 the Spaces tagline altered on its page", "spaces/index.html", '<p class="pa-gt-tag">The spaces we inhabit, encounter and imagine.</p>', '<p class="pa-gt-tag">The places we live in.</p>', "L21 spaces/index.html must open with the shared heading block"),
-    ("F32 the Contemporary introduction missing", "gallery/index.html", '<p class="pa-gt-intro">', '<p class="pa-gt-other">', "L21 gallery/index.html must open with the shared heading block"),
+    # Contemporary has no introduction since 26 Nov 2026 (Report 35): reinstating one must be caught
+    ("F32 an introduction reinstated on Contemporary", "gallery/index.html", '<p class="pa-gt-tag">Abstraction, expression and experimentation.</p>',
+     '<p class="pa-gt-tag">Abstraction, expression and experimentation.</p>\n  <p class="pa-gt-intro">Exploring artistic expression.</p>', "L21 gallery/index.html must open with the shared heading block"),
     ("F33 the Being heading style overridden for one page", "being/index.html", '<div class="pa-gt"><h1 class="pa-gt-h"', '<div class="pa-gt-x"><h1 class="pa-gt-h"', "L21 being/index.html must open with the shared heading block"),
     ("F34 the former name Environment back in the footer", "about.html", '>Spaces</a></li>', '>Environment</a></li>', "L21 about.html still uses a former gallery name"),
     ("F35 a link to the former address environment/", "for-artists.html", 'href="spaces/" data-pa-track="nav_gallery_spaces">', 'href="environment/" data-pa-track="nav_gallery_spaces">', "L21 for-artists.html still uses a former gallery name"),

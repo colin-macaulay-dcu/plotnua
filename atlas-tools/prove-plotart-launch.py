@@ -714,9 +714,7 @@ for _rel, _key in (("gallery/index.html", "contemporary"), ("spaces/index.html",
     _s = open(_fp, encoding="utf-8").read() if os.path.exists(_fp) else ""
     need(_s.count('<nav class="pa-gtabs"') == 1 and SHELL.gallery_tabs("../", _key) in _s, "L21 %s must carry the gallery tabs with its own tab current" % _rel)
 # final curatorial identity (agreed by the founder 25 Nov 2026): the founder's exact headings, taglines and introductions
-_GX_WORDS = {"contemporary": ("Contemporary", "Abstraction, expression and experimentation.",
-                              "Exploring artistic expression through abstraction, colour, form, materiality and experimentation. A collection celebrating "
-                              "distinctive creative voices across painting, sculpture, printmaking, photography, textiles and mixed media."),
+_GX_WORDS = {"contemporary": ("Contemporary", "Abstraction, expression and experimentation.", None),   # no introduction (founder, 26 Nov 2026)
              "spaces": ("Spaces", "The spaces we inhabit, encounter and imagine.",
                         "Exploring our relationship with the world around us, from natural landscapes and coastlines to urban environments, "
                         "architecture, interiors and imagined places."),
@@ -729,8 +727,10 @@ for _rel, _key, _hid in (("gallery/index.html", "contemporary", "vgH"), ("spaces
     _fp = os.path.join(PA, _rel)
     _s = open(_fp, encoding="utf-8").read() if os.path.exists(_fp) else ""
     _w = _GX_WORDS[_key]
-    _blk = ('<div class="pa-gt"><h1 class="pa-gt-h" id="%s">%s.</h1>\n  <p class="pa-gt-tag">%s</p>\n  <p class="pa-gt-intro">%s</p></div>'
-            % (_hid, _w[0], html.escape(_w[1], quote=True), html.escape(_w[2], quote=True)))
+    _blk = ('<div class="pa-gt"><h1 class="pa-gt-h" id="%s">%s.</h1>\n  <p class="pa-gt-tag">%s</p>%s</div>'
+            % (_hid, _w[0], html.escape(_w[1], quote=True), ('\n  <p class="pa-gt-intro">%s</p>' % html.escape(_w[2], quote=True)) if _w[2] else ""))
+    if not _w[2]:
+        need("pa-gt-intro" not in _s and "Exploring artistic expression" not in _s, "L21 %s must carry no introduction (founder, 26 Nov 2026)" % _rel)
     need(_s.count('class="pa-gt"') == 1 and _blk in _s and _s.count("<h1") == 1,
          "L21 %s must open with the shared heading block: '%s.', its tagline and its introduction" % (_rel, _w[0]))
     if _key != "contemporary":

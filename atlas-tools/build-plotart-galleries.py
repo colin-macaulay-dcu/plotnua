@@ -47,9 +47,9 @@ FOUNDER_CREDIT = "Original artwork by Colin MacAulay, founder of PlotArt."
 # gallery page. All three are the founder's exact wording. Photography belongs in whichever gallery suits the work's artistic
 # intention and subject: there is no separate photography gallery.
 GALLERY = {
-    "contemporary": {"title": "Contemporary", "text": "Abstraction, expression and experimentation.",
-                     "intro": "Exploring artistic expression through abstraction, colour, form, materiality and experimentation. A collection "
-                              "celebrating distinctive creative voices across painting, sculpture, printmaking, photography, textiles and mixed media."},
+    # Contemporary has no curatorial introduction (founder refinement 26 Nov 2026, Report 35): the heading and tagline only,
+    # so the artwork begins closer to the tagline. Spaces and Being keep theirs.
+    "contemporary": {"title": "Contemporary", "text": "Abstraction, expression and experimentation.", "intro": None},
     "spaces": {"title": "Spaces", "text": "The spaces we inhabit, encounter and imagine.",
                "intro": "Exploring our relationship with the world around us, from natural landscapes and coastlines to urban environments, "
                         "architecture, interiors and imagined places.",
@@ -98,10 +98,12 @@ def prep_panel(key, where):
 
 
 def title_block(key, hid):
-    """The heading block every gallery page opens with: heading (with the editorial full stop), tagline, introduction."""
+    """The heading block every gallery page opens with: heading (with the editorial full stop), tagline, and the
+    introduction where the gallery has one (Contemporary has none: 26 Nov 2026)."""
     g = GALLERY[key]
-    return ('<div class="pa-gt"><h1 class="pa-gt-h" id="%s">%s.</h1>\n  <p class="pa-gt-tag">%s</p>\n  <p class="pa-gt-intro">%s</p></div>'
-            % (hid, E(g["title"]), E(g["text"]), E(g["intro"])))
+    intro = '\n  <p class="pa-gt-intro">%s</p>' % E(g["intro"]) if g["intro"] else ""
+    return ('<div class="pa-gt"><h1 class="pa-gt-h" id="%s">%s.</h1>\n  <p class="pa-gt-tag">%s</p>%s</div>'
+            % (hid, E(g["title"]), E(g["text"]), intro))
 
 
 def tile(key, arts):
