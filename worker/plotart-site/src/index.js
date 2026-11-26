@@ -16,6 +16,19 @@ const SECURITY = {
   'Strict-Transport-Security': 'max-age=31536000',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'X-Frame-Options': 'SAMEORIGIN',
+  // Consent (founder instruction 26 Nov 2026): no non-essential tracking until an approved consent solution exists.
+  // Scripts may come only from plotart.ie itself, and pages may talk only to PlotArt's own Workers, so no analytics,
+  // advertising or consent-platform script can run here, even if one were added to a page by mistake.
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https:",
+    "connect-src 'self' https://plotart-enquiry.colin-a41.workers.dev https://plotart-checkout.colin-a41.workers.dev https://plotnua-art-space-register.colin-a41.workers.dev https://plotart-studio.colin-a41.workers.dev",
+    "form-action 'self' https://plotart-checkout.colin-a41.workers.dev https://plotart-studio.colin-a41.workers.dev",
+    "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "frame-ancestors 'self'",
+  ].join('; '),
 };
 
 const hasExt = path => /\.[a-z0-9]+$/i.test(path.split('/').pop());

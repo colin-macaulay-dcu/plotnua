@@ -16,6 +16,7 @@ const ASSETS = {
     } catch { return new Response('nf', { status: 404 }); }
   },
 };
+const report = JSON.parse(readFileSync(join(dist, '.build-report.json'), 'utf8'));
 let pass = 0, fail = 0;
 const ok = (c, m) => { if (c) pass++; else { fail++; console.log('FAIL', m); } };
 const get = (u, env = { ASSETS, INDEXING: 'noindex' }, method = 'GET') => handle(new Request(u, { method }), env);
@@ -55,6 +56,9 @@ ok(w.status === 301 && w.headers.get('location') === 'https://plotart.ie/gallery
 ok((await get('https://plotart.ie/')).headers.get('x-robots-tag') === 'noindex, nofollow', 'noindex while testing');
 ok((await get('https://plotart.ie/', { ASSETS, INDEXING: 'index' })).headers.get('x-robots-tag') === null, 'indexable after cutover');
 ok((await get('https://plotart.ie/')).headers.get('x-content-type-options') === 'nosniff', 'security headers');
+const csp = (await get('https://plotart.ie/gallery/')).headers.get('content-security-policy') || '';
+ok(/script-src 'self' 'unsafe-inline'(;|$)/.test(csp) && !/googletagmanager|cookiebot/.test(csp), 'CSP: scripts only from plotart.ie (no tracker can load)');
+ok(report.tracking_or_consent_scripts.length === 0, 'build: no tracking or consent script on any page');
 // 6. methods
 ok((await get('https://plotart.ie/', undefined, 'POST')).status === 405, 'POST refused');
 const h = await get('https://plotart.ie/', undefined, 'HEAD');
@@ -62,7 +66,6 @@ ok(h.status === 200 && (await h.text()) === '', 'HEAD');
 // 7. build: no old address, sitemap and robots
 const sm = readFileSync(join(dist, 'sitemap.xml'), 'utf8');
 ok(!/plotnua\.ie\/plotart/.test(sm) && sm.includes('<loc>https://plotart.ie/</loc>'), 'sitemap re-addressed');
-const report = JSON.parse(readFileSync(join(dist, '.build-report.json'), 'utf8'));
 ok(report.missing_links.length === 0 && report.old_address_left_in.length === 0, 'build report clean');
 console.log(`plotart-site: ${pass} passed, ${fail} failed (${pages} pages)`);
 process.exit(fail ? 1 : 0);

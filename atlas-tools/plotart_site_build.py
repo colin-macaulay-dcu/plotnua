@@ -29,6 +29,32 @@ SKIP_SCHEMES = ("%23", "http:", "https:", "mailto:", "tel:", "data:", "javascrip
 ABS_OLD = re.compile(r"https?://(?:www\.)?plotnua\.ie/plotart(?=/|[\"'<>\s?#)\\]|$)")
 ATTR = re.compile(r'(?P<pre>\b(?:href|src|action|poster|data-src|data-href)=)(?P<q>["\'])(?P<url>[^"\']*)(?P=q)')
 SRCSET = re.compile(r'(?P<pre>\bsrcset=)(?P<q>["\'])(?P<val>[^"\']*)(?P=q)')
+# Consent (founder instruction 26 Nov 2026): no non-essential tracking on plotart.ie until a valid consent solution is
+# approved. The build refuses any analytics, advertising or consent-platform script; the Worker's Content-Security-Policy
+# also blocks scripts from any other host. Measurement can only be added through an approved release that changes both.
+TRACKERS = re.compile(r"googletagmanager\.com|google-analytics\.com|gtag\(|consent\.cookiebot\.com|cookiebot\.com/uc|"
+                      r"connect\.facebook\.net|fbq\(|hotjar|clarity\.ms|doubleclick|plausible\.io|matomo|"
+                      r"usercentrics|cookieyes|iubenda|termly|osano|klaro", re.I)
+NOT_FOUND = """<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found | PlotArt</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" href="/assets/brand/plotart-favicon-32.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="/assets/plotart.css">
+</head>
+<body>
+<main class="pa-wrap" style="padding:15vh 24px;max-width:640px;margin:0 auto">
+<p><a href="/"><img src="/assets/brand/plotart-logo-stacked.svg" alt="PlotArt" width="120"></a></p>
+<h1>We couldn\u2019t find that page</h1>
+<p>It may have moved, or the address may be mistyped.</p>
+<p><a href="/gallery/">Visit the gallery</a> &middot; <a href="/">PlotArt home</a> &middot; <a href="https://plotnua.ie/">PlotNua</a></p>
+</main>
+</body>
+</html>
+"""
 CSSURL = re.compile(r'url\((?P<q>["\']?)(?P<url>[^)"\']+)(?P=q)\)')
 
 
@@ -139,11 +165,10 @@ def build(root, out, mode):
             else:
                 shutil.copyfile(p, dest)
             files += 1
-    # the 404 page is PlotNua's own, re-addressed so every link goes back to a real page
-    with open(os.path.join(site.root, "404.html"), encoding="utf-8") as f:
-        page = site.rewrite_text("404.html", f.read(), ".html")
+    # plotart.ie's own "not found" page: PlotArt's stylesheet only, no third-party script, font or tracker
     with open(os.path.join(out, "404.html"), "w", encoding="utf-8") as f:
-        f.write(page)
+        f.write(NOT_FOUND)
+    site.extra.update({"assets/brand/plotart-favicon-32.png", "assets/brand/plotart-logo-stacked.svg"})
     copied = set()
     while site.extra - copied:                              # copied root assets may reference further assets
         for rel in sorted(site.extra - copied):
@@ -167,15 +192,19 @@ def build(root, out, mode):
               else "User-agent: *\nAllow: /\n\nSitemap: https://plotart.ie/sitemap.xml\n")
     with open(os.path.join(out, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(robots)
-    leftover = []
+    leftover, tracking = [], []
     for d, _, names in os.walk(out):
         for n in names:
             if os.path.splitext(n)[1].lower() in TEXT:
                 with open(os.path.join(d, n), encoding="utf-8") as f:
-                    if ABS_OLD.search(f.read()):
+                    body = f.read()
+                    if ABS_OLD.search(body):
                         leftover.append(os.path.relpath(os.path.join(d, n), out))
+                    if n != "plotart_site_build.py" and TRACKERS.search(body):
+                        tracking.append(os.path.relpath(os.path.join(d, n), out))
     report = {"mode": mode, "pages_and_files": files, "root_assets_copied": sorted(copied),
-              "sitemap_urls": len(urls), "missing_links": site.missing, "old_address_left_in": leftover}
+              "sitemap_urls": len(urls), "missing_links": site.missing, "old_address_left_in": leftover,
+              "tracking_or_consent_scripts": tracking}
     with open(os.path.join(out, ".build-report.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, indent=1)
     with open(os.path.join(out, ".assetsignore"), "w", encoding="utf-8") as f:
@@ -193,6 +222,9 @@ def main():
     print(json.dumps({k: (len(v) if isinstance(v, list) and k != "root_assets_copied" else v) for k, v in r.items()}, indent=1))
     if r["old_address_left_in"]:
         sys.exit("old address left in: " + ", ".join(r["old_address_left_in"][:10]))
+    if r["tracking_or_consent_scripts"]:
+        sys.exit("tracking or consent script on plotart.ie (needs an approved consent solution first): "
+                 + ", ".join(r["tracking_or_consent_scripts"][:10]))
     if r["missing_links"]:
         for s, u in r["missing_links"][:20]:
             print(f"missing: {s} -> {u}", file=sys.stderr)

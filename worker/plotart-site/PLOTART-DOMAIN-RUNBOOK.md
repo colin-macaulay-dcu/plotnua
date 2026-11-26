@@ -28,6 +28,16 @@ The Studio, Checkout, Enquiry and Applications Workers keep their workers.dev ad
 - **Email links:** emailed artwork links follow `PUBLIC_GALLERY_URL`. The default is the old address, which the redirect keeps working.
 - **Studio sign-in:** Cloudflare Access is unaffected because the Studio address does not change.
 
+## Consent and tracking (founder instruction 26 Nov 2026)
+
+plotart.ie runs **no non-essential tracking** until a consent solution is approved. This holds during testing too.
+
+- **Today:** PlotArt pages carry no analytics and no consent banner. `plotart.js` has analytics switched off.
+- **The 404 page:** plotart.ie has its own "not found" page, with no third-party script. PlotNua's 404 page loads Cookiebot and GA4, so it is not used.
+- **Build guard:** the build refuses any analytics, advertising or consent-platform script (`TRACKERS` in `plotart_site_build.py`).
+- **Browser block:** the Worker's Content-Security-Policy lets scripts run only from plotart.ie itself. Pages may connect only to PlotArt's own Workers, so a tracker added by mistake is blocked by the browser. A browser test confirmed this: a test page with a GA4 tag was refused, and 12 real pages ran with no CSP violation.
+- **Adding measurement later:** it needs an approved release that changes the guard, the CSP and the consent banner together.
+
 ## Checkpoints (each needs the founder's approval)
 
 | # | What | Who | Reversible by |
