@@ -70,9 +70,9 @@ GALLERY = {
                          "figurative art, identity, relationships, emotion and interpretations of life, in any medium, photography included.",
               "icon": '<svg viewBox="0 0 100 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1" y="1" width="98" height="122" rx="2"/><ellipse cx="50" cy="50" rx="17" ry="21"/><path d="M18 123 C20 96 34 84 50 84 S80 96 82 123"/></svg>'},
 }
-# The Contemporary gallery page's heading (SEO and analytics package, founder approval 26 Nov 2026, section 2.4):
-# "Contemporary Irish art." on its own page; the homepage entrance, navigation and tabs keep the name "Contemporary".
-PAGE_HEADING = {"contemporary": "Contemporary Irish art"}
+# Founder decision (26 Nov 2026, SEO release): the gallery headings keep the 25 Nov curatorial identity ("Contemporary.");
+# the search keyword is carried by the page title and description instead.
+PAGE_HEADING = {}
 HREF = {k: h for k, h, _l, _t in S.GALLERIES}
 ENTRANCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "release", "plotart-gallery-entrances.json")
 ART_KEYS = {"artist_slug", "image", "width", "height", "alt", "credit", "consent_ref"}

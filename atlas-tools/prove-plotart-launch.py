@@ -734,7 +734,7 @@ for _rel, _key, _hid in (("gallery/index.html", "contemporary", "vgH"), ("spaces
     _s = open(_fp, encoding="utf-8").read() if os.path.exists(_fp) else ""
     _w = _GX_WORDS[_key]
     _blk = ('<div class="pa-gt"><h1 class="pa-gt-h" id="%s">%s.</h1>\n  <p class="pa-gt-tag">%s</p>%s</div>'
-            % (_hid, {"contemporary": "Contemporary Irish art"}.get(_key, _w[0]), html.escape(_w[1], quote=True), ('\n  <p class="pa-gt-intro">%s</p>' % html.escape(_w[2], quote=True)) if _w[2] else ""))
+            % (_hid, _w[0], html.escape(_w[1], quote=True), ('\n  <p class="pa-gt-intro">%s</p>' % html.escape(_w[2], quote=True)) if _w[2] else ""))
     if not _w[2]:
         need("pa-gt-intro" not in _s and "Exploring artistic expression" not in _s, "L21 %s must carry no introduction (founder, 26 Nov 2026)" % _rel)
     need(_s.count('class="pa-gt"') == 1 and _blk in _s and _s.count("<h1") == 1,

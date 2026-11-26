@@ -55,7 +55,7 @@ FAULTS = [
     ("F5 a holding page made indexable", "spaces/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 spaces/index.html must be noindex"),
     ("F6 entrance artwork cropped", "assets/plotart-galleries.css", "object-fit:contain", "object-fit:cover", "L21 gallery entrance artwork must be shown whole"),
     ("F7 the gallery tabs removed from Contemporary", "gallery/index.html", '<nav class="pa-gtabs"', '<nav class="pa-gtabs-gone"', "L21 gallery/index.html must carry the gallery tabs"),
-    ("F8 the Contemporary heading reverted", "gallery/index.html", 'id="vgH">Contemporary Irish art.</h1>', 'id="vgH">Contemporary Art.</h1>', "L21 gallery/index.html must open with the shared heading block"),
+    ("F8 the Contemporary heading reverted", "gallery/index.html", 'id="vgH">Contemporary.</h1>', 'id="vgH">Contemporary Art.</h1>', "L21 gallery/index.html must open with the shared heading block"),
     ("F9 an extra label under the homepage heading", "index.html", "A new home for Irish art.</h1>", "A new home for Irish art.</h1><p>Three curated galleries</p>", "L6 the homepage heading must be exactly"),
     ("F10 'Real art. Real homes.' restored", "index.html", "<h3>Living Gallery</h3>", "<h3>Real art. Real homes.</h3>", "L21 the homepage must present the Living Gallery"),
     ("F11 Art for Hire enquiries wording removed", "index.html", " Hire enquiries are not yet open.</p>", "</p>", "L21 the homepage must say Art for Hire enquiries are not yet open"),
