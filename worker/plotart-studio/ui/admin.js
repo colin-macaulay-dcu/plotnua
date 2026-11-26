@@ -729,7 +729,7 @@
     let d;
     try { d = await api('GET', '/api/admin/opportunities'); } catch (e) { app.innerHTML = `<div class="st-card"><h1 class="st-h1">Opportunities</h1><p class="st-muted">${E(e.message)}</p></div>`; return; }
     if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Opportunities &amp; delivery</h1><section class="st-card"><p class="st-muted" style="margin:0">Not installed yet (migration 0009 has not run).</p></section>'; return; }
-    const O = d.options, T = d.totals, f = { status: '', interest: '', county: '', reach: '' };
+    const O = d.options, T = d.totals, f = { status: '', interest: '', county: '', reach: '', transport: '', general: '' };
     const provOpts = (sel, extra = '') => extra + Object.entries(O.provinces).map(([p, cs]) => `<optgroup label="${p}">${cs.map(c => `<option value="${c}"${c === sel ? ' selected' : ''}>${c}</option>`).join('')}</optgroup>`).join('');
     const coverage = p => {
       if (p.coverage_mode === 'anywhere') return 'Anywhere on the island';
@@ -753,11 +753,17 @@
       if (f.status === 'care' && !(p && p.care_condition)) return false;
       if (f.interest && !(p && p.interests.includes(f.interest))) return false;
       if (f.county === '_none' ? !(p && !p.artwork_county) : f.county && !(p && p.artwork_county === f.county)) return false;
+      // Report 35: three separate questions. Placement area (where they'd deliver and collect for a temporary placement),
+      // placement transport (how), and general delivery to buyers and hirers (the Profile). Never merged.
       if (f.reach) {
         if (!p) return false;
         if (f.reach === 'anywhere' || f.reach === 'ask') { if (p.coverage_mode !== f.reach) return false; }
-        else if (f.reach === 'need_help' || f.reach === 'depends') { if (!p.transport.includes(f.reach)) return false; }
         else if (!(p.coverage_mode === 'anywhere' || (p.coverage_mode === 'counties' && p.coverage_counties.includes(f.reach)))) return false;
+      }
+      if (f.transport && !(p && p.transport.includes(f.transport))) return false;
+      if (f.general) {
+        const g = i.general;
+        if (f.general === '_none' ? !(g && g.scope === 'none') : f.general === '_unanswered' ? !!g : !(g && g.counties.includes(f.general))) return false;
       }
       return true;
     };
@@ -770,8 +776,10 @@
           ${O.public ? `<span class="st-opp-k">Public gallery: ${p.public_display === true ? (p.public_notice === 'PA-OPP-FOUNDER-CONFIRMED-2026-11' ? 'shown (agreement obtained by the founder; only while the gallery is published)' : 'shown (only while the gallery is published)') : p.public_display === false ? 'kept private' : '<i>not confirmed yet: not shown</i>'}</span>` : ''}
           ${O.public && p.public_display === null && pub(p).length ? `<div class="st-opp-fc" style="margin:8px 0"><label class="st-check"><input type="checkbox" data-fc="${E(i.id)}"> <span>I personally obtained ${E(i.display_name)}’s agreement to show these publicly: ${pub(p).map(k => E(O.interest_short[k])).join(', ')}</span></label>
             <button type="button" class="st-btn st-btn--small" data-fcgo="${E(i.id)}" disabled style="margin-top:6px">Show these publicly</button></div>` : ''}
-          <span class="st-opp-k">Artwork: ${p.artwork_county ? `Co. ${E(p.artwork_county)}` : '<i>not given</i>'}</span>
-          <span class="st-opp-k">Transport: ${p.transport.length ? p.transport.map(k => E(O.transport_short[k])).join(', ') : '<i>not given</i>'}${p.coverage_mode ? ` · ${E(coverage(p))}` : ''}</span>
+          <span class="st-opp-k">Artwork kept in: ${p.artwork_county ? `Co. ${E(p.artwork_county)}` : '<i>not given</i>'}</span>
+          <span class="st-opp-k">Placements, deliver &amp; collect: ${p.coverage_mode ? E(coverage(p)) : '<i>not given</i>'}</span>
+          <span class="st-opp-k">Placements, transport: ${p.transport.length ? p.transport.map(k => E(O.transport_short[k])).join(', ') : '<i>not given</i>'}</span>
+          ${d.general_installed ? `<span class="st-opp-k">General delivery (sales &amp; hire): ${i.general ? E(i.general.line) : '<i>not answered</i>'}</span>` : ''}
           ${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div>
         <div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
     };
@@ -792,13 +800,15 @@
         <div class="st-opp-filters">
           <div class="st-f"><label for="of-status">Answers</label><select id="of-status"><option value="">Everyone</option><option value="answered">Answered</option><option value="unanswered">Not answered yet</option><option value="online">Online only for now</option>${O.care ? '<option value="care">Depends on care, handling and insurance</option>' : ''}</select></div>
           <div class="st-f"><label for="of-int">Interested in</label><select id="of-int"><option value="">Any opportunity</option>${Object.keys(O.interests).filter(k => k !== 'online_only').map(k => `<option value="${k}">${E(O.interest_short[k])}</option>`).join('')}</select></div>
-          <div class="st-f"><label for="of-county">Artwork based in</label><select id="of-county">${provOpts('', '<option value="">Any county</option><option value="_none">Not given</option>')}</select></div>
-          <div class="st-f"><label for="of-reach">Can deliver to</label><select id="of-reach"><option value="">Any</option><option value="anywhere">Anywhere on the island</option><option value="ask">Ask about each opportunity</option><option value="need_help">Needs help with transport</option><option value="depends">Depends on the opportunity</option>${provOpts('')}</select></div>
+          <div class="st-f"><label for="of-county">Artwork kept in</label><select id="of-county">${provOpts('', '<option value="">Any county</option><option value="_none">Not given</option>')}</select></div>
+          <div class="st-f"><label for="of-reach">Placements: deliver &amp; collect in</label><select id="of-reach"><option value="">Any</option><option value="anywhere">Anywhere on the island</option><option value="ask">Ask about each opportunity</option>${provOpts('')}</select></div>
+          <div class="st-f"><label for="of-tr">Placements: transport</label><select id="of-tr"><option value="">Any</option>${Object.keys(O.transport_short).map(k => `<option value="${k}">${E(O.transport_short[k])}</option>`).join('')}</select></div>
+          ${d.general_installed ? `<div class="st-f"><label for="of-gen">General delivery (sales &amp; hire) to</label><select id="of-gen">${provOpts('', '<option value="">Any</option><option value="_none">No delivery: collection or by arrangement</option><option value="_unanswered">Not answered</option>')}</select></div>` : ''}
         </div>
         <p class="st-muted" style="margin:0" aria-live="polite"><span id="of-n"></span> <button type="button" class="st-linkbtn" id="of-reset" hidden>Clear filters</button></p>
       </section>
       <ul class="st-opp-list" id="of-list"></ul>
-      <p class="st-muted">“Can deliver to” a county includes artists who said “Anywhere on the island”. Artists who answered “Ask about each opportunity” or need help with transport appear under those choices.${O.care ? ' Care, handling and insurance arrangements are discussed for every placement: an artist who left that box unticked has not waived them.' : ''}</p>`;
+      <p class="st-muted">“Placements: deliver &amp; collect in” a county includes artists who said “Anywhere on the island”; it is about temporary placements only. “General delivery” is what the artist set in their Profile for selling or hiring a work, and says nothing about placements.${O.care ? ' Care, handling and insurance arrangements are discussed for every placement: an artist who left that box unticked has not waived them.' : ''}</p>`;
     const draw = () => {
       const rows = d.items.filter(match);
       $('#of-list').innerHTML = rows.length ? rows.map(row).join('') : '<li class="st-opp-row is-none"><div class="st-muted">No artists match these filters.</div></li>';
@@ -814,10 +824,10 @@
       catch (err) { b.disabled = false; b.insertAdjacentHTML('afterend', `<p class="st-err" role="alert">${E(err.message)}</p>`); }
     });
     const bind = (id, k) => $(id).addEventListener('change', e => { f[k] = e.target.value; draw(); });
-    bind('#of-status', 'status'); bind('#of-int', 'interest'); bind('#of-county', 'county'); bind('#of-reach', 'reach');
+    bind('#of-status', 'status'); bind('#of-int', 'interest'); bind('#of-county', 'county'); bind('#of-reach', 'reach'); bind('#of-tr', 'transport'); if ($('#of-gen')) bind('#of-gen', 'general');
     locationOverview();
     app.querySelectorAll('[data-int]').forEach(b => b.addEventListener('click', () => { f.interest = f.interest === b.dataset.int ? '' : b.dataset.int; $('#of-int').value = f.interest; draw(); }));
-    $('#of-reset').addEventListener('click', () => { Object.keys(f).forEach(k => { f[k] = ''; }); ['#of-status', '#of-int', '#of-county', '#of-reach'].forEach(s => { $(s).value = ''; }); draw(); });
+    $('#of-reset').addEventListener('click', () => { Object.keys(f).forEach(k => { f[k] = ''; }); ['#of-status', '#of-int', '#of-county', '#of-reach', '#of-tr', '#of-gen'].forEach(s => { if ($(s)) $(s).value = ''; }); draw(); });
     draw();
   }
 

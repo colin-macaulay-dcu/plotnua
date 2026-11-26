@@ -359,18 +359,21 @@
     try { d = await api('GET', '/api/me/location'); } catch (e) { lc.innerHTML = '<h3>Where you’re based</h3><p class="st-err">Location isn’t available just now.</p>'; return; }
     if (!d.installed) { lc.remove(); dc.remove(); return; }
     const NI = d.ni_counties, ROI = d.counties.filter(c => !NI.includes(c));
-    const L0 = d.location || (d.profile_county ? { country: NI.includes(d.profile_county) ? 'GB' : 'IE', county: d.profile_county, show_location: 0 } : { country: 'IE' });
-    const D0 = d.delivery || { scope: 'none', counties: '[]', show_delivery: 0 };
+    // Report 35: the earlier "Show my county on my gallery" answer is the starting point for "Show where I'm based" (the same
+    // fact), so existing consent is kept and nothing private is ever pre-ticked. No delivery answer is pre-selected.
+    const L0 = d.location || (d.profile_county ? { country: NI.includes(d.profile_county) ? 'GB' : 'IE', county: d.profile_county, show_location: d.profile_county_public ? 1 : 0 } : { country: 'IE' });
+    const D0 = d.delivery || { scope: '', counties: '[]', show_delivery: 0 };
     const opts = (list, cur) => Object.entries(d.provinces).map(([p, cs]) => { const c = cs.filter(x => list.includes(x)); return c.length ? `<optgroup label="${p}">${c.map(x => `<option${x === cur ? ' selected' : ''}>${x}</option>`).join('')}</optgroup>` : ''; }).join('');
     const paintLoc = (L) => {
       const onIsland = L.country === 'IE' || L.country === 'GB';
       lc.innerHTML = `<h3>Where you’re based</h3>
-        <p class="st-muted" style="margin:0 0 14px">Where you live and work now (not where you were born). PlotArt never shows an address.</p>
+        <p class="st-muted" style="margin:0 0 14px">Where you live and work now (not where you were born). PlotArt never shows an address. Where your artwork is kept, if different, is asked privately in Opportunities &amp; delivery.</p>
+        ${d.consent_conflict ? '<p class="st-loc-confirm" role="status">Please check whether to show where you’re based, then save. Until you do, it isn’t shown on your gallery.</p>' : ''}
         <div class="st-f"><label for="loc-country">Country</label><select id="loc-country"><option value="IE"${L.country === 'IE' ? ' selected' : ''}>Ireland</option><option value="GB"${L.country === 'GB' ? ' selected' : ''}>Northern Ireland (United Kingdom)</option>
           <optgroup label="Other countries">${d.countries.filter(([c]) => c !== 'IE' && c !== 'GB').map(([c, n]) => `<option value="${c}"${L.country === c ? ' selected' : ''}>${E(n)}</option>`).join('')}</optgroup></select></div>
         ${onIsland ? `<div class="st-f"><label for="loc-county">County</label><select id="loc-county"><option value="">${L.country === 'IE' ? 'Choose…' : 'Not given'}</option>${opts(L.country === 'IE' ? ROI : NI, L.county)}</select></div>` : ''}
         <div class="st-f"><label for="loc-town">Town or city (optional)</label><input id="loc-town" type="text" maxlength="60" value="${E(L.town || '')}"><small>A town or city only, never your address.</small></div>
-        <label class="st-check"><input type="checkbox" id="loc-show"${L.show_location ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show where I’m based on my gallery page</label>
+        <label class="st-check"><input type="checkbox" id="loc-show"${L.show_location && !d.consent_conflict ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show where I’m based (county${L.country === 'IE' || L.country === 'GB' ? '' : ' or country'}) on my gallery page</label>
         <label class="st-check"><input type="checkbox" id="loc-showtown"${L.show_town ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Include my town or city</label>
         <div class="st-actions"><button class="st-btn st-btn--solid" type="button" id="loc-save">Save where I’m based</button></div><p class="st-err" id="loc-msg" aria-live="polite"></p>`;
       $('#loc-country', lc).addEventListener('change', e => paintLoc({ ...read(), country: e.target.value, county: '' }));
@@ -381,17 +384,18 @@
       });
     };
     const read = () => ({ country: $('#loc-country', lc).value, county: $('#loc-county', lc)?.value || null, town: $('#loc-town', lc).value, show_location: $('#loc-show', lc).checked, show_town: $('#loc-showtown', lc).checked });
-    const SC = [['none', 'I don’t deliver (collection or by arrangement)'], ['counties', 'Chosen counties'], ['republic', 'Anywhere in the Republic of Ireland'],
+    const SC = [['none', 'No delivery: collection or by arrangement'], ['counties', 'Chosen counties'], ['republic', 'Anywhere in the Republic of Ireland'],
       ['northern_ireland', 'Anywhere in Northern Ireland'], ['island', 'Anywhere on the island of Ireland'], ['country', 'Anywhere in my own country']];
     const dState = () => ({ scope: dc.querySelector('input[name="del-scope"]:checked')?.value || D0.scope, counties: [...dc.querySelectorAll('input[name="del-county"]:checked')].map(i => i.value), show_delivery: !!$('#del-show', dc)?.checked });
     const paintDel = (S) => {
       const loc = d.location, abroad = loc && loc.country !== 'IE' && !(loc.country === 'GB' && loc.county);
       const picked = Array.isArray(S.counties) ? S.counties : JSON.parse(S.counties || '[]');
-      dc.innerHTML = `<h3>Where you can deliver</h3>
-        <p class="st-muted" style="margin:0 0 14px">Separate from where you’re based. Art for Hire visitors looking in a county will see artists based there and, listed separately, artists who deliver there.</p>
+      dc.innerHTML = `<h3>Delivering to buyers and hirers</h3>
+        <p class="st-muted" style="margin:0 0 14px">Where you can get a sold or hired artwork to, by any method. Separate from where you’re based, and from temporary placements (asked in Opportunities &amp; delivery). Art for Hire visitors looking in a county will see artists based there and, listed separately, artists who deliver there.</p>
+        ${S.scope ? '' : '<p class="st-muted" style="margin:0 0 10px"><b style="color:var(--ivory);font-weight:500">Not answered yet.</b> Choose one, including “No delivery” if that’s your answer.</p>'}
         <fieldset class="st-f" style="border:0;padding:0;margin:0 0 12px"><legend class="st-sr">Delivery coverage</legend>${SC.filter(([k]) => k !== 'country' || abroad).map(([k, t]) => `<label class="st-check"><input type="radio" name="del-scope" value="${k}"${S.scope === k ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> ${t}</label>`).join('')}</fieldset>
         ${S.scope === 'counties' ? `<div class="st-f" role="group" aria-label="Counties you deliver to">${Object.entries(d.provinces).map(([p, cs]) => `<p class="st-muted" style="margin:12px 0 6px">${p}</p><div class="st-county-grid">${cs.map(c => `<label class="st-check"><input type="checkbox" name="del-county" value="${c}"${picked.includes(c) ? ' checked' : ''} style="accent-color:var(--terra);width:18px;height:18px"> ${c}</label>`).join('')}</div>`).join('')}</div>` : ''}
-        ${S.scope !== 'none' ? `<label class="st-check"><input type="checkbox" id="del-show"${S.show_delivery ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show my delivery areas publicly (once PlotArt switches this on)</label>` : ''}
+        ${S.scope && S.scope !== 'none' ? `<label class="st-check"><input type="checkbox" id="del-show"${S.show_delivery ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show my delivery areas on my gallery and in Art for Hire (only once PlotArt updates its privacy notice; we’ll ask you to confirm then)</label>` : ''}
         <div class="st-actions"><button class="st-btn st-btn--solid" type="button" id="del-save">Save where I can deliver</button></div><p class="st-err" id="del-msg" aria-live="polite"></p>`;
       dc.querySelectorAll('input[name="del-scope"]').forEach(i => i.addEventListener('change', () => paintDel(dState())));
       $('#del-save', dc).addEventListener('click', async () => {
@@ -1079,18 +1083,21 @@
           <p class="st-hint" id="o-care-h">${E(O.care.hint)}<br>${E(O.care.always)}</p></div>` : ''}
       </fieldset></section>
       <section class="st-card"><div class="st-f" style="margin:0">
-        <label for="o-county"><span class="st-opp-q">Where is your artwork based?</span></label>
+        <label for="o-county"><span class="st-opp-q">Where is your artwork kept?</span></label>
         <select id="o-county" aria-describedby="o-county-h"><option value="">Choose a county</option>${opts}</select>
-        <small id="o-county-h">${!sv && d.suggested_county ? 'We’ve started with the county on your profile. Change it if your work is kept somewhere else.' : 'This can be different from where you live.'}</small>
+        <small id="o-county-h">${!sv && d.suggested_county ? 'We’ve started with the county on your profile. Change it if your work is kept somewhere else.' : 'This can be different from where you’re based.'} Private: used only by PlotArt to plan collections and placements.</small>
       </div></section>
       <section class="st-card" id="o-tr-card"><fieldset class="st-opp-fs">
-        <legend><h2 class="st-opp-q">How could your work reach a venue?</h2></legend>
-        <p class="st-hint" style="margin:0">Choose any that fit.</p>
+        <legend><h2 class="st-opp-q">For temporary placements, how could your work get there and back?</h2></legend>
+        <p class="st-hint" style="margin:0">Exhibitions, workplace and hospitality displays, Living Gallery, Mobile Gallery and hire placements. Choose any that fit. This is separate from how you send a sold or hired work to a customer.</p>
         <div class="st-opts">${Object.entries(O.transport).map(([k, v]) => btn('t', k, v, on(st.transport, k))).join('')}</div>
         <p class="st-opp-msg" id="o-t-msg" aria-live="polite"></p>
+        ${d.services_url ? `<p class="st-hint" style="margin:10px 0 0">Need a hand with transport? PlotArt lists independent art handlers and couriers you can contact directly. Any arrangement or quote is between you and them. <a href="${E(d.services_url)}" target="_blank" rel="noopener">Art Services &amp; Providers</a></p>` : ''}
       </fieldset></section>
       <section class="st-card" id="o-cov-card"><fieldset class="st-opp-fs">
-        <legend><h2 class="st-opp-q">Where could you deliver and collect?</h2></legend>
+        <legend><h2 class="st-opp-q">For temporary placements, where could you deliver and collect?</h2></legend>
+        ${d.general ? `<div class="st-opp-ref"><p class="st-hint" style="margin:0">Your general delivery to buyers and hirers (Profile): <b style="color:var(--ivory);font-weight:500">${E(d.general.line)}</b>.</p>
+          ${['counties', 'republic', 'northern_ireland', 'island'].includes(d.general.scope) ? '<button type="button" class="st-btn st-btn--small" id="o-from-gen" style="margin-top:8px">Start from my general delivery</button>' : ''}</div>` : ''}
         <div class="st-opts" style="margin-top:4px">${btn('c', 'anywhere', O.coverage.anywhere, st.mode === 'anywhere', 'st-opt--alone')}${btn('c', 'ask', O.coverage.ask, st.mode === 'ask', 'st-opt--alone')}</div>
         <p class="st-opp-or">or choose counties</p>
         ${Object.entries(O.provinces).map(([p, cs]) => `<div class="st-prov" role="group" aria-labelledby="pv-${p}">
@@ -1112,7 +1119,7 @@
       <div class="st-opp-save">
         <button class="st-btn st-btn--solid" id="o-save" type="submit">Save preferences</button>
         <span class="st-muted" id="o-dirty" aria-live="polite"></span>
-        <p class="st-hint st-opp-priv">${P ? 'Your county, transport, delivery area, care box and note are never published.' : 'Your answers are never published.'} <a href="https://plotnua.ie/privacy.html#plotart-opportunities" target="_blank" rel="noopener">How we use them</a></p>
+        <p class="st-hint st-opp-priv">${P ? 'Where your artwork is kept, your placement transport and delivery area, the care box and your note are never published.' : 'Your answers are never published.'} <a href="https://plotnua.ie/privacy.html#plotart-opportunities" target="_blank" rel="noopener">How we use them</a></p>
         <p class="st-err" id="o-err" role="alert"></p>
       </div>
       </form>`;
@@ -1186,6 +1193,15 @@
       st.mode = st.counties.length ? 'counties' : null;
       paint();
     }));
+    // Report 35: a one-off, editable starting point. It copies the Profile's coverage into this answer once; the two stay
+    // independent afterwards (a later Profile change never changes this, and nothing here changes the Profile).
+    $('#o-from-gen')?.addEventListener('click', () => {
+      const g = d.general; msg('#o-c-msg');
+      if (g.scope === 'island') { st.mode = 'anywhere'; st.counties.splice(0); }
+      else { st.counties.splice(0, st.counties.length, ...g.counties); st.mode = st.counties.length ? 'counties' : null; }
+      msg('#o-c-msg', 'Copied from your general delivery as a starting point. Change anything you like: your Profile isn’t changed, and later changes there won’t change this.');
+      paint();
+    });
     $('#o-county').addEventListener('change', e => { st.county = e.target.value; paint(); });
     $('#o-note').addEventListener('input', e => { st.note = e.target.value; paint(); });
     $('#o-care')?.addEventListener('change', e => { st.care = e.target.checked; paint(); });

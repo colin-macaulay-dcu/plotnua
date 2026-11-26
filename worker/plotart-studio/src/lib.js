@@ -317,7 +317,8 @@ export function exportGallery(snap, { version, approvedAt, licenceVersion, licen
   return {
     schema: 'plotnua.plotart.gallery.v1',
     artist: { slug: a.slug, display_name: a.display_name, founding: a.founding, practice: a.practice, medium: a.medium,
-      county: a.county, county_public: a.county_public, statement: a.statement, bio: a.bio, website: a.website,
+      // a county that isn't public never leaves the Studio (Report 35)
+      county: a.county_public ? a.county : null, county_public: a.county_public, statement: a.statement, bio: a.bio, website: a.website,
       instagram: a.instagram, portrait: a.portrait ? img(a.portrait, 'portrait') : null,
       ...(commissionsOpen(a) ? { open_for_commissions: true } : {}), ...(openTo(a).length ? { open_to: openTo(a) } : {}),
       ...(a.exhibitions ? { exhibitions: a.exhibitions } : {}) },

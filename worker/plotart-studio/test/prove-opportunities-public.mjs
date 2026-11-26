@@ -206,7 +206,7 @@ check('U2 one click on "Yes, show them" saves it and the card goes; commissions 
 await p.goto(S.url + '/#/opportunities', { waitUntil: 'load' }); await p.waitForTimeout(800);
 const pubTxt = await p.locator('#o-pub-card').innerText();
 check('U3 the form now shows the public choice (ticked) with its explanation, and the footer says which answers are never published',
-  await p.isChecked('#o-pub') && /never means anything has been arranged/.test(pubTxt) && /county, transport, delivery area, care box and note are never published/.test(await p.locator('.st-opp-priv').innerText()));
+  await p.isChecked('#o-pub') && /never means anything has been arranged/.test(pubTxt) && /Where your artwork is kept, your placement transport and delivery area, the care box and your note are never published/.test(await p.locator('.st-opp-priv').innerText()));
 await p.uncheck('#o-pub'); await p.click('#o-save'); await p.waitForTimeout(700);
 check('U4 unticking and saving keeps them private in one step', (await row('acia')).public_display === 0 && !('open_to' in (await lastSnap('acia')).artist));
 // a brand-new artist: the box starts UNTICKED (showing is always the artist's active choice), explanation beside it

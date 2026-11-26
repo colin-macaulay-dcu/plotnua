@@ -58,7 +58,9 @@ export function validateLocation(b) {
 /* WHERE THE ARTIST CAN DELIVER, kept apart from where they are based. loc: their location row (for "my country"). */
 export function validateDelivery(b, loc) {
   if (!b || typeof b !== 'object') throw new Bad('Tell us where you can deliver');
-  const scope = String(b.scope || 'none');
+  // Report 35: no answer is not "I don't deliver". The artist must choose; nothing is assumed.
+  if (b.scope === undefined || b.scope === null || b.scope === '') throw new Bad('Choose where you can deliver, or “No delivery: collection or by arrangement”');
+  const scope = String(b.scope);
   if (!SCOPES.includes(scope)) throw new Bad('Choose where you can deliver');
   let counties = Array.isArray(b.counties) ? [...new Set(b.counties.map(String))] : [];
   if (counties.some(c => !COUNTIES.includes(c))) throw new Bad('Choose delivery counties from the list');

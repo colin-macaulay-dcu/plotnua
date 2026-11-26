@@ -276,7 +276,7 @@ await f.selectOption('#of-status', 'unanswered'); const una = await f.locator('#
 await f.selectOption('#of-status', ''); await f.selectOption('#of-reach', 'Dublin'); const dub = await f.locator('#of-list').innerText();
 await f.ctx.close(); await p.ctx.close();
 check('U19 once saved, the prompt is gone; the founder sees the saved answers (Living Gallery, delivers, Dublin)',
-  goneAfter === 0 && /Living Gallery/.test(benRow1) && /Delivers · Dublin/.test(benRow1) && !/Not answered yet/.test(benRow1), JSON.stringify([goneAfter, benRow1, kp1]));
+  goneAfter === 0 && /Living Gallery/.test(benRow1) && /Placements, transport: Delivers/.test(benRow1) && /Placements, deliver & collect: Dublin/.test(benRow1) && !/Not answered yet/.test(benRow1), JSON.stringify([goneAfter, benRow1, kp1]));
 check('U20 after the artist edits to "Online gallery only for now", the founder sees Online only (not unanswered) and the old delivery answers are gone',
   /Online only for now/.test(benRow2) && !/Delivers/.test(benRow2) && onl.includes('Ben Test') && !una.includes('Ben Test') && !dub.includes('Ben Test')
   && (await db.prepare('SELECT COUNT(*) AS n FROM mail_capture').first()).n === mailsBefore, JSON.stringify([benRow2, onl.slice(0, 120), una.slice(0, 200)]));

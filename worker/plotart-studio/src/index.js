@@ -68,7 +68,13 @@ async function load(env, artistId) {
   // the kinds of opportunity the artist has chosen to show (migration 0015): the only Opportunities data a snapshot carries
   if (artist) artist.open_to = await O.publicFor(env, artistId);
   // where the artist is based (Phase C, migration 0025): ONLY the public view, and only when the artist has ticked it
-  if (artist) { try { artist.location = LOC.publicLocation(await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', artistId)); } catch { artist.location = null; } }
+  if (artist) {
+    let loc = null; try { loc = await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', artistId); } catch { /* 0025 not applied */ }
+    // Report 35 (26 Nov 2026): one public-location consent. Where the older "show my county" and the newer "show where I'm
+    // based" disagree, the more private answer applies until the artist confirms in "Where you're based" (which sets both).
+    if (loc && !(loc.show_location && artist.county_public)) { artist.county_public = 0; loc = { ...loc, show_location: 0 }; }
+    artist.location = LOC.publicLocation(loc);
+  }
   return { artist, works, images };
 }
 /* Open for Commissions (founder approval 13 Nov 2026). Migration 0011 adds artists.open_for_commissions. Until it has run,
@@ -1445,7 +1451,16 @@ async function route(req, env) {
       const img = await HP.previewable(env, mm[1], pubSql(env));
       return img ? previewImage(env, img) : res('Not found', 'text/plain', 404);
     }
-    if (p === '/api/admin/opportunities' && m === 'GET') return json({ ok: true, ...(await O.adminView(env)) });   // read-only: the founder never edits an artist's answers
+    if (p === '/api/admin/opportunities' && m === 'GET') {   // read-only: the founder never edits an artist's answers
+      const v = await O.adminView(env);
+      // Report 35: general delivery to buyers and hirers (the Profile) beside, never merged with, placement logistics.
+      if (v.installed && await locationInstalled(env)) {
+        const del = new Map((await all(env, 'SELECT d.*, l.country FROM artist_delivery d LEFT JOIN artist_locations l ON l.artist_id = d.artist_id')).map(r => [r.artist_id, r]));
+        for (const it of v.items) { const d = del.get(it.id); it.general = d ? { scope: d.scope, counties: LOC.covered(d, d), line: LOC.deliveryLine(d, d) || 'No delivery: collection or by arrangement' } : null; }
+        v.general_installed = true;
+      }
+      return json({ ok: true, ...v });
+    }
     // the founder records an agreement obtained in person (visibility only; answers untouched); a live gallery gets an instant update
     if (p === '/api/admin/opportunities/confirm' && m === 'POST') {
       const r = await O.founderConfirm(env, me.email, await req.json().catch(() => null));
@@ -1901,7 +1916,16 @@ async function route(req, env) {
     return json({ ok: false }, 404);
   }
   /* Opportunities & delivery: the artist's OWN expression of interest. Writes artist_opportunities only. */
-  if (p === '/api/opportunities' && m === 'GET') return json({ ok: true, ...(await O.artistView(env, artist)) });
+  if (p === '/api/opportunities' && m === 'GET') {
+    const v = await O.artistView(env, artist);
+    // Report 35: the artist's general delivery (Profile), shown for reference and offered as an editable starting point for
+    // temporary placements. Read-only here: nothing is copied unless the artist chooses to, and nothing stays linked.
+    if (v.installed && await locationInstalled(env)) {
+      const dl = await one(env, 'SELECT d.*, l.country FROM artist_delivery d LEFT JOIN artist_locations l ON l.artist_id = d.artist_id WHERE d.artist_id = ?', artist.id);
+      v.general = dl ? { scope: dl.scope, counties: LOC.covered(dl, dl), line: LOC.deliveryLine(dl, dl) || 'No delivery: collection or by arrangement' } : null;
+    }
+    return json({ ok: true, ...v, services_url: 'https://plotnua.ie/plotart/services.html' });
+  }
   // Saving can change what is shown publicly (migration 0015): that reaches a live gallery as an instant update, exactly
   // like the commissions switch, never as content review. Nothing changes publicly unless the artist chose to show it.
   if (p === '/api/opportunities' && m === 'PUT') {
@@ -1948,7 +1972,8 @@ async function route(req, env) {
   if (p === '/api/me/location' && m === 'GET') {
     if (!(await locationInstalled(env))) return json({ ok: true, installed: false });
     const cur = await locationOf(env, artist.id), a = await one(env, 'SELECT county, county_public FROM artists WHERE id = ?', artist.id);
-    return json({ ok: true, installed: true, ...cur, profile_county: a.county || null, counties: L.COUNTIES, provinces: LOC.PROVINCES, ni_counties: LOC.NI_COUNTIES,
+    const conflict = !!(cur.location && !!cur.location.show_location !== !!a.county_public);
+    return json({ ok: true, installed: true, ...cur, profile_county: a.county || null, profile_county_public: !!a.county_public, consent_conflict: conflict, counties: L.COUNTIES, provinces: LOC.PROVINCES, ni_counties: LOC.NI_COUNTIES,
       countries: LOC.COUNTRIES.map(c => [c, LOC.countryName(c)]).sort((x, y) => x[1].localeCompare(y[1], 'en-IE')), scopes: LOC.SCOPES });
   }
   if (p === '/api/me/location' && m === 'PUT') {
@@ -1971,8 +1996,21 @@ async function route(req, env) {
   if (p === '/api/me/profile' && m === 'PUT') {
     const f = clean(PROFILE, await req.json());
     if (!Object.keys(f).length) return json({ ok: true });
+    // Report 35 (26 Nov 2026): one public-location consent. The Studio shows only "Where you're based" once it is installed.
+    // For an artist who has confirmed a location there, this older route can no longer move the county away from it, and a
+    // change to "show my county" is applied to both answers together, so the two can never disagree again.
+    let syncLoc = null;
+    if (('county' in f || 'county_public' in f) && await locationInstalled(env)) {
+      const loc = await one(env, 'SELECT county FROM artist_locations WHERE artist_id = ?', artist.id);
+      if (loc) {
+        if ('county' in f && (f.county || null) !== (loc.county || null)) throw new Bad('Your county is set in “Where you’re based” on this page.', 409);
+        if ('county_public' in f) syncLoc = env.DB.prepare('UPDATE artist_locations SET show_location = ?, show_town = CASE WHEN ? = 1 THEN show_town ELSE 0 END, confirmed_at = ?, confirmed_by = ?, updated_at = ? WHERE artist_id = ?')
+          .bind(f.county_public, f.county_public, now(), 'artist', now(), artist.id);
+      }
+    }
     if ('exhibitions' in f && !(await exhibitionsInstalled(env))) throw new Bad('Exhibitions & Achievements isn’t available just yet. Please try again later.', 503);
-    await env.DB.prepare(`UPDATE artists SET ${Object.keys(f).map(k => `${k}=?`).join(', ')}, updated_at=? WHERE id=?`).bind(...Object.values(f), now(), artist.id).run();
+    const upd = env.DB.prepare(`UPDATE artists SET ${Object.keys(f).map(k => `${k}=?`).join(', ')}, updated_at=? WHERE id=?`).bind(...Object.values(f), now(), artist.id);
+    if (syncLoc) await env.DB.batch([upd, syncLoc]); else await upd.run();
     await audit(env, artist.email, 'artist', 'profile', artist.id, { fields: Object.keys(f) });
     return json({ ok: true, saved_at: now() });
   }
