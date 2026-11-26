@@ -1,5 +1,19 @@
 {
   "_note": "PlotArt internal test artist accounts (founder decision 26 Nov 2026, Report 33). Their galleries are NEVER published: the website builder refuses any export for these Studio artist IDs or gallery addresses, independently of the Studio (which refuses too, from its own TEST_ARTIST_IDS setting). Adding or removing an account here needs the founder's approval.",
-  "artist_ids": [],
-  "slugs": []
+  "artist_ids": [
+    "ahnn1xynrsr"
+  ],
+  "slugs": [
+    "makaulay"
+  ],
+  "_designations": [
+    {
+      "artist_id": "ahnn1xynrsr",
+      "slug": "makaulay",
+      "display_name": "Makaulay",
+      "approved": "2026-11-26",
+      "by": "founder",
+      "step": "builder-first (Studio TEST_ARTIST_IDS and programme correction follow separately)"
+    }
+  ]
 }
