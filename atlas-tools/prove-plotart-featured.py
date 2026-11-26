@@ -235,33 +235,43 @@ def _with(pk, slug, wid, **change):
                 if w["id"] == wid:
                     w.update(change)
     return q
+# FA13b no substitution (founder instruction 26 Nov 2026, Report 37): a place whose work is sold, withdrawn or unpublished
+# is LEFT OUT; the other works keep their order; nothing else is put in its place (the Studio names the vacancy)
 _fx_ok, _fx_why = True, []
 for i, (sl, wid) in enumerate(FEAT.OPENING):
-    for label, pk2, sel2 in (("sold", _with(PK, sl, wid, availability="sold"), SEL),
-                             ("withdrawn", _with(PK, sl, wid, availability="withdrawn"), SEL),
-                             ("unpublished", [p for p in PK if p["artist"]["slug"] != sl], SEL),
-                             ("featured below", PK, [A(sl, wid)] + [x for x in SEL if x["artist"] != sl][:5])):
-        got, again = _ops(sel2, pk2), _ops(sel2, pk2)
-        others = [x for j, x in enumerate(FEAT.OPENING) if j != i]
-        byq = {p["artist"]["slug"]: p for p in pk2}
-        rep = got[i] if len(got) == 3 else None
-        rw = next((w for w in byq[rep[0]]["works"] if w["id"] == rep[1]), None) if rep and rep[0] in byq else None
-        good = (len(got) == 3 and got == again and [g for j, g in enumerate(got) if j != i] == others and rep != (sl, wid)
-                and rw is not None and rw["availability"] == "available" and byq[rep[0]]["publication"]["state"] == "approved"
-                and rep not in {(x["artist"], x["work"]) for x in sel2} and rep[0] not in {o[0] for o in others}
-                and FEAT._portrait(rw) == FEAT._portrait(next(w for w in next(p for p in PK if p["artist"]["slug"] == sl)["works"] if w["id"] == wid))
-                and FEAT._main(rw) is not None)
+    for label, pk2 in (("sold", _with(PK, sl, wid, availability="sold")), ("withdrawn", _with(PK, sl, wid, availability="withdrawn")),
+                       ("unpublished", [p for p in PK if p["artist"]["slug"] != sl])):
+        got = _ops(SEL, pk2)
+        good = got == [x for j, x in enumerate(FEAT.OPENING) if j != i] and got == _ops(SEL, pk2)
         _fx_ok &= good
         if not good:
             _fx_why.append((i, label, got))
-check("FA13b fallback: when a curated work is sold, withdrawn, unpublished or featured below, its place is filled deterministically by an available published work (never featured, never in the row, by a different artist, same orientation, approved image); the other curated works keep their places",
-      _fx_ok, _fx_why)
+_two = FEAT.opening(SEL, _with(PK, *FEAT.OPENING[1], availability="sold"))
+check("FA13b no substitution: a sold, withdrawn or unpublished work's place is left out, the other two keep their order, and the row closes up into the balanced two-work layout",
+      _fx_ok and 'class="pa-op-row n-2"' in _two and _two.count('data-pa-opening=') == 2, _fx_why)
 _all_gone = PK
 for sl, wid in FEAT.OPENING:
     _all_gone = _with(_all_gone, sl, wid, availability="sold")
 _g = _ops(SEL, _all_gone)
-check("FA13d all three curated works unavailable: three different-artist replacements, none featured, the same on every build",
-      len(_g) == 3 and len({a for a, _ in _g}) == 3 and _g == _ops(SEL, _all_gone) and not (set(_g) & {(x["artist"], x["work"]) for x in SEL}), _g)
+check("FA13d all three unavailable: no opening row at all (no broken image, nothing substituted); a founder's showcase keeps its marker so the old default is never re-seeded",
+      _g == [] and FEAT.opening(SEL, _all_gone) == "" and FEAT.opening(SEL, _all_gone, choice=FEAT.OPENING, managed=True) == FEAT.SHOWCASE_MARK, _g)
+# FA14 Gallery Showcase (Report 37): the founder's published showcase from the Studio sets the row; a routine publication
+# (no showcase passed) keeps what the page shows; an ineligible place is left out and comes back only from the Studio
+_sc = [{"artist": FEAT.OPENING[2][0], "work": FEAT.OPENING[2][1]}, {"artist": FEAT.OPENING[0][0], "work": FEAT.OPENING[0][1]}]
+_d1 = FEAT.update(new, SEL, PK, _sc)
+_d2 = FEAT.update(_d1, SEL, PK)                                         # a routine publication: no showcase from the Studio
+_d3 = FEAT.update(_d1, SEL, _with(PK, *FEAT.OPENING[2], availability="sold"))   # the first work is sold
+_d4 = FEAT.update(_d3, SEL, PK, _sc)                                     # the Studio still names it and it is available again
+_bad = []
+for b in ([{"artist": "x", "work": "nope"}], [{"artist": FEAT.OPENING[0][0], "work": FEAT.OPENING[0][1]}] * 2, [{"artist": "a-b", "work": "w1234", "kind": "x"}], [{}] * 4):
+    try:
+        FEAT.check_showcase(b); _bad.append("accepted %r" % (b,))
+    except ValueError:
+        pass
+check("FA14 the founder's showcase sets the row (order and works); a routine publication keeps it; a sold work drops out with nothing substituted and returns when the Studio's showcase is eligible again; malformed showcases are refused",
+      FEAT.showcase_in(_d1) == [tuple(FEAT.OPENING[2]), tuple(FEAT.OPENING[0])] and _d2 == _d1 and FEAT.showcase_in(_d3) == [tuple(FEAT.OPENING[0])]
+      and FEAT.showcase_in(_d4) == FEAT.showcase_in(_d1) and FEAT.selection_in(_d1) == FEAT.selection_in(new) and FEAT.outside(_d1) == FEAT.outside(new) and not _bad,
+      (FEAT.showcase_in(_d1), FEAT.showcase_in(_d3), _bad))
 check("FA13c no opening work repeats a Featured Artists artwork on the live page, and the opening row sits directly after the introduction",
       not ({(a, b) for a, b, _ in re.findall(r'data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)"()', LIVE_DOC)} & {(x["artist"], x["work"]) for x in FEAT.selection_in(LIVE_DOC)})
       and re.search(r'</div></section>\n\n<!-- pa-featured-artists:begin -->\n<section class="pa-op"', LIVE_DOC) is not None)

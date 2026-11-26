@@ -21,7 +21,8 @@ import * as CO from './checkout.js';   // managed checkout pilot (development 16
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import * as G from './galleries.js';   // Three galleries (Phase B, migration 0023): memberships, placements, order, Artists in Focus, image-use consent
 import * as LOC from './location.js';   // Artist location and delivery coverage (Phase C, migration 0025), kept apart
-import * as T from './test-artists.js';   // internal test artist accounts (26 Nov 2026): TEST_ARTIST_IDS, never published
+import * as T from './test-artists.js';
+import * as SC from './showcase.js';   // Gallery Showcase (Report 37, migration 0028): the three opening artworks of each gallery   // internal test artist accounts (26 Nov 2026): TEST_ARTIST_IDS, never published
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
@@ -1279,6 +1280,7 @@ async function route(req, env) {
       const ids = T.testIds(env), rows = ids.length ? await all(env, `SELECT id, slug FROM artists WHERE id IN (${ids.map(() => '?').join(',')})`, ...ids) : [];
       return json({ ok: true, artists: ids.map(id => ({ id, slug: (rows.find(r => r.id === id) || {}).slug || null })) });
     }
+    if (p === '/api/pipeline/gallery-showcase' && m === 'GET') return json({ ok: true, ...(await SC.pipeline(env, await HP.published(env, pubSql(env)))) });   // Report 37: published, eligible positions only
     if (p === '/api/pipeline/galleries' && m === 'GET') return json({ ok: true, ...(await G.pipeline(env, await HP.published(env, pubSql(env)))) });   // Phase B: read-only, public identifiers   // gallery address + artwork id only
     // the earlier homepage route, kept only so a publisher from before this release keeps working (it now receives artists only)
     if (p === '/api/pipeline/homepage' && m === 'GET') { const r = await HP.pipeline(env, pubSql(env)); return json({ ok: true, ...r, items: r.items.map(i => ({ kind: 'artist', ...i })) }); }
@@ -1429,6 +1431,14 @@ async function route(req, env) {
       });
       return json({ ok: true, installed: true, counties: L.COUNTIES,
         artists: county ? list.filter(x => x.county === county || x.covers.includes(county)).map(x => ({ ...x, relation: x.county === county ? 'based' : 'delivers' })) : list });
+    }
+    // Gallery Showcase (Report 37): founder-only; drafts never publish; Publish copies the draft and starts the protected
+    // publishing workflow. Independent of Artists in Focus and Gallery order.
+    if (p === '/api/admin/showcase' && m === 'GET') return json({ ok: true, ...(await SC.view(env, await HP.published(env, pubSql(env)))) });
+    if ((mm = p.match(/^\/api\/admin\/showcase\/([a-z]+)$/)) && m === 'PUT') return json({ ok: true, ...(await SC.saveDraft(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, pubSql(env)))) });
+    if ((mm = p.match(/^\/api\/admin\/showcase\/([a-z]+)\/publish$/)) && m === 'POST') {
+      const r = await SC.publish(env, me.email, mm[1], await HP.published(env, pubSql(env)));
+      return json({ ok: true, ...r, publish: await requestGalleryPublish(env) });
     }
     if (p === '/api/admin/galleries' && m === 'GET') {
       // Phase C (Track C, 25 Nov 2026): the founder's Galleries screen also needs who can be invited, each published artist's
