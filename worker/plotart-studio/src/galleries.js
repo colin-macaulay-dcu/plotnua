@@ -192,7 +192,11 @@ export async function founderClose(env, founder, g, artistId, how) {
   const a = await one(env, 'SELECT id, created_at, licence_accepted_at FROM artists WHERE id = ?', artistId);
   if (!a) throw new Bad('No such artist', 404);
   const cur = effective(await rowsFor(env, artistId), g);
-  if (!cur || !(how === 'refused' ? ['proposed', 'artist_accepted'] : [...OPEN_STATES, 'live']).includes(cur.state)) throw new Bad('Nothing to ' + (how === 'refused' ? 'refuse' : 'withdraw'), 409);
+  if (!cur || !(how === 'refused' ? ['proposed', 'artist_accepted'] : [...OPEN_STATES, 'live']).includes(cur.state)) throw new Bad('Nothing to ' + (how === 'refused' ? 'refuse' : 'withdraw'), 409)
+  // Remove from Contemporary (26 Nov 2026): never while the artist holds one of the Contemporary positions 01-25, which the
+  // public Artists' Gallery shows; release the position in Gallery order first, so the two can never disagree.
+  if (g === 'contemporary' && how === 'withdrawn' && cur.state === 'live' && await one(env, 'SELECT position FROM gallery_positions WHERE artist_id = ?', artistId))
+    throw new Bad('This artist holds a Contemporary position in Gallery order. Release that position first, then remove them from Contemporary.', 409);;
   const at = now();
   await commit(env, [settleStmt(env, a, founder, at),
     env.DB.prepare(`UPDATE gallery_memberships SET state=?, closed_by=?, closed_at=?, updated_at=? WHERE ${MEMBER_CAS}`).bind(how, founder, at, at, ...memberCas(artistId, g, cur)),
@@ -239,10 +243,18 @@ export function validInviteGalleries(galleries) {
 export function inviteStatements(env, founder, artistId, galleries, applicationRef, at) {
   if (galleries === undefined) return [];
   if (!validInviteGalleries(galleries)) throw new Bad('Choose one or more galleries');
+  /* Phase C (26 Nov 2026, founder decision on Report 33): Contemporary keeps today's meaning, the default membership that comes
+     with joining PlotArt and needs no separate acceptance. So Contemporary alone writes nothing (exactly as an invitation
+     without a choice); Contemporary with Spaces or Being writes that default down (live, as for every existing artist) beside
+     the other invitations; leaving Contemporary out means the artist is NOT in Contemporary. Spaces and Being are always
+     invitations the artist accepts or declines in their Studio. */
+  if (galleries.length === 1 && galleries[0] === 'contemporary') return [];
   const source = applicationRef ? 'application' : 'founder_invitation';
-  return galleries.map(g => env.DB.prepare(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, application_ref, proposed_by, proposed_at,
+  const others = galleries.filter(g => g !== 'contemporary');
+  return [...(galleries.includes('contemporary') ? [settleStmt(env, { id: artistId, created_at: at, licence_accepted_at: null }, founder, at)] : []),
+    ...others.map(g => env.DB.prepare(`INSERT INTO gallery_memberships (artist_id, gallery_id, state, source, application_ref, proposed_by, proposed_at,
     founder_approved_by, founder_approved_at, artist_accepted_at, updated_at) VALUES (?,?,'founder_approved',?,?,?,?,?,?,NULL,?)`)
-    .bind(artistId, g, source, applicationRef || null, founder, at, founder, at, at));
+    .bind(artistId, g, source, applicationRef || null, founder, at, founder, at, at))];
 }
 
 /* ---- artwork placement ------------------------------------------------------------------------------------------------ */

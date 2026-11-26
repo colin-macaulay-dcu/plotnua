@@ -21,6 +21,7 @@ import * as CO from './checkout.js';   // managed checkout pilot (development 16
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import * as G from './galleries.js';   // Three galleries (Phase B, migration 0023): memberships, placements, order, Artists in Focus, image-use consent
 import * as LOC from './location.js';   // Artist location and delivery coverage (Phase C, migration 0025), kept apart
+import * as T from './test-artists.js';   // internal test artist accounts (26 Nov 2026): TEST_ARTIST_IDS, never published
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
@@ -228,6 +229,7 @@ async function logEnquiry(env, founder, b) {
   if (!(await agreementDocs(env))) throw new Bad('The enquiry log isn’t installed yet (migration 0005).', 503);
   const a = await one(env, 'SELECT * FROM artists WHERE id=?', String(b.artist_id || ''));
   if (!a) throw new Bad('Choose the artist');
+  T.refuse(env, a.id, 'no genuine enquiry or commission record is made for it.');
   let work = null;
   if (b.artwork_id) { work = await one(env, 'SELECT id, title FROM artworks WHERE id=? AND artist_id=?', String(b.artwork_id), a.id); if (!work) throw new Bad('That artwork isn’t one of this artist’s'); }
   const day = String(b.introduced_on || '');
@@ -563,7 +565,7 @@ async function instant(env, artist, actor, what) {
       .bind(artist.id, v, JSON.stringify(next), 'instant', now(), lv.ai_decisions || null),
     env.DB.prepare("UPDATE publish_queue SET status='superseded', updated_at=? WHERE artist_id=? AND kind='instant' AND status='awaiting_founder'").bind(now(), artist.id),
     env.DB.prepare('INSERT INTO publish_queue (id, artist_id, version, kind, status, created_at, updated_at) VALUES (?,?,?,?,?,?,?)')
-      .bind(rid('q'), artist.id, v, 'instant', env.INSTANT_AUTOPUBLISH === 'true' ? 'ready' : 'awaiting_founder', now(), now()),
+      .bind(rid('q'), artist.id, v, 'instant', env.INSTANT_AUTOPUBLISH === 'true' && !T.isTest(env, artist.id) ? 'ready' : 'awaiting_founder', now(), now()),   // a test account is never sent to the website
   ]);
   // publish at once only when the founder has switched this on (instant updates are pre-authorised; default: the schedule)
   const publish = env.INSTANT_AUTOPUBLISH === 'true' && env.INSTANT_PUBLISH_DISPATCH === 'true' ? await requestGalleryPublish(env) : 'scheduled';
@@ -663,6 +665,10 @@ const POSITIONS = 25;
 const VISIBLE_SQL = `SELECT q.artist_id FROM publish_queue q WHERE q.status IN ('exporting','published')
   AND q.version = (SELECT MAX(q2.version) FROM publish_queue q2 WHERE q2.artist_id = q.artist_id AND q2.status IN ('exporting','published'))
   AND q.kind <> 'remove'`;
+// Internal test accounts (Report 34, 26 Nov 2026): never visible to the publishing pipeline, Featured Artists, gallery
+// contents or gallery targets, whatever their publish history. The founder's own screens keep the true state (VISIBLE_SQL).
+const pubSql = env => { const ids = T.testIds(env).map(i => i.replace(/[^0-9a-z]/g, '')).filter(Boolean);
+  return ids.length ? `${VISIBLE_SQL} AND q.artist_id NOT IN (${ids.map(i => `'${i}'`).join(',')})` : VISIBLE_SQL; };
 async function galleryOrder(env) {
   const rows = await all(env, `SELECT g.position, g.artist_id, g.reserved, g.note, g.updated_at, a.display_name, a.slug, a.founding, a.founding_number, a.account_status
     FROM gallery_positions g LEFT JOIN artists a ON a.id = g.artist_id ORDER BY g.position`);
@@ -684,10 +690,10 @@ async function galleryOrder(env) {
 // What the publishing pipeline sees: position, the gallery address of a published (or publishing) artist, or reserved.
 async function pipelineOrder(env) {
   const rows = await all(env, 'SELECT g.position, g.artist_id, g.reserved, a.slug FROM gallery_positions g LEFT JOIN artists a ON a.id = g.artist_id ORDER BY g.position');
-  const visible = new Set((await all(env, VISIBLE_SQL)).map(r => r.artist_id));
+  const visible = new Set((await all(env, pubSql(env))).map(r => r.artist_id));
   const positions = rows.map(r => ({ position: r.position, slug: r.artist_id && visible.has(r.artist_id) ? r.slug : null, reserved: !!r.reserved }));
   const placed = new Set(rows.map(r => r.artist_id).filter(Boolean));
-  const extra = (await all(env, `SELECT id, slug FROM artists WHERE id IN (${VISIBLE_SQL}) ORDER BY COALESCE(first_published_at, '9999'), created_at, id`))
+  const extra = (await all(env, `SELECT id, slug FROM artists WHERE id IN (${pubSql(env)}) ORDER BY COALESCE(first_published_at, '9999'), created_at, id`))
     .filter(a => !placed.has(a.id)).map(a => a.slug);
   return { positions, extra };
 }
@@ -729,6 +735,7 @@ async function approvedBase(env, artistId, version) {
 async function retryPublication(env, founder, id, req) {
   const q = await one(env, 'SELECT * FROM publish_queue WHERE id=?', id);
   if (!q) throw new Bad('That publication job doesn’t exist', 404);
+  T.refuse(env, q.artist_id, 'its gallery is never published.');
   if (q.status === 'ready' || q.status === 'exporting') throw new Bad('This publication is already being published: it can’t be retried until it finishes', 409);
   if (q.status === 'published') throw new Bad('This version is already published: there is nothing to retry', 409);
   if (q.status !== 'failed') throw new Bad('Only a publication that failed can be retried', 409);
@@ -795,6 +802,7 @@ async function saveGalleryOrder(env, founder, body) {
     } else if (e.state === 'artist') {
       const id = String(e.artist_id || '');
       if (!/^a[0-9a-z]+$/.test(id) || seenArt.has(id)) throw new Bad('Each artist can hold one position');
+      T.refuse(env, id, 'it never holds a Contemporary position.');
       if (!(await one(env, "SELECT id FROM artists WHERE id = ? AND account_status IN ('invited','active')", id))) throw new Bad('That artist can’t be placed', 409);
       seenArt.add(id);
       rows.push({ position: n, artist_id: id, reserved: 0, note: null });
@@ -833,8 +841,8 @@ async function overview(env) {
   const queue = await all(env, `SELECT q.*, a.display_name FROM publish_queue q JOIN artists a ON a.id = q.artist_id WHERE (q.status IN ('awaiting_founder','ready','exporting')
     OR (q.status = 'failed' AND NOT EXISTS (SELECT 1 FROM publish_queue n WHERE n.artist_id = q.artist_id AND n.version > q.version AND n.status <> 'superseded'))) ORDER BY q.created_at`);
   const flags = await all(env, `SELECT i.id, i.artist_id, a.display_name, i.sha256 FROM images i JOIN artists a ON a.id=i.artist_id WHERE i.deleted_at IS NULL AND i.checks LIKE '%DUPLICATE_OF_OTHER_ARTIST%'`);
-  return { artists: out, submissions: subs, queue, flags, agreement_installed: !!(await agreementDocs(env)), f25: { selected_with_studio: artists.filter(a => a.founding).length, target: 25 },
-    instant_autopublish: env.INSTANT_AUTOPUBLISH === 'true', terms_installed: await termsInstalled(env) };
+  return { artists: out, submissions: subs, queue, flags, agreement_installed: !!(await agreementDocs(env)), f25: { selected_with_studio: artists.filter(a => a.founding && !T.isTest(env, a.id)).length, target: 25 },
+    instant_autopublish: env.INSTANT_AUTOPUBLISH === 'true', terms_installed: await termsInstalled(env), galleries_installed: await G.installed(env) };
 }
 async function decide(env, founder, id, body) {
   const s = await one(env, "SELECT * FROM submissions WHERE id = ? AND status = 'pending'", id);
@@ -871,6 +879,7 @@ async function decide(env, founder, id, body) {
 
 /* ---------------------------------------------------------------- pipeline */
 async function exportFor(env, q) {
+  T.refuse(env, q.artist_id, 'its gallery is never exported for publication.');
   const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', q.artist_id);
   const v = await one(env, 'SELECT * FROM versions WHERE artist_id = ? AND version = ?', q.artist_id, q.version);
   const snap = JSON.parse(v.snapshot);
@@ -1250,20 +1259,21 @@ async function route(req, env) {
   if (p.startsWith('/api/pipeline/') && SANDBOX) return json({ ok: false, error: 'No publishing in the sandbox' }, 404);
   if (p.startsWith('/api/pipeline/')) {
     if (!env.PIPELINE_TOKEN || req.headers.get('Authorization') !== `Bearer ${env.PIPELINE_TOKEN}`) return json({ ok: false }, 401);
-    if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
+    if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: (await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at")).filter(q => !T.isTest(env, q.artist_id)) });   // never a test account
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
-    if (p === '/api/pipeline/featured-artists' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, VISIBLE_SQL)) });
-    if (p === '/api/pipeline/galleries' && m === 'GET') return json({ ok: true, ...(await G.pipeline(env, await HP.published(env, VISIBLE_SQL))) });   // Phase B: read-only, public identifiers   // gallery address + artwork id only
+    if (p === '/api/pipeline/featured-artists' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, pubSql(env))) });
+    if (p === '/api/pipeline/galleries' && m === 'GET') return json({ ok: true, ...(await G.pipeline(env, await HP.published(env, pubSql(env)))) });   // Phase B: read-only, public identifiers   // gallery address + artwork id only
     // the earlier homepage route, kept only so a publisher from before this release keeps working (it now receives artists only)
-    if (p === '/api/pipeline/homepage' && m === 'GET') { const r = await HP.pipeline(env, VISIBLE_SQL); return json({ ok: true, ...r, items: r.items.map(i => ({ kind: 'artist', ...i })) }); }
+    if (p === '/api/pipeline/homepage' && m === 'GET') { const r = await HP.pipeline(env, pubSql(env)); return json({ ok: true, ...r, items: r.items.map(i => ({ kind: 'artist', ...i })) }); }
     if (p === '/api/pipeline/ideas' && m === 'GET') return json({ ok: true, ...(await pipelineIdeas(env)) });   // Idea Board: approved, public fields only
     if (p === '/api/pipeline/garden' && m === 'GET') return json({ ok: true, ...(await pipelineGarden(env)) });   // Borrowed Garden noticeboard: approved, public fields only
     if (p === '/api/pipeline/hire-catalogue' && m === 'GET') {   // Art for Hire: separate from the gallery export; listed works only
       if (!(await H.installed(env))) return json({ ok: true, generated_at: now(), items: [] });
       const cat = await H.catalogue(env);
+      cat.items = cat.items.filter(it => !T.isTest(env, it.artist_id));   // internal test accounts are never listed (Report 34)
       // Phase C filters (25 Nov 2026): public facets only. Delivery counties only while public delivery is switched on
       // (DELIVERY_PUBLIC, off by default) and the artist ticked "show"; galleries from the three-gallery records when installed.
-      const gc = (await G.installed(env)) ? await G.contents(env, await HP.published(env, VISIBLE_SQL)) : null;
+      const gc = (await G.installed(env)) ? await G.contents(env, await HP.published(env, pubSql(env))) : null;
       const delOn = env.DELIVERY_PUBLIC === 'true' && (await locationInstalled(env));
       for (const it of cat.items) {
         const f = {};
@@ -1286,6 +1296,7 @@ async function route(req, env) {
     if ((mm = p.match(/^\/api\/pipeline\/export\/(q[0-9a-z]+)$/)) && m === 'POST') {
       const q = await one(env, "SELECT * FROM publish_queue WHERE id = ? AND status IN ('ready','exporting')", mm[1]);
       if (!q) throw new Bad('Not ready', 409);
+      T.refuse(env, q.artist_id, 'its gallery is never exported for publication.');   // before anything is marked exporting
       await env.DB.prepare("UPDATE publish_queue SET status='exporting', updated_at=? WHERE id=?").bind(now(), q.id).run();
       if (q.kind !== 'remove') await placeOnFirstPublication(env, q.artist_id);
       return json({ ok: true, ...(await exportFor(env, q)) });
@@ -1362,7 +1373,25 @@ async function route(req, env) {
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
     if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
     if (p === '/admin/featured') return html(A.ADMIN_HTML);
-    if (p === '/admin/galleries') return html(A.ADMIN_HTML);   // Three galleries (Phase C): the founder's management screen
+    if (p === '/admin/galleries') return html(A.ADMIN_HTML);
+    // Internal test accounts (26 Nov 2026): which artist IDs the founder's screens mark TEST (from configuration only)
+    if (p === '/api/admin/test-artists' && m === 'GET') return json({ ok: true, ids: T.testIds(env) });
+    /* The test account's programme (26 Nov 2026, founder decision on Report 33): a test account is corrected to Gallery Artist so
+       it follows the current agreement route. Only for an account named in TEST_ARTIST_IDS, never for a real artist; no
+       agreement record is removed (earlier acceptances stay on record, marked as test acceptances); audit-logged. */
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/test-programme$/)) && m === 'POST') {
+      if (!T.isTest(env, mm[1])) throw new Bad('Only an internal test account (TEST_ARTIST_IDS) can have its programme changed here', 409);
+      const a = await one(env, 'SELECT id, founding, founding_number FROM artists WHERE id = ?', mm[1]);
+      if (!a) throw new Bad('No such artist', 404);
+      if (!(await termsInstalled(env))) throw new Bad('The Gallery Artist records are not installed', 503);
+      const at = now();
+      await env.DB.batch([
+        env.DB.prepare('UPDATE artists SET founding = 0, founding_number = NULL, updated_at = ? WHERE id = ?').bind(at, a.id),
+        env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
+          VALUES (?, 'gallery_artist', 1500, NULL, NULL, ?, ?, ?) ON CONFLICT(artist_id) DO UPDATE SET track = 'gallery_artist', commission_bp = 1500, set_by = excluded.set_by, updated_at = excluded.updated_at`).bind(a.id, me.email, at, at)]);
+      await audit(env, me.email, 'founder', 'test_account_programme', a.id, { from: a.founding ? 'founding' : 'other', to: 'gallery_artist', founding_number_was: a.founding_number });
+      return json({ ok: true, programme: 'gallery_artist' });
+    }   // Three galleries (Phase C): the founder's management screen
     if (p === '/admin/homepage') return Response.redirect(new URL('/admin/featured', req.url).toString(), 302);   // the tab's earlier address
     // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
     /* Three galleries (Phase B, migration 0023): founder-only. Each route writes only the gallery tables and the audit log. */
@@ -1388,7 +1417,7 @@ async function route(req, env) {
       // Phase C (Track C, 25 Nov 2026): the founder's Galleries screen also needs who can be invited, each published artist's
       // shown works (title and main photograph, for placements and Artists in Focus) and who holds Contemporary positions 01-25.
       // Read-only; nothing here writes.
-      const pub = await HP.published(env, VISIBLE_SQL), v = await G.adminView(env, pub);
+      const pub = await HP.published(env, pubSql(env)), v = await G.adminView(env, pub);
       if (!v.installed) return json({ ok: true, ...v });
       const people = await all(env, "SELECT id, slug, display_name, account_status FROM artists WHERE account_status IN ('invited','active') ORDER BY display_name COLLATE NOCASE");
       const held = (await all(env, 'SELECT artist_id FROM gallery_positions WHERE artist_id IS NOT NULL')).map(r => r.artist_id);
@@ -1397,23 +1426,23 @@ async function route(req, env) {
           works: a.works.map(w => ({ id: w.id, title: w.title, year: w.year, image: w.image })) })) });
     }
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/targets$/)) && m === 'PUT') return json({ ok: true, gallery: await G.setTargets(env, me.email, mm[1], await req.json().catch(() => null)) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/status$/)) && m === 'POST') return json({ ok: true, ...(await G.setStatus(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL))) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/status$/)) && m === 'POST') return json({ ok: true, ...(await G.setStatus(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, pubSql(env)))) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/members$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPropose(env, me.email, mm[1], await req.json().catch(() => null))) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/members\/(a[0-9a-z]+)\/(approve|refuse|withdraw)$/)) && m === 'POST')
       return json({ ok: true, ...(mm[3] === 'approve' ? await G.founderApprove(env, me.email, mm[1], mm[2]) : await G.founderClose(env, me.email, mm[1], mm[2], mm[3] === 'refuse' ? 'refused' : 'withdrawn')) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/artworks\/(w[0-9a-z]+)\/(place|refuse|withdraw|restore)$/)) && m === 'POST') return json({ ok: true, ...(await G.founderPlacement(env, me.email, mm[1], mm[2], mm[3])) });
     if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/order$/)) && m === 'PUT') return json({ ok: true, order: await G.saveOrder(env, me.email, mm[1], await req.json().catch(() => null)) });
-    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/features$/)) && m === 'PUT') return json({ ok: true, features: await G.saveFeatures(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, VISIBLE_SQL)) });
+    if ((mm = p.match(/^\/api\/admin\/galleries\/([a-z_]+)\/features$/)) && m === 'PUT') return json({ ok: true, features: await G.saveFeatures(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, pubSql(env))) });
     if (p === '/api/admin/image-use/requests' && m === 'POST') return json({ ok: true, request: await G.requestConsent(env, me.email, await req.json().catch(() => null)) });
     if ((mm = p.match(/^\/api\/admin\/image-use\/requests\/(u[0-9a-z]+)\/cancel$/)) && m === 'POST') return json({ ok: true, ...(await G.cancelRequest(env, me.email, mm[1])) });
     if (p === '/api/admin/image-use/record' && m === 'POST') return json({ ok: true, ...(await G.recordEmailConsent(env, me.email, await req.json().catch(() => null))) });
-    if (p === '/api/admin/featured' && m === 'GET') return json({ ok: true, ...(await HP.view(env, VISIBLE_SQL)) });
+    if (p === '/api/admin/featured' && m === 'GET') return json({ ok: true, ...(await HP.view(env, pubSql(env))) });
     if (p === '/api/admin/featured' && m === 'PUT') {
-      const r = await HP.save(env, me.email, await req.json().catch(() => null), VISIBLE_SQL);
-      return json({ ok: true, ...r, publish: r.changed ? await requestGalleryPublish(env) : 'none', ...(await HP.view(env, VISIBLE_SQL)) });
+      const r = await HP.save(env, me.email, await req.json().catch(() => null), pubSql(env));
+      return json({ ok: true, ...r, publish: r.changed ? await requestGalleryPublish(env) : 'none', ...(await HP.view(env, pubSql(env))) });
     }
     if ((mm = p.match(/^\/api\/admin\/featured\/image\/(i[0-9a-z]+)$/)) && m === 'GET') {
-      const img = await HP.previewable(env, mm[1], VISIBLE_SQL);
+      const img = await HP.previewable(env, mm[1], pubSql(env));
       return img ? previewImage(env, img) : res('Not found', 'text/plain', 404);
     }
     if (p === '/api/admin/opportunities' && m === 'GET') return json({ ok: true, ...(await O.adminView(env)) });   // read-only: the founder never edits an artist's answers
@@ -1433,7 +1462,7 @@ async function route(req, env) {
     if (p.startsWith('/api/admin/checkout')) {
       if (p === '/api/admin/checkout' && m === 'GET') return json({ ok: true, ...(await CO.adminView(env)) });
       if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not installed' }, 409);
-      if (p === '/api/admin/checkout/orders' && m === 'POST') return json({ ok: true, ...(await CO.createOrder(env, me.email, await req.json())) });
+      if (p === '/api/admin/checkout/orders' && m === 'POST') { const ob = await req.json(); T.refuseLive(env, String(ob && ob.artist_id || '')); return json({ ok: true, ...(await CO.createOrder(env, me.email, ob)) }); }
       if (p === '/api/admin/checkout/digest/send' && m === 'POST') return json({ ok: true, ...(await CO.sendFounderDigest(env, me.email)) });
       if (p === '/api/admin/checkout/pause' && m === 'POST') return json({ ok: true, ...(await CO.setPause(env, me.email, await req.json().catch(() => ({})))) });
       if (p === '/api/admin/checkout/baskets' && m === 'GET') return json({ ok: true, ...(await BK.adminList(env)) });
@@ -1493,6 +1522,7 @@ async function route(req, env) {
       const n = b.founding_number == null || b.founding_number === '' ? null : Number(b.founding_number);
       if (n !== null && (!Number.isInteger(n) || n < 1 || n > 25)) throw new Bad('A Founding 25 number is from 1 to 25');
       if (n !== null && !a.founding) throw new Bad('Only a Founding Artist has a Founding 25 number');
+      if (n !== null) T.refuse(env, a.id, 'it never holds a Founding 25 number.');
       if (n !== null && await one(env, 'SELECT id FROM artists WHERE founding_number = ? AND id <> ?', n, a.id)) throw new Bad(`No. ${n} is already held by another artist`, 409);
       await env.DB.prepare('UPDATE artists SET founding_number=?, updated_at=? WHERE id=?').bind(n, now(), a.id).run();
       await audit(env, me.email, 'founder', 'founding_number', a.id, { from: a.founding_number, to: n });
@@ -1632,6 +1662,12 @@ async function route(req, env) {
       const programme = b.programme === 'founding' || b.programme === 'gallery_artist' ? b.programme
         : b.programme === undefined && b.founding === true ? 'founding' : b.programme === undefined && b.founding === false ? 'licence_only' : null;
       if (!programme) throw new Bad('Choose the programme for this invitation: Founding Artist or Gallery Artist');
+      /* 26 Nov 2026 (founder decision on Report 33): the Founding Artists initiative has ended. New invitations are Gallery
+         Artist invitations; a new Founding Artist (or the old licence-only route) is refused here, with no override. The one
+         exception is the local test harness (ENVIRONMENT 'local', never production or staging), whose older proofs still build
+         Founding accounts to test the rights existing Founding Artists keep. Existing Founding Artists are not touched. */
+      if (programme !== 'gallery_artist' && env.ENVIRONMENT !== 'local')
+        throw new Bad('The Founding Artists initiative has ended: new artists join as Gallery Artists. Existing Founding Artists keep their agreements, numbers and terms.', 409);
       // A PlotArt application (PA-AP-…, Phase 3) is an application to join on the Gallery Artist terms: it can only lead to
       // a Gallery Artist invitation. A Founding 25 reference (F25-…) may lead to either, as the founder decides.
       if (b.application_ref && String(b.application_ref).startsWith('PA-AP-') && programme !== 'gallery_artist')
@@ -1756,6 +1792,7 @@ async function route(req, env) {
     if ((mm = p.match(/^\/api\/admin\/queue\/(q[0-9a-z]+)\/publish$/)) && m === 'POST') {
       const q = await one(env, "SELECT * FROM publish_queue WHERE id=? AND status='awaiting_founder'", mm[1]);
       if (!q) throw new Bad('Nothing to publish', 409);
+      T.refuse(env, q.artist_id, 'its gallery is never published. Reviews, approvals and previews work as for any artist.');
       const gate = await agreementGate(env, q, req);
       if (gate.response) return gate.response;
       const warned = gate.warned;
@@ -1828,12 +1865,12 @@ async function route(req, env) {
     if (p === '/api/checkout/processing-consent' && m === 'POST') return json({ ok: true, ...(await CO.processingConsent(env, artist, b)) });
     if (p === '/api/checkout/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await CO.withdrawProcessingConsent(env, artist)) });
     if (p === '/api/checkout/seller-profile' && m === 'PUT') return json({ ok: true, ...(await CO.saveSellerProfile(env, artist, b)) });
-    if (p === '/api/checkout/onboarding' && m === 'POST') return json({ ok: true, ...(await CO.onboarding(env, artist, url.origin, b)) });
+    if (p === '/api/checkout/onboarding' && m === 'POST') { T.refuseLive(env, artist.id); return json({ ok: true, ...(await CO.onboarding(env, artist, url.origin, b)) }); }
     if (p === '/api/checkout/account/refresh' && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, artist.id)) });
     // multi-artist basket: the artist's own opt-in and standing delivery offers (their own works only)
     if (p === '/api/checkout/basket' && m === 'GET') return json({ ok: true, ...(await BK.artistView(env, artist)) });
     if (p === '/api/checkout/basket/readiness' && m === 'GET') return json({ ok: true, ...(await BK.artistReadinessView(env, artist)) });   // Studio home card and payment-page steps
-    if (p === '/api/checkout/basket/opt-in' && m === 'POST') return json({ ok: true, ...(await BK.artistOptIn(env, artist, b)) });
+    if (p === '/api/checkout/basket/opt-in' && m === 'POST') { T.refuseLive(env, artist.id); return json({ ok: true, ...(await BK.artistOptIn(env, artist, b)) }); }
     if (p === '/api/checkout/basket/processing-consent' && m === 'POST') return json({ ok: true, ...(await BK.artistProcessingConsent(env, artist, b)) });
     if (p === '/api/checkout/basket/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await BK.artistWithdrawProcessingConsent(env, artist)) });
     if (p === '/api/checkout/basket/seller-disclosure' && m === 'POST') return json({ ok: true, ...(await BK.artistSellerDisclosure(env, artist, b)) });
@@ -1860,7 +1897,7 @@ async function route(req, env) {
     if (p === '/api/hire/leave' && m === 'POST') return json({ ok: true, ...(await H.leave(env, artist, await req.json())) });
     if ((mm = p.match(/^\/api\/hire\/artwork\/([0-9a-z]+)$/)) && m === 'PUT') return json({ ok: true, ...(await H.saveWork(env, artist, mm[1], await req.json())) });
     if (p === '/api/hire/reports' && m === 'GET') return json({ ok: true, ...(await H.myReports(env, artist)) });       // the artist's own only
-    if (p === '/api/hire/reports' && m === 'POST') return json({ ok: true, ...(await H.reportHire(env, artist, await req.json())) });
+    if (p === '/api/hire/reports' && m === 'POST') { T.refuse(env, artist.id, 'hire reports are genuine commercial records and are not made for it.'); return json({ ok: true, ...(await H.reportHire(env, artist, await req.json())) }); }
     return json({ ok: false }, 404);
   }
   /* Opportunities & delivery: the artist's OWN expression of interest. Writes artist_opportunities only. */

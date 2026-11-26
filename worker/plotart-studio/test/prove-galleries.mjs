@@ -73,8 +73,9 @@ const mC = (await db.prepare('SELECT * FROM gallery_memberships WHERE artist_id=
 const mD = (await db.prepare('SELECT * FROM gallery_memberships WHERE artist_id=? ORDER BY gallery_id').bind(D).all()).results;
 check('I1 a direct invitation to Spaces records the founder’s approval, waits for the artist, and does NOT put the artist in Contemporary',
   invC.s === 200 && mC.length === 1 && mC[0].gallery_id === 'spaces' && mC[0].state === 'founder_approved' && mC[0].source === 'founder_invitation' && mC[0].artist_accepted_at === null);
-check('I2 an application-based invitation records the application reference for each chosen gallery',
-  invD.s === 200 && mD.length === 2 && mD.every(r => r.source === 'application' && r.application_ref === 'F25-261124-ABCDEF' && r.state === 'founder_approved'));
+check('I2 an application-based invitation to Being + Contemporary: Being records the application reference and waits for the artist; Contemporary is their default live membership, as for every new artist',
+  invD.s === 200 && mD.length === 2 && mD[0].gallery_id === 'being' && mD[0].source === 'application' && mD[0].application_ref === 'F25-261124-ABCDEF' && mD[0].state === 'founder_approved'
+  && mD[1].gallery_id === 'contemporary' && mD[1].state === 'live');
 check('I3 an invitation with no gallery choice writes nothing (Contemporary by default, as today)', invE.s === 200 && (await db.prepare('SELECT COUNT(*) n FROM gallery_memberships WHERE artist_id=?').bind(invE.j.id).first()).n === 0);
 const bad = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Fay Synthetic', email: 'fay@example.test', founding: false, galleries: ['sculpture'] });
 check('I4 an unknown gallery at invitation is refused before the artist is created', bad.s === 400 && !(await db.prepare("SELECT id FROM artists WHERE email='fay@example.test'").first()));

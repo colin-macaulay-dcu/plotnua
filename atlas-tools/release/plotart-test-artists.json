@@ -1,0 +1,5 @@
+{
+  "_note": "PlotArt internal test artist accounts (founder decision 26 Nov 2026, Report 33). Their galleries are NEVER published: the website builder refuses any export for these Studio artist IDs or gallery addresses, independently of the Studio (which refuses too, from its own TEST_ARTIST_IDS setting). Adding or removing an account here needs the founder's approval.",
+  "artist_ids": [],
+  "slugs": []
+}

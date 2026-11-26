@@ -20,6 +20,7 @@ ACCESS_AUD = ""                  # the Access application's AUD tag            (
 INSTANT_AUTOPUBLISH = "false"    # availability / removal / order publish automatically only when the founder turns this on
 INSTANT_PUBLISH_DISPATCH = "false"   # those automatic updates start the publishing workflow at once (else they wait for the schedule)
 DELIVERY_PUBLIC = "false"   # Phase C (25 Nov 2026): artists' delivery areas are never public until the founder switches this on (with the privacy notice update)
+TEST_ARTIST_IDS = ""   # internal test artist accounts (26 Nov 2026): stable Studio artist IDs, comma-separated; never published, never counted. Set in production.json only with founder approval
 HIRE_TERMS_ENABLED = "false"     # Art for Hire: artists can accept PA-AFH and offer works only when the founder turns this on (after legal review)
 HIRE_RETENTION = "off"           # Art for Hire retention: a dry run (counts only) until the founder turns deletion on
 MAILER = "none"                  # "resend" once approved (top-up reminders); secret RESEND_API_KEY

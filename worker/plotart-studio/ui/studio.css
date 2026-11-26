@@ -554,3 +554,8 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-yg-req{ margin-top:12px; padding:12px 14px; border:1px solid var(--line-2); border-radius:12px; }
 .st-yg-req p{ margin:0 0 6px; }
 @media (max-width:560px){ .st-yg-works li{ grid-template-columns:1fr; } }
+
+/* Internal test accounts (26 Nov 2026): a quiet outlined marker beside the artist's name in founder screens. */
+.st-test-badge{ display:inline-block; margin-left:8px; padding:1px 7px; border:1px solid rgba(242,201,184,.55); border-radius:6px;
+  font:600 11px/1.6 var(--sans, inherit); letter-spacing:.12em; color:#F2C9B8; vertical-align:middle; }
+.st-inv-gal .st-check{ margin:6px 0; }

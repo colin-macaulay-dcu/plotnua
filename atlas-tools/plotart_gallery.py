@@ -150,6 +150,8 @@ def validate_export(g):
             raise Refused("unexpected artist field %r (exports carry public fields only)" % k)
     if not SLUG.match(a.get("slug", "")):
         raise Refused("artist slug must be lower-case words joined by hyphens")
+    if is_test_package(g):
+        raise Refused("internal test artist %r: a test gallery is never published (atlas-tools/release/plotart-test-artists.json)" % a.get("slug"))
     _text(a.get("display_name"), 2, 80, "artist name")
     _text(a.get("bio"), 40, 2400, "biography")
     if a.get("statement") is not None:
@@ -357,11 +359,41 @@ def process_image(src_path, out_dir, stem, min_long_edge=MIN_LONG_EDGE):
     return rec, blocks, warns
 
 
+# ------------------------------------------------------------------ internal test artists (26 Nov 2026)
+# A second, independent safeguard: the Studio refuses to publish its test accounts (TEST_ARTIST_IDS), and the website
+# builder refuses them here, from its own list in the repository, whatever the Studio sends.
+TEST_ARTISTS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "release", "plotart-test-artists.json")
+
+
+def test_artists():
+    try:
+        d = json.load(open(TEST_ARTISTS_FILE, encoding="utf-8"))
+    except FileNotFoundError:
+        return set(), set()
+    except ValueError:
+        raise Refused("plotart-test-artists.json is not valid JSON: refusing to publish anything until it is fixed")
+    if not isinstance(d, dict):
+        raise Refused("plotart-test-artists.json is malformed: refusing to publish anything until it is fixed")
+    ids, slugs = d.get("artist_ids", []), d.get("slugs", [])
+    if not (isinstance(ids, list) and isinstance(slugs, list) and all(isinstance(x, str) and x for x in ids + slugs)):
+        raise Refused("plotart-test-artists.json is malformed: refusing to publish anything until it is fixed")
+    return set(ids), set(slugs)
+
+
+def is_test_package(g):
+    ids, slugs = test_artists()
+    a, pub = g.get("artist") or {}, g.get("publication") or {}
+    ref = str(pub.get("permission_ref") or "")
+    return a.get("slug") in slugs or any(ref == "PA-PERM-" + i for i in ids)
+
+
 # ------------------------------------------------------------------ publication safeguards
 def publication_blocks(pkg):
     """Everything that stops a package being PUBLISHED. Empty list = publishable."""
     out = list(pkg.get("checks", {}).get("blocks", []))
     pub = pkg.get("publication", {})
+    if is_test_package(pkg):
+        out.append("internal test artist: a test gallery is never published")
     a = pkg["artist"]
     if pub.get("state") != "approved":
         out.append("not approved for publication by the founder (state: %s)" % pub.get("state"))

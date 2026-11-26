@@ -142,7 +142,7 @@
       </div>
       <section class="st-card"><h2>To review</h2>
         ${o.submissions.length ? `<ul class="st-works">${o.submissions.map(s => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto"><div>
-          <p class="st-work-t">${E(s.display_name)}</p><p class="st-work-s"><span class="st-tier ${s.tier}">${s.tier === 'full' ? 'Review' : 'Quick check'}</span>Submitted ${when(s.created_at)}</p>
+          <p class="st-work-t">${E(s.display_name)}${TB(s.artist_id)}</p><p class="st-work-s"><span class="st-tier ${s.tier}">${s.tier === 'full' ? 'Review' : 'Quick check'}</span>Submitted ${when(s.created_at)}</p>
           ${s.note ? `<p class="st-muted" style="margin:0">“${E(s.note)}”</p>` : ''}</div>
           <div class="st-row"><a class="st-btn st-btn--solid st-btn--small" href="#/review/${s.id}">Open</a></div></li>`).join('')}</ul>` : '<p class="st-muted">Nothing waiting.</p>'}
       </section>
@@ -160,7 +160,7 @@
       <section class="st-card"><h2>Enquiries</h2><p class="st-muted">Buyer enquiries go straight to the artist (Reply-To the buyer). This is the record of founding-period enquiries.</p>
         <div id="enq"><p class="st-muted">Loading…</p></div></section>
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Agreement</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
-        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
+        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${TB(a.id)}${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[stateOf(a)])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
           <td>${agrCell(a)}</td><td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
           <td class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/d-${a.id}/index.html" target="_blank" rel="noopener" title="The artist’s saved draft, unpublished, read-only">Preview draft</a>
@@ -185,16 +185,18 @@
             <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Save new email</button><button type="button" class="st-btn st-btn--small" data-emcancel="${a.id}">Cancel</button></div>
             <p class="st-err" role="alert" data-emerr></p></form></td></tr>`).join('') || '<tr><td colspan="6" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>
-      <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">Choose the programme they are joining. Founding Artists keep the Founding Artist Agreement; Gallery Artists join on the standard 15% commission terms. Each accepts their own agreement in Studio before their gallery is first published. Copy their name, email and any application reference. The invitation email goes automatically when email is switched on.</p>
+      <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">New artists join as Gallery Artists, on the standard 15% commission terms, and accept the Gallery Artist Agreement in Studio before their gallery is first published. Copy their name, email and any application reference. The invitation email goes automatically when email is switched on.</p>
         <div class="st-two"><div>
         <div class="st-f"><label for="i-name">Artist name</label><input id="i-name" type="text"></div>
         <div class="st-f"><label for="i-email">Email they applied with</label><input id="i-email" type="email"></div></div><div>
-        <div class="st-f"><label for="i-ref">Application reference</label><input id="i-ref" type="text" placeholder="F25-… or PA-AP-…"></div>
-        <fieldset class="st-f" style="border:0;margin:4px 0 14px;padding:0"><legend style="padding:0;margin:0 0 6px">Programme <span class="st-req">Required</span></legend>
-          <label class="st-check"><input type="radio" name="i-prog" value="founding" style="accent-color:var(--terra);width:20px;height:20px"> <span>Founding Artist <span class="st-muted">· Founding Artist Agreement, free founding year</span></span></label>
-          <label class="st-check"><input type="radio" name="i-prog" value="gallery_artist"${o.terms_installed ? '' : ' disabled'} style="accent-color:var(--terra);width:20px;height:20px"> <span>Gallery Artist <span class="st-muted">· Gallery Artist Agreement, 15% commission${o.terms_installed ? '' : ' (available once migration 0012 has run)'}</span></span></label>
-        </fieldset>
-        <button class="st-btn st-btn--solid" id="inv">Create Studio account</button><p class="st-err" id="ierr"></p></div></div></section>
+        <div class="st-f"><label for="i-ref">Application reference</label><input id="i-ref" type="text" placeholder="PA-AP-…"></div>
+        <p class="st-f" style="margin:0 0 12px"><span class="st-lab" style="display:block;margin-bottom:4px">Programme</span>Gallery Artist <span class="st-muted">· Gallery Artist Agreement, 15% commission${o.terms_installed ? '' : ' (available once migration 0012 has run)'}</span></p>
+        ${o.galleries_installed ? `<fieldset class="st-f st-inv-gal" style="border:0;margin:0 0 14px;padding:0"><legend style="padding:0;margin:0 0 6px">Galleries <span class="st-req">At least one</span></legend>
+          <label class="st-check"><input type="checkbox" name="i-gal" value="contemporary" checked style="accent-color:var(--terra);width:20px;height:20px"> <span>Contemporary <span class="st-muted">· joins with their gallery, as every artist does today</span></span></label>
+          <label class="st-check"><input type="checkbox" name="i-gal" value="spaces" style="accent-color:var(--terra);width:20px;height:20px"> <span>Spaces <span class="st-muted">· an invitation they accept in their Studio</span></span></label>
+          <label class="st-check"><input type="checkbox" name="i-gal" value="being" style="accent-color:var(--terra);width:20px;height:20px"> <span>Being <span class="st-muted">· an invitation they accept in their Studio</span></span></label>
+        </fieldset>` : ''}
+        <button class="st-btn st-btn--solid" id="inv"${o.terms_installed ? '' : ' disabled'}>Create Studio account</button><p class="st-err" id="ierr"></p></div></div></section>
       <section class="st-card"><h2>System check</h2><p class="st-muted">Writes, reads back and removes a test record in the database and a test file in image storage.</p>
         <button class="st-btn" id="sys">Run system check</button><ul class="st-list" id="sysout"></ul></section>`;
     $('#sys').addEventListener('click', async () => { const r = await api('POST', '/api/admin/selftest');
@@ -292,9 +294,12 @@
     }));
     $('#inv').addEventListener('click', async () => {
       try {
-        const prog = document.querySelector('input[name=i-prog]:checked');
-        if (!prog) { $('#ierr').textContent = 'Choose the programme: Founding Artist or Gallery Artist.'; return; }
-        const r = await api('POST', '/api/admin/artists', { display_name: $('#i-name').value, email: $('#i-email').value, application_ref: $('#i-ref').value || null, programme: prog.value });
+        // Gallery Artist is the only programme for new invitations (26 Nov 2026). Galleries: Contemporary alone sends no choice,
+        // exactly as before; any other choice is sent, and none ticked is refused here and by the server.
+        const gals = [...document.querySelectorAll('input[name=i-gal]:checked')].map(x => x.value), hasGal = !!document.querySelector('input[name=i-gal]');
+        if (hasGal && !gals.length) { $('#ierr').textContent = 'Choose at least one gallery.'; return; }
+        const r = await api('POST', '/api/admin/artists', { display_name: $('#i-name').value, email: $('#i-email').value, application_ref: $('#i-ref').value || null, programme: 'gallery_artist',
+          ...(hasGal && !(gals.length === 1 && gals[0] === 'contemporary') ? { galleries: gals } : {}) });
         const pf = r.prefill || {};
         const pfNote = pf.fields && pf.fields.length ? ` · profile started from the application (${pf.fields.length} of 5 fields)`
           : ($('#i-ref').value ? ` · profile not pre-filled: ${pf.reason || 'nothing usable in the application'}` : '');
@@ -309,7 +314,7 @@
     const tiers = { full: 'Review', light: 'Quick check', instant: 'Live' };
     app.innerHTML = `
       <p><a href="#/" style="color:var(--stone);text-decoration:none">← Review desk</a></p>
-      <h1 class="st-h1">${E(r.artist.display_name)}</h1>
+      <h1 class="st-h1">${E(r.artist.display_name)}${TB(r.artist.id)}</h1>
       <p class="st-sub"><span class="st-tier ${s.tier}">${tiers[s.tier]}</span>Submitted ${when(s.created_at)} · ${s.status === 'pending' ? 'waiting for you' : E(s.status)}${r.artist.founding ? ' · Founding Artist' : ''} · ${agrLine(r.agreement, r.artist)}</p>
       ${s.note ? `<p class="st-msg">${E(s.note)}</p>` : ''}
       <div class="st-two"><div>
@@ -440,7 +445,7 @@
   const irish = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Dublin' }) : '';
   /* one line for a submission: the agreement status the publishing gate uses (never the pre-agreement licence label alone) */
   function agrLine(g, a) {
-    if (g && g.accepted) return `agreement accepted ${E(irish(g.accepted_at))}`;
+    if (g && g.accepted) return a && TEST.has(a.id) ? `test acceptance ${E(irish(g.accepted_at))} · not genuine consent` : `agreement accepted ${E(irish(g.accepted_at))}`;
     if (g && g.installed === false) return 'agreement not installed';
     if (a && a.licence_version) return `<span style="color:#CF8566">agreement not accepted (earlier licence ${E(a.licence_version)} only)</span>`;
     return '<span style="color:#CF8566">agreement not accepted</span>';
@@ -448,7 +453,7 @@
   function agrCell(a) {
     const g = a.agreement;
     if (!g || !g.installed) return '<span class="st-muted">Not installed</span>';
-    if (g.accepted) return `<span class="st-pill st-pill--ok">Accepted</span><br><span class="st-muted">${E(irish(g.accepted_at))}</span>`;
+    if (g.accepted) return TEST.has(a.id) ? `<span class="st-pill st-pill--warn">Test acceptance</span><br><span class="st-muted">not genuine consent</span>` : `<span class="st-pill st-pill--ok">Accepted</span><br><span class="st-muted">${E(irish(g.accepted_at))}</span>`;
     if (g.legacy) return `<span class="st-pill st-pill--warn">Earlier licence only</span><br><span class="st-muted">${E(g.legacy.version)}</span>`;
     return '<span class="st-pill">Not accepted</span>';
   }
@@ -456,7 +461,7 @@
     const o = await api('GET', '/api/admin/overview');
     let L = await api('GET', '/api/admin/enquiry-log');
     const fy = g => g && g.founding_year ? `${irishDay(g.founding_year.start)} – ${irishDay(g.founding_year.end)}` : g && g.founding ? 'Starts at first publication' : '—';
-    const waiting = o.artists.filter(a => a.agreement && a.agreement.installed && !a.agreement.accepted);
+    const waiting = o.artists.filter(a => a.agreement && a.agreement.installed && !a.agreement.accepted && !TEST.has(a.id));   // a test account is never counted
     function drawLog() {
       const el = $('#elog');
       if (!L.installed) { el.innerHTML = '<p class="st-muted">The enquiry log is installed with migration 0005.</p>'; return; }
@@ -483,7 +488,7 @@
       ${!o.agreement_installed ? '<div class="st-card" role="alert"><p style="margin:0"><b>Not installed yet.</b> Artists can accept once migration 0005 has been run. Everything else in Studio works as before.</p></div>' : ''}
       ${waiting.length ? `<div class="st-card st-agr-warn"><p style="margin:0"><b>${waiting.length} artist${waiting.length === 1 ? ' hasn’t' : 's haven’t'} accepted yet.</b> Their galleries stay live and they can keep editing. A first publication is blocked until the artist accepts; for an artist who is already published, Publish asks you to confirm.</p></div>` : ''}
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Agreement</th><th>Founding year</th><th></th></tr></thead><tbody>
-        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}${a.founding_number ? `<br><span class="st-muted">No. ${a.founding_number}</span>` : ''}</td>
+        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${TB(a.id)}${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}${a.founding_number ? `<br><span class="st-muted">No. ${a.founding_number}</span>` : ''}</td>
           <td>${agrCell(a)}</td><td>${E(fy(a.agreement))}</td><td><button class="st-btn st-btn--small" data-hist="${a.id}" aria-expanded="false" aria-controls="hi-${a.id}">History</button></td></tr>
           <tr id="hi-${a.id}" class="st-em-row" hidden><td colspan="4"><div data-hibox="${a.id}"><p class="st-muted">Loading…</p></div></td></tr>`).join('') || '<tr><td colspan="4" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>
@@ -757,7 +762,7 @@
       return true;
     };
     const row = i => {
-      const p = i.prefs, who = `<b>${E(i.display_name)}</b>${i.founding_number ? ` <span class="st-muted">· F${String(i.founding_number).padStart(2, '0')}</span>` : ''}${i.account_status !== 'active' ? ` <span class="st-muted">· ${E(i.account_status)}</span>` : ''}`;
+      const p = i.prefs, who = `<b>${E(i.display_name)}</b>${TB(i.id)}${i.founding_number ? ` <span class="st-muted">· F${String(i.founding_number).padStart(2, '0')}</span>` : ''}${i.account_status !== 'active' ? ` <span class="st-muted">· ${E(i.account_status)}</span>` : ''}`;
       if (!p) return `<li class="st-opp-row is-none"><div>${who}</div><div><span class="st-pill">Not answered yet</span></div></li>`;
       if (isOnline(i)) return `<li class="st-opp-row"><div>${who}</div><div><span class="st-pill st-pill--warn">Online only for now</span>${p.artwork_county ? `<span class="st-opp-k">Artwork in Co. ${E(p.artwork_county)}</span>` : ''}${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div><div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
       return `<li class="st-opp-row"><div>${who}</div>
@@ -829,7 +834,7 @@
     if (!d.installed || location.pathname.replace(/\/$/, '') !== '/admin/opportunities') return;
     const box = document.createElement('section'); box.className = 'st-card st-loc-ov'; box.setAttribute('aria-labelledby', 'lo-h');
     app.appendChild(box);
-    const row = a => `<li class="st-gm-person"><div><p class="st-work-t">${E(a.name)}</p>
+    const row = a => `<li class="st-gm-person"><div><p class="st-work-t">${E(a.name)}${TB(a.id)}</p>
       <p class="st-work-s">${a.place ? E(a.place) + (a.public ? ' · they chose to show it' : ' · private') : a.county ? 'Co. ' + E(a.county) + ' (profile county; location not confirmed yet)' : 'Not given yet'}</p>
       <p class="st-work-s">${a.delivery ? E(a.delivery) + (a.delivery_public ? ' · they chose to show it' : ' · private') : 'No delivery areas given'}</p></div></li>`;
     async function draw(county) {
@@ -917,6 +922,8 @@
   }
 
 
+  let TEST = new Set();
+  const TB = id => TEST.has(id) ? ' <span class="st-test-badge" title="Internal test account: never published, never counted">TEST</span>' : '';
   /* ---- Three galleries (Phase C, Track C, 25 Nov 2026): the founder's management of Contemporary, Spaces and Being.
      Everything here calls the Phase B routes (galleries.js); nothing new is decided in the browser. Membership and placement
      need the founder's approval AND the artist's acceptance; Artists in Focus and the order are the founder's alone. Opening a
@@ -968,15 +975,15 @@
       const unpub = rows(['live']).filter(m => !liveIds.has(m.artist_id));
       const can = d.artists.filter(a => { const r = d.memberships.find(m => m.gallery_id === g && m.artist_id === a.id); return !r || ['declined', 'withdrawn', 'refused'].includes(r.state); })
         .filter(a => g !== 'contemporary' || d.memberships.some(m => m.artist_id === a.id));   // Contemporary: only someone taken out can be invited back
-      const li = (id, state, acts, extra = '') => `<li class="st-gm-person"><div><p class="st-work-t">${E(name(id))}</p><p class="st-work-s">${E(MEMBER[state] || state)}${extra}</p></div><div class="st-row">${acts}</div></li>`;
+      const li = (id, state, acts, extra = '') => `<li class="st-gm-person"><div><p class="st-work-t">${E(name(id))}${TB(id)}</p><p class="st-work-s">${E(MEMBER[state] || state)}${extra}</p></div><div class="st-row">${acts}</div></li>`;
       return `<section class="st-card"><h2>Artists</h2>
         ${reqs.length ? `<h3 class="st-gm-h3">Asked to join (${reqs.length})</h3><ul class="st-gm-list">${reqs.map(m => li(m.artist_id, m.state, `<button class="st-btn st-btn--solid st-btn--small" data-m="approve" data-a="${m.artist_id}">Approve</button><button class="st-btn st-btn--small" data-m="refuse" data-a="${m.artist_id}">Don’t accept</button>`)).join('')}</ul>` : ''}
         <h3 class="st-gm-h3">Members (${live.length + unpub.length})</h3>
-        ${live.length + unpub.length ? `<ul class="st-gm-list">${live.map(m => li(m.artist_id, 'live', g === 'contemporary' && !d.memberships.some(r => r.artist_id === m.artist_id) ? '' : `<button class="st-btn st-btn--small" data-m="withdraw" data-a="${m.artist_id}">Withdraw…</button>`, ` · ${m.works} ${m.works === 1 ? 'work' : 'works'} shown`)).join('')}
+        ${live.length + unpub.length ? `<ul class="st-gm-list">${live.map(m => li(m.artist_id, 'live', `<button class="st-btn st-btn--small" data-m="withdraw" data-a="${m.artist_id}">${g === 'contemporary' ? 'Remove from Contemporary…' : 'Withdraw…'}</button>`, ` · ${m.works} ${m.works === 1 ? 'work' : 'works'} shown`)).join('')}
           ${unpub.map(m => li(m.artist_id, 'live', `<button class="st-btn st-btn--small" data-m="withdraw" data-a="${m.artist_id}">Withdraw…</button>`, ' · gallery not published yet')).join('')}</ul>` : `<p class="st-muted">No members yet. Nobody is added to ${TITLE[g]} automatically.</p>`}
         ${wait.length ? `<h3 class="st-gm-h3">Invited (${wait.length})</h3><ul class="st-gm-list">${wait.map(m => li(m.artist_id, m.state, `<button class="st-btn st-btn--small" data-m="withdraw" data-a="${m.artist_id}">Cancel invitation</button>`, ` · ${when(m.founder_approved_at)}`)).join('')}</ul>` : ''}
         <form class="st-gm-invite" data-invite novalidate><h3 class="st-gm-h3">Invite an artist to ${TITLE[g]}</h3>
-          <div class="st-gm-invite-row"><div class="st-f"><label for="gm-who">Artist</label><select id="gm-who" name="artist_id"><option value="">Choose…</option>${can.map(a => `<option value="${a.id}"${a.id === inv.artist_id ? ' selected' : ''}>${E(a.display_name)}${a.account_status === 'invited' ? ' (not signed in yet)' : ''}</option>`).join('')}</select></div>
+          <div class="st-gm-invite-row"><div class="st-f"><label for="gm-who">Artist</label><select id="gm-who" name="artist_id"><option value="">Choose…</option>${can.map(a => `<option value="${a.id}"${a.id === inv.artist_id ? ' selected' : ''}>${E(a.display_name)}${TEST.has(a.id) ? ' (TEST)' : ''}${a.account_status === 'invited' ? ' (not signed in yet)' : ''}</option>`).join('')}</select></div>
           <div class="st-f"><label for="gm-src">How</label><select id="gm-src" name="source">${[['founder_curation', 'Your curation'], ['founder_invitation', 'Invitation'], ['application', 'From an application']].map(([k, v]) => `<option value="${k}"${k === inv.source ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
           <div class="st-f" data-ref${inv.source === 'application' ? '' : ' hidden'}><label for="gm-ref">Application reference</label><input id="gm-ref" type="text" name="application_ref" value="${E(inv.application_ref)}" placeholder="PA-AP-… or F25-…" autocomplete="off" spellcheck="false"></div></div>
           <p class="st-muted st-gm-note">The artist sees the invitation in their Studio and chooses whether to accept. No email is sent.</p>
@@ -1003,7 +1010,7 @@
     function orderCard() {
       const x = G();
       return `<section class="st-card"><h2>Order</h2><p class="st-muted">${g === 'contemporary' ? 'Contemporary members without one of the 25 founding positions, from position 26. Positions 01–25 stay in Gallery order.' : `The order of artists in ${TITLE[g]}. Only members appear; nobody moves automatically.`}</p>
-        ${order.length ? `<ol class="st-gm-order">${order.map((id, i) => `<li><span class="st-gm-pos">${String((g === 'contemporary' ? 26 : 1) + i).padStart(2, '0')}</span><span class="st-gm-oname">${E(name(id))}</span>
+        ${order.length ? `<ol class="st-gm-order">${order.map((id, i) => `<li><span class="st-gm-pos">${String((g === 'contemporary' ? 26 : 1) + i).padStart(2, '0')}</span><span class="st-gm-oname">${E(name(id))}${TB(id)}</span>
           <span class="st-row"><button class="st-btn st-btn--small" data-o="up" data-i="${i}" aria-label="Move ${E(name(id))} earlier"${i ? '' : ' disabled'}>↑</button><button class="st-btn st-btn--small" data-o="down" data-i="${i}" aria-label="Move ${E(name(id))} later"${i < order.length - 1 ? '' : ' disabled'}>↓</button></span></li>`).join('')}</ol>
           <div class="st-row st-gm-save"><span class="st-muted">${dirtyO ? 'Unsaved order' : 'Saved'}</span><button class="st-btn st-btn--solid st-btn--small" data-save-order${dirtyO ? '' : ' disabled'}>Save order</button></div>` : '<p class="st-muted">No members to order yet.</p>'}</section>`;
     }
@@ -1063,8 +1070,10 @@
       }
       if (b.dataset.m) {
         const a = b.dataset.a, how = b.dataset.m;
-        if (how === 'withdraw' && !confirm(`Withdraw ${name(a)} from ${TITLE[g]}? Their works placed there, their order position and any Artists in Focus entry in ${TITLE[g]} go too. Their own gallery is not affected.`)) return;
-        return act(() => api('POST', `/api/admin/galleries/${g}/members/${a}/${how}`), { approve: 'Approved', refuse: 'Not accepted', withdraw: 'Withdrawn' }[how]);
+        if (how === 'withdraw' && !confirm(g === 'contemporary'
+          ? `Remove ${name(a)} from Contemporary? Only their Contemporary membership and any Contemporary order position from 26 end. Their own gallery page, works, agreements, prices, commercial terms, Founding position and their other galleries are not affected. You can invite them back later.`
+          : `Withdraw ${name(a)} from ${TITLE[g]}? Their works placed there, their order position and any Artists in Focus entry in ${TITLE[g]} go too. Their own gallery is not affected.`)) return;
+        return act(() => api('POST', `/api/admin/galleries/${g}/members/${a}/${how}`), { approve: 'Approved', refuse: 'Not accepted', withdraw: g === 'contemporary' ? 'Removed from Contemporary' : 'Withdrawn' }[how]);
       }
       if (b.dataset.w) {
         const how = b.dataset.w;
@@ -1110,7 +1119,11 @@
     draw();
   }
 
+  // Internal test accounts (26 Nov 2026): marked TEST wherever the founder sees artists; their records are never genuine
+  // statistics, consent, commercial records or publications.
+  async function loadTest() { try { TEST = new Set((await api('GET', '/api/admin/test-artists')).ids || []); } catch { TEST = new Set(); } }
   async function render() {
+    await loadTest();
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/);
     document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : path === '/admin/featured' ? 'feat' : path === '/admin/galleries' ? 'gals' : 'desk')));

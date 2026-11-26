@@ -18,6 +18,7 @@ export const FOUNDER = 'founder@plotnua.invalid', PIPELINE_TOKEN = 'test-pipelin
 const { publicKey, privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
 const KID = 'test-kid-1';
 const jwk = { ...publicKey.export({ format: 'jwk' }), kid: KID, alg: 'RS256', use: 'sig' };
+export const TEST_JWKS = JSON.stringify({ keys: [jwk] });   // for a proof that serves it as the Access certs endpoint (non-local environments)
 const b64u = b => Buffer.from(b).toString('base64url');
 
 export function token(email, { aud = AUD, iss = TEAM, exp = 3600, kid = KID, key = privateKey } = {}) {
