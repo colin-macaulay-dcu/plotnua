@@ -558,8 +558,9 @@ if vg:
         _vg_nf = vg
     _vgm = _vg_nf.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
-    need('<h2 id="vgColH">Explore the Gallery</h2>' in vg and "Explore More Artists" not in vgv and "Artists in Focus" not in vgv and "twenty-five galleries" not in vgv,
-         "L11 the gallery heading is not the approved wording (Explore the Gallery, 26 Nov 2026; Artists in Focus retired)")
+    # one unified gallery (founder refinement 26 Nov 2026): no second heading after the opening row
+    need('id="vgColH"' not in vg and "Explore the Gallery" not in vgv and "Explore More Artists" not in vgv and "Artists in Focus" not in vgv and "twenty-five galleries" not in vgv,
+         "L11 the gallery carries a second heading after the opening row (removed 26 Nov 2026; Artists in Focus retired)")
     _vgall = vg.split("<main", 1)[-1].split("</main>")[0]
     need(not re.search(r"€|\bEUR\b|Price on request|\bprice\b|\bsold\b|\bcm\b", re.sub(r"\s+", " ", visible_text(_vgall)), re.I),
          "L11 the gallery overview shows prices or sale details (they stay in the artists' galleries and Browse All Artworks)")

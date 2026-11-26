@@ -28,8 +28,8 @@ shown = F.shown_artists(doc0)
 check("B1 every published artist exactly once (opening row, then Explore the Gallery), in the founder's order, none held",
       len(shown) == len(set(shown)) and sorted(shown) == SL and A0["held"] == [], shown)
 vis = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r"<script.*?</script>|<style.*?</style>", " ", doc0.split("<main", 1)[1], flags=re.S)))
-check("B2 no prices or sale details on the gallery overview; no Artists in Focus or Explore More Artists; the heading is Explore the Gallery",
-      not re.search(r"€|Price on request|\bsold\b|\bcm\b", vis, re.I) and "Artists in Focus" not in vis and "Explore More Artists" not in vis and "Explore the Gallery" in vis)
+check("B2 no prices or sale details on the gallery overview; no Artists in Focus, Explore More Artists or second heading",
+      not re.search(r"€|Price on request|\bsold\b|\bcm\b", vis, re.I) and "Artists in Focus" not in vis and "Explore More Artists" not in vis and "Explore the Gallery" not in vis and 'id="vgColH"' not in doc0)
 cards = re.findall(r'<li class="pa-fa-item[^"]*" data-pa-curated="([a-z0-9-]+):([a-z0-9]+|auto)">(.*?)</li>', doc0, re.S)
 opens = re.findall(r'<li class="pa-op-item" data-pa-opening="([a-z0-9-]+):([a-z0-9]+)">(.*?)</li>', doc0, re.S)
 def complete(slug, body):
@@ -177,7 +177,7 @@ try:
     refused = [not boundary(f)[0] for f in (
         lambda d: d.replace("View Gallery", "View Gallery · €1,200", 1),
         lambda d: d.replace('data-pa-curated="%s:' % rest0[1][0], 'data-pa-curated="%s:' % rest0[0][0], 1),
-        lambda d: d.replace('<h2 id="vgColH">Explore the Gallery</h2>', '<h2 id="vgColH">Artists in Focus</h2>'),
+        lambda d: d.replace('<section class="pa-vg2-collection pa-vgc" aria-label="The gallery"><div class="pa-wrap">', '<section class="pa-vg2-collection pa-vgc" aria-label="The gallery"><div class="pa-wrap">\n  <h2>Artists in Focus</h2>'),
         lambda d: re.sub(r'(<p class="pa-fa-intro">)', r'\1The finest artist in Ireland. ', d, count=1))]
     check("B16 the content boundary refuses a price, a duplicated artist, the retired heading and an invented sentence", all(refused), refused)
     def launch(mut):

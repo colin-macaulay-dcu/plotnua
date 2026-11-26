@@ -119,3 +119,11 @@ body.pa .pa-gl .pa-fa-item.is-textonly .pa-fa-text{ margin-top:0; }
 @media (max-width:639px){
   body.pa .pa-op-art{ height:min(92vw, 380px); }
 }
+
+/* One gallery, no second heading (founder refinement 26 Nov 2026): the opening row flows straight into the rest, with
+   the same space between every row of artists as inside the gallery; and a little more air (about 20px on desktop,
+   proportionately less on phones) between the gallery's tagline and the opening artworks. */
+body.pa .pa-vg2-hero .pa-wrap{ padding-bottom:clamp(22px, 2.6vw, 38px); }
+body.pa .pa-op .pa-wrap{ padding-bottom:0; }
+body.pa .pa-vg2-collection .pa-wrap{ padding-top:clamp(44px, 4.4vw, 64px); }
+@media (max-width:639px){ body.pa .pa-vg2-collection .pa-wrap{ padding-top:42px; } }   /* + the swipe row's 6px = the 48px between cards */
