@@ -96,6 +96,13 @@ FAULTS = [
     ("F47 Beyond the Gallery not straight after the three galleries", "index.html", "<!-- pa-galleries:end -->\n", "<!-- pa-galleries:end -->\n<p>x</p>\n", "L21 the homepage must carry 'Beyond the Gallery.' straight after the three galleries"),
     ("F48 'Not offered for hire' dropped from the Art for Hire picture", "index.html", "PlotArt’s founder. Not offered for hire.", "PlotArt’s founder.", "L21 the Art for Hire picture must say"),
     ("F14 a Galleries menu link changed on the homepage", "index.html", 'href="being/" data-pa-track="nav_gallery_being">Being<span', 'href="being/" data-pa-track="nav_gallery_being">Beings<span', "L11 index.html must carry the one Galleries menu"),
+    # the homepage availability line (Commercial Conversion Sprint 1, 26 Nov 2026): guard L22 recomputes it independently
+    ("F49 an availability figure inflated", "index.html", ">114 original works by 18 artists, from €100 ", ">150 original works by 18 artists, from €100 ", "L22 the availability line must read"),
+    ("F50 a lower starting price than the published data holds", "index.html", "by 18 artists, from €100 ", "by 18 artists, from €50 ", "L22 the availability line must read"),
+    ("F51 the line claims the artists are Irish", "index.html", "by 18 artists, from €100 ", "by 18 Irish artists, from €100 ", "L22 the availability line claims more than the published data shows"),
+    ("F52 the line claims online purchase", "index.html", "Browse available artworks<", "Buy online<", "L22 the availability line claims more than the published data shows"),
+    ("F53 the line links somewhere else", "index.html", '<a href="artworks/" data-pa-track="home_browse_artworks">', '<a href="large-artworks/" data-pa-track="home_browse_artworks">', "L22 the availability line must link to the available-artworks page only"),
+    ("F54 the line moved away from the heading", "index.html", 'A new home for Irish art.</h1>\n<!-- pa-guide-collection:begin -->', 'A new home for Irish art.</h1>\n<p>x</p>\n<!-- pa-guide-collection:begin -->', "L22 the availability line must sit directly under the homepage heading"),
 ]
 
 
