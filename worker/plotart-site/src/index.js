@@ -45,14 +45,16 @@ function finish(env, response, extra = {}) {
   const r = new Response(response.body, response);
   for (const [k, v] of Object.entries(SECURITY)) r.headers.set(k, v);
   for (const [k, v] of Object.entries(extra)) r.headers.set(k, v);
-  if ((env.INDEXING || 'noindex') !== 'index') r.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  // only https://plotart.ie itself may ever be indexed: the workers.dev test address is always noindex
+  if ((env.INDEXING || 'noindex') !== 'index' || (env.HOST && env.HOST !== APEX)) r.headers.set('X-Robots-Tag', 'noindex, nofollow');
   return r;
 }
 
 const redirect = (env, location) => finish(env, new Response(null, { status: 301, headers: { Location: location } }));
 
-export async function handle(request, env) {
+export async function handle(request, env0) {
   const url = new URL(request.url);
+  const env = { ...env0, HOST: url.hostname };
   const local = url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname.endsWith('.workers.dev');
   if (!local && url.hostname !== APEX) return redirect(env, `https://${APEX}${url.pathname}${url.search}`);
   if (request.method !== 'GET' && request.method !== 'HEAD') {
