@@ -55,6 +55,7 @@ ok(w.status === 301 && w.headers.get('location') === 'https://plotart.ie/gallery
 // 5. indexing switch
 ok((await get('https://plotart.ie/')).headers.get('x-robots-tag') === 'noindex, nofollow', 'noindex while testing');
 ok((await get('https://plotart.ie/', { ASSETS, INDEXING: 'index' })).headers.get('x-robots-tag') === null, 'indexable after cutover');
+ok((await get('https://plotart-site.colin-a41.workers.dev/', { ASSETS, INDEXING: 'index' })).headers.get('x-robots-tag') === 'noindex, nofollow', 'workers.dev address never indexable, even after cutover');
 ok((await get('https://plotart.ie/')).headers.get('x-content-type-options') === 'nosniff', 'security headers');
 const csp = (await get('https://plotart.ie/gallery/')).headers.get('content-security-policy') || '';
 ok(/script-src 'self' 'unsafe-inline'(;|$)/.test(csp) && !/googletagmanager|cookiebot/.test(csp), 'CSP: scripts only from plotart.ie (no tracker can load)');

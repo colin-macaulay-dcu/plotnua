@@ -12,9 +12,13 @@
 #     part of the repository, so they change only through those approved releases. Custom domains are attached in the
 #     Cloudflare dashboard at an approved checkpoint, never by this workflow.
 #   * Inert until the founder enables it: repository variable PLOTART_SITE_ENABLED = true (Settings -> Secrets and
-#     variables -> Actions -> Variables) and the environment "plotart-site" holding the secret PLOTART_SITE_CF_TOKEN
+#     variables -> Actions -> Variables) and the environment "plotart-site" holding the secret CLOUDFLARE_API_TOKEN
 #     (a Cloudflare API token limited to Account / Workers Scripts / Edit) and the variable CLOUDFLARE_ACCOUNT_ID.
 #     The environment allows the main branch only.
+#   * "Verify" (manual run, mode = verify, the default): builds and proves the site, checks the token and account can
+#     manage Workers, and runs a Wrangler dry run. It deploys NOTHING and runs even while the deploy is not enabled.
+#   * The live check always covers the workers.dev address (always noindexed, so it can never compete with plotart.ie in
+#     search) and, once plotart.ie is attached to the Worker, plotart.ie too.
 #   * After every deploy the live check runs against the Worker; if it fails, the previous version is restored
 #     automatically (wrangler rollback) and the run fails, so the founder is notified by GitHub.
 # Logs are public: no step prints a credential or an account identifier.
@@ -37,7 +41,13 @@ on:
       - 'atlas-tools/release/plotart-launch-switches.json'
       - 'atlas-tools/prove-plotart-domain.py'
       - '.github/workflows/plotart-site-deploy.yml'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'verify = build, prove and check access only (deploys nothing); deploy = deploy (only when enabled)'
+        type: choice
+        options: [verify, deploy]
+        default: verify
 
 permissions:
   contents: read
@@ -46,9 +56,59 @@ concurrency:
   group: plotart-site-deploy
   cancel-in-progress: false    # deploys run in order; the last one always wins
 
+env:
+  WORKERS_DEV: https://plotart-site.colin-a41.workers.dev
+
 jobs:
+  verify:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verify' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: plotart-site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and prove the site (nothing is deployed)
+        working-directory: worker/plotart-site
+        run: |
+          INDEXING=$(sed -nE 's/^INDEXING *= *"([a-z]+)".*/\1/p' wrangler.toml)
+          [ "$INDEXING" = noindex ] || { echo "FAIL  verify expects the testing setting INDEXING = noindex"; exit 1; }
+          python3 ../../atlas-tools/plotart_site_build.py ../.. dist --mode test
+          node test/prove-site.mjs "$PWD/dist" "$GITHUB_WORKSPACE" | tail -3
+          python3 -c "import json;r=json.load(open('dist/.build-report.json'));print('pages and files', r['pages_and_files'], '· sitemap', r['sitemap_urls'], '· analytics blocks removed', r['analytics_blocks_removed'], '· tracking scripts', len(r['tracking_or_consent_scripts']))" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Token and account can manage Workers (read-only; nothing printed but PASS/FAIL)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          [ -n "$CLOUDFLARE_API_TOKEN" ] || { echo "FAIL  environment secret CLOUDFLARE_API_TOKEN is missing" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
+          [[ "$CLOUDFLARE_ACCOUNT_ID" =~ ^[0-9a-f]{32}$ ]] || { echo "FAIL  environment variable CLOUDFLARE_ACCOUNT_ID is missing or not a 32-character account ID" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
+          A="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          curl -fsS -H "$A" https://api.cloudflare.com/client/v4/user/tokens/verify | python3 -c "import json,sys; sys.exit(0 if json.load(sys.stdin)['result']['status']=='active' else 1)" \
+            && echo "PASS  the token is active" | tee -a "$GITHUB_STEP_SUMMARY" || { echo "FAIL  the token is not active" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
+          curl -fsS -H "$A" "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts" > "$RUNNER_TEMP/s.json" \
+            && echo "PASS  the token can read this account's Workers (Workers Scripts permission, right account)" | tee -a "$GITHUB_STEP_SUMMARY" \
+            || { echo "FAIL  the token cannot manage Workers on this account (permission or account ID)" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
+          python3 -c "import json; n=[s['id'] for s in json.load(open('$RUNNER_TEMP/s.json'))['result']]; print('INFO  plotart-site Worker', 'already exists' if 'plotart-site' in n else 'does not exist yet (the first deploy creates it)')" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Wrangler dry run (builds the Worker and its assets; uploads nothing)
+        working-directory: worker/plotart-site
+        run: |
+          npx --yes wrangler@4.150.0 deploy --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { echo "FAIL  dry run"; grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+          echo "PASS  Wrangler dry run (nothing uploaded)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "PLOTART_SITE_ENABLED is ${{ vars.PLOTART_SITE_ENABLED == 'true' && 'ON' || 'OFF (deploys stay inert)' }}" | tee -a "$GITHUB_STEP_SUMMARY"
+
   deploy:
-    if: vars.PLOTART_SITE_ENABLED == 'true' && github.ref == 'refs/heads/main'
+    if: >-
+      vars.PLOTART_SITE_ENABLED == 'true' && github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || inputs.mode == 'deploy')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment:
@@ -72,7 +132,7 @@ jobs:
       - name: Deploy
         working-directory: worker/plotart-site
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.PLOTART_SITE_CF_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           npx --yes wrangler@4.150.0 deploy --message "main ${GITHUB_SHA::12}" > "$RUNNER_TEMP/wrangler.log" 2>&1 \
@@ -80,17 +140,21 @@ jobs:
           grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/wrangler.log" || true
       - name: Live check (every PlotArt address on the Worker)
         id: live
-        env:
-          SITE_BASE: ${{ vars.PLOTART_SITE_CHECK_BASE }}   # https://plotart.ie once attached; the workers.dev address before
         run: |
           sleep 20
-          python3 atlas-tools/prove-plotart-domain.py . site --base "${SITE_BASE:-https://plotart.ie}" --indexing "$INDEXING"
+          python3 atlas-tools/prove-plotart-domain.py . site --base "$WORKERS_DEV" --indexing noindex
+          # plotart.ie is checked as well once it is attached to this Worker (its responses carry the Worker's headers)
+          if curl -fsSI --max-time 10 https://plotart.ie/robots.txt 2>/dev/null | grep -qi '^content-security-policy:.*fonts.gstatic.com'; then
+            python3 atlas-tools/prove-plotart-domain.py . site --base https://plotart.ie --indexing "$INDEXING"
+          else
+            echo "plotart.ie is not attached to the Worker yet: only the workers.dev address was checked"
+          fi
       - name: Automatic rollback (live check failed)
         if: failure() && steps.live.outcome == 'failure'
         working-directory: worker/plotart-site
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.PLOTART_SITE_CF_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           npx --yes wrangler@4.150.0 rollback --message "automatic rollback: failed live check (run ${{ github.run_id }})" -y > "$RUNNER_TEMP/rb.log" 2>&1 \
-            && echo "rolled back to the previous version" || { echo "FAIL  automatic rollback did not complete"; exit 1; }
+            && echo "rolled back to the previous version" || { echo "FAIL  automatic rollback did not complete (on the very first deploy there is no earlier version: set PLOTART_SITE_ENABLED=false)"; exit 1; }
