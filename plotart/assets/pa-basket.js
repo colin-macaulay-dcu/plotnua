@@ -40,7 +40,7 @@
     .then(function (j) {
       if (!j || !j.open || !j.items || !j.items[0]) return;
       var it = j.items[0];
-      if (!it.ok) {
+      if (!j.items[0].ok) {
         // the artist arranges this work's delivery personally (no fixed delivery price): say so beside the enquiry button
         // (23 Nov 2026). No basket button; the buyer enquires and agrees delivery and the full price before paying.
         if (it.delivery_arranged !== true) return;

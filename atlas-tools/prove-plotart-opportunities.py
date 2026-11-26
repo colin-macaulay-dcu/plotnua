@@ -131,6 +131,10 @@ for f in pkgs:
     for ep in (None, ENDPOINT):
         a, b = pages(M, pkg, ep), pages(P, pkg, ep)
         for k in a:
+            # Sprint 1 (founder approval 26 Nov 2026) moved an artwork page's button block (one line, class pa-aw-cta)
+            # directly under the price and reworded its notes; everything else on the page must still match main exactly
+            if k != "index":
+                a[k], b[k] = (re.sub(r'(?m)^ *<div class="pa-aw-cta">.*\n', "", x) if x is not None else x for x in (a[k], b.get(k)))
             if a[k] == b.get(k) or (k == "index" and OPP.open_to(pkg)):   # 17 Nov 2026: pills change the gallery page of an artist who shows something
                 same += 1
             else:
