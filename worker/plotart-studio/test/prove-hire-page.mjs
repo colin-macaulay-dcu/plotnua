@@ -71,6 +71,9 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
   // boundary and prove-plotart-gallery-curation.py), only while the page carries the unified arrangement
   if (readFileSync(path.join(REPO, 'plotart/gallery/index.html'), 'utf8').includes('data-pa-curated=')) {
     OTHER_RELEASES.add('plotart/gallery/index.html'); OTHER_RELEASES.add('plotart/assets/plotart-featured.css');
+    // the same release mirrors each artist's representative artwork into the opportunity lists (their generated regions
+    // only: guarded by prove-plotart-launch.py L19 and the content boundary)
+    for (const q of ['plotart/living-gallery.html', 'plotart/commissions/index.html', 'plotart/mobile-gallery/index.html', 'plotart/opportunities/index.html']) OTHER_RELEASES.add(q);
   }
   /* Neutral colour system (founder approval 14 Nov 2026, 18:11): these files may differ from main ONLY as the approved colour
      release, byte for byte (SHA-256 pinned here; the launch manifest pins them too). In plotart.css, Art for Hire's own blocks
