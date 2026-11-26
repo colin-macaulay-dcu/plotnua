@@ -50,7 +50,7 @@ Then, and only then, flip `WRITES_ENABLED` to `"true"`.
 
 ---
 
-## Package N · table `Introduction Requests` (not yet created)
+## Package N · table `Introduction Requests` (not yet created; API payload in `airtable-introduction-requests.json`)
 
 Created only at activation, with founder approval. Same base as `Garden Room Leads`.
 The Worker writes with `typecast:false`, so every single-select option below must
@@ -75,10 +75,11 @@ exist exactly as written or the write is refused.
 | status | Single select: `RECEIVED`, `REVIEWED`, `SUPPLIER_CONSENT_REQUESTED`, `INTRODUCED`, `CLOSED` | `RECEIVED` only | every later status is a human act |
 | delete_after | Date | yes | created + 12 months |
 | test_record | Checkbox | yes | true while the public route is closed |
+| retain_reason | Single line text | no | founder fills ONLY to stop automatic deletion (active request, legal or accounting record) |
 | reviewer | Single line text | no | founder fills |
 | introduced_to | Single line text | no | founder fills, only with a recorded supplier consent |
 | supplier_consent_at | Date and time | no | founder fills when a general request later consents to a named supplier |
 | notes | Long text | no | founder fills |
 
-Retention: delete rows whose `delete_after` has passed, unless the request is still
-active or a legal or accounting record requires it (then record why in `notes`).
+Retention is enforced by the Worker's daily cron (`purgeExpired`, 03:23 UTC): every row whose
+`delete_after` is before today and whose `retain_reason` is empty is **deleted** (not anonymised).

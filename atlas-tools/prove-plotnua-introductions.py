@@ -43,7 +43,9 @@ check("P03", "no PlotArt page and not your-plot.html is a placement (PlotArt and
       not any(p["page"].startswith("plotart/") or p["page"] == "your-plot.html" for p in cfg["placements"]))
 
 # ------------------------------------------------------------------ agreement with the Worker
-check("P04", "the general consent sentence is identical to the Worker's", js_str("GENERAL_CONSENT") == M.GENERAL_CONSENT, js_str("GENERAL_CONSENT"))
+check("P04", "the general consent sentence is the founder-approved wording (26 Nov 2026) and identical to the Worker's",
+      js_str("GENERAL_CONSENT") == M.GENERAL_CONSENT == ("I agree that PlotNua may use the information I provide to review my enquiry and contact "
+      "me about my project. My contact details will not be shared with a supplier without my further permission."), js_str("GENERAL_CONSENT"))
 check("P05", "the supplier consent template is identical to the Worker's (founder-approved wording)",
       js_str("SUPPLIER_CONSENT_TEMPLATE") == M.SUPPLIER_CONSENT_TEMPLATE ==
       "I agree that PlotNua may share my enquiry and contact details with [supplier name] so they can contact me about this project.")

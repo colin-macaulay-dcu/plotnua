@@ -356,10 +356,16 @@ async function handleEnquiry(env, body, now, cors) {
   return RECEIVED(cors, leadId);
 }
 
-import { INTRO_PATH, handleIntroduction } from './introduction.js';
+import { INTRO_PATH, handleIntroduction, purgeExpired } from './introduction.js';
 
 /* ========================================================================= */
 export default {
+  /* PACKAGE N retention: the daily cron deletes expired introduction requests
+     (src/introduction.js purgeExpired). A no-op while every INTRO switch is off. */
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(purgeExpired(env, new Date()));
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
     const now = new Date();

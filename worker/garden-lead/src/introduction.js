@@ -45,7 +45,7 @@ const MAX_NAME = 80, MAX_EMAIL = 120, MAX_DESC = 1000;
 export const SUPPLIER_CONSENT_TEMPLATE =
   'I agree that PlotNua may share my enquiry and contact details with [supplier name] so they can contact me about this project.';
 export const GENERAL_CONSENT =
-  'I agree that PlotNua may use my enquiry and contact details to review my project and reply to me. PlotNua will not share my details with any supplier unless I give separate permission.';
+  'I agree that PlotNua may use the information I provide to review my enquiry and contact me about my project. My contact details will not be shared with a supplier without my further permission.';
 export const supplierConsent = (name) => SUPPLIER_CONSENT_TEMPLATE.replace('[supplier name]', name);
 
 /* -------------------------------------------------------- the allow-list --
@@ -268,4 +268,69 @@ export async function handleIntroduction(request, env, now, cors, json) {
   }
 
   return json(200, { ok: true, state: 'received', reference: ref }, cors);
+}
+
+/* ============================================================ retention ===
+   delete_after IS ENFORCED, NOT JUST RECORDED. A daily cron (wrangler.toml
+   [triggers]) calls purgeExpired(), which DELETES every row in
+   "Introduction Requests" whose delete_after is in the past, unless the founder
+   has written a retain_reason (an active request, or a legal or accounting
+   record). Deleting, not anonymising: nothing of the row is kept.
+
+   Runs only when INTRO_RETENTION_ENABLED or INTRO_WRITES_ENABLED is 'true' and
+   the Airtable token and base are bound, so it starts no later than the first
+   real write and keeps running if writes are later switched off (set
+   INTRO_RETENTION_ENABLED='true' before switching writes off).
+
+   Touches ONLY T_INTROS. Every candidate is re-checked here against its own
+   delete_after and retain_reason before it is deleted, so a mistyped Airtable
+   formula cannot widen the deletion. Airtable keeps deleted rows in its trash
+   for a limited period; see governance/PACKAGE-N-INTRODUCTIONS.md.          */
+export const RETENTION_FORMULA =
+  "AND({delete_after}, IS_BEFORE({delete_after}, TODAY()), NOT({retain_reason}))";
+const PURGE_MAX_PAGES = 10;            /* up to 1,000 rows per run */
+
+export function retentionEnabled(env) {
+  return (env.INTRO_RETENTION_ENABLED === 'true' || env.INTRO_WRITES_ENABLED === 'true') &&
+         !!env.AIRTABLE_TOKEN && !!env.AIRTABLE_BASE;
+}
+
+export async function purgeExpired(env, now) {
+  const out = { ran: false, examined: 0, deleted: 0, kept: 0, failed: 0 };
+  if (!retentionEnabled(env)) return out;
+  out.ran = true;
+  const today = now.toISOString().slice(0, 10);
+  const base = 'https://api.airtable.com/v0/' + env.AIRTABLE_BASE + '/' + encodeURIComponent(T_INTROS);
+  const auth = { authorization: 'Bearer ' + env.AIRTABLE_TOKEN };
+  const due = [];
+  let offset = '';
+  for (let page = 0; page < PURGE_MAX_PAGES; page++) {
+    const q = new URLSearchParams({ filterByFormula: RETENTION_FORMULA, pageSize: '100' });
+    q.append('fields[]', 'delete_after'); q.append('fields[]', 'retain_reason');
+    if (offset) q.set('offset', offset);
+    let j;
+    try {
+      const r = await fetch(base + '?' + q.toString(), { method: 'GET', headers: auth });
+      if (!r.ok) { out.failed++; break; }
+      j = await r.json();
+    } catch { out.failed++; break; }
+    for (const rec of (j.records || [])) {
+      out.examined++;
+      const f = rec.fields || {};
+      const expired = typeof f.delete_after === 'string' && f.delete_after < today;
+      const retained = typeof f.retain_reason === 'string' && f.retain_reason.trim() !== '';
+      if (expired && !retained && /^rec[A-Za-z0-9]{14}$/.test(rec.id)) due.push(rec.id); else out.kept++;
+    }
+    if (!j.offset) break;
+    offset = j.offset;
+  }
+  for (let i = 0; i < due.length; i += 10) {
+    const q = new URLSearchParams();
+    for (const id of due.slice(i, i + 10)) q.append('records[]', id);
+    try {
+      const r = await fetch(base + '?' + q.toString(), { method: 'DELETE', headers: auth });
+      if (r.ok) out.deleted += due.slice(i, i + 10).length; else out.failed++;
+    } catch { out.failed++; }
+  }
+  return out;
 }

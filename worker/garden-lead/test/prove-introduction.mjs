@@ -70,6 +70,8 @@ check('I01', 'INTRO_SUPPLIERS ships empty: no supplier-specific introduction is 
 check('I02', 'wrangler.toml ships INTRO_PUBLIC_ENABLED, INTRO_WRITES_ENABLED and INTRO_NOTIFY_ENABLED as "false", no key in it',
   /INTRO_PUBLIC_ENABLED\s*=\s*"false"/.test(toml) && /INTRO_WRITES_ENABLED\s*=\s*"false"/.test(toml) &&
   /INTRO_NOTIFY_ENABLED\s*=\s*"false"/.test(toml) && !/RESEND_API_KEY\s*=/.test(toml));
+check('I03a', 'the general sentence is the founder-approved wording of 26 Nov 2026, verbatim',
+  I.GENERAL_CONSENT === 'I agree that PlotNua may use the information I provide to review my enquiry and contact me about my project. My contact details will not be shared with a supplier without my further permission.');
 check('I03', 'the approved supplier sentence is used verbatim, with only the supplier name substituted',
   I.supplierConsent('Example Maker') === 'I agree that PlotNua may share my enquiry and contact details with Example Maker so they can contact me about this project.');
 
@@ -115,7 +117,7 @@ const refusals = [
   ['I22', 'a form completed in under 3 seconds is refused', good({ elapsed_ms: 1200 }), 'timing'],
   ['I23', 'a missing timing value is refused', good({ elapsed_ms: undefined }), 'timing'],
   ['I24', 'no consent tick -> refused (nothing preselected server-side either)', good({ consent: 'true' }), 'consent'],
-  ['I25', 'consent wording that drifts from the approved sentence is refused', good({ consent_text: I.GENERAL_CONSENT.replace('reply to me', 'contact me') }), 'consent_text'],
+  ['I25', 'consent wording that drifts from the approved sentence is refused', good({ consent_text: I.GENERAL_CONSENT.replace('contact me about', 'email me about') }), 'consent_text'],
   ['I26', 'the supplier sentence cannot be used for a general request', good({ consent_text: I.supplierConsent('Anyone') }), 'consent_text'],
   ['I27', 'a county outside the island-of-Ireland list is refused', good({ county: 'Narnia' }), 'county'],
   ['I28', 'a timeframe outside the five options is refused', good({ timeframe: 'yesterday' }), 'timeframe'],
@@ -195,6 +197,73 @@ mailOk = true;
 { calls = []; I.resetIntroRateLimit(); let last;
   for (let i = 0; i < 11; i++) last = await worker.fetch(req(good()), env());
   check('I46', 'the 11th request in a minute from one isolate -> slow_down', last.status === 429); I.resetIntroRateLimit(); }
+
+/* ======================================================= retention ====== */
+{
+  const realFetch = globalThis.fetch;
+  let rc = [], pages = [];
+  globalThis.fetch = async (url, init) => {
+    const u = String(url); rc.push({ url: u, method: init.method });
+    if (init.method === 'GET') { const p = pages.shift() || { records: [] }; if (p === 'fail') return { ok: false, status: 500, json: async () => ({}) }; return { ok: true, status: 200, json: async () => p }; }
+    return { ok: true, status: 200, json: async () => ({}) };
+  };
+  const NOWD = new Date('2027-12-01T09:00:00Z');
+  const rec = (n, f) => ({ id: 'rec' + String(n).padStart(14, '0'), fields: f });
+  const ids = u => new URL(u).searchParams.getAll('records[]');
+  const W = { INTRO_WRITES_ENABLED: 'true' };
+
+  rc = []; pages = [];
+  let o = await I.purgeExpired(env({ INTRO_WRITES_ENABLED: 'false' }), NOWD);
+  check('I47', 'retention does nothing while writes and retention switches are off (no Airtable call)', o.ran === false && rc.length === 0);
+
+  rc = []; pages = [{ records: [ rec(1, { delete_after: '2027-11-30' }), rec(2, { delete_after: '2027-11-30', retain_reason: 'active request' }),
+    rec(3, { delete_after: '2027-12-02' }), rec(4, {}), rec(5, { delete_after: '2027-12-01' }) ] }];
+  o = await I.purgeExpired(env(W), NOWD);
+  const dels = rc.filter(c => c.method === 'DELETE');
+  check('I48', 'expired rows are DELETED; a retain_reason, a future or same-day date, or a blank date is kept even if Airtable returns it',
+    dels.length === 1 && JSON.stringify(ids(dels[0].url)) === JSON.stringify([rec(1).id]) && o.deleted === 1 && o.kept === 4, JSON.stringify(o));
+  check('I49', 'the list query asks Airtable only for expired, unretained rows and only the two fields needed',
+    (() => { const q = new URL(rc[0].url).searchParams; return q.get('filterByFormula') === I.RETENTION_FORMULA &&
+      /IS_BEFORE\(\{delete_after\}, TODAY\(\)\)/.test(I.RETENTION_FORMULA) && /NOT\(\{retain_reason\}\)/.test(I.RETENTION_FORMULA) &&
+      JSON.stringify(q.getAll('fields[]')) === '["delete_after","retain_reason"]'; })(), rc[0] && rc[0].url);
+  check('I50', 'retention touches only the "Introduction Requests" table, never Garden Room Leads',
+    rc.every(c => c.url.includes('/' + encodeURIComponent('Introduction Requests') + '?') && !c.url.includes('Garden')));
+
+  rc = []; const many = Array.from({ length: 12 }, (_, i) => rec(100 + i, { delete_after: '2027-01-01' }));
+  pages = [{ records: many.slice(0, 7), offset: 'itrNEXT' }, { records: many.slice(7) }];
+  o = await I.purgeExpired(env(W), NOWD);
+  const d2 = rc.filter(c => c.method === 'DELETE');
+  check('I51', 'pages are followed and deletes go in batches of at most 10 (12 rows -> 10 + 2)',
+    o.deleted === 12 && d2.length === 2 && d2.every(c => ids(c.url).length <= 10) && new URL(rc[1].url).searchParams.get('offset') === 'itrNEXT', JSON.stringify(o));
+
+  rc = []; pages = ['fail'];
+  o = await I.purgeExpired(env(W), NOWD);
+  check('I52', 'a failed listing deletes nothing and is reported', o.failed === 1 && rc.every(c => c.method === 'GET'));
+
+  rc = []; pages = [{ records: [rec(9, { delete_after: '2027-01-01' })] }];
+  o = await I.purgeExpired(env({ INTRO_WRITES_ENABLED: 'false', INTRO_RETENTION_ENABLED: 'true' }), NOWD);
+  check('I53', 'INTRO_RETENTION_ENABLED keeps deletion running after writes are switched off', o.ran && o.deleted === 1);
+
+  rc = []; pages = [{ records: [rec(8, { delete_after: '2025-01-01' })] }];
+  let waited = null; await worker.scheduled({}, env(W), { waitUntil: p => { waited = p; } }); const so = await waited;
+  check('I54', "the Worker's daily cron handler runs the purge", so && so.deleted === 1 && rc.some(c => c.method === 'DELETE'));
+  const tomlNow = readFileSync(join(HERE, '..', 'wrangler.toml'), 'utf8');
+  check('I55', 'wrangler.toml declares the daily cron and ships INTRO_RETENTION_ENABLED "false"',
+    /\[triggers\]\s*\ncrons = \["23 3 \* \* \*"\]/.test(tomlNow) && /INTRO_RETENTION_ENABLED = "false"/.test(tomlNow));
+  globalThis.fetch = realFetch;
+}
+
+/* ================================================== airtable spec ====== */
+{
+  const spec = JSON.parse(readFileSync(join(HERE, '..', 'airtable-introduction-requests.json'), 'utf8'));
+  const byName = Object.fromEntries(spec.table.fields.map(f => [f.name, f]));
+  const written = ['request_id','created_at','kind','supplier_slug','supplier_name','homeowner_name','homeowner_email','county','timeframe','description','page','consent_text_hash','consent_at','privacy_version','status','delete_after','test_record'];
+  const ch = n => (byName[n] && byName[n].options && byName[n].options.choices || []).map(c => c.name);
+  check('I56', 'the Airtable table spec has every field the Worker writes, the retention field, and select choices matching the Worker exactly',
+    spec.table.name === I.T_INTROS && written.every(n => byName[n]) && byName.retain_reason && spec.table.fields[0].name === 'request_id' &&
+    JSON.stringify(ch('timeframe')) === JSON.stringify(Object.values(I.TIMEFRAMES)) && ch('status').includes(I.INTRO_STATUS) &&
+    JSON.stringify(ch('kind')) === '["general","supplier"]' && byName.delete_after.type === 'date' && byName.test_record.type === 'checkbox');
+}
 
 for (const [v, id, w, d] of rows) console.log(`  ${v}  ${id} ${w}${d ? '  [' + d + ']' : ''}`);
 console.log(`\nINTRODUCTIONS · ${pass + fail} checks, ${pass} passed, ${fail} failed`);

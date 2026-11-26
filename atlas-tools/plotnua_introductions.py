@@ -41,9 +41,10 @@ ANCHOR = "</main>"
 # Must equal worker/garden-lead/src/introduction.js (proved by prove-plotnua-introductions.py).
 SUPPLIER_CONSENT_TEMPLATE = ("I agree that PlotNua may share my enquiry and contact details with "
                              "[supplier name] so they can contact me about this project.")
-GENERAL_CONSENT = ("I agree that PlotNua may use my enquiry and contact details to review my project "
-                   "and reply to me. PlotNua will not share my details with any supplier unless I "
-                   "give separate permission.")
+# Founder decision 26 Nov 2026 (subject to data protection review).
+GENERAL_CONSENT = ("I agree that PlotNua may use the information I provide to review my enquiry and "
+                   "contact me about my project. My contact details will not be shared with a "
+                   "supplier without my further permission.")
 DISCLOSURE = ("Where a commercial referral arrangement exists, PlotNua may receive a referral fee. "
               "Such arrangements do not determine our editorial recommendations.")
 TIMEFRAMES = [("within-3-months", "Within 3 months"), ("3-6-months", "3 to 6 months"),

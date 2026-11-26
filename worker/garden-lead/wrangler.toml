@@ -46,7 +46,14 @@ PRIVACY_VERSION     = "2026-10-FIRSTLEAD-V1"
 INTRO_PUBLIC_ENABLED  = "false"
 INTRO_WRITES_ENABLED  = "false"
 INTRO_NOTIFY_ENABLED  = "false"
+INTRO_RETENTION_ENABLED = "false"   # deletion of expired rows also runs whenever
+                                    # INTRO_WRITES_ENABLED is "true"
 INTRO_PRIVACY_VERSION = "2026-12-INTRODUCTIONS-V1"
+
+# Package N retention: once a day, delete introduction requests whose
+# delete_after has passed (unless retain_reason is set). Off while the switches are off.
+[triggers]
+crons = ["23 3 * * *"]
 
 # NOT SET HERE, AND DELIBERATELY SO:
 #   AIRTABLE_BASE      -> set as a var at deploy time

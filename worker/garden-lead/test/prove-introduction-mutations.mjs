@@ -40,6 +40,17 @@ const CASES = [
     ["  let recId = null;\n", "  let recId = null;\n  if (notifyEnabled(env)) { try { await sendFounderNotice(env, founderNotice('x', kind, supplierName, county, TIMEFRAMES[timeframe])); } catch {} }\n"]],
   ['N13', 'notify switch ignored', ['I35'],
     ["  return env.INTRO_NOTIFY_ENABLED === 'true' && !!env.RESEND_API_KEY &&", "  return !!env.RESEND_API_KEY &&"]],
+  ['N15', 'retention trusts the Airtable formula: no expiry re-check', ['I48'],
+    ["const expired = typeof f.delete_after === 'string' && f.delete_after < today;", "const expired = true;"]],
+  ['N16', 'retention ignores retain_reason', ['I48'],
+    ["const retained = typeof f.retain_reason === 'string' && f.retain_reason.trim() !== '';", "const retained = false;"]],
+  ['N17', 'retention deletes in batches larger than Airtable allows', ['I51'],
+    ["for (let i = 0; i < due.length; i += 10) {", "for (let i = 0; i < due.length; i += 100) {"],
+    ["for (const id of due.slice(i, i + 10)) q.append('records[]', id);", "for (const id of due.slice(i, i + 100)) q.append('records[]', id);"]],
+  ['N18', 'retention runs with every switch off', ['I47'],
+    ["  return (env.INTRO_RETENTION_ENABLED === 'true' || env.INTRO_WRITES_ENABLED === 'true') &&", "  return true &&"]],
+  ['N19', 'retention stops after the first page', ['I51'],
+    ["    if (!j.offset) break;", "    break;"]],
   ['N14', 'honeypot ignored', ['I21'],
     ["  if (cleanText(b.gotcha, 200)) return REFUSED('gotcha');", "  /* honeypot removed */"]]
 ];
@@ -52,6 +63,7 @@ for (const [id, label, owners, ...edits] of CASES) {
     mkdirSync(join(t, 'src')); mkdirSync(join(t, 'test'));
     for (const f of ['index.js', 'introduction.js']) copyFileSync(join(ROOT, 'src', f), join(t, 'src', f));
     copyFileSync(join(ROOT, 'wrangler.toml'), join(t, 'wrangler.toml'));
+    copyFileSync(join(ROOT, 'airtable-introduction-requests.json'), join(t, 'airtable-introduction-requests.json'));
     copyFileSync(join(HERE, 'prove-introduction.mjs'), join(t, 'test', 'prove-introduction.mjs'));
     writeFileSync(join(t, 'package.json'), '{"type":"module"}');
     const p = join(t, 'src', 'introduction.js'); let s = readFileSync(p, 'utf8');
