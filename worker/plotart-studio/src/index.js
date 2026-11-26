@@ -1272,6 +1272,12 @@ async function route(req, env) {
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: (await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at")).filter(q => !T.isTest(env, q.artist_id)) });   // never a test account
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
     if (p === '/api/pipeline/featured-artists' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, pubSql(env))) });
+    // Report 36: the internal test accounts, by id and gallery address, so the publisher can check its own list agrees
+    // before publishing anything (fail closed on a mismatch). Identifiers only.
+    if (p === '/api/pipeline/test-artists' && m === 'GET') {
+      const ids = T.testIds(env), rows = ids.length ? await all(env, `SELECT id, slug FROM artists WHERE id IN (${ids.map(() => '?').join(',')})`, ...ids) : [];
+      return json({ ok: true, artists: ids.map(id => ({ id, slug: (rows.find(r => r.id === id) || {}).slug || null })) });
+    }
     if (p === '/api/pipeline/galleries' && m === 'GET') return json({ ok: true, ...(await G.pipeline(env, await HP.published(env, pubSql(env)))) });   // Phase B: read-only, public identifiers   // gallery address + artwork id only
     // the earlier homepage route, kept only so a publisher from before this release keeps working (it now receives artists only)
     if (p === '/api/pipeline/homepage' && m === 'GET') { const r = await HP.pipeline(env, pubSql(env)); return json({ ok: true, ...r, items: r.items.map(i => ({ kind: 'artist', ...i })) }); }
@@ -1988,7 +1994,9 @@ async function route(req, env) {
     await env.DB.batch([LOC.saveLocation(env, artist.id, row, 'artist'),
       env.DB.prepare('UPDATE artists SET county=?, county_public=?, updated_at=? WHERE id=?').bind(county, county && row.show_location ? 1 : 0, now(), artist.id)]);
     await audit(env, artist.email, 'artist', 'location', artist.id, { country: row.country, county: row.county, town: !!row.town, public: !!row.show_location });
-    return json({ ok: true, ...(await locationOf(env, artist.id)) });
+    // Report 36: a change to what is shown (above all a withdrawal) reaches the published gallery as an instant update,
+    // like every other "light" change, instead of waiting for the artist's next submission.
+    return json({ ok: true, ...(await locationOf(env, artist.id)), instant_version: await instant(env, artist, artist.email, 'location') });
   }
   if (p === '/api/me/delivery' && m === 'PUT') {
     await needLocation(env);
@@ -2019,6 +2027,8 @@ async function route(req, env) {
     const upd = env.DB.prepare(`UPDATE artists SET ${Object.keys(f).map(k => `${k}=?`).join(', ')}, updated_at=? WHERE id=?`).bind(...Object.values(f), now(), artist.id);
     if (syncLoc) await env.DB.batch([upd, syncLoc]); else await upd.run();
     await audit(env, artist.email, 'artist', 'profile', artist.id, { fields: Object.keys(f) });
+    // Report 36: showing or withdrawing the county reaches the published gallery as an instant update (light change)
+    if ('county_public' in f || 'county' in f) await instant(env, artist, artist.email, 'county');
     return json({ ok: true, saved_at: now() });
   }
   /* Open for Commissions: the artist's own switch. It changes only this one field, is audited, and reaches a live gallery

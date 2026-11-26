@@ -369,7 +369,8 @@ def test_artists():
     try:
         d = json.load(open(TEST_ARTISTS_FILE, encoding="utf-8"))
     except FileNotFoundError:
-        return set(), set()
+        # Report 36: fail closed. The list ships with the builder; if it is missing, nothing is published until it is back.
+        raise Refused("plotart-test-artists.json is missing: refusing to publish anything until it is restored")
     except ValueError:
         raise Refused("plotart-test-artists.json is not valid JSON: refusing to publish anything until it is fixed")
     if not isinstance(d, dict):

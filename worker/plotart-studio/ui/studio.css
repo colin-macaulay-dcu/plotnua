@@ -563,3 +563,8 @@ body.st{ background:var(--anth); min-height:100vh; }
 /* Report 35 (26 Nov 2026): the artist is asked to confirm where their two location answers disagreed */
 .st-loc-confirm{ border:1px solid rgba(217,180,94,.45); border-radius:12px; padding:10px 14px; margin:0 0 14px; color:var(--ivory); }
 .st-opp-ref{ border:1px solid var(--line, rgba(255,255,255,.12)); border-radius:12px; padding:10px 14px; margin:8px 0 12px; }
+
+/* Report 36: founder-only identifiers on the Review desk */
+.st-ids{ margin:4px 0 0; font-size:13px; }
+.st-ids summary{ cursor:pointer; color:var(--stone, #b9b6ae); }
+.st-ids code{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; color:var(--ivory); user-select:all; }

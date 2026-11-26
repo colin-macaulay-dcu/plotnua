@@ -160,7 +160,8 @@
       <section class="st-card"><h2>Enquiries</h2><p class="st-muted">Buyer enquiries go straight to the artist (Reply-To the buyer). This is the record of founding-period enquiries.</p>
         <div id="enq"><p class="st-muted">Loading…</p></div></section>
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Agreement</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
-        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${TB(a.id)}${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
+        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${TB(a.id)}${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span>
+          <details class="st-ids"><summary>Identifiers</summary><span class="st-muted">Studio ID</span> <code>${E(a.id)}</code> <button type="button" class="st-linkbtn" data-copy="${E(a.id)}">Copy</button><br><span class="st-muted">Gallery address</span> <code>${E(a.slug)}</code> <button type="button" class="st-linkbtn" data-copy="${E(a.slug)}">Copy</button></details></td>
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[stateOf(a)])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
           <td>${agrCell(a)}</td><td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
           <td class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/d-${a.id}/index.html" target="_blank" rel="noopener" title="The artist’s saved draft, unpublished, read-only">Preview draft</a>
@@ -1156,3 +1157,10 @@
   addEventListener('hashchange', render);
   render();
 })();
+
+/* Report 36: copy a founder-only identifier (Studio ID or gallery address) from the Review desk. */
+document.addEventListener('click', async e => {
+  const b = e.target.closest && e.target.closest('[data-copy]'); if (!b) return;
+  try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied'; } catch { b.textContent = 'Select and copy'; }
+  setTimeout(() => { b.textContent = 'Copy'; }, 1600);
+});

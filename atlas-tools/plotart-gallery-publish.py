@@ -271,9 +271,31 @@ def one(q):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def test_accounts_consistent():
+    """Report 36: the Studio's internal test accounts (TEST_ARTIST_IDS) must all be named in the builder's own list
+    (release/plotart-test-artists.json), by id and gallery address, before anything is published. A mismatch, or a
+    missing or malformed builder list, stops the whole run (fail closed). A Studio from before this check has no such
+    route (404) and no test accounts, so there is nothing to compare."""
+    ids, slugs = G.test_artists()                         # raises Refused if the builder list is missing or malformed
+    try:
+        studio = call("GET", "/api/pipeline/test-artists")
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return
+        raise
+    missing = [a for a in studio.get("artists", []) if a.get("id") not in ids or (a.get("slug") and a["slug"] not in slugs)]
+    if missing:
+        raise G.Refused("the Studio names internal test account(s) the website builder does not: %s. Add them to "
+                        "atlas-tools/release/plotart-test-artists.json (id and gallery address) first" % ", ".join(a.get("id", "?") for a in missing))
+
+
 def main():
     if git("status", "--porcelain"):
         sys.exit("REFUSED: the checkout is not clean")
+    try:
+        test_accounts_consistent()
+    except G.Refused as e:
+        sys.exit("REFUSED: %s" % e)
     items = call("GET", "/api/pipeline/queue")["items"]
     failed = 0
     for q in items:

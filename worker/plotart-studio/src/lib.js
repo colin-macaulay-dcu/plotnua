@@ -260,6 +260,13 @@ export function applyInstant(base, work) {
   // the same for the opportunities shown publicly: carried only when they differ; none means the key is removed
   const ot = openTo(work.artist);
   if (!eq(openTo(base.artist), ot)) { const { open_to, ...rest } = artist; artist = ot.length ? { ...rest, open_to: ot } : rest; }
+  // Report 36: a WITHDRAWAL of location consent travels at once (county no longer shown, where-based no longer shown, or
+  // the town removed from it). A new or wider showing never travels this way: it waits for the founder's review as before.
+  const wa = work.artist;
+  if (artist.county_public && !wa.county_public) artist = { ...artist, county_public: false };
+  if (artist.location && !wa.location) { const { location, ...rest } = artist; artist = rest; }
+  else if (artist.location && wa.location && artist.location.town && !wa.location.town && wa.location.country === artist.location.country
+    && (wa.location.county || null) === (artist.location.county || null)) artist = { ...artist, location: wa.location };
   return { ...base, artist, works: kept };
 }
 
