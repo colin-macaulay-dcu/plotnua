@@ -55,11 +55,11 @@ await call('PUT', '/api/me/location', 'par@example.test', { country: 'FR', town:
 const par = await db.prepare("SELECT county, county_public FROM artists WHERE id='apar'").first();
 check('S4 an artist based abroad: country only, and the profile county is cleared (never a wrong Irish county)', par.county === null && par.county_public === 0);
 await call('PUT', '/api/me/location', 'cor@example.test', { country: 'IE', county: 'Cork', show_location: true });
-const d1 = await call('PUT', '/api/me/delivery', 'cor@example.test', { scope: 'counties', counties: ['Kerry', 'Limerick'], show_delivery: true });
+const d1 = await call('PUT', '/api/me/delivery', 'cor@example.test', { scope: 'counties', counties: ['Kerry', 'Limerick'], methods: ['personal'] });   // Report 36: methods; no public tick
 const corLoc = await db.prepare("SELECT * FROM artist_locations WHERE artist_id='acor'").first();
 check('S5 delivery coverage is saved on its own and never changes where the artist is based', d1.s === 200 && d1.j.delivery.counties === '["Kerry","Limerick"]' && corLoc.county === 'Cork');
-const d2 = await call('PUT', '/api/me/delivery', 'cor@example.test', { scope: 'country' });
-const d3 = await call('PUT', '/api/me/delivery', 'par@example.test', { scope: 'island', show_delivery: true });
+const d2 = await call('PUT', '/api/me/delivery', 'cor@example.test', { scope: 'country', methods: ['courier'] });
+const d3 = await call('PUT', '/api/me/delivery', 'par@example.test', { scope: 'island', methods: ['specialist'] });
 check('S6 "anywhere in my own country" is refused for an artist on the island; an artist in Paris may cover the whole island', d2.s === 400 && d3.s === 200 && d3.j.delivery.scope === 'island');
 const f1 = await call('GET', '/api/admin/locations?county=Kerry', FOUNDER);
 const rel = Object.fromEntries(f1.j.artists.map(a => [a.slug, a.relation]));
@@ -67,7 +67,7 @@ check('S7 the founder’s overview filtered by Kerry: the Kerry artist is "based
   f1.s === 200 && rel['kay-test'] === 'based' && rel['cor-test'] === 'delivers' && rel['par-test'] === 'delivers', JSON.stringify(rel));
 const all = await call('GET', '/api/admin/locations', FOUNDER);
 const kayRow = all.j.artists.find(a => a.slug === 'kay-test'), corRow = all.j.artists.find(a => a.slug === 'cor-test');
-check('S8 the overview shows each artist’s place and coverage as plain lines', kayRow.place === 'Dingle, Co. Kerry, Ireland' && corRow.delivery === 'Delivers to Co. Kerry, Co. Limerick' && corRow.delivery_public === true);
+check('S8 the overview shows each artist’s place and coverage as plain lines', kayRow.place === 'Dingle, Co. Kerry, Ireland' && corRow.delivery === 'Delivers to Co. Kerry, Co. Limerick' && corRow.delivery_public === false);   // Report 36: never public without fresh recorded consent
 const art = await call('GET', '/api/admin/locations', 'kay@example.test'), unk = await call('GET', '/api/admin/locations?county=Atlantis', FOUNDER);
 check('S9 only the founder can see the overview; an unknown county is refused', art.s === 403 && unk.s === 400);
 const au = (await db.prepare("SELECT action, detail FROM audit WHERE action IN ('location','delivery') ORDER BY id").all()).results;

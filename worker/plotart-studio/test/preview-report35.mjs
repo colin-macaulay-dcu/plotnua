@@ -15,11 +15,11 @@ await seedPublished(db, { id: 'asam', slug: 'sample-artist', email: S, name: 'Sa
 await seedPublished(db, { id: 'aeg', slug: 'example-painter', email: E, name: 'Example Painter (fictional)', works: 1 });
 await seedPublished(db, { id: 'anew', slug: 'new-artist', email: N, name: 'New Artist (fictional)', works: 1 });
 await call('PUT', '/api/me/location', S, { country: 'IE', county: 'Galway', town: '', show_location: true, show_town: false });
-await call('PUT', '/api/me/delivery', S, { scope: 'island', show_delivery: false });
+await call('PUT', '/api/me/delivery', S, { scope: 'island', methods: ['courier'] });
 await call('PUT', '/api/opportunities', S, { interests: ['living_gallery', 'exhibitions'], artwork_county: 'Galway', transport: ['deliver'], coverage: { mode: 'counties', counties: ['Galway', 'Mayo'] }, note: null });
 await call('PUT', '/api/me/location', E, { country: 'IE', county: 'Cork', town: '', show_location: true, show_town: false });
 await db.prepare("UPDATE artists SET county_public=0 WHERE id='aeg'").run();   // an older disagreement, for the confirmation note
-await call('PUT', '/api/me/delivery', E, { scope: 'counties', counties: ['Cork', 'Kerry'], show_delivery: false });
+await call('PUT', '/api/me/delivery', E, { scope: 'counties', counties: ['Cork', 'Kerry'], methods: ['personal'] });
 await call('PUT', '/api/opportunities', E, { interests: ['venues'], artwork_county: 'Cork', transport: ['need_help'], coverage: null, note: null });
 const b = await chromium.launch();
 const hide = 'header, .st-top, .st-tabs { position: static !important; }';

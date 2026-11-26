@@ -1415,3 +1415,10 @@ CREATE TABLE IF NOT EXISTS artist_delivery (
 -- PlotArt Studio · migration 0026 · Exhibitions & Achievements (Phase C, development 25 Nov 2026). NOT APPLIED IN PRODUCTION.
 -- See migrations/0026_artist_exhibitions.sql.
 ALTER TABLE artists ADD COLUMN exhibitions TEXT CHECK (exhibitions IS NULL OR length(exhibitions) BETWEEN 1 AND 6000);
+
+-- PlotArt Studio · migration 0027 · Delivery and transport (development 26 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- See migrations/0027_delivery_transport.sql.
+ALTER TABLE artist_delivery ADD COLUMN methods TEXT
+  CHECK (methods IS NULL OR methods IN ('personal', 'courier', 'specialist', 'personal,courier', 'personal,specialist', 'courier,specialist', 'personal,courier,specialist', 'collection', 'arrangement'))
+  CHECK (methods IS NULL OR ((scope = 'none') = (methods IN ('collection', 'arrangement'))));
+ALTER TABLE artist_opportunities ADD COLUMN placement_area TEXT CHECK (placement_area IS NULL OR placement_area IN ('general', 'own'));

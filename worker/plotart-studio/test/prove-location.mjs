@@ -36,7 +36,10 @@ check('V7 nothing is public unless ticked; the town is public only with the loca
 
 /* ---- where the artist can deliver ---- */
 const cork = loc({ country: 'IE', county: 'Cork', show_location: 1 }), antrim = loc({ country: 'GB', county: 'Antrim', show_location: 1 }), paris = loc({ country: 'FR', town: 'Paris', show_location: 1 });
-const del = (b, l) => ({ ...L.validateDelivery(b, l), artist_id: 'a1' });
+// Report 36: the Studio no longer accepts a "show" tick (only a withdrawal); a stored tick from before is simulated here.
+// A future public-delivery consent is simulated with consent:true (no such record can exist today).
+const NOTICE = 'PA-DELIVERY-PUBLIC-FUTURE';
+const del = (b, l) => { const { show_delivery, consent, ...rest } = b; return { ...L.validateDelivery(rest, l), artist_id: 'a1', show_delivery: show_delivery && rest.scope !== 'none' ? 1 : 0, ...(consent ? { public_consent_notice: NOTICE } : {}) }; };
 check('D1 coverage distinguishes the Republic (26), Northern Ireland (6) and the whole island (32)',
   L.covered(del({ scope: 'republic' }, cork)).length === 26 && L.covered(del({ scope: 'northern_ireland' }, cork)).join() === L.NI_COUNTIES.join()
   && L.covered(del({ scope: 'island' }, cork)).length === 32 && !L.covered(del({ scope: 'republic' }, cork)).includes('Antrim'));
@@ -57,20 +60,22 @@ check('P1 the place line: "Strandhill, Co. Sligo, Ireland", "Co. Antrim, Norther
 const priv = loc({ country: 'IE', county: 'Sligo', town: 'Strandhill', show_location: 1, show_town: 0 });
 check('P2 the public location carries no private field and no town unless ticked; nothing when not shown',
   !('town' in L.publicLocation(priv)) && !/confirmed|artist_id|updated/.test(Object.keys(L.publicLocation(priv)).join()) && L.publicLocation({ ...priv, show_location: 0 }) === null);
-const dIsland = del({ scope: 'island', show_delivery: 1 }, cork);
-check('P3 coverage is public only when the artist ticks it AND the founder has switched public delivery on; the lines name ROI, NI and all-island',
-  L.publicDelivery(dIsland, cork) === null && L.publicDelivery({ ...dIsland, show_delivery: 0 }, cork, { deliveryPublic: true }) === null
-  && L.publicDelivery(dIsland, cork, { deliveryPublic: true }).line === 'Delivers anywhere on the island of Ireland'
+const dIsland = del({ scope: 'island', show_delivery: 1, consent: true }, cork), dTickOnly = del({ scope: 'island', show_delivery: 1 }, cork);
+check('P3 coverage is public only with the founder’s switch AND a fresh consent recorded under the notice in force: an earlier tick alone, or the switch alone, shows nothing; the lines name ROI, NI and all-island',
+  L.publicDelivery(dIsland, cork) === null && L.publicDelivery({ ...dIsland, show_delivery: 0 }, cork, { deliveryPublic: true, consentNotice: NOTICE }) === null
+  && L.publicDelivery(dTickOnly, cork, { deliveryPublic: true, consentNotice: NOTICE }) === null && L.publicDelivery(dIsland, cork, { deliveryPublic: true }) === null
+  && L.publicDelivery(dIsland, cork, { deliveryPublic: true, consentNotice: 'AN-OLDER-NOTICE' }) === null
+  && L.publicDelivery(dIsland, cork, { deliveryPublic: true, consentNotice: NOTICE }).line === 'Delivers anywhere on the island of Ireland'
   && L.deliveryLine(del({ scope: 'republic' }, cork), cork) === 'Delivers anywhere in the Republic of Ireland'
   && L.deliveryLine(del({ scope: 'northern_ireland' }, antrim), antrim) === 'Delivers anywhere in Northern Ireland'
   && L.deliveryLine(del({ scope: 'counties', counties: ['Kerry', 'Cork'] }, cork), cork) === 'Delivers to Co. Cork, Co. Kerry');
 
 /* ---- Art for Hire: discover local artists without excluding anyone willing to supply the county ---- */
-const pub = (l, d) => [L.publicLocation(l), L.publicDelivery(d, l, { deliveryPublic: true })];
+const pub = (l, d) => [L.publicLocation(l), L.publicDelivery(d, l, { deliveryPublic: true, consentNotice: NOTICE })];
 const kerryArtist = pub(loc({ country: 'IE', county: 'Kerry', show_location: 1 }), del({ scope: 'none' }, null));
-const corkToKerry = pub(cork, del({ scope: 'counties', counties: ['Kerry'], show_delivery: 1 }, cork));
-const belfastROI = pub(antrim, del({ scope: 'republic', show_delivery: 1 }, antrim));
-const parisIsland = pub(paris, del({ scope: 'island', show_delivery: 1 }, paris));
+const corkToKerry = pub(cork, del({ scope: 'counties', counties: ['Kerry'], show_delivery: 1, consent: true }, cork));
+const belfastROI = pub(antrim, del({ scope: 'republic', show_delivery: 1, consent: true }, antrim));
+const parisIsland = pub(paris, del({ scope: 'island', show_delivery: 1, consent: true }, paris));
 const corkHidden = pub(cork, del({ scope: 'island', show_delivery: 0 }, cork));
 check('R1 filtering by Kerry: a Kerry-based artist is "based"; artists from Cork, Belfast and Paris who supply Kerry are "delivers"; none excluded',
   L.relation(...kerryArtist, 'Kerry') === 'based' && L.relation(...corkToKerry, 'Kerry') === 'delivers' && L.relation(...belfastROI, 'Kerry') === 'delivers'
@@ -101,7 +106,7 @@ check('M2 it adds exactly two tables (location; delivery coverage), both empty: 
 const env = { DB: db };
 await L.saveLocation(env, 'aleah', L.validateLocation({ country: 'IE', county: 'Dublin', town: 'Howth', show_location: true }), 'artist').run();
 await L.saveLocation(env, 'aleah', L.validateLocation({ country: 'IE', county: 'Dublin', show_location: true }), 'artist').run();
-await L.saveDelivery(env, 'aleah', L.validateDelivery({ scope: 'counties', counties: ['Wicklow', 'Meath'], show_delivery: true }, { country: 'IE', county: 'Dublin' }), 'artist').run();
+await L.saveDelivery(env, 'aleah', L.validateDelivery({ scope: 'counties', counties: ['Wicklow', 'Meath'] }, { country: 'IE', county: 'Dublin' }), 'artist').run();
 const sl = await db.prepare("SELECT * FROM artist_locations WHERE artist_id='aleah'").first(), sd = await db.prepare("SELECT * FROM artist_delivery WHERE artist_id='aleah'").first();
 check('M3 the Studio’s validated answers are stored in their own tables, one row per artist; a later answer replaces it',
   sl && sl.town === null && sd && sd.counties === '["Meath","Wicklow"]' && (await db.prepare('SELECT COUNT(*) n FROM artist_locations').first()).n === 1);

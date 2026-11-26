@@ -201,7 +201,7 @@ check('U8 "Save preferences" stores the answers and shows "Saved" with the time'
   saved && JSON.parse(saved.interests).join() === 'commissions' && saved.artwork_county === 'Kerry' && saved.coverage_mode === 'counties' && JSON.parse(saved.coverage_counties).join() === 'Cork'
   && /Saved/.test(t1) && /Last saved/.test(t1), JSON.stringify(saved) + t1);
 await p.reload({ waitUntil: 'load' }); await p.waitForTimeout(700);
-check('U9 coming back later shows the saved answers ready to edit', (await pressed(p)).sort().join() === ['Cork', 'commissions', 'courier', 'deliver'].sort().join() && await p.inputValue('#o-county') === 'Kerry'
+check('U9 coming back later shows the saved answers ready to edit (with 0027: "A different area" chosen)', (await pressed(p)).sort().join() === ['Cork', 'commissions', 'courier', 'deliver', 'own'].sort().join() && await p.inputValue('#o-county') === 'Kerry'
   && await p.inputValue('#o-note') === 'Works up to 120 cm wide.');
 await p.click('[data-k="talks"]');
 check('U10 a change after saving is flagged as unsaved', /unsaved changes/.test(await p.locator('#o-dirty').innerText()));

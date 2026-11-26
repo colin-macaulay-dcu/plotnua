@@ -66,10 +66,10 @@ check('C7 an artist who has not confirmed a location yet keeps the earlier behav
 /* G · general delivery: unanswered is not "No delivery" */
 r = await call('PUT', '/api/me/delivery', A, { counties: [] });
 check('G1 saving general delivery without an answer is refused: no answer is never recorded as "No delivery"', r.s === 400 && !(await db.prepare("SELECT 1 FROM artist_delivery WHERE artist_id='aann'").first()), r.t);
-r = await call('PUT', '/api/me/delivery', B, { scope: 'none' });
-check('G2 "No delivery: collection or by arrangement" is an explicit, recorded answer', r.s === 200 && (await db.prepare("SELECT scope FROM artist_delivery WHERE artist_id='aben'").first()).scope === 'none');
+r = await call('PUT', '/api/me/delivery', B, { scope: 'none', methods: ['collection'] });
+check('G2 "No delivery" is an explicit, recorded answer', r.s === 200 && (await db.prepare("SELECT scope FROM artist_delivery WHERE artist_id='aben'").first()).scope === 'none');
 await call('PUT', '/api/me/location', A, { country: 'IE', county: 'Galway', town: '', show_location: true, show_town: false });
-r = await call('PUT', '/api/me/delivery', A, { scope: 'republic', show_delivery: false });
+r = await call('PUT', '/api/me/delivery', A, { scope: 'republic', methods: ['courier'] });
 check('G3 every geographical option is kept (here: anywhere in the Republic)', r.s === 200 && r.j.delivery.scope === 'republic');
 
 /* O · temporary placements: an editable starting point, never a link */
@@ -81,7 +81,7 @@ check('O2 with no general delivery answer, nothing is offered', r.j.general === 
 check('O3 viewing never copies anything: no placement answer exists until the artist saves', !(await opp('aann')));
 // the artist saves placements independently: personal delivery in two counties only, while general delivery is the Republic
 await call('PUT', '/api/opportunities', A, { interests: ['living_gallery'], artwork_county: 'Galway', transport: ['deliver'], coverage: { mode: 'counties', counties: ['Galway', 'Mayo'] }, note: null });
-await call('PUT', '/api/me/delivery', A, { scope: 'island', show_delivery: false });
+await call('PUT', '/api/me/delivery', A, { scope: 'island', methods: ['courier'] });
 const oa = await opp('aann');
 check('O4 a later change to general delivery never changes the placement answer (Republic → whole island; placements stay Galway and Mayo, personal delivery)',
   oa.coverage_mode === 'counties' && oa.coverage_counties === JSON.stringify(['Galway', 'Mayo']) && oa.transport === JSON.stringify(['deliver']));
@@ -91,12 +91,12 @@ check('O5 and a placement change never changes general delivery', (await db.prep
 /* F · founder: three questions kept apart; UI: the starting point */
 await call('PUT', '/api/opportunities', B, { interests: ['exhibitions'], artwork_county: 'Mayo', transport: ['courier'], coverage: { mode: 'counties', counties: ['Cork'] }, note: null });
 await call('PUT', '/api/me/location', D, { country: 'IE', county: 'Cork', town: '', show_location: false, show_town: false });
-await call('PUT', '/api/me/delivery', D, { scope: 'counties', counties: ['Cork', 'Kerry'], show_delivery: false });
+await call('PUT', '/api/me/delivery', D, { scope: 'counties', counties: ['Cork', 'Kerry'], methods: ['personal'] });
 await call('PUT', '/api/opportunities', D, { interests: ['venues'], artwork_county: 'Cork', transport: ['need_help'], coverage: null, note: null });
 const v = (await call('GET', '/api/admin/opportunities', FOUNDER)).j;
 const it = id => v.items.find(i => i.id === id);
 check('F1 the founder data carries general delivery separately from placement answers (and unanswered stays unanswered)',
-  v.general_installed === true && /island of Ireland/.test(it('aann').general.line) && it('aben').general.scope === 'none' && it('acal').general === null && it('adee').general.counties.join() === 'Cork,Kerry');
+  v.general_installed === true && /island of Ireland/.test(it('aann').general.line) && it('aben').general.scope === 'none' && it('aben').general.methods === 'collection' && it('acal').general === null && it('adee').general.counties.join() === 'Cork,Kerry');
 const b = await chromium.launch();
 const ctx = await b.newContext({ viewport: { width: 1400, height: 1000 }, extraHTTPHeaders: { 'Cf-Access-Jwt-Assertion': token(FOUNDER) } });
 const pg = await ctx.newPage();
@@ -105,7 +105,7 @@ const names = async () => (await pg.locator('#of-list > li').allInnerTexts()).ma
 await pg.selectOption('#of-gen', 'Cork'); const genCork = await names();
 await pg.selectOption('#of-gen', ''); await pg.selectOption('#of-reach', 'Cork'); const plCork = await names();
 await pg.selectOption('#of-reach', ''); await pg.selectOption('#of-tr', 'need_help'); const help = await names();
-await pg.selectOption('#of-tr', ''); await pg.selectOption('#of-gen', '_none'); const none = await names();
+await pg.selectOption('#of-tr', ''); await pg.selectOption('#of-gen', '_collection'); const none = await names();
 await pg.selectOption('#of-gen', '_unanswered'); const unans = await names();
 const annRow = await pg.locator('#of-list > li', { hasText: 'Ann Test' }).innerText().catch(() => '');
 check('F2 "General delivery to Cork" (sales and hire) and "Placements: deliver & collect in Cork" give different, correct answers',
@@ -115,16 +115,16 @@ check('F4 "No delivery" and "Not answered" are separate filters', none === 'Ben 
 await pg.selectOption('#of-gen', '');
 const annRow2 = await pg.locator('#of-list > li', { hasText: 'Ann Test' }).innerText();
 check('F5 each artist’s row labels the three answers separately', /Artwork kept in: Co. Galway/.test(annRow2) && /Placements, deliver & collect: Anywhere on the island/.test(annRow2)
-  && /Placements, transport: Delivers/.test(annRow2) && /General delivery \(sales & hire\): Delivers anywhere on the island of Ireland/.test(annRow2), annRow2);
+  && /Placements, transport: Delivers/.test(annRow2) && /General delivery \(sales & hire\): Delivers anywhere on the island of Ireland · By standard courier/.test(annRow2), annRow2);
 await ctx.close();
 // artist UI: the starting point copies once, editable; nothing is saved until "Save preferences"
-await call('PUT', '/api/me/delivery', A, { scope: 'counties', counties: ['Clare', 'Galway', 'Limerick'], show_delivery: false });
+await call('PUT', '/api/me/delivery', A, { scope: 'counties', counties: ['Clare', 'Galway', 'Limerick'], methods: ['personal', 'courier'] });
 const actx = await b.newContext({ viewport: { width: 1200, height: 1000 }, extraHTTPHeaders: { 'Cf-Access-Jwt-Assertion': token(A) } });
 const ap = await actx.newPage();
 await ap.goto(url + '/#/opportunities', { waitUntil: 'networkidle' }); await ap.waitForTimeout(800);
 const covText = await ap.locator('#o-cov-card').innerText();
 await ap.click('#o-from-gen'); await ap.waitForTimeout(200);
-const pressed = await ap.locator('#o-cov-card .st-opt[aria-pressed="true"]').allInnerTexts();
+const pressed = await ap.locator('#o-cov-card .st-opt--sm[aria-pressed="true"]').allInnerTexts();
 const msgT = await ap.locator('#o-c-msg').innerText();
 const before = await opp('aann');
 check('F6 the artist sees their general delivery and can start from it; the copy is editable and nothing is saved by copying',

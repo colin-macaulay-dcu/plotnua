@@ -29,8 +29,22 @@ export const TRANSPORT = {
 export const TRANSPORT_SHORT = { deliver: 'Delivers', courier: 'Arranges courier', need_help: 'Needs help', depends: 'Depends' };
 // "depends" stands alone; someone who can arrange a courier does not also need help arranging transport.
 export const TRANSPORT_CLASH = { depends: ['deliver', 'courier', 'need_help'], need_help: ['courier', 'depends'], courier: ['need_help', 'depends'], deliver: ['depends'] };
-// The delivery question applies only when the artist (or their courier) would move the work.
-export const asksCoverage = transport => transport.includes('deliver') || transport.includes('courier');
+/* Migration 0027 (Report 36): standard courier and specialist art transport are two separate answers for temporary
+   placements, stored as two keys in the same transport list (courier, specialist). An answer saved before 0027 keeps
+   "courier" with its earlier meaning ("a courier or art transporter") until the artist confirms (placement_area NULL). */
+export const TRANSPORT_27 = {
+  deliver: 'I can deliver and collect personally',
+  courier: 'I could arrange a standard courier',
+  specialist: 'I could arrange specialist art transport',
+  need_help: 'I would need help arranging transport',
+  depends: 'Agreed individually for each opportunity',
+};
+export const TRANSPORT_SHORT_27 = { deliver: 'Delivers personally', courier: 'Standard courier', specialist: 'Specialist art transport', need_help: 'Needs help', depends: 'Agreed per opportunity' };
+export const TRANSPORT_CLASH_27 = { depends: ['deliver', 'courier', 'specialist', 'need_help'], need_help: ['courier', 'specialist', 'depends'], courier: ['need_help', 'depends'],
+  specialist: ['need_help', 'depends'], deliver: ['depends'] };
+export const PLACEMENT_AREA = { general: 'Same as my general delivery', own: 'A different delivery and collection area' };
+// The delivery question applies only when the artist (or a courier or art transporter they arrange) would move the work.
+export const asksCoverage = transport => transport.includes('deliver') || transport.includes('courier') || transport.includes('specialist');
 
 // The four provinces of the island of Ireland (Ulster has nine counties: six in Northern Ireland, three in the State).
 export const PROVINCES = {
@@ -59,9 +73,10 @@ const uniq = a => [...new Set(a)];
 
 /* Checks an artist's answers. Returns { prefs } with the normalised record, or { error } in plain words.
    Nothing is guessed or filled in: what is not answered is stored as not answered. */
-export function validate(body, { noteMax = NOTE_MAX, care = true, publicOn = false } = {}) {
+export function validate(body, { noteMax = NOTE_MAX, care = true, publicOn = false, v27 = false } = {}) {
+  const TR = v27 ? TRANSPORT_27 : TRANSPORT, CLASH = v27 ? TRANSPORT_CLASH_27 : TRANSPORT_CLASH;
   if (!body || typeof body !== 'object' || Array.isArray(body)) return { error: 'Nothing to save.' };
-  const extra = Object.keys(body).filter(k => !['interests', 'artwork_county', 'transport', 'coverage', 'note', ...(care ? ['care_condition'] : []), ...(publicOn ? ['public_display'] : [])].includes(k));
+  const extra = Object.keys(body).filter(k => !['interests', 'artwork_county', 'transport', 'coverage', 'note', ...(care ? ['care_condition'] : []), ...(publicOn ? ['public_display'] : []), ...(v27 ? ['placement_area'] : [])].includes(k));
   if (extra.length) return { error: 'Unexpected fields: ' + extra.join(', ') };
   const interests = list(body.interests);
   if (!interests || !interests.length) return { error: 'Choose at least one option in “What would you be interested in exploring?”, or choose “Online gallery only for now”.' };
@@ -73,15 +88,21 @@ export function validate(body, { noteMax = NOTE_MAX, care = true, publicOn = fal
   if (county !== null && !COUNTIES.includes(county)) return { error: 'Choose the county where your artwork is based from the list.' };
 
   const transport = body.transport == null ? [] : list(body.transport);
-  if (!transport || transport.some(k => typeof k !== 'string' || !TRANSPORT[k]) || uniq(transport).length !== transport.length) return { error: 'Please choose transport options from the list.' };
-  for (const k of transport) if ((TRANSPORT_CLASH[k] || []).some(o => transport.includes(o))) return { error: `“${TRANSPORT[k]}” can’t be combined with “${TRANSPORT[TRANSPORT_CLASH[k].find(o => transport.includes(o))]}”.` };
+  if (!transport || transport.some(k => typeof k !== 'string' || !Object.hasOwn(TR, k)) || uniq(transport).length !== transport.length) return { error: 'Please choose transport options from the list.' };
+  for (const k of transport) if ((CLASH[k] || []).some(o => transport.includes(o))) return { error: `“${TR[k]}” can’t be combined with “${TR[CLASH[k].find(o => transport.includes(o))]}”.` };
   if (online && transport.length) return { error: 'Transport isn’t needed while you’ve chosen “Online gallery only for now”.' };
 
+  // Migration 0027: "Same as my general delivery" is an explicit choice ('general'), never inferred. With it, the artist's
+  // own placement area is not sent and is kept as stored, so choosing 'own' again restores it.
+  const area = body.placement_area;
+  if (area !== undefined && !Object.hasOwn(PLACEMENT_AREA, area)) return { error: 'Please choose where you could deliver and collect from the options shown.' };
+  if (area === 'general' && (online || !asksCoverage(transport))) return { error: '“Same as my general delivery” applies only if you or a courier or art transporter would move the work.' };
+  if (area === 'general' && body.coverage != null) return { error: '“Same as my general delivery” can’t be combined with a different area.' };
   let mode = null, counties = [];
   const c = body.coverage;
   if (c != null) {
     if (typeof c !== 'object' || Array.isArray(c) || !COVERAGE[c.mode]) return { error: 'Please choose where you could deliver and collect from the options shown.' };
-    if (!asksCoverage(transport)) return { error: 'Where you could deliver and collect applies only if you can deliver or arrange a courier.' };
+    if (!asksCoverage(transport)) return { error: 'Where you could deliver and collect applies only if you can deliver or arrange a courier or art transport.' };
     mode = c.mode;
     const cs = c.counties == null ? [] : list(c.counties);
     if (!cs || cs.some(x => !COUNTIES.includes(x)) || uniq(cs).length !== cs.length) return { error: 'Choose counties from the list.' };
@@ -104,7 +125,8 @@ export function validate(body, { noteMax = NOTE_MAX, care = true, publicOn = fal
   if (pub !== undefined && typeof pub !== 'boolean') return { error: 'Please tick or untick “Show the opportunities I’ve chosen on my public PlotArt gallery”.' };
 
   return { prefs: { interests: Object.keys(INTERESTS).filter(k => interests.includes(k)), artwork_county: county, ...(pub === undefined ? {} : { public_display: pub }),
-    transport: Object.keys(TRANSPORT).filter(k => transport.includes(k)), coverage_mode: mode, coverage_counties: counties, care_condition: careOn, note: note || null } };
+    ...(area === undefined ? {} : { placement_area: area }),
+    transport: Object.keys(TR).filter(k => transport.includes(k)), coverage_mode: mode, coverage_counties: counties, care_condition: careOn, note: note || null } };
 }
 
 /* ---- Shown publicly (migration 0015, development 16 Nov 2026; privacy notice V16, opt-in from V17) ----

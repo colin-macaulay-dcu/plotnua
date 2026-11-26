@@ -14,7 +14,7 @@ const P = [['asam', 'sample-artist', 'Sample Artist (fictional)', { country: 'IE
   ['aabr', 'abroad-example', 'Abroad Example (fictional)', { country: 'FR', county: null, town: 'Lyon', show_location: true, show_town: true }, { scope: 'counties', counties: ['Dublin', 'Mayo'], show_delivery: true }]];
 for (const [id, slug, name, loc, del] of P) {
   await seedPublished(db, { id, slug, email: `${id}@example.test`, name, works: 1 });
-  await call('PUT', '/api/me/location', `${id}@example.test`, loc); await call('PUT', '/api/me/delivery', `${id}@example.test`, del);
+  await call('PUT', '/api/me/location', `${id}@example.test`, loc); await call('PUT', '/api/me/delivery', `${id}@example.test`, { scope: del.scope, counties: del.counties, methods: del.scope === 'none' ? ['collection'] : ['courier'] });   // Report 36: methods; no public tick
 }
 const b = await chromium.launch();
 for (const [n, w, h] of [['desktop', 1440, 1000], ['mobile', 390, 844]]) {

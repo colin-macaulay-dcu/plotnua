@@ -362,7 +362,7 @@
     // Report 35: the earlier "Show my county on my gallery" answer is the starting point for "Show where I'm based" (the same
     // fact), so existing consent is kept and nothing private is ever pre-ticked. No delivery answer is pre-selected.
     const L0 = d.location || (d.profile_county ? { country: NI.includes(d.profile_county) ? 'GB' : 'IE', county: d.profile_county, show_location: d.profile_county_public ? 1 : 0 } : { country: 'IE' });
-    const D0 = d.delivery || { scope: '', counties: '[]', show_delivery: 0 };
+    const D0 = d.delivery || { scope: '', counties: '[]', show_delivery: 0, methods: null };
     const opts = (list, cur) => Object.entries(d.provinces).map(([p, cs]) => { const c = cs.filter(x => list.includes(x)); return c.length ? `<optgroup label="${p}">${c.map(x => `<option${x === cur ? ' selected' : ''}>${x}</option>`).join('')}</optgroup>` : ''; }).join('');
     const paintLoc = (L) => {
       const onIsland = L.country === 'IE' || L.country === 'GB';
@@ -384,27 +384,41 @@
       });
     };
     const read = () => ({ country: $('#loc-country', lc).value, county: $('#loc-county', lc)?.value || null, town: $('#loc-town', lc).value, show_location: $('#loc-show', lc).checked, show_town: $('#loc-showtown', lc).checked });
-    const SC = [['none', 'No delivery: collection or by arrangement'], ['counties', 'Chosen counties'], ['republic', 'Anywhere in the Republic of Ireland'],
-      ['northern_ireland', 'Anywhere in Northern Ireland'], ['island', 'Anywhere on the island of Ireland'], ['country', 'Anywhere in my own country']];
-    const dState = () => ({ scope: dc.querySelector('input[name="del-scope"]:checked')?.value || D0.scope, counties: [...dc.querySelectorAll('input[name="del-county"]:checked')].map(i => i.value), show_delivery: !!$('#del-show', dc)?.checked });
+    // Report 36 (migration 0027): where (area) and how (methods) are separate answers; with no area, "No delivery" and
+    // "By arrangement" are two different answers, and unanswered is neither. Public display can only be withdrawn here.
+    const V27 = !!d.transport_installed;
+    const AREAS = [['counties', 'Chosen counties'], ['republic', 'Anywhere in the Republic of Ireland'], ['northern_ireland', 'Anywhere in Northern Ireland'],
+      ['island', 'Anywhere on the island of Ireland'], ['country', 'Anywhere in my own country']];
+    const SC = V27 ? [['collection', d.no_area.collection], ['arrangement', d.no_area.arrangement], ...AREAS] : [['none', 'No delivery: collection or by arrangement'], ...AREAS];
+    const choiceOf = D => !D || !D.scope ? '' : D.scope !== 'none' ? D.scope : !V27 ? 'none' : (D.methods === 'collection' || D.methods === 'arrangement' ? D.methods : '');
+    const S0 = { choice: choiceOf(D0), counties: JSON.parse(D0.counties || '[]'), methods: D0.methods && D0.scope !== 'none' ? D0.methods.split(',') : [], legacyNone: V27 && D0.scope === 'none' && !D0.methods };
+    const dState = () => ({ choice: dc.querySelector('input[name="del-scope"]:checked')?.value || '', counties: [...dc.querySelectorAll('input[name="del-county"]:checked')].map(i => i.value),
+      methods: [...dc.querySelectorAll('input[name="del-how"]:checked')].map(i => i.value), legacyNone: S0.legacyNone });
+    const body = S => { const none = ['collection', 'arrangement', 'none'].includes(S.choice);
+      return { scope: none ? 'none' : S.choice, counties: S.choice === 'counties' ? S.counties : [], ...(V27 ? { methods: none ? [S.choice] : S.methods } : {}) }; };
     const paintDel = (S) => {
       const loc = d.location, abroad = loc && loc.country !== 'IE' && !(loc.country === 'GB' && loc.county);
-      const picked = Array.isArray(S.counties) ? S.counties : JSON.parse(S.counties || '[]');
+      const area = S.choice && !['collection', 'arrangement', 'none'].includes(S.choice);
+      const asked = d.delivery && d.delivery.show_delivery;
       dc.innerHTML = `<h3>Delivering to buyers and hirers</h3>
-        <p class="st-muted" style="margin:0 0 14px">Where you can get a sold or hired artwork to, by any method. Separate from where you’re based, and from temporary placements (asked in Opportunities &amp; delivery). Art for Hire visitors looking in a county will see artists based there and, listed separately, artists who deliver there.</p>
-        ${S.scope ? '' : '<p class="st-muted" style="margin:0 0 10px"><b style="color:var(--ivory);font-weight:500">Not answered yet.</b> Choose one, including “No delivery” if that’s your answer.</p>'}
-        <fieldset class="st-f" style="border:0;padding:0;margin:0 0 12px"><legend class="st-sr">Delivery coverage</legend>${SC.filter(([k]) => k !== 'country' || abroad).map(([k, t]) => `<label class="st-check"><input type="radio" name="del-scope" value="${k}"${S.scope === k ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> ${t}</label>`).join('')}</fieldset>
-        ${S.scope === 'counties' ? `<div class="st-f" role="group" aria-label="Counties you deliver to">${Object.entries(d.provinces).map(([p, cs]) => `<p class="st-muted" style="margin:12px 0 6px">${p}</p><div class="st-county-grid">${cs.map(c => `<label class="st-check"><input type="checkbox" name="del-county" value="${c}"${picked.includes(c) ? ' checked' : ''} style="accent-color:var(--terra);width:18px;height:18px"> ${c}</label>`).join('')}</div>`).join('')}</div>` : ''}
-        ${S.scope && S.scope !== 'none' ? `<label class="st-check"><input type="checkbox" id="del-show"${S.show_delivery ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Show my delivery areas on my gallery and in Art for Hire (only once PlotArt updates its privacy notice; we’ll ask you to confirm then)</label>` : ''}
-        <div class="st-actions"><button class="st-btn st-btn--solid" type="button" id="del-save">Save where I can deliver</button></div><p class="st-err" id="del-msg" aria-live="polite"></p>`;
+        <p class="st-muted" style="margin:0 0 14px">Where you can get a sold or hired artwork to, and how. Separate from where you’re based, and from temporary placements (asked in Opportunities &amp; delivery).</p>
+        ${S.choice ? '' : `<p class="st-muted" style="margin:0 0 10px"><b style="color:var(--ivory);font-weight:500">${S.legacyNone ? 'Please choose again.' : 'Not answered yet.'}</b> ${S.legacyNone ? 'You answered “No delivery or by arrangement” before; these are now two separate answers.' : 'Choose one, including “No delivery” or “By arrangement” if that’s your answer.'}</p>`}
+        <fieldset class="st-f" style="border:0;padding:0;margin:0 0 12px"><legend class="st-sr">Delivery to buyers and hirers</legend>${SC.filter(([k]) => k !== 'country' || abroad).map(([k, t]) => `<label class="st-check"><input type="radio" name="del-scope" value="${k}"${S.choice === k ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> ${E(t)}</label>`).join('')}</fieldset>
+        ${S.choice === 'counties' ? `<div class="st-f" role="group" aria-label="Counties you deliver to">${Object.entries(d.provinces).map(([p, cs]) => `<p class="st-muted" style="margin:12px 0 6px">${p}</p><div class="st-county-grid">${cs.map(c => `<label class="st-check"><input type="checkbox" name="del-county" value="${c}"${S.counties.includes(c) ? ' checked' : ''} style="accent-color:var(--terra);width:18px;height:18px"> ${c}</label>`).join('')}</div>`).join('')}</div>` : ''}
+        ${V27 && area ? `<fieldset class="st-f" style="border:0;padding:0;margin:4px 0 12px"><legend style="padding:0;margin:0 0 6px">How would it travel? <span class="st-muted">Choose any that apply</span></legend>${Object.entries(d.methods).map(([k, t]) => `<label class="st-check"><input type="checkbox" name="del-how" value="${k}"${S.methods.includes(k) ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> ${E(t)}</label>`).join('')}</fieldset>` : ''}
+        ${asked ? `<div class="st-loc-confirm" role="status">Earlier you asked for your delivery areas to be shown publicly once available. That earlier choice won’t be used: if PlotArt offers this in future, you’ll be asked again. <button type="button" class="st-linkbtn" id="del-withdraw">Withdraw that request now</button></div>` : ''}
+        <p class="st-hint" style="margin:0 0 10px">Your delivery areas and how you deliver aren’t shown publicly.</p>
+        <div class="st-actions"><button class="st-btn st-btn--solid" type="button" id="del-save">Save delivery to buyers and hirers</button></div><p class="st-err" id="del-msg" aria-live="polite"></p>`;
       dc.querySelectorAll('input[name="del-scope"]').forEach(i => i.addEventListener('change', () => paintDel(dState())));
-      $('#del-save', dc).addEventListener('click', async () => {
+      const save = async extra => {
         const msg = $('#del-msg', dc); msg.textContent = '';
-        try { const r = await api('PUT', '/api/me/delivery', dState()); d.delivery = r.delivery; msg.textContent = 'Saved.'; }
+        try { const r = await api('PUT', '/api/me/delivery', { ...body(dState()), ...extra }); d.delivery = r.delivery; paintDel(dState()); $('#del-msg', dc).textContent = extra.show_delivery === false ? 'Withdrawn and saved.' : 'Saved.'; }
         catch (e) { msg.textContent = e.message; }
-      });
+      };
+      $('#del-save', dc).addEventListener('click', () => save({}));
+      $('#del-withdraw', dc)?.addEventListener('click', () => { if (!dState().choice) { $('#del-msg', dc).textContent = 'Choose your delivery answer first, then withdraw.'; return; } save({ show_delivery: false }); });
     };
-    paintLoc(L0); paintDel(D0);
+    paintLoc(L0); paintDel(S0);
   }
   function f(name, label, val, o = {}) {
     const id = 'f-' + name;
@@ -1063,7 +1077,16 @@
     let last = JSON.stringify(st), savedAt = sv ? sv.updated_at : null;
     const on = (a, k) => a.includes(k);
     const btn = (group, k, label, pressed, cls = '') => `<button type="button" class="st-opt ${cls}" data-g="${group}" data-k="${E(k)}" aria-pressed="${pressed}">${E(label)}</button>`;
-    const showCov = () => st.interests.length && !on(st.interests, 'online_only') && (on(st.transport, 'deliver') || on(st.transport, 'courier'));
+    const showCov = () => st.interests.length && !on(st.interests, 'online_only') && (on(st.transport, 'deliver') || on(st.transport, 'courier') || on(st.transport, 'specialist'));
+    // Report 36 (migration 0027): where placements could be delivered and collected is one of three explicit answers.
+    // 'general' follows the Profile; 'own' is the artist's own area (kept underneath while 'general' is chosen, so it comes
+    // back unchanged); 'ask' is "ask me about each opportunity". An answer from before 0027 is shown as it was saved and is
+    // confirmed only when the artist saves; matching answers are never read as "Same as my general delivery".
+    const V27 = !!O.v27, legacy = V27 && sv && sv.placement_area === null;
+    st.area = !V27 ? null : sv && sv.placement_area === 'general' ? 'general' : st.mode === 'ask' ? 'ask' : st.mode ? 'own' : null;
+    if (st.mode === 'ask' && V27) st.mode = null;
+    const canGeneral = () => d.general && d.general.scope !== 'none';
+    last = JSON.stringify(st);
     const when = t => new Date(t).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
     const opts = Object.entries(O.provinces).map(([p, cs]) => `<optgroup label="${p}">${cs.map(c => `<option${c === st.county ? ' selected' : ''}>${c}</option>`).join('')}</optgroup>`).join('');
     app.innerHTML = `
@@ -1092,17 +1115,21 @@
         <p class="st-hint" style="margin:0">Exhibitions, workplace and hospitality displays, Living Gallery, Mobile Gallery and hire placements. Choose any that fit. This is separate from how you send a sold or hired work to a customer.</p>
         <div class="st-opts">${Object.entries(O.transport).map(([k, v]) => btn('t', k, v, on(st.transport, k))).join('')}</div>
         <p class="st-opp-msg" id="o-t-msg" aria-live="polite"></p>
+        ${legacy && on(st.transport, 'courier') ? '<p class="st-loc-confirm" role="status" style="margin:10px 0 0">You chose “a courier or art transporter” before. These are now two answers, standard courier and specialist art transport: please check which apply, then save.</p>' : ''}
         ${d.services_url ? `<p class="st-hint" style="margin:10px 0 0">Need a hand with transport? PlotArt lists independent art handlers and couriers you can contact directly. Any arrangement or quote is between you and them. <a href="${E(d.services_url)}" target="_blank" rel="noopener">Art Services &amp; Providers</a></p>` : ''}
       </fieldset></section>
       <section class="st-card" id="o-cov-card"><fieldset class="st-opp-fs">
         <legend><h2 class="st-opp-q">For temporary placements, where could you deliver and collect?</h2></legend>
         ${d.general ? `<div class="st-opp-ref"><p class="st-hint" style="margin:0">Your general delivery to buyers and hirers (Profile): <b style="color:var(--ivory);font-weight:500">${E(d.general.line)}</b>.</p>
           ${['counties', 'republic', 'northern_ireland', 'island'].includes(d.general.scope) ? '<button type="button" class="st-btn st-btn--small" id="o-from-gen" style="margin-top:8px">Start from my general delivery</button>' : ''}</div>` : ''}
-        <div class="st-opts" style="margin-top:4px">${btn('c', 'anywhere', O.coverage.anywhere, st.mode === 'anywhere', 'st-opt--alone')}${btn('c', 'ask', O.coverage.ask, st.mode === 'ask', 'st-opt--alone')}</div>
+        ${legacy ? '<p class="st-loc-confirm" role="status" style="margin:0 0 12px">You can now choose “Same as my general delivery”. Your earlier answer is shown below as you saved it: please check it and save.</p>' : ''}
+        ${V27 ? `<div class="st-opts" style="margin-top:4px" role="group" aria-label="Delivery and collection area for placements">${btn('a', 'general', O.placement_area.general, st.area === 'general', 'st-opt--alone')}${btn('a', 'own', O.placement_area.own, st.area === 'own', 'st-opt--alone')}${btn('a', 'ask', O.coverage.ask, st.area === 'ask', 'st-opt--alone')}</div>
+          <p class="st-hint" id="o-gen-h" style="margin:6px 0 0"></p>` : ''}
+        <div id="o-own"><div class="st-opts" style="margin-top:4px">${btn('c', 'anywhere', O.coverage.anywhere, st.mode === 'anywhere', 'st-opt--alone')}${V27 ? '' : btn('c', 'ask', O.coverage.ask, st.mode === 'ask', 'st-opt--alone')}</div>
         <p class="st-opp-or">or choose counties</p>
         ${Object.entries(O.provinces).map(([p, cs]) => `<div class="st-prov" role="group" aria-labelledby="pv-${p}">
           <div class="st-prov-top"><h3 id="pv-${p}">${p} <span class="st-muted" data-pn="${p}"></span></h3><button type="button" class="st-btn st-btn--small" data-prov="${p}"></button></div>
-          <div class="st-opts st-opts--sm">${cs.map(c => btn('k', c, c, on(st.counties, c), 'st-opt--sm')).join('')}</div></div>`).join('')}
+          <div class="st-opts st-opts--sm">${cs.map(c => btn('k', c, c, on(st.counties, c), 'st-opt--sm')).join('')}</div></div>`).join('')}</div>
         <p class="st-opp-msg" id="o-c-msg" aria-live="polite"></p>
       </fieldset></section>
       <section class="st-card"><div class="st-f" style="margin:0">
@@ -1127,11 +1154,18 @@
     function paint() {
       app.querySelectorAll('.st-opt').forEach(b => {
         const g = b.dataset.g, k = b.dataset.k;
-        b.setAttribute('aria-pressed', String(g === 'i' ? on(st.interests, k) : g === 't' ? on(st.transport, k) : g === 'c' ? st.mode === k : on(st.counties, k)));
+        b.setAttribute('aria-pressed', String(g === 'i' ? on(st.interests, k) : g === 't' ? on(st.transport, k) : g === 'a' ? st.area === k : g === 'c' ? st.mode === k : on(st.counties, k)));
       });
       const online = on(st.interests, 'online_only');
       $('#o-tr-card').hidden = online;
       $('#o-cov-card').hidden = !showCov();
+      if (V27) {
+        $('#o-own').hidden = st.area === 'general' || st.area === 'ask';   // choosing an area or a county here means "a different area"
+        const ga = app.querySelector('[data-g="a"][data-k="general"]'); ga.disabled = !canGeneral();
+        $('#o-gen-h').textContent = !canGeneral() ? 'To use “Same as my general delivery”, first choose a delivery area in your Profile (“Delivering to buyers and hirers”).'
+          : st.area === 'general' ? `Placements will follow your Profile: ${d.general.line}. If you change it there, this follows. Your own area${st.mode ? ' is kept and comes back if you choose “A different area”' : ' stays empty'}.` : '';
+        if ($('#o-from-gen')) $('#o-from-gen').hidden = st.area === 'general' || st.area === 'ask';
+      }
       for (const [p, cs] of Object.entries(O.provinces)) {
         const n = cs.filter(c => on(st.counties, c)).length, b = app.querySelector(`[data-prov="${p}"]`);
         b.textContent = n === cs.length ? `Clear ${p}` : `Select all of ${p}`;
@@ -1173,7 +1207,11 @@
           if (clash.length) { drop(st.transport, clash); msg('#o-t-msg', `${clash.map(c => name(O.transport, c)).join(' and ')} ${clash.length > 1 ? 'have' : 'has'} been unselected: it doesn’t fit with ${name(O.transport, k)}.`); }
           st.transport.push(k);
         }
-        if (!showCov()) { st.mode = null; st.counties.splice(0); }
+        if (!showCov()) { st.mode = null; st.counties.splice(0); if (V27) st.area = null; }
+      } else if (g === 'a') {
+        msg('#o-c-msg');
+        if (k === 'general' && !canGeneral()) return;
+        st.area = st.area === k ? null : k;   // the artist's own area (st.mode, st.counties) is never cleared here
       } else if (g === 'c') {
         msg('#o-c-msg');
         if (st.mode === k) st.mode = null;
@@ -1183,6 +1221,7 @@
         if (on(st.counties, k)) drop(st.counties, [k]); else { if (st.mode && st.mode !== 'counties') msg('#o-c-msg', `${name(O.coverage, st.mode)} has been unselected.`); st.counties.push(k); }
         st.mode = st.counties.length ? 'counties' : null;
       }
+      if (V27 && (g === 'c' || g === 'k')) st.area = 'own';
       paint();
     }));
     app.querySelectorAll('[data-prov]').forEach(b => b.addEventListener('click', () => {
@@ -1191,6 +1230,7 @@
       if (all) drop(st.counties, cs);
       else { if (st.mode && st.mode !== 'counties') msg('#o-c-msg', `${name(O.coverage, st.mode)} has been unselected.`); cs.forEach(c => { if (!on(st.counties, c)) st.counties.push(c); }); }
       st.mode = st.counties.length ? 'counties' : null;
+      if (V27) st.area = 'own';
       paint();
     }));
     // Report 35: a one-off, editable starting point. It copies the Profile's coverage into this answer once; the two stay
@@ -1199,6 +1239,7 @@
       const g = d.general; msg('#o-c-msg');
       if (g.scope === 'island') { st.mode = 'anywhere'; st.counties.splice(0); }
       else { st.counties.splice(0, st.counties.length, ...g.counties); st.mode = st.counties.length ? 'counties' : null; }
+      if (V27) st.area = 'own';
       msg('#o-c-msg', 'Copied from your general delivery as a starting point. Change anything you like: your Profile isn’t changed, and later changes there won’t change this.');
       paint();
     });
@@ -1213,13 +1254,17 @@
       if (!st.interests.length) { $('#o-err').textContent = 'Choose at least one option in “What would you be interested in exploring?”, or choose “Online gallery only for now”.'; app.querySelector('.st-opt').focus(); return; }
       const b = $('#o-save'); b.disabled = true;
       try {
-        const cov = showCov() && st.mode ? { mode: st.mode, counties: st.mode === 'counties' ? st.counties : [] } : null;
+        const own = st.mode && st.mode !== 'ask' ? { mode: st.mode, counties: st.mode === 'counties' ? st.counties : [] } : null;
+        const cov = !V27 ? (showCov() && st.mode ? { mode: st.mode, counties: st.mode === 'counties' ? st.counties : [] } : null)
+          : !showCov() || st.area === 'general' || !st.area ? null : st.area === 'ask' ? { mode: 'ask', counties: [] } : own;
+        const area = !V27 ? {} : { placement_area: showCov() && st.area === 'general' ? 'general' : 'own' };
         const wantC = offerC && $('#o-ofc') && $('#o-ofc').checked;
-        const r = await api('PUT', '/api/opportunities', { interests: st.interests, artwork_county: st.county || null, transport: on(st.interests, 'online_only') ? [] : st.transport, coverage: cov, note: st.note.trim() || null, ...(O.care ? { care_condition: !on(st.interests, 'online_only') && st.care } : {}),
+        const r = await api('PUT', '/api/opportunities', { interests: st.interests, artwork_county: st.county || null, transport: on(st.interests, 'online_only') ? [] : st.transport, coverage: cov, ...area, note: st.note.trim() || null, ...(O.care ? { care_condition: !on(st.interests, 'online_only') && st.care } : {}),
           ...(P && st.pub !== null ? { public_display: !!st.pub } : {}) });
         if (wantC) await api('PUT', '/api/me/commissions', { open: true });
         const s = r.saved;
         Object.assign(st, { interests: [...s.interests], county: s.artwork_county || '', transport: [...s.transport], mode: s.coverage_mode, counties: [...s.coverage_counties], care: !!s.care_condition, note: s.note || '', pub: s.public_display ?? null });
+        if (V27) { st.area = s.placement_area === 'general' ? 'general' : s.coverage_mode === 'ask' ? 'ask' : s.coverage_mode ? 'own' : null; if (st.mode === 'ask') st.mode = null; }
         $('#o-note').value = st.note; last = JSON.stringify(st); savedAt = s.updated_at;
         await refresh();
         say(r.shown && r.shown.length ? (r.instant_version ? 'Preferences saved · your public gallery updates after the next website update' : 'Preferences saved · shown once your gallery is published')

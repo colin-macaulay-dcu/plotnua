@@ -79,6 +79,10 @@ async function load(env, artistId) {
 }
 /* Open for Commissions (founder approval 13 Nov 2026). Migration 0011 adds artists.open_for_commissions. Until it has run,
    Studio keeps working exactly as before and the switch is reported as not available yet. */
+// Migration 0027 (Report 36): how a sold or hired work travels, and "Same as my general delivery" for placements.
+async function transportInstalled(env) {
+  try { await env.DB.prepare('SELECT methods FROM artist_delivery LIMIT 1').all(); await env.DB.prepare('SELECT placement_area FROM artist_opportunities LIMIT 1').all(); return true; } catch { return false; }
+}
 async function locationInstalled(env) {
   try { await env.DB.prepare('SELECT artist_id FROM artist_locations LIMIT 1').all(); await env.DB.prepare('SELECT artist_id FROM artist_delivery LIMIT 1').all(); return true; } catch { return false; }
 }
@@ -1285,7 +1289,7 @@ async function route(req, env) {
         const f = {};
         if (delOn) {
           const loc = await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', it.artist_id), del = await one(env, 'SELECT * FROM artist_delivery WHERE artist_id = ?', it.artist_id);
-          const pd = LOC.publicDelivery(del, loc, { deliveryPublic: true });
+          const pd = LOC.publicDelivery(del, loc, { deliveryPublic: true, consentNotice: env.DELIVERY_PUBLIC_NOTICE || null });   // Report 36: needs fresh, recorded consent too
           if (pd && pd.counties.length) f.delivers = pd.counties;
         }
         if (gc) { const gs = G.GALLERIES.filter(g => gc[g].works.some(w => w.artwork_id === it.artwork_id && w.artist_id === it.artist_id)); if (gs.length) f.galleries = gs; }
@@ -1414,7 +1418,7 @@ async function route(req, env) {
         const del = r.scope ? { scope: r.scope, counties: r.delivery_counties, show_delivery: r.show_delivery } : null;
         return { id: r.id, slug: r.slug, name: r.display_name, status: r.account_status, confirmed: !!r.confirmed_at, place: loc ? LOC.placeLine({ ...loc, show_town: 1 }) : null,
           county: loc ? loc.county : r.profile_county, public: !!(loc && loc.show_location), delivery: del ? LOC.deliveryLine(del, loc) : null, covers: del ? LOC.covered(del, loc) : [],
-          delivery_public: !!(del && del.show_delivery) };
+          delivery_public: !!LOC.publicDelivery(del, loc, { deliveryPublic: env.DELIVERY_PUBLIC === 'true', consentNotice: env.DELIVERY_PUBLIC_NOTICE || null }) };   // Report 36: shown only with fresh recorded consent
       });
       return json({ ok: true, installed: true, counties: L.COUNTIES,
         artists: county ? list.filter(x => x.county === county || x.covers.includes(county)).map(x => ({ ...x, relation: x.county === county ? 'based' : 'delivers' })) : list });
@@ -1456,7 +1460,8 @@ async function route(req, env) {
       // Report 35: general delivery to buyers and hirers (the Profile) beside, never merged with, placement logistics.
       if (v.installed && await locationInstalled(env)) {
         const del = new Map((await all(env, 'SELECT d.*, l.country FROM artist_delivery d LEFT JOIN artist_locations l ON l.artist_id = d.artist_id')).map(r => [r.artist_id, r]));
-        for (const it of v.items) { const d = del.get(it.id); it.general = d ? { scope: d.scope, counties: LOC.covered(d, d), line: LOC.deliveryLine(d, d) || 'No delivery: collection or by arrangement' } : null; }
+        for (const it of v.items) it.general = LOC.generalView(del.get(it.id) || null);
+        v.transport_installed = await transportInstalled(env);
         v.general_installed = true;
       }
       return json({ ok: true, ...v });
@@ -1922,7 +1927,7 @@ async function route(req, env) {
     // temporary placements. Read-only here: nothing is copied unless the artist chooses to, and nothing stays linked.
     if (v.installed && await locationInstalled(env)) {
       const dl = await one(env, 'SELECT d.*, l.country FROM artist_delivery d LEFT JOIN artist_locations l ON l.artist_id = d.artist_id WHERE d.artist_id = ?', artist.id);
-      v.general = dl ? { scope: dl.scope, counties: LOC.covered(dl, dl), line: LOC.deliveryLine(dl, dl) || 'No delivery: collection or by arrangement' } : null;
+      v.general = LOC.generalView(dl || null);
     }
     return json({ ok: true, ...v, services_url: 'https://plotnua.ie/plotart/services.html' });
   }
@@ -1973,7 +1978,7 @@ async function route(req, env) {
     if (!(await locationInstalled(env))) return json({ ok: true, installed: false });
     const cur = await locationOf(env, artist.id), a = await one(env, 'SELECT county, county_public FROM artists WHERE id = ?', artist.id);
     const conflict = !!(cur.location && !!cur.location.show_location !== !!a.county_public);
-    return json({ ok: true, installed: true, ...cur, profile_county: a.county || null, profile_county_public: !!a.county_public, consent_conflict: conflict, counties: L.COUNTIES, provinces: LOC.PROVINCES, ni_counties: LOC.NI_COUNTIES,
+    return json({ ok: true, installed: true, ...cur, profile_county: a.county || null, profile_county_public: !!a.county_public, consent_conflict: conflict, transport_installed: await transportInstalled(env), methods: LOC.METHODS, no_area: LOC.NO_AREA, counties: L.COUNTIES, provinces: LOC.PROVINCES, ni_counties: LOC.NI_COUNTIES,
       countries: LOC.COUNTRIES.map(c => [c, LOC.countryName(c)]).sort((x, y) => x[1].localeCompare(y[1], 'en-IE')), scopes: LOC.SCOPES });
   }
   if (p === '/api/me/location' && m === 'PUT') {
@@ -1988,9 +1993,11 @@ async function route(req, env) {
   if (p === '/api/me/delivery' && m === 'PUT') {
     await needLocation(env);
     const loc = await one(env, 'SELECT * FROM artist_locations WHERE artist_id = ?', artist.id);
-    const row = LOC.validateDelivery(await req.json().catch(() => null), loc);
+    const cur = await one(env, 'SELECT * FROM artist_delivery WHERE artist_id = ?', artist.id);
+    const row = LOC.validateDelivery(await req.json().catch(() => null), loc, { cur, methodsOn: await transportInstalled(env) });
     await LOC.saveDelivery(env, artist.id, row, 'artist').run();
-    await audit(env, artist.email, 'artist', 'delivery', artist.id, { scope: row.scope, counties: JSON.parse(row.counties).length, public: !!row.show_delivery });
+    await audit(env, artist.email, 'artist', 'delivery', artist.id, { scope: row.scope, counties: JSON.parse(row.counties).length, methods: row.methods ?? null, public: !!row.show_delivery,
+      ...(cur && cur.show_delivery && !row.show_delivery ? { public_request_withdrawn: true } : {}) });
     return json({ ok: true, ...(await locationOf(env, artist.id)) });
   }
   if (p === '/api/me/profile' && m === 'PUT') {

@@ -729,8 +729,13 @@
     let d;
     try { d = await api('GET', '/api/admin/opportunities'); } catch (e) { app.innerHTML = `<div class="st-card"><h1 class="st-h1">Opportunities</h1><p class="st-muted">${E(e.message)}</p></div>`; return; }
     if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Opportunities &amp; delivery</h1><section class="st-card"><p class="st-muted" style="margin:0">Not installed yet (migration 0009 has not run).</p></section>'; return; }
-    const O = d.options, T = d.totals, f = { status: '', interest: '', county: '', reach: '', transport: '', general: '' };
+    const O = d.options, T = d.totals, f = { status: '', interest: '', county: '', reach: '', transport: '', general: '', how: '' };
     const provOpts = (sel, extra = '') => extra + Object.entries(O.provinces).map(([p, cs]) => `<optgroup label="${p}">${cs.map(c => `<option value="${c}"${c === sel ? ' selected' : ''}>${c}</option>`).join('')}</optgroup>`).join('');
+    // Report 36 (0027): "Same as my general delivery" follows the artist's Profile; the effective placement counties are
+    // then the general delivery counties (an artist abroad covering their own country has no Irish counties).
+    const followsGeneral = i => i.prefs && i.prefs.placement_area === 'general';
+    const placeCounties = i => followsGeneral(i) ? (i.general ? i.general.counties : []) : i.prefs.coverage_mode === 'anywhere' ? O.counties : i.prefs.coverage_mode === 'counties' ? i.prefs.coverage_counties : [];
+    const trLabel = (i, k) => k === 'courier' && O.v27 && i.prefs.placement_area === null ? 'Courier or art transporter (answered before; not yet confirmed)' : O.transport_short[k];
     const coverage = p => {
       if (p.coverage_mode === 'anywhere') return 'Anywhere on the island';
       if (p.coverage_mode === 'ask') return 'Ask about each opportunity';
@@ -757,14 +762,20 @@
       // placement transport (how), and general delivery to buyers and hirers (the Profile). Never merged.
       if (f.reach) {
         if (!p) return false;
-        if (f.reach === 'anywhere' || f.reach === 'ask') { if (p.coverage_mode !== f.reach) return false; }
-        else if (!(p.coverage_mode === 'anywhere' || (p.coverage_mode === 'counties' && p.coverage_counties.includes(f.reach)))) return false;
+        if (f.reach === 'ask') { if (followsGeneral(i) || p.coverage_mode !== 'ask') return false; }
+        else if (f.reach === 'anywhere') { if (placeCounties(i).length !== O.counties.length) return false; }
+        else if (f.reach === 'general') { if (!followsGeneral(i)) return false; }
+        else if (!placeCounties(i).includes(f.reach)) return false;
       }
       if (f.transport && !(p && p.transport.includes(f.transport))) return false;
       if (f.general) {
         const g = i.general;
-        if (f.general === '_none' ? !(g && g.scope === 'none') : f.general === '_unanswered' ? !!g : !(g && g.counties.includes(f.general))) return false;
+        const ok = f.general === '_none' ? g && g.scope === 'none' : f.general === '_unanswered' ? !g
+          : f.general === '_collection' || f.general === '_arrangement' ? g && g.scope === 'none' && g.methods === f.general.slice(1)
+          : f.general === '_legacy' ? g && g.scope === 'none' && !g.methods : g && g.counties.includes(f.general);
+        if (!ok) return false;
       }
+      if (f.how && !(i.general && i.general.methods && i.general.scope !== 'none' && i.general.methods.split(',').includes(f.how))) return false;
       return true;
     };
     const row = i => {
@@ -777,9 +788,9 @@
           ${O.public && p.public_display === null && pub(p).length ? `<div class="st-opp-fc" style="margin:8px 0"><label class="st-check"><input type="checkbox" data-fc="${E(i.id)}"> <span>I personally obtained ${E(i.display_name)}’s agreement to show these publicly: ${pub(p).map(k => E(O.interest_short[k])).join(', ')}</span></label>
             <button type="button" class="st-btn st-btn--small" data-fcgo="${E(i.id)}" disabled style="margin-top:6px">Show these publicly</button></div>` : ''}
           <span class="st-opp-k">Artwork kept in: ${p.artwork_county ? `Co. ${E(p.artwork_county)}` : '<i>not given</i>'}</span>
-          <span class="st-opp-k">Placements, deliver &amp; collect: ${p.coverage_mode ? E(coverage(p)) : '<i>not given</i>'}</span>
-          <span class="st-opp-k">Placements, transport: ${p.transport.length ? p.transport.map(k => E(O.transport_short[k])).join(', ') : '<i>not given</i>'}</span>
-          ${d.general_installed ? `<span class="st-opp-k">General delivery (sales &amp; hire): ${i.general ? E(i.general.line) : '<i>not answered</i>'}</span>` : ''}
+          <span class="st-opp-k">Placements, deliver &amp; collect: ${followsGeneral(i) ? `Same as general delivery (${i.general ? E(i.general.line) : 'no general delivery'})` : p.coverage_mode ? E(coverage(p)) : '<i>not given</i>'}${O.v27 && p.placement_area === null && p.coverage_mode ? ' <span class="st-muted">· not yet confirmed</span>' : ''}</span>
+          <span class="st-opp-k">Placements, transport: ${p.transport.length ? p.transport.map(k => E(trLabel(i, k))).join(', ') : '<i>not given</i>'}</span>
+          ${d.general_installed ? `<span class="st-opp-k">General delivery (sales &amp; hire): ${i.general ? E(i.general.line) + (i.general.how ? ` · ${E(i.general.how)}` : '') : '<i>not answered</i>'}</span>` : ''}
           ${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div>
         <div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
     };
@@ -801,9 +812,10 @@
           <div class="st-f"><label for="of-status">Answers</label><select id="of-status"><option value="">Everyone</option><option value="answered">Answered</option><option value="unanswered">Not answered yet</option><option value="online">Online only for now</option>${O.care ? '<option value="care">Depends on care, handling and insurance</option>' : ''}</select></div>
           <div class="st-f"><label for="of-int">Interested in</label><select id="of-int"><option value="">Any opportunity</option>${Object.keys(O.interests).filter(k => k !== 'online_only').map(k => `<option value="${k}">${E(O.interest_short[k])}</option>`).join('')}</select></div>
           <div class="st-f"><label for="of-county">Artwork kept in</label><select id="of-county">${provOpts('', '<option value="">Any county</option><option value="_none">Not given</option>')}</select></div>
-          <div class="st-f"><label for="of-reach">Placements: deliver &amp; collect in</label><select id="of-reach"><option value="">Any</option><option value="anywhere">Anywhere on the island</option><option value="ask">Ask about each opportunity</option>${provOpts('')}</select></div>
+          <div class="st-f"><label for="of-reach">Placements: deliver &amp; collect in</label><select id="of-reach"><option value="">Any</option><option value="anywhere">Anywhere on the island</option><option value="ask">Ask about each opportunity</option>${O.v27 ? '<option value="general">Same as their general delivery</option>' : ''}${provOpts('')}</select></div>
           <div class="st-f"><label for="of-tr">Placements: transport</label><select id="of-tr"><option value="">Any</option>${Object.keys(O.transport_short).map(k => `<option value="${k}">${E(O.transport_short[k])}</option>`).join('')}</select></div>
-          ${d.general_installed ? `<div class="st-f"><label for="of-gen">General delivery (sales &amp; hire) to</label><select id="of-gen">${provOpts('', '<option value="">Any</option><option value="_none">No delivery: collection or by arrangement</option><option value="_unanswered">Not answered</option>')}</select></div>` : ''}
+          ${d.general_installed ? `<div class="st-f"><label for="of-gen">General delivery (sales &amp; hire) to</label><select id="of-gen">${provOpts('', '<option value="">Any</option>' + (d.transport_installed ? '<option value="_collection">No delivery: buyer or hirer collects</option><option value="_arrangement">By arrangement</option><option value="_legacy">No delivery or by arrangement (answered before)</option>' : '<option value="_none">No delivery: collection or by arrangement</option>') + '<option value="_unanswered">Not answered</option>')}</select></div>` : ''}
+          ${d.transport_installed ? `<div class="st-f"><label for="of-how">General delivery: how</label><select id="of-how"><option value="">Any</option><option value="personal">Personal delivery</option><option value="courier">Standard courier</option><option value="specialist">Specialist art transport</option></select></div>` : ''}
         </div>
         <p class="st-muted" style="margin:0" aria-live="polite"><span id="of-n"></span> <button type="button" class="st-linkbtn" id="of-reset" hidden>Clear filters</button></p>
       </section>
@@ -824,10 +836,10 @@
       catch (err) { b.disabled = false; b.insertAdjacentHTML('afterend', `<p class="st-err" role="alert">${E(err.message)}</p>`); }
     });
     const bind = (id, k) => $(id).addEventListener('change', e => { f[k] = e.target.value; draw(); });
-    bind('#of-status', 'status'); bind('#of-int', 'interest'); bind('#of-county', 'county'); bind('#of-reach', 'reach'); bind('#of-tr', 'transport'); if ($('#of-gen')) bind('#of-gen', 'general');
+    bind('#of-status', 'status'); bind('#of-int', 'interest'); bind('#of-county', 'county'); bind('#of-reach', 'reach'); bind('#of-tr', 'transport'); if ($('#of-gen')) bind('#of-gen', 'general'); if ($('#of-how')) bind('#of-how', 'how');
     locationOverview();
     app.querySelectorAll('[data-int]').forEach(b => b.addEventListener('click', () => { f.interest = f.interest === b.dataset.int ? '' : b.dataset.int; $('#of-int').value = f.interest; draw(); }));
-    $('#of-reset').addEventListener('click', () => { Object.keys(f).forEach(k => { f[k] = ''; }); ['#of-status', '#of-int', '#of-county', '#of-reach', '#of-tr', '#of-gen'].forEach(s => { if ($(s)) $(s).value = ''; }); draw(); });
+    $('#of-reset').addEventListener('click', () => { Object.keys(f).forEach(k => { f[k] = ''; }); ['#of-status', '#of-int', '#of-county', '#of-reach', '#of-tr', '#of-gen', '#of-how'].forEach(s => { if ($(s)) $(s).value = ''; }); draw(); });
     draw();
   }
 
