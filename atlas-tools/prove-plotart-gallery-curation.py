@@ -38,9 +38,9 @@ def complete(slug, body):
             and (not P.meta_line(a) or F.E(P.meta_line(a)) in body) and (not F.intro(a.get("bio")) or F.E(F.intro(a.get("bio"))) in body))
 check("B3 every artist (opening three included) is introduced the same way: artwork with title and year, name, practice and public location, the introduction from their own biography, View Gallery",
       all(complete(s, b) for s, _, b in cards + opens) and all("<i>" in b and "<img" in b for s, _, b in opens), [s for s, _, b in cards + opens if not complete(s, b)])
-words = [len(F.intro(by[s]["artist"].get("bio")).split()) for s in SL if F.intro(by[s]["artist"].get("bio"))]
-check("B4 introductions are about 30-45 words, whole sentences or shortened at a comma or word with an ellipsis, never invented",
-      all(w <= 45 for w in words) and sum(w >= 25 for w in words) >= len(words) - 2, words)
+intros = [F.intro(by[s]["artist"].get("bio")) for s in SL if F.intro(by[s]["artist"].get("bio"))]
+check("B4 introductions are at most 45 words and end at a complete sentence (only a single over-long first sentence is shortened, with an ellipsis); never invented",
+      all(len(t.split()) <= 45 and (re.search(r"[.!?…][\"'’”)]?$", t)) for t in intros), [t[-40:] for t in intros if not re.search(r"[.!?…][\"'’”)]?$", t)])
 check("B5 F.intro uses only the artist's own words (every introduction, ellipsis aside, is a prefix of their normalised biography's sentences)",
       all(" ".join(by[s]["artist"]["bio"].split()).startswith(F.intro(by[s]["artist"]["bio"]).rstrip("…").strip()) or
           F.intro(by[s]["artist"]["bio"]).rstrip("…").strip() in " ".join(by[s]["artist"]["bio"].split()) for s in SL if by[s]["artist"].get("bio")))
@@ -90,6 +90,34 @@ for a in (arr(o3, rest0 + [(o3[0][0], None)]), arr(o3 + [rest0[0]], rest0[1:]), 
 check("B10 an arrangement naming an artist twice, four opening places, an unexpected field or a malformed identifier is refused", bad == ["refused"] * 5, bad)
 check("B11 the page can never show a duplicate even from a doctored page: the read-back arrangement is checked the same way",
       not F.consistent(doc0.replace('data-pa-curated="%s:' % rest0[1][0], 'data-pa-curated="%s:' % rest0[0][0], 1), PK))
+
+# ---- the representative artwork is curated once: Living Gallery, Art for Hire and the opportunity lists mirror it
+import plotart_opportunities as OPP   # noqa: E402
+CH = F.choices_in(doc0)
+mirror_ok, tested = True, 0
+for q in OPP.GALLERY_PAGES:
+    path = ROOT / "plotart" / q
+    if not path.exists():
+        continue
+    reg = OPP.REGION.search(path.read_text()).group(0)
+    for slug in re.findall(r'href="(?:\.\./)*artists/([a-z0-9-]+)/" data-pa-track="opportunity_artist"', reg):
+        w, im = OPP._rep(by[slug], CH.get(slug))
+        gw, gim = F.representative(by[slug], CH.get(slug))
+        file0 = sorted(im["derivatives"], key=lambda x: x["long_edge"])
+        mid = next((d for d in file0 if d["long_edge"] >= 600), file0[-1])["file"]
+        mirror_ok &= ("artists/%s/img/%s" % (slug, mid)) in reg and (gw is None or gw["id"] == w["id"])
+        tested += 1
+check("B19 Living Gallery and Art for Hire show each artist's representative artwork exactly as the gallery does (%d cards)" % tested, mirror_ok and tested > 0)
+one = next((s, w) for s, w in CH.items() if s in by and sum(F._eligible(by[s], x) for x in by[s]["works"]) >= 2)
+alt = next(x for x in by[one[0]]["works"] if F._eligible(by[one[0]], x) and x["id"] != one[1])
+pk5 = copy.deepcopy(PK)
+w_new = OPP._rep({p["artist"]["slug"]: p for p in pk5}[one[0]], alt["id"])[0]
+check("B20 choosing another artwork in Curate changes the image everywhere it is mirrored (the next publication re-renders the lists with it)",
+      w_new["id"] == alt["id"] and OPP._rep(by[one[0]], one[1])[0]["id"] == one[1])
+b6 = {p["artist"]["slug"]: p for p in copy.deepcopy(PK)}
+next(x for x in b6[one[0]]["works"] if x["id"] == one[1])["availability"] = "sold"
+check("B21 a sold representative work is replaced on the mirrored pages by the same first available work the gallery shows",
+      OPP._rep(b6[one[0]], one[1])[0]["id"] == F.representative(b6[one[0]], one[1])[0]["id"] != one[1])
 
 # ---- the publisher's arrangement: the new Studio route, and the live Studio before 0029
 spec = importlib.util.spec_from_file_location("pub", ROOT / "atlas-tools" / "plotart-gallery-publish.py")
