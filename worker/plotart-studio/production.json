@@ -4,7 +4,8 @@
     "INSTANT_AUTOPUBLISH": "true",
     "INSTANT_PUBLISH_DISPATCH": "true",
     "MAILER": "resend",
-    "APPLICATION_REVIEW_PUBLIC_URL": "https://plotart-application-review.colin-a41.workers.dev"
+    "APPLICATION_REVIEW_PUBLIC_URL": "https://plotart-application-review.colin-a41.workers.dev",
+    "TEST_ARTIST_IDS": "ahnn1xynrsr"
   },
   "checkout_live": {
     "confirmation": "ENABLE LIVE PLOTART CHECKOUT",
