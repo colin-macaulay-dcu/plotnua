@@ -12,8 +12,9 @@
 #     part of the repository, so they change only through those approved releases. Custom domains are attached in the
 #     Cloudflare dashboard at an approved checkpoint, never by this workflow.
 #   * Inert until the founder enables it: repository variable PLOTART_SITE_ENABLED = true (Settings -> Secrets and
-#     variables -> Actions -> Variables) and the environment "plotart-site" holding PLOTART_SITE_CF_TOKEN
-#     (a Cloudflare API token limited to Workers Scripts: Edit on this account). The environment allows main only.
+#     variables -> Actions -> Variables) and the environment "plotart-site" holding the secret PLOTART_SITE_CF_TOKEN
+#     (a Cloudflare API token limited to Account / Workers Scripts / Edit) and the variable CLOUDFLARE_ACCOUNT_ID.
+#     The environment allows the main branch only.
 #   * After every deploy the live check runs against the Worker; if it fails, the previous version is restored
 #     automatically (wrangler rollback) and the run fails, so the founder is notified by GitHub.
 # Logs are public: no step prints a credential or an account identifier.
@@ -31,6 +32,9 @@ on:
       - 'sitemap.xml'
       - 'worker/plotart-site/**'
       - 'atlas-tools/plotart_site_build.py'
+      - 'atlas-tools/plotart_shell.py'
+      - 'atlas-tools/plotart_seo.py'
+      - 'atlas-tools/release/plotart-launch-switches.json'
       - 'atlas-tools/prove-plotart-domain.py'
       - '.github/workflows/plotart-site-deploy.yml'
   workflow_dispatch: {}

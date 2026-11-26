@@ -32,9 +32,12 @@ SRCSET = re.compile(r'(?P<pre>\bsrcset=)(?P<q>["\'])(?P<val>[^"\']*)(?P=q)')
 # Consent (founder instruction 26 Nov 2026): no non-essential tracking on plotart.ie until a valid consent solution is
 # approved. The build refuses any analytics, advertising or consent-platform script; the Worker's Content-Security-Policy
 # also blocks scripts from any other host. Measurement can only be added through an approved release that changes both.
-TRACKERS = re.compile(r"googletagmanager\.com|google-analytics\.com|gtag\(|consent\.cookiebot\.com|cookiebot\.com/uc|"
-                      r"connect\.facebook\.net|fbq\(|hotjar|clarity\.ms|doubleclick|plausible\.io|matomo|"
+TRACKERS = re.compile(r"googletagmanager\.com|google-analytics\.com|consent\.cookiebot\.com|cookiebot\.com/uc|"
+                      r"connect\.facebook\.net|hotjar|clarity\.ms|doubleclick|plausible\.io|matomo|"
                       r"usercentrics|cookieyes|iubenda|termly|osano|klaro", re.I)
+# In pages, any gtag/fbq call is refused too; scripts may keep their guarded event calls (they run only when gtag exists
+# and the visitor gave statistics consent, so on plotart.ie, with no gtag, they never fire).
+PAGE_TRACKERS = re.compile(r"\bgtag\(|\bfbq\(|dataLayer", re.I)
 NOT_FOUND = """<!DOCTYPE html>
 <html lang="en-IE">
 <head>
@@ -144,8 +147,21 @@ def plotart_sitemap(root, mode):
     return xml, sorted(seen)
 
 
+def analytics_head(root):
+    """The one approved PlotArt analytics block (plotart_shell.ANALYTICS_HEAD) and plotart.ie's setting for it."""
+    with open(os.path.join(root, "worker/plotart-site/site.json"), encoding="utf-8") as f:
+        setting = json.load(f).get("analytics")
+    if setting != "off":
+        raise SystemExit('worker/plotart-site/site.json: analytics must be "off" until a consent solution for plotart.ie is approved')
+    sys.path.insert(0, os.path.join(root, "atlas-tools"))
+    import plotart_shell
+    return plotart_shell.ANALYTICS_HEAD
+
+
 def build(root, out, mode):
     site = Site(root)
+    head = analytics_head(site.root)
+    stripped = 0
     src = os.path.join(site.root, "plotart")
     if os.path.exists(out):
         shutil.rmtree(out)
@@ -160,6 +176,9 @@ def build(root, out, mode):
             if ext in TEXT:
                 with open(p, encoding="utf-8") as f:
                     text = f.read()
+                if ext == ".html" and head in text:
+                    text = text.replace(head, "", 1)          # analytics off on plotart.ie (site.json)
+                    stripped += 1
                 with open(dest, "w", encoding="utf-8", newline="") as f:
                     f.write(site.rewrite_text(rel, text, ext))
             else:
@@ -200,11 +219,12 @@ def build(root, out, mode):
                     body = f.read()
                     if ABS_OLD.search(body):
                         leftover.append(os.path.relpath(os.path.join(d, n), out))
-                    if n != "plotart_site_build.py" and TRACKERS.search(body):
+                    if TRACKERS.search(body) or (n.endswith(".html") and PAGE_TRACKERS.search(body)):
                         tracking.append(os.path.relpath(os.path.join(d, n), out))
     report = {"mode": mode, "pages_and_files": files, "root_assets_copied": sorted(copied),
               "sitemap_urls": len(urls), "missing_links": site.missing, "old_address_left_in": leftover,
-              "tracking_or_consent_scripts": tracking}
+              "tracking_or_consent_scripts": tracking,
+              "analytics_blocks_removed": stripped}
     with open(os.path.join(out, ".build-report.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, indent=1)
     with open(os.path.join(out, ".assetsignore"), "w", encoding="utf-8") as f:

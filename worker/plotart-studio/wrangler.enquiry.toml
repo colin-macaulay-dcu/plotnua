@@ -18,6 +18,8 @@ HIRE_SCREEN_USE = "false"            # filming enquiries refused until legal rev
 MAILER = "none"                  # "resend" once approved: secret RESEND_API_KEY, sending domain verified for plotnua.ie
 MAIL_FROM = "PlotArt <enquiries@plotnua.ie>"
 REPLY_TO = "hello@plotnua.ie"
+EXTRA_ORIGINS = ""          # domain migration R1: "https://plotart.ie" at the founder-approved test go-live; empty = plotnua.ie only (unchanged)
+PUBLIC_GALLERY_URL = ""     # domain migration R1: "https://plotart.ie" at cutover; empty = https://plotnua.ie/plotart (unchanged)
 
 [[d1_databases]]
 binding = "DB"

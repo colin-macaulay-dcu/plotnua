@@ -32,7 +32,8 @@ The Studio, Checkout, Enquiry and Applications Workers keep their workers.dev ad
 
 plotart.ie runs **no non-essential tracking** until a consent solution is approved. This holds during testing too.
 
-- **Today:** PlotArt pages carry no analytics and no consent banner. `plotart.js` has analytics switched off.
+- **On plotnua.ie (since the SEO and analytics package, 26 Nov 2026):** every PlotArt page carries the approved analytics head block (`plotart_shell.ANALYTICS_HEAD`): Consent Mode v2 defaults denied, then Cookiebot (domain group b8abbc45), then GA4.
+- **On plotart.ie:** the build removes that exact block from every page (`worker/plotart-site/site.json`: `"analytics": "off"`), because the Cookiebot domain group covers plotnua.ie only. The guarded event calls in `pa-enquiry.js` and `pa-basket.js` never fire without gtag and statistics consent.
 - **The 404 page:** plotart.ie has its own "not found" page, with no third-party script. PlotNua's 404 page loads Cookiebot and GA4, so it is not used.
 - **Build guard:** the build refuses any analytics, advertising or consent-platform script (`TRACKERS` in `plotart_site_build.py`).
 - **Browser block:** the Worker's Content-Security-Policy lets scripts run only from plotart.ie itself. Pages may connect only to PlotArt's own Workers, so a tracker added by mistake is blocked by the browser. A browser test confirmed this: a test page with a GA4 tag was refused, and 12 real pages ran with no CSP violation.
