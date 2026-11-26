@@ -168,7 +168,7 @@ def block(cfg, p, preview_suppliers=None):
         '      <label>Email<input type="email" name="email" autocomplete="email" maxlength="120" required></label></div>\n',
         '    <div class="pni-row"><label>County<select name="county" required><option value="">Choose a county</option>%s</select></label>\n' % counties,
         '      <label>Project timeframe<select name="timeframe" required><option value="">Choose a timeframe</option>%s</select></label></div>\n' % times,
-        '    <label>About your project <span class="pni-opt">(optional)</span><textarea name="description" maxlength="1000" '
+        '    <label><span>About your project <span class="pni-opt">(optional)</span></span><textarea name="description" maxlength="1000" '
         'placeholder="What you have in mind, and anything useful about your garden"></textarea></label>\n',
         '    <div class="pni-hp" aria-hidden="true"><label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></div>\n',
         '    <label class="pni-c"><input type="checkbox" name="consent" required><span class="pni-ct">%s</span></label>\n' % E(consent),

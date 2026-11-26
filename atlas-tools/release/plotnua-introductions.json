@@ -12,6 +12,6 @@
     { "page": "suppliers/arctic-wellness.html",  "supplier": "arctic-wellness",  "label": "Arctic Wellness", "page_type": "supplier", "tone": "dark" },
     { "page": "garden-room-prices-ireland.html", "supplier": null, "label": null, "page_type": "guide",     "tone": "auto" },
     { "page": "garden-saunas-ireland.html",      "supplier": null, "label": null, "page_type": "guide",     "tone": "dark" },
-    { "page": "discovery-garden-retreat.html",   "supplier": null, "label": null, "page_type": "discovery", "tone": "light" }
+    { "page": "discovery-garden-retreat.html",   "supplier": null, "label": null, "page_type": "discovery", "tone": "auto" }
   ]
 }
