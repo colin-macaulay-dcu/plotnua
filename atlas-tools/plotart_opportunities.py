@@ -22,7 +22,8 @@ Each page holds ONE generated region (BEGIN ... END). Everything outside it is f
 launch manifest; the content pipeline may change only the region, and only to exactly what update() produces from the
 published packages (atlas-tools/release/plotart-content-boundary.py checks that).
 """
-import plotart_featured as FEAT   # the founder's representative artworks (one curated gallery, 26 Nov 2026)
+import plotart_featured as FEAT
+import plotart_seo as SEO   # generated search descriptions (26 Nov 2026)   # the founder's representative artworks (one curated gallery, 26 Nov 2026)
 import html
 import re
 from pathlib import Path
@@ -232,18 +233,38 @@ def content(path, packages, choices=None):
     return "\n".join(s for s in (section(k, packages, base, hub, path == COMMISSIONS, gallery=path in GALLERY_PAGES, choices=choices) for k in PAGES[path]) if s)
 
 
+# The commissions page's search title and description (SEO and analytics package, founder approval 26 Nov 2026, section
+# 2.4): the number of artists is the number this page lists (open to commissions), computed from the published galleries
+# and refreshed with the list at every publication; it is never typed in.
+COMMISSIONS_TITLE = "Commission Original Art in Ireland | PlotArt"
+COMMISSIONS_LEAD = "Commission a new painting or print from a PlotArt artist."
+NUMBER_WORDS = ("No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve")
+
+
+def commissions_meta(packages):
+    n = len(listed(packages, "commissions"))
+    if not n:
+        return COMMISSIONS_TITLE, COMMISSIONS_LEAD + " Size, price and timescale are agreed with the artist."
+    who = "%s PlotArt %s" % (NUMBER_WORDS[n] if n < len(NUMBER_WORDS) else str(n), "artist welcomes" if n == 1 else "artists welcome")
+    return COMMISSIONS_TITLE, "%s %s enquiries; size, price and timescale are agreed with the artist." % (COMMISSIONS_LEAD, who)
+
+
 def update(document, path, packages, choices=None):
     if document.count(BEGIN) != 1 or document.count(END) != 1 or not REGION.search(document):
         raise Refused("Missing or duplicate opportunity region in plotart/" + path)
     inner = content(path, packages, choices)
-    return REGION.sub(lambda m: BEGIN + ("\n" + inner + "\n" if inner else "") + END, document, count=1)
+    document = REGION.sub(lambda m: BEGIN + ("\n" + inner + "\n" if inner else "") + END, document, count=1)
+    return SEO.set_meta(document, *commissions_meta(packages)) if path == COMMISSIONS and "<head>" in document else document
 
 
 def outside(document):
-    """The page with its opportunity region blanked out (what the launch manifest pins)."""
+    """The page with its opportunity region blanked out (what the launch manifest pins). On the commissions page the
+    generated description (it carries the number of artists) is blanked too; update() == page (guard L19, the content
+    boundary) pins it instead."""
     if document.count(BEGIN) != 1 or document.count(END) != 1 or not REGION.search(document):
         raise Refused("Missing or duplicate opportunity region")
-    return REGION.sub(BEGIN + "<!-- opportunity artists -->" + END, document, count=1)
+    document = REGION.sub(BEGIN + "<!-- opportunity artists -->" + END, document, count=1)
+    return SEO.blank_meta(document) if 'name="description" content="%s' % COMMISSIONS_LEAD in document else document
 
 
 def refresh(root, packages, choices=None):

@@ -287,6 +287,70 @@ def basket_block(w, origin):
         E(origin), E(w["id"]), E(origin), E(w["id"]))
 
 
+# SEO and analytics package (founder approval 26 Nov 2026, section 2.5): two contextual links on every artwork page, under
+# the work's details, in the existing small-note style (no new styles): the size calculator and the available collection.
+MORE_LINKS = ('<p class="pa-aw-cta-note"><a href="../../art-size-calculator.html" data-pa-track="artwork_size_calculator">Check this size on your wall</a>'
+              ' with the PlotArt art size calculator, or see <a href="../../artworks/" data-pa-track="artwork_more_artworks">more original Irish art for sale</a>.</p>')
+
+
+def artwork_kind(medium):
+    """Painting, Print, Mixed Media or Drawing, read from the artist's own medium wording (None when it says none of
+    these). A printmaking process names a print even with added paint or collage (an intaglio with collage is still an
+    original print); several processes together, or mixed media named as such, are Mixed Media."""
+    m = str(medium or "").lower()
+    if re.search(r"screen ?print|monoprint|mono-print|intaglio|etch|lino ?cut|woodcut|lithograph|silkscreen|serigraph|drypoint|giclee", m):
+        return "Print"
+    if "mixed media" in m or "collage" in m or ("print" in m and re.search(r"paint|ink|pen|pencil", m)):
+        return "Mixed Media"
+    if re.search(r"\boil\b|acrylic|acyrlic|crylic|paint|gouache|watercolou?r|tempera|enamel|encaustic", m):
+        return "Painting"
+    if re.search(r"\bpen\b|\bink\b|pencil|charcoal|graphite|pastel", m):
+        return "Drawing"
+    return None
+
+
+TITLE_MAX = 65
+
+
+def artwork_title(pkg, w):
+    """'<Title> by <Artist> | Original <kind> | PlotArt'; the middle segment is dropped when the whole would be long."""
+    base = "%s by %s" % (w["title"], pkg["artist"]["display_name"])
+    kind = artwork_kind(w["medium"])
+    full = "%s | Original %s | PlotArt" % (base, kind) if kind else None
+    return full if full and len(full) <= TITLE_MAX else "%s | PlotArt" % base
+
+
+_MATERIAL_WORDS = frozenset("""oil oils bar acrylic acyrlic crylic paint mixed media on in canvas linen wood wooden panel paper board and
+with collage resin varnish lacquer monoprint screen print multi layered etched intaglio ink pen pencil spray reclaimed plywood
+gessoed mounted dibond tondo raw silk gouache watercolour watercolor charcoal graphite pastel""".split())
+
+
+def _lower_first(t):
+    """The artist's medium as written, for use mid-sentence: common material words are lower-cased ("Mixed Media on
+    Canvas" -> "mixed media on canvas"); any other word, such as a paper maker's name, keeps its capital."""
+    return re.sub(r"[A-Za-z]+", lambda m: m.group(0).lower() if m.group(0).lower() in _MATERIAL_WORDS else m.group(0), str(t or "").strip())
+
+
+def artwork_description(pkg, w):
+    """Section 2.5: medium, artist, size, the price only when the work has a public price, and what the buyer can do now.
+    Says "enquire", never "buy online" (whether a work can be bought online is decided live by the checkout)."""
+    a = pkg["artist"]
+    size = " × ".join("%g" % v for v in (w["h_cm"], w["w_cm"])) + " cm"
+    text = "Original %s by %s, %s." % (_lower_first(w["medium"]), a["display_name"], size)
+    av = w["availability"]
+    if av == "available":
+        priced = w.get("price_eur") and not w.get("price_on_request")
+        text += (" %s, available." % euro(w["price_eur"])) if priced else " Available, price on request."
+        text += " Enquire with the artist through PlotArt."
+    elif av == "reserved":
+        text += " Reserved. Ask through PlotArt to be told if it becomes available."
+    elif av == "sold":
+        text += " Sold. Ask the artist through PlotArt about their other work."
+    else:
+        text += " Not for sale. Ask the artist through PlotArt about their other work."
+    return text
+
+
 def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, basket_origin=None):
     a = pkg["artist"]
     imgs = w["images"]
@@ -339,6 +403,7 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
       <dl class="pa-aw-dl">%s</dl>
       %s
       %s
+      %s
     </div>
   </div>
   %s
@@ -348,7 +413,7 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
        E(a["display_name"]), ' <span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
        E(w["title"]), avail.replace("_", "-"), E(price_line(w)), cta, dl,   # the buttons directly under the price (Sprint 1, 26 Nov 2026)
        ('<p class="pa-aw-desc">%s</p>' % E(w["description"])) if w.get("description") else "",
-       ai, nav)
+       ai, MORE_LINKS, nav)
 
 
 # ---- The Virtual Gallery collection: Direction C2 "The Curated Collection" (founder approval 5 Nov 2026) ----
@@ -480,7 +545,6 @@ def gallery_pages(pkg, page, enquiry_endpoint=None, basket_origin=None):
                 artist_body(pkg, enquiry_endpoint=enquiry_endpoint), scripts)]
     ws = shown(pkg)
     for i, w in enumerate(ws):
-        out.append(page(base + w["slug"] + ".html", "%s by %s | PlotArt" % (w["title"], a["display_name"]),
-                        "%s by %s. %s, %s." % (w["title"], a["display_name"], w["medium"], size_line(w)[0]),
+        out.append(page(base + w["slug"] + ".html", artwork_title(pkg, w), artwork_description(pkg, w),
                         artwork_body(pkg, w, ws[i - 1] if i else None, ws[i + 1] if i + 1 < len(ws) else None, enquiry_endpoint=enquiry_endpoint, basket_origin=basket_origin), art_scripts))
     return [(path, SEO.enrich_artist(path, doc, pkg)) for path, doc in out]

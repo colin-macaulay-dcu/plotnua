@@ -95,8 +95,8 @@ HEAD = """<!DOCTYPE html>
   gtag('config', 'G-PKKJ0RK6N8');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Pod Factory: garden pods, modular homes and extensions from Co. Meath | PlotNua</title>
-<meta name="description" content="The Pod Factory's steel-framed garden studios, garden pods, modular homes and extensions, built in Co. Meath and craned into place: sizes, layouts and what to ask, checked by PlotNua.">
+<title>The Pod Factory Meath: Garden Pods &amp; Modular Homes | PlotNua</title>
+<meta name="description" content="The Pod Factory builds steel-framed garden pods, modular homes up to 72 m&sup2; and extensions in Co. Meath, craned into place: sizes, layouts and what to ask.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/suppliers/the-pod-factory.html">
 <meta name="theme-color" content="#27282A">
@@ -117,6 +117,8 @@ HEAD = """<!DOCTYPE html>
 <link rel="stylesheet" href="../assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
 """
+sys.path.insert(0, str(ROOT / "atlas-tools")); from seo_pn_analytics import transform as _seo_pn  # SEO and analytics package (founder approval, 26 Nov 2026)
+HEAD = _seo_pn(HEAD)
 
 PREVIEW_CSS = """<style>.aw-hold{ background:#3A3326; border-bottom:1px solid #6B5A3A; color:#F2EBE0; font-family:'Hanken Grotesk',system-ui,sans-serif; font-size:13.5px; }
 .aw-hold .aw-w{ max-width:1280px; margin:0 auto; padding:10px clamp(18px,3.4vw,48px); display:flex; gap:12px; flex-wrap:wrap; }

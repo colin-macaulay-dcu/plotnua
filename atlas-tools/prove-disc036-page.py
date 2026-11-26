@@ -71,7 +71,9 @@ def check(s, files):
 
     # E1
     need(len(re.findall(r"<title>[^<]+</title>", s)) == 1, "E1 one <title>")
-    need("<title>House Extensions in Ireland: Planning, Costs and Where to Start | PlotNua</title>" in s, "E1 the approved search identity")
+    # SEO and analytics package (founder approval, 26 Nov 2026, section 3.2): the approved search identity now names
+    # sunrooms. Previous value: "House Extensions in Ireland: Planning, Costs and Where to Start | PlotNua".
+    need("<title>Extensions &amp; Sunrooms in Ireland: Rules and Costs | PlotNua</title>" in s, "E1 the approved search identity")
     for pat in (r'<meta name="description" content="[^"]{60,160}"', r'<link rel="canonical" href="%s"' % re.escape(URL),
                 r'<meta property="og:url" content="%s"' % re.escape(URL), r'<meta name="robots" content="index, follow"'):
         need(re.search(pat, s), "E1 missing: " + pat)

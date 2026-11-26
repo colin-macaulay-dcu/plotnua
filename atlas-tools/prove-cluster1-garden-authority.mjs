@@ -336,7 +336,9 @@ if (PRICE) {
     // Re-pinned 26 Oct 2026 for the requested garden-room search focus; canonical and journey tokens unchanged.
     // (atlas-tools/build-seo-phase1.py). Previous value:
     // '<title>Garden Rooms &amp; Garden Homes in Ireland: 2026 Planning Rules | PlotNua</title>'
-    "title": '<title>Garden Rooms in Ireland: Compare Makers &amp; Prices | PlotNua</title>',
+    // Re-pinned 26 Nov 2026 (SEO and analytics package, founder approval, section 3.2). Previous value:
+    // '<title>Garden Rooms in Ireland: Compare Makers &amp; Prices | PlotNua</title>'
+    "title": '<title>Garden Rooms in Ireland: Makers, Prices &amp; Rules | PlotNua</title>',
     "canonical": '<link rel="canonical" href="https://plotnua.ie/discovery-living-in-the-garden.html">',
   };
   const errs = Object.entries(toks).filter(([, t]) => src.split(t).length - 1 < 1).map(([k]) => k);

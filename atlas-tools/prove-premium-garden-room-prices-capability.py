@@ -28,7 +28,8 @@ def rx(pat, new):
 
 FAULTS = [
     # SEO-GR3 (8 Nov 2026): the approved title is now "Garden Room Prices & Costs in Ireland (2026)".
-    ("title changed", PAGE, sub("<title>Garden Room Prices &amp; Costs in Ireland (2026) | PlotNua</title>", "<title>Garden Room Prices | PlotNua</title>")),
+    # SEO and analytics package (26 Nov 2026): planted on the newly approved title.
+    ("title changed", PAGE, sub("<title>Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua</title>", "<title>Garden Room Prices | PlotNua</title>")),
     ("meta description changed", PAGE, rx(r'(<meta name="description" content=")[^"]*', r"\1Garden room prices.")),
     ("canonical changed", PAGE, sub('href="https://plotnua.ie/garden-room-prices-ireland.html">', 'href="https://plotnua.ie/prices.html">')),
     ("consent script removed", PAGE, rx(r'<script id="Cookiebot"[^>]*></script>\n', "")),
@@ -72,8 +73,8 @@ FAULTS = [
      rx(r'("asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672\.jpg".*?"permitted_surfaces": \[\s*)"discovery"', r'\1"homepage"')),
     ("provenance claims a named product", "image-provenance-records.json",
      rx(r'("asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672\.avif".*?"depicts_named_product": )false', r"\1true")),
-    ("meta description reworded (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content=")Independent research', r"\1Cheap garden rooms")),
-    ("meta description figure typed by hand (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content="[^"]*?from )€(\d)', r"\1€9\2")),
+    ("meta description reworded (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content=")Garden room prices in Ireland from', r"\1Cheap garden rooms from")),
+    ("meta description figure typed by hand (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content="[^"]*?installed rooms )€(\d)', r"\1€9\2")),
     ("extra-costs region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:EXTRAS -->.*?<!-- /PN-PRICES:EXTRAS -->", "")),
     ("VAT region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:VAT -->.*?<!-- /PN-PRICES:VAT -->", "")),
     ("a pinned hero file altered", "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.avif", None),
@@ -84,8 +85,16 @@ FAULTS += [
                                                              "The best garden rooms are priced very differently.")),
     ("SEO-GR3 navigation entry removed", PAGE, sub('        <li><a href="#how-these-figures-were-made">The Research</a></li>\n', "")),
     ("SEO-GR3 new section dropped", PAGE, rx(r'  <section class="pd-section reveal" id="what-affects-prices">.*?</section>\n', "")),
-    ("SEO-GR3 Open Graph title reworded", PAGE, sub('<meta property="og:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">',
+    # SEO and analytics package (26 Nov 2026): planted on the newly approved Open Graph title.
+    ("SEO-GR3 Open Graph title reworded", PAGE, sub('<meta property="og:title" content="Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua">',
                                                     '<meta property="og:title" content="Cheapest Garden Rooms in Ireland | PlotNua">')),
+]
+# SEO and analytics package (26 Nov 2026): the two declared links stay exactly that narrow.
+FAULTS += [
+    ("SEO package link sent elsewhere", PAGE, sub('<a href="garden-saunas-ireland.html">garden saunas in Ireland',
+                                                  '<a href="https://example.com/">garden saunas in Ireland')),
+    ("SEO package link text given a claim", PAGE, sub("extensions and attached sunrooms</a>.",
+                                                      "the best extensions and attached sunrooms</a>.")),
 ]
 
 

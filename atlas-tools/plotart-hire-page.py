@@ -39,8 +39,9 @@ PROVINCES = (("Connacht", ("Galway", "Leitrim", "Mayo", "Roscommon", "Sligo")),
              ("Munster", ("Clare", "Cork", "Kerry", "Limerick", "Tipperary", "Waterford")),
              ("Ulster", ("Antrim", "Armagh", "Cavan", "Derry", "Donegal", "Down", "Fermanagh", "Monaghan", "Tyrone")))
 FORBIDDEN = {"handling_note", "artist_email", "email", "replacement_value", "price_eur", "fee", "private"}
-TITLE = "Art Rental for Offices & Businesses in Ireland | PlotArt"
-DESC = ("Explore business art rentals: monthly pricing, six-month terms, sale priority and business-funded transport and insurance. Download the artist guide and agreement template.")
+TITLE = "Art for Hire: Original Irish Art for Businesses | PlotArt"   # SEO and analytics package, 26 Nov 2026 (section 2.4)
+DESC = ("Proposed terms for renting original Irish art for offices: six-month terms and a clear monthly charge based on the agreed "
+        "price. Rentals are being prepared.")
 FINE = ("Works offered for hire are listed by their artists and checked by PlotArt. PlotArt introduces hirers to artists: it doesn't take "
         "artwork rent or deposits, arrange transport or insure work. Any PlotArt fee is separately agreed and invoiced. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
 

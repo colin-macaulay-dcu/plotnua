@@ -253,6 +253,8 @@ PUBLIC_HEAD = """<!DOCTYPE html>
 <link rel="stylesheet" href="../assets/identity/pn-identity.css">
 <link rel="stylesheet" href="../assets/identity/pn-premium-discovery.css">
 """
+sys.path.insert(0, str(ROOT / "atlas-tools")); from seo_pn_analytics import transform as _seo_pn  # SEO and analytics package (founder approval, 26 Nov 2026)
+PUBLIC_HEAD = _seo_pn(PUBLIC_HEAD)
 
 BAR = """<nav class="mp-bar" aria-label="PlotNua"><div class="mp-w"><a class="mp-brand" href="../">PlotNua</a>
 <a class="mp-back" href="../discovery-living-in-the-garden.html#explore-makers"><span aria-hidden="true">&larr;</span> Living in the Garden</a></div></nav>

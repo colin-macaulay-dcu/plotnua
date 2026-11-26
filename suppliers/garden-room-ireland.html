@@ -2,6 +2,35 @@
 <html lang="en-IE">
 <head>
 <meta charset="UTF-8">
+<script data-cookieconsent="ignore">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'denied',
+    personalization_storage: 'denied', security_storage: 'granted',
+    wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+<script data-cookieconsent="ignore">
+/* PlotNua intention events: supplier_outbound_click, whatsapp_click, email_click. Statistics consent only; no personal data. */
+(function(){
+  var SUP=/(^|\.)(arcticwellness\.ie|donmodularhomes\.ie|elmlandscaping\.ie|gardenroomireland\.ie|gardenhouse24\.ie|nookprefab\.com|superiorpergola\.ie|themobilepods\.ie|thepodfactory\.ie|shomera\.ie|irishsaunacompany\.com|polaris-sauna\.ie|summerhouse24\.ie|pineca\.ie|ognyx\.com|conceptmodular\.ie|allinonecabins\.ie|triqbriq\.de|timbertrove\.com|oodhouse\.com|powersheds\.com|yardbox\.co\.uk|apexverandas\.ie|accesslifts\.ie|tanktribe\.ie)$/i;
+  var NOT=/(^|\.)(plotnua\.ie|facebook\.com|instagram\.com|linkedin\.com|tiktok\.com|pinterest\.com|x\.com|twitter\.com|youtube\.com|google\.com|googleapis\.com|gstatic\.com|cookiebot\.com|gov\.ie|irishstatutebook\.ie)$/i;
+  document.addEventListener('click',function(e){
+    try{
+      var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+      if(!a||typeof gtag!=='function'||!(window.Cookiebot&&Cookiebot.consent&&Cookiebot.consent.statistics))return;
+      var p=location.pathname,u=new URL(a.getAttribute('href'),location.href);
+      if(u.protocol==='mailto:'){gtag('event','email_click',{page:p});return;}
+      var h=u.hostname.toLowerCase().replace(/^www\./,'');
+      if(h==='wa.me'||/(^|\.)whatsapp\.com$/.test(h)){gtag('event','whatsapp_click',{page:p});return;}
+      if(!/^https?:$/.test(u.protocol)||u.hostname===location.hostname||NOT.test(h)||a.hasAttribute('data-outbound'))return;
+      if(/^\/suppliers\//.test(p)||SUP.test(h))gtag('event','supplier_outbound_click',{supplier_domain:h,page:p});
+    }catch(_){}
+  },true);
+})();
+</script>
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
@@ -10,7 +39,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-PKKJ0RK6N8');
+  gtag('config', 'G-PKKJ0RK6N8', { content_group: 'PlotNua' });
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Garden Room Ireland: insulated steel-clad garden rooms | PlotNua</title>

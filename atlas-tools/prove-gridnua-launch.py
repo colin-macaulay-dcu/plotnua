@@ -38,6 +38,11 @@ TANDEM_CARD = re.compile(r'<li class="gn-card gn-card--ctx">\s*<div class="gn-ca
                          r'<h3>Tandem Compute pods</h3>[\s\S]*?<div class="gn-card-foot">[\s\S]*?</div>\n</li>')
 CONTEXT_H = '<h2 class="gn-group-h">Context: not for homes</h2>'
 CHECK = "disc026-compute-readiness-check.html"
+# SEO and analytics package (founder approval, 26 Nov 2026): GridNua pages carry the PlotNua consent, Cookiebot and
+# GA4 head block. GL4's one exemption is that block, byte-identical to atlas-tools/seo_pn_analytics.py FULL, exactly
+# once and inside <head>; any other script, form, endpoint or analytics tag still fails GL4.
+sys.path.insert(0, str(ROOT / "atlas-tools"))
+from seo_pn_analytics import FULL as SEO_PN_FULL
 
 
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -66,7 +71,8 @@ def run(root):
         if h.count('rel="canonical"') != 1 or f'<link rel="canonical" href="{want}">' not in h: f("GL2", f"{p} canonical is not {want}")
         if re.search(r"gn-preview|Local preview", h): f("GL2", f"{p} carries the preview ribbon")
         if not re.search(r'<p class="gn-standing"[^>]*>[\s\S]*?<strong>' + re.escape(STANDING) + '</strong>', h): f("GL3", f"{p} lacks the standing statement")
-        if re.search(r"<form|<script|<input|workers\.dev|fetch\(|gtag|googletagmanager|cookiebot", h, re.I): f("GL4", f"{p} has a form, script or endpoint")
+        hh = h.replace(SEO_PN_FULL, " ", 1) if h.count(SEO_PN_FULL) == 1 and h.find(SEO_PN_FULL) < h.find("</head>") else h
+        if re.search(r"<form|<script|<input|workers\.dev|fetch\(|gtag|googletagmanager|cookiebot", hh, re.I): f("GL4", f"{p} has a form, script or endpoint")
         if re.search(r"interest register|register your|join the register|waiting list", text(h), re.I): f("GL4", f"{p} mentions the register")
         t = text(h)
         for m in re.finditer(r"[€£$]\s?\d|\d\s?(euro|pounds|dollars)\b|\b(earn|earns|earning|earnings|income|savings?|paid|pays? you|per year|a year)\b", t, re.I):
@@ -132,6 +138,8 @@ def prove():
         "GL2": lambda r: sub(r, PAGES[0], 'content="index, follow"', 'content="noindex, follow"'),
         "GL3": lambda r: sub(r, PAGES[1], STANDING, "Available soon."),
         "GL4": lambda r: sub(r, PAGES[0], "</main>", "<form action=x></form></main>"),
+        "GL4b": lambda r: sub(r, PAGES[1], "content_group: 'PlotNua'", "content_group: 'GridNua', send_page_view: true"),
+        "GL4c": lambda r: sub(r, PAGES[0], "</main>", '<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script></main>'),
         "GL5": lambda r: sub(r, PAGES[0], "Computers make heat.", "Hosts earn €300 a year. Computers make heat."),
         "GL6": lambda r: sub(r, PAGES[1], "Two separate labels", "Our recommended partners. Two separate labels"),
         "GL7": lambda r: sub(r, PAGES[0], "Large sites, not homes.", "Large sites, not homes. Tandem Compute."),

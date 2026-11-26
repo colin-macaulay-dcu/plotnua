@@ -137,7 +137,7 @@ except Exception as e:  # noqa: BLE001
 
 # A6
 head = page.split("</head>")[0]
-check("A6 the approved title", "<title>Original Irish Art for Sale | Buy Art from Irish Artists | PlotArt</title>" in head)
+check("A6 the approved title (SEO and analytics package, 26 Nov 2026)", "<title>Original Irish Art for Sale | Paintings &amp; Prints | PlotArt</title>" in head)
 check("A6 exactly one H1, the approved heading", re.findall(r"<h1>(.*?)</h1>", page) == ["Discover original Irish art for sale."])
 check("A6 one meta description of at most 160 characters", len(re.findall(r'<meta name="description" content="([^"]{1,160})">', head)) == 1)
 if SEO.indexable(PATH, launch):

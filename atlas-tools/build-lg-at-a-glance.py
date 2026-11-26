@@ -73,7 +73,9 @@ MAKERS = [
      "img": None},  # founder, 12 Nov 2026: text-only in this revision (NOOK asked to preview listings)
     {"explorer": "The Pod Factory", "name": "The Pod Factory", "profile": "suppliers/the-pod-factory.html",
      "says": "Steel-framed garden studios and garden pods, built in Co. Meath and craned into place.",
-     "pin": ["steel-framed garden studios, garden pods", "built in Co. Meath and craned into place"],
+     # SEO and analytics package (26 Nov 2026): the profile's meta description was reworded, so the row's two
+     # claims are pinned to the profile's own opening sentence instead (same facts, same row text).
+     "pin": ["maker of steel-framed pods", "in Co. Meath and craned into place: garden studios"],
      "img": {"src": "https://www.thepodfactory.ie/wp-content/uploads/2023/05/Showroom-Pod-17-scaled.jpg",
              "alt": "A single-storey garden pod with cedar cladding, a dark grey render frame and full-height anthracite glazing",
              "kind": "Photograph", "credit": "Image: The Pod Factory", "credit_href": "https://www.thepodfactory.ie/"}},

@@ -122,8 +122,8 @@ HEAD = """<!DOCTYPE html>
   gtag('config', 'G-PKKJ0RK6N8');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Superior Pergola Ireland: aluminium pergolas, verandas and porches | PlotNua</title>
-<meta name="description" content="Superior Pergola Ireland's made-to-measure aluminium pergolas, verandas and porches: published starting prices, roof options and how a quote works, checked by PlotNua.">
+<title>Superior Pergola Ireland: Pergola &amp; Veranda Prices | PlotNua</title>
+<meta name="description" content="Superior Pergola Ireland's aluminium pergolas from &euro;2,500 and verandas from &euro;8,100: published starting prices including fitting, roof options and quotes.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/suppliers/superior-pergola-ireland.html">
 <meta name="theme-color" content="#27282A">
@@ -144,6 +144,8 @@ HEAD = """<!DOCTYPE html>
 <link rel="stylesheet" href="../assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
 """
+sys.path.insert(0, str(ROOT / "atlas-tools")); from seo_pn_analytics import transform as _seo_pn  # SEO and analytics package (founder approval, 26 Nov 2026)
+HEAD = _seo_pn(HEAD)
 
 CSS = """<style>
 /* Superior Pergola Ireland showcase - scoped to .sp. The site's --p4-* identity tokens; no new identity.

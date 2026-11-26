@@ -278,13 +278,22 @@ def check_tree(S, tmp):
     if ("%d garden-room products with a euro price" % n) not in lg or ("From %d suppliers" % nsup) not in lg \
             or ("%d do not publish whether VAT" % nvat) not in lg:
         fail("E7 Living in the Garden does not state %d / %d / %d" % (n, nsup, nvat))
-    rng = lambda h: re.findall(r"€[\d,]+\s*(?:&ndash;|–|to)\s*€[\d,]+", h)[:4]
+    # (a range followed by a comma in running text, as in the 26 Nov 2026 description, is read without that comma)
+    rng = lambda h: [x.rstrip(",") for x in re.findall(r"€[\d,]+\s*(?:&ndash;|–|to)\s*€[\d,]+", h)[:4]]
     want_rng = rng(S["base_guide"])
     reg = json.loads(read("atlas-tools/cost-evidence-corrections.json"))
     if any(c["id"] == "availability-and-reverification-2026-11-11" for c in reg["corrections"]):
         # Independent of the guide HTML: the installed range is the min/max of the frozen evidence rows.
         tk = [r["price"] for r in rows if r["segment"] == "INSTALLED_FINISHED_TURNKEY"]
         want_rng = ["€%s to €%s" % (format(min(tk), ","), format(max(tk), ","))] + want_rng[1:]
+    # SEO and analytics package (founder approval, 26 Nov 2026): the meta description, the guide's first range, now
+    # states the installed range and the kit range in full, each with an en dash. Both are recomputed here from the
+    # frozen evidence rows, independently of the guide HTML; every later range is still compared with production.
+    tk = [r["price"] for r in rows if r["segment"] == "INSTALLED_FINISHED_TURNKEY"]
+    kt = [r["price"] for r in rows if r["segment"] == "UNKNOWN_DIY_OR_INSTALLED"]
+    if tk and kt:
+        want_rng = ["€%s–€%s" % (format(min(tk), ","), format(max(tk), ",")),
+                    "€%s–€%s" % (format(min(kt), ","), format(max(kt), ","))] + want_rng[1:3]
     if rng(g) != want_rng:
         fail("E7 the guide's published ranges changed", (rng(g), want_rng))
     fresh = lambda h: re.findall(r"between <strong>[^<]+</strong> and <strong>[^<]+</strong>", h)
