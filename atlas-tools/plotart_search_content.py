@@ -410,27 +410,27 @@ def figures(packages):
 
 def _home(f):
     if not f["works"]:
-        return "An online gallery of original art by Irish artists. Each work is shown with its size and price. Enquire with the artist directly."
-    return ("An online gallery of original art by %s. %s%s, each shown with its size and price. Enquire with the artist directly." % (
-        plural(f["artists"], "Irish artist", "Irish artists"), plural(f["works"], "available work", "available works"),
+        return "Original Irish art online: a gallery of original work, each shown with its size and price. Enquire with the artist directly."
+    return ("Original Irish art online: %s by %s%s, each shown with its size and price. Enquire with the artist directly." % (
+        plural(f["works"], "available work", "available works"), plural(f["artists"], "artist", "artists"),
         (" from " + P.euro(f["low"])) if f["low"] is not None else ""))
 
 
 def _artworks(f):
     if not f["works"]:
-        return "Original paintings, prints and mixed-media works by Irish artists. See each size and price and enquire with the artist."
+        return "Original paintings, prints and mixed-media works for sale in Ireland. See each size and price and enquire with the artist."
     span = (", from %s to %s" % (P.euro(f["low"]), P.euro(f["high"]))) if f["low"] is not None and f["high"] != f["low"] else \
         (", at %s" % P.euro(f["low"]) if f["low"] is not None else "")
-    return "%d original %s by %s%s. See each size and price and enquire with the artist." % (
-        f["works"], series(f["kinds"] or ["works"]), plural(f["artists"], "Irish artist", "Irish artists"), span)
+    return "%d original %s by %s, for sale in Ireland%s. See each size and price and enquire with the artist." % (
+        f["works"], series(f["kinds"] or ["works"]), plural(f["artists"], "artist", "artists"), span)
 
 
 def _large(f):
     if not f["large"]:
-        return "Large original works of 100 cm or more by Irish artists. See each size and price, and enquire with the artist."
+        return "Large original works of 100 cm or more for sale in Ireland. See each size and price, and enquire with the artist."
     over = (", %d of them 150 cm and over" % f["large_150"]) if f["large_150"] else ""
     return "%d original %s of 100 cm or more by %s%s. See each size and price, and enquire with the artist." % (
-        f["large"], "work" if f["large"] == 1 else "works", plural(f["large_artists"], "Irish artist", "Irish artists"), over)
+        f["large"], "work" if f["large"] == 1 else "works", plural(f["large_artists"], "artist", "artists"), over)
 
 
 def _buy(f):
@@ -439,12 +439,12 @@ def _buy(f):
 
 
 HUB_META = {
-    "index.html": ("PlotArt | Original Art by Irish Artists, Online", _home),
+    "index.html": ("PlotArt | Original & Contemporary Irish Art Online", _home),
     "artworks/index.html": ("Original Irish Art for Sale | Paintings & Prints | PlotArt", _artworks),
     "large-artworks/index.html": ("Large Original Paintings for Sale in Ireland | PlotArt", _large),
     "buy-original-art-ireland.html": ("Buy Original Art in Ireland | Prices & Guide | PlotArt", _buy),
     "abstract-contemporary-art-ireland.html": ("Abstract Art Ireland | Original Irish Abstract Art | PlotArt",
-                                               lambda f: "Original abstract paintings and prints by Irish artists, with sizes and prices, and a short "
+                                               lambda f: "Original Irish abstract art: paintings and prints with sizes and prices, and a short "
                                                          "guide to choosing abstract art you want to live with."),
     "choose-art-for-living-room.html": (LIVING_TITLE, lambda f: LIVING_DESCRIPTION),
 }

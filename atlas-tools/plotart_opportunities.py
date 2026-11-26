@@ -236,8 +236,8 @@ def content(path, packages, choices=None):
 # The commissions page's search title and description (SEO and analytics package, founder approval 26 Nov 2026, section
 # 2.4): the number of artists is the number this page lists (open to commissions), computed from the published galleries
 # and refreshed with the list at every publication; it is never typed in.
-COMMISSIONS_TITLE = "Commission Original Art from an Irish Artist | PlotArt"
-COMMISSIONS_LEAD = "Commission a new painting or print from an Irish artist."
+COMMISSIONS_TITLE = "Commission Original Art in Ireland | PlotArt"
+COMMISSIONS_LEAD = "Commission a new painting or print from a PlotArt artist."
 NUMBER_WORDS = ("No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve")
 
 
