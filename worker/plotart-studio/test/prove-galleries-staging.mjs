@@ -67,8 +67,10 @@ const r35 = (p, t) => { if (p !== '/api/admin/opportunities') return t; const j 
   if (j.general_installed !== true || !j.items.every(i => i.general === null)) return 'unexpected Report 35 fields';
   if (j.transport_installed !== false || j.options.v27 !== false) return 'unexpected Report 36 fields';   // 0027 is not on this database
   delete j.general_installed; delete j.transport_installed; delete j.options.v27; j.items.forEach(i => { delete i.general; }); return JSON.stringify(j); };
+// Since release R1 (26 Nov 2026) production main carries those fields itself: the baseline is then normalised the same way.
+const base = (p, t) => p === '/api/admin/opportunities' && 'general_installed' in JSON.parse(t) ? r35(p, t) : t;
 check('S4 everything the founder’s existing desks read (Gallery order, Featured Artists, Opportunities) is identical (Opportunities: plus the Report 35 general-delivery field, empty here)',
-  READS.filter(r => r[2] === 'founder').every(([, p]) => after[p].s === 200 && r35(p, after[p].t) === before[p].t), READS.filter(r => r[2] === 'founder' && r35(r[1], after[r[1]].t) !== before[r[1]].t).map(r => r[1]).join());
+  READS.filter(r => r[2] === 'founder').every(([, p]) => after[p].s === 200 && r35(p, after[p].t) === base(p, before[p].t)), READS.filter(r => r[2] === 'founder' && r35(r[1], after[r[1]].t) !== base(r[1], before[r[1]].t)).map(r => r[1]).join());
 
 /* ---- 4. the gallery model on the live data ---- */
 const call = callFor(B, mf, url);
