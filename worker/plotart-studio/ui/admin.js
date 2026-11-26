@@ -161,7 +161,7 @@
         <div id="enq"><p class="st-muted">Loading…</p></div></section>
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Agreement</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
         ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${TB(a.id)}${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span>
-          <details class="st-ids"><summary>Identifiers</summary><span class="st-muted">Studio ID</span> <code>${E(a.id)}</code> <button type="button" class="st-linkbtn" data-copy="${E(a.id)}">Copy</button><br><span class="st-muted">Gallery address</span> <code>${E(a.slug)}</code> <button type="button" class="st-linkbtn" data-copy="${E(a.slug)}">Copy</button></details></td>
+          <details class="st-ids"><summary>Identifiers</summary><span class="st-muted">Studio ID</span> <code>${E(a.id)}</code> <button type="button" class="st-linkbtn" data-copy="${E(a.id)}">Copy</button><br><span class="st-muted">Gallery address</span> <code>${E(a.slug)}</code> <button type="button" class="st-linkbtn" data-copy="${E(a.slug)}">Copy</button></details>${TEST.has(a.id) && a.programme !== 'gallery_artist' ? `<button type="button" class="st-btn st-btn--small" data-testprog="${E(a.id)}" style="margin-top:6px">Correct to Gallery Artist (test account)</button>` : ''}</td>
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[stateOf(a)])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
           <td>${agrCell(a)}</td><td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
           <td class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/d-${a.id}/index.html" target="_blank" rel="noopener" title="The artist’s saved draft, unpublished, read-only">Preview draft</a>
@@ -1163,4 +1163,15 @@ document.addEventListener('click', async e => {
   const b = e.target.closest && e.target.closest('[data-copy]'); if (!b) return;
   try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied'; } catch { b.textContent = 'Select and copy'; }
   setTimeout(() => { b.textContent = 'Copy'; }, 1600);
+});
+
+/* Report 36: the test account's programme correction (only offered for an account in TEST_ARTIST_IDS; the server refuses
+   any other). Asks first; writes the audit entry on the server. */
+document.addEventListener('click', async e => {
+  const b = e.target.closest && e.target.closest('[data-testprog]'); if (!b) return;
+  if (!confirm('Correct this internal test account to Gallery Artist? Its Founding status and number are removed; earlier acceptances stay on record as test acceptances.')) return;
+  b.disabled = true;
+  try { const r = await fetch('/api/admin/artists/' + b.dataset.testprog + '/test-programme', { method: 'POST', headers: { 'X-Studio': '1', 'Content-Type': 'application/json' } });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Not changed'); location.reload(); }
+  catch (err) { b.disabled = false; b.insertAdjacentHTML('afterend', `<p class="st-err" role="alert">${String(err.message).replace(/[<>&]/g, '')}</p>`); }
 });

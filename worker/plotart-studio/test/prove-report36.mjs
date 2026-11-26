@@ -113,6 +113,20 @@ const r = JSON.parse(execFileSync('python3', ['-c', py, TOOLS], { encoding: 'utf
 check('X3 the builder fails closed when its test-account list is missing', r.missing === 'refused', JSON.stringify(r));
 check('X4 the publisher refuses to publish anything when the Studio names a test account the builder does not (id or gallery address); the builder-first order and an empty pair are fine',
   r.match === 'ok' && r.studio_only === 'refused' && r.slug_missing === 'refused' && r.builder_first === 'ok' && r.none === 'ok', JSON.stringify(r));
+{ // the founder corrects the test account to Gallery Artist from the Review desk (button offered only for the test account)
+  const { createRequire } = await import('node:module');
+  const { chromium } = createRequire(process.env.MINIFLARE_FROM || '/tmp/claude-0/studio-tools/package.json')('playwright');
+  const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1400, height: 1000 }, extraHTTPHeaders: { 'Cf-Access-Jwt-Assertion': token(FOUNDER) } });
+  const pg = await ctx.newPage(); pg.on('dialog', d => d.accept());
+  await pg.goto(url + '/admin', { waitUntil: 'networkidle' }); await pg.waitForTimeout(600);
+  const buttons = await pg.locator('[data-testprog]').count(), forTest = await pg.locator(`[data-testprog="${TEST}"]`).count();
+  await pg.click(`[data-testprog="${TEST}"]`); await pg.waitForTimeout(1200);
+  const row = await db.prepare('SELECT founding, founding_number FROM artists WHERE id=?').bind(TEST).first();
+  const tr = await db.prepare('SELECT track FROM artist_terms WHERE artist_id=?').bind(TEST).first();
+  check('X5 the programme correction is a founder button offered only for the test account; it asks first, then the account is a Gallery Artist with no Founding number',
+    buttons === 1 && forTest === 1 && row.founding === 0 && row.founding_number === null && tr && tr.track === 'gallery_artist', JSON.stringify({ buttons, forTest, row, tr }));
+  await b.close();
+}
 await mf.dispose();
 console.log(`\n${results.filter(Boolean).length}/${results.length} passed`);
 process.exit(results.every(Boolean) ? 0 : 1);
