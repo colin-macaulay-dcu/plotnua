@@ -120,7 +120,8 @@ const publish = () => new Promise(res => {
 const out = r => (r.stdout + r.stderr);
 const galleryFolders = () => G(ORIGIN, 'ls-tree', '-d', '--name-only', 'main:plotart/artists').split('\n').filter(Boolean);
 // one open gallery on the Virtual Gallery wall per artist (Direction C2, 5 Nov 2026: the index of positions links it too, separately)
-const cards = slug => (G(ORIGIN, 'show', 'main:plotart/gallery/index.html').match(new RegExp(`href="\\.\\./artists/${slug}/" data-pa-track="vg_artist"`, 'g')) || []).length;
+// one curated gallery (26 Nov 2026): an artist's card is their opening-row item or their Explore the Gallery card
+const cards = slug => (G(ORIGIN, 'show', 'main:plotart/gallery/index.html').match(new RegExp(`data-pa-(?:curated|opening)="${slug}:`, 'g')) || []).length;
 
 console.log('PROVE · PlotArt content publishing · the release path, retries and failures');
 

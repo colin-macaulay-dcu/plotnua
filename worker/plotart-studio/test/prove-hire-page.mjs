@@ -66,6 +66,12 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     // Gallery Artist Programme Phase 3 (13 Nov 2026): Join PlotArt and the curatorial policy, the script shipped only while
     // applications are open (guarded by prove-plotart-launch.py L18, the manifest and prove-plotart-join.py)
     'plotart/join.html', 'plotart/curatorial-policy.html', 'plotart/assets/pa-apply.js', 'plotart/assets/plotart-join.css']);
+  // One curated Contemporary gallery (founder approval 26 Nov 2026): the gallery page's two generated regions and its
+  // stylesheet are that release's own change (guarded by prove-plotart-launch.py L11/L20, the manifest, the content
+  // boundary and prove-plotart-gallery-curation.py), only while the page carries the unified arrangement
+  if (readFileSync(path.join(REPO, 'plotart/gallery/index.html'), 'utf8').includes('data-pa-curated=')) {
+    OTHER_RELEASES.add('plotart/gallery/index.html'); OTHER_RELEASES.add('plotart/assets/plotart-featured.css');
+  }
   /* Neutral colour system (founder approval 14 Nov 2026, 18:11): these files may differ from main ONLY as the approved colour
      release, byte for byte (SHA-256 pinned here; the launch manifest pins them too). In plotart.css, Art for Hire's own blocks
      stay protected: the scoped nav block and the footer rule must be byte-identical to main's, and the gallery-marks block may
