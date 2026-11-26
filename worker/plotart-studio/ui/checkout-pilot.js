@@ -268,10 +268,30 @@
     let bj = null, err = '';
     try { bj = await api('GET', base + '/baskets/artists'); } catch (e) { err = e.message; }
     let oj = null; try { oj = await api('GET', base + '/baskets/offers'); } catch (e) { err = err || e.message; }
+    let out = null; try { out = await api('GET', '/api/admin/outcomes'); } catch { /* the section simply stays out */ }
     app.innerHTML = `<h1 class="st-h1">Basket readiness</h1><p class="st-muted">Each artist completes these steps themselves in Studio → Payment pilot. <a href="/admin/checkout">Open the Payment pilot page</a></p>`
+      + (out ? outcomesCard(out) : '')
       + (oj && oj.installed ? offerReviews(oj) : '')
       + (bj && bj.installed ? basketFounder(bj, true) : `<p class="st-err" role="alert">${esc(err || 'The multi-artist basket is not installed.')}</p>`);
     wireOffers(oj);
+  }
+  /* Commercial outcomes (Sprint 1, 26 Nov 2026): counts the server has confirmed, from records the Studio already keeps.
+     No names, emails or messages: the endpoint returns counts and totals only. */
+  function outcomesCard(o) {
+    const n = v => v === null || v === undefined ? '—' : esc(String(v));
+    const row = (label, f) => `<tr><th scope="row">${esc(label)}</th>${o.windows.map(w => `<td>${f(w)}</td>`).join('')}</tr>`;
+    return `<section class="st-card" id="commercial-outcomes"><h2>Commercial outcomes <small class="st-muted">server-confirmed counts · ${esc(o.as_of.slice(0, 16).replace('T', ' '))} UTC</small></h2>
+      <div class="st-scroll"><table class="st-table"><tr><th></th><th>Last 7 days</th><th>Last 30 days</th><th>All time</th></tr>
+      ${row('Enquiries sent from gallery pages', w => n(o.enquiries[w].from_gallery_pages))}
+      ${row('Email enquiries you logged', w => n(o.enquiries[w].logged_by_email))}
+      ${row('Art for Hire enquiries', w => n(o.hire_enquiries[w]))}
+      ${row('Checkouts started (live)', w => n(o.checkout_started[w].live))}
+      ${row('Purchases completed (live)', w => n(o.purchases[w].live_paid_baskets))}
+      ${row('Value of completed purchases (live)', w => o.purchases[w].live_paid_total_cents === null ? '—' : eur(o.purchases[w].live_paid_total_cents))}
+      ${row('Artworks sold and not released', w => n(o.purchases[w].artworks_sold_standing))}
+      ${row('Refunds completed', w => n(o.refunds[w]))}
+      ${row('Test checkouts started', w => n(o.checkout_started[w].test))}</table></div>
+      <p class="st-muted">Relay email to artists, recent enquiries: ${n(o.enquiry_delivery.sent)} sent · ${n(o.enquiry_delivery.send_failed)} failed · ${n(o.enquiry_delivery.received)} waiting. Basket additions are not recorded on the server. — means the records are not installed.</p></section>`;
   }
   /* Delivery offers to review (22 Nov 2026): an artwork can be bought online only once the founder has approved its exact
      current delivery offer. Any change by the artist is a new version and comes back here. */
