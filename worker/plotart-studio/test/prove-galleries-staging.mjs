@@ -61,11 +61,12 @@ const after = await readAll(B, mf, url);
 const norm = s => s.replace(/"generated_at":"[^"]*"/g, '"generated_at":"(time of the read)"');   // the hire catalogue stamps the time it was read; nothing else is a clock value
 check('S3 everything the publisher reads (gallery order, Artists in Focus, publication queue, hire catalogue) is identical with the Phase B code',
   READS.filter(r => r[2] === 'pipe').every(([, p]) => after[p].s === 200 && norm(after[p].t) === norm(before[p].t)), READS.filter(r => r[2] === 'pipe' && after[r[1]].t !== before[r[1]].t).map(r => r[1]).join());
-// Report 35 (26 Nov 2026) ADDS one read-only field to the founder's Opportunities data: each artist's general delivery
+// Reports 35/36 (26 Nov 2026) ADD read-only fields: general_installed and transport_installed, options.v27 (false without 0027), and to the founder's Opportunities data: each artist's general delivery
 // (here null for everyone: nobody has answered it), plus general_installed. Everything that was there must be identical.
 const r35 = (p, t) => { if (p !== '/api/admin/opportunities') return t; const j = JSON.parse(t);
   if (j.general_installed !== true || !j.items.every(i => i.general === null)) return 'unexpected Report 35 fields';
-  delete j.general_installed; j.items.forEach(i => { delete i.general; }); return JSON.stringify(j); };
+  if (j.transport_installed !== false || j.options.v27 !== false) return 'unexpected Report 36 fields';   // 0027 is not on this database
+  delete j.general_installed; delete j.transport_installed; delete j.options.v27; j.items.forEach(i => { delete i.general; }); return JSON.stringify(j); };
 check('S4 everything the founder’s existing desks read (Gallery order, Featured Artists, Opportunities) is identical (Opportunities: plus the Report 35 general-delivery field, empty here)',
   READS.filter(r => r[2] === 'founder').every(([, p]) => after[p].s === 200 && r35(p, after[p].t) === before[p].t), READS.filter(r => r[2] === 'founder' && r35(r[1], after[r[1]].t) !== before[r[1]].t).map(r => r[1]).join());
 

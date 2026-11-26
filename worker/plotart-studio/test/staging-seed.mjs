@@ -13,7 +13,10 @@ export async function seedStaging(db, { ROOT, snapshot }) {
   const id = (p, s) => p + createHash('sha256').update(s).digest('hex').slice(0, 10);
   const packages = readdirSync(join(ROOT, 'plotart/artists')).sort().map(s => JSON.parse(readFileSync(join(ROOT, 'plotart/artists', s, 'gallery.json'), 'utf8')));
   const vg = readFileSync(join(ROOT, 'plotart/gallery/index.html'), 'utf8');
-  const positions = [['01', 'leah-hewson'], ...[...vg.matchAll(/<li class="pa-vgc-work" data-pa-position="(\d\d)">[\s\S]*?href="\.\.\/artists\/([a-z0-9-]+)\/"/g)].map(m => [m[1], m[2]])];
+  // position 01 used to sit outside the list on the page; since the 26 Nov 2026 Gallery order publication (main 538b264) it
+  // is a list item like the others, so it is added only when the page does not already carry it
+  const listed = [...vg.matchAll(/<li class="pa-vgc-work" data-pa-position="(\d\d)">[\s\S]*?href="\.\.\/artists\/([a-z0-9-]+)\/"/g)].map(m => [m[1], m[2]]);
+  const positions = [...(listed.some(([p]) => p === '01') ? [] : [['01', 'leah-hewson']]), ...listed];
   const featured = JSON.parse(execFileSync('python3', ['-c', 'import sys,json; sys.path.insert(0,"atlas-tools"); import plotart_featured as F; print(json.dumps(F.selection_in(open("plotart/gallery/index.html").read())))'], { cwd: ROOT, encoding: 'utf8' }));
 
   const L = { snapshot };
