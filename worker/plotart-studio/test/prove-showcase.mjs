@@ -52,7 +52,10 @@ console.log('PROVE · Gallery Showcase · migration 0028 SHA-256 ' + createHash(
 
 /* ---- S · the Studio (schema with 0028) ---- */
 const TEST = 'atestacct';
-const { mf, url, db } = await start({ port: 8881, env: { TEST_ARTIST_IDS: TEST } });
+// The Gallery Showcase on its own (migration 0028), as before unified curation: the schema without migration 0029 (with
+// 0029 the showcase is saved and published through Curate, proven in prove-curation.mjs)
+const SCHEMA28 = readFileSync(HERE + 'schema.sql', 'utf8').split(/\n-- PlotArt Studio · migration 0029\b/)[0];
+const { mf, url, db } = await start({ port: 8881, env: { TEST_ARTIST_IDS: TEST }, schemaSql: SCHEMA28 });
 const call = async (method, path, email, body, headers = {}) => {
   const h = { 'X-Studio': '1', 'Content-Type': 'application/json', ...headers }; if (email) h['Cf-Access-Jwt-Assertion'] = token(email);
   const r = await mf.dispatchFetch(url + path, { method, headers: h, body: body === undefined ? undefined : JSON.stringify(body) });

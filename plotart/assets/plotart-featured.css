@@ -93,3 +93,21 @@ body.pa .pa-vg2-act{ margin-bottom:0; }
 body.pa .pa-vg2-hero-row{ align-items:flex-end; }
 body.pa .pa-vg2-browse{ align-self:flex-start; margin:clamp(0px, .45vw, 8px) 0 0; }   /* level with the heading */
 @media (max-width:720px){ body.pa .pa-vg2-browse{ margin:4px 0 0; } }
+
+/* One curated gallery (founder approval 26 Nov 2026). The opening row keeps its larger artwork presentation and now
+   introduces each artist beneath it with the same editorial text as every card below. "Explore the Gallery" follows on
+   the same anthracite wall, without a band or rule between them, as one gallery. No prices or commercial details. */
+body.pa .pa-op-item{ display:flex; flex-direction:column; position:relative; }   /* keeps the visually hidden "of <artist>" inside the swipe row */
+body.pa .pa-op-credit{ text-align:left; margin-top:16px; }
+body.pa .pa-op-text{ margin-top:14px; padding-top:16px; }
+body.pa .pa-op-text .pa-fa-name{ font-size:clamp(28px, 2.5vw, 36px); }
+body.pa .pa-op .pa-wrap{ padding-bottom:clamp(40px, 4.4vw, 64px); }
+body.pa .pa-vg2-collection{ background:none; border-top:0; }
+body.pa .pa-vg2-collection .pa-wrap{ padding-top:clamp(14px, 1.6vw, 24px); }
+body.pa .pa-vg2-collection .pa-vg2-head{ margin-bottom:clamp(26px, 2.6vw, 38px); }
+body.pa .pa-vg2-collection .pa-vg2-head h2{ margin:0; font-size:clamp(34px, 3.6vw, 52px); }
+body.pa .pa-gl{ margin-bottom:clamp(56px, 6vw, 96px); }
+body.pa .pa-gl .pa-fa-item.is-textonly .pa-fa-text{ margin-top:0; }
+@media (max-width:899px){
+  body.pa .pa-op-text .pa-fa-intro{ font-size:15px; }
+}

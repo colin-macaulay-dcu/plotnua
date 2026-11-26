@@ -134,12 +134,18 @@
     const live = o.artists.filter(a => a.gallery_live).length;  // galleries on plotnua.ie, even with an update queued
     // Gallery Showcase (Report 37): any published position that is no longer shown is named here, prominently
     let scv = null; try { scv = await api('GET', '/api/admin/showcase'); } catch { scv = null; }
-    const vac = scv && scv.installed ? scv.galleries.flatMap(gx => gx.vacant.map(v => ({ ...v, gallery: gx.title }))) : [];
+    let cuv = null; try { cuv = await api('GET', '/api/admin/curation'); } catch { cuv = null; }
+    const vac = cuv && cuv.installed ? cuv.galleries.flatMap(gx => gx.notices.filter(n => n.opening).map(n => ({ side: `opening place ${n.position}`, title: n.title || '', display_name: n.display_name, reason: n.notice, gallery: gx.title })))
+      : scv && scv.installed ? scv.galleries.flatMap(gx => gx.vacant.map(v => ({ ...v, gallery: gx.title }))) : [];
+    const cun = cuv && cuv.installed ? cuv.galleries.flatMap(gx => gx.notices.filter(n => !n.opening).map(n => ({ ...n, gallery: gx.title }))) : [];
     app.innerHTML = `
       <h1 class="st-h1" style="margin-bottom:1.75rem">Review desk</h1>
       ${vac.length ? `<section class="st-card st-sc-alert" role="alert"><h2>Gallery Showcase: ${vac.length === 1 ? 'a position is' : vac.length + ' positions are'} empty on the public page</h2>
         <ul>${vac.map(v => `<li><b>${E(v.gallery)}, ${E(v.side.toLowerCase())}:</b> “${E(v.title)}” by ${E(v.display_name)}: ${E(v.reason)}.</li>`).join('')}</ul>
-        <p class="st-muted" style="margin:0">Nothing has been put in its place. <a href="/admin/galleries">Choose a replacement in Galleries</a>, save, then publish the showcase.</p></section>` : ''}
+        <p class="st-muted" style="margin:0">Nothing has been put in its place. <a href="/admin/galleries">Choose a replacement in Galleries</a>, save, then publish.</p></section>` : ''}
+      ${cun.length ? `<section class="st-card"><h2>Gallery arrangement: ${cun.length === 1 ? 'one note' : cun.length + ' notes'}</h2>
+        <ul>${cun.map(n => `<li><b>${E(n.gallery)}, ${E(n.display_name)}:</b> ${E(n.notice)}.</li>`).join('')}</ul>
+        <p class="st-muted" style="margin:0"><a href="/admin/galleries">Review in Galleries → Curate</a></p></section>` : ''}
       <div class="st-kpis">
         <div class="st-kpi"><b>${o.submissions.length}</b><span>to review</span></div>
         <div class="st-kpi"><b>${ready.length}</b><span>ready to publish</span></div>
@@ -978,7 +984,51 @@
     let sc = null, show = [], dirtyS = false;
     const SIDE = { 1: 'Left', 2: 'Centre', 3: 'Right' };
     const SCG = () => sc && sc.installed ? sc.galleries.find(x => x.gallery_id === g) : null;
-    async function loadSc() { try { sc = await api('GET', '/api/admin/showcase'); } catch { sc = null; } }
+    async function loadSc() { try { sc = await api('GET', '/api/admin/showcase'); } catch { sc = null; } try { cu = await api('GET', '/api/admin/curation'); } catch { cu = null; } }
+    // Unified curation (migration 0029): one ordered list per gallery. Places 1-3 are the opening row; everyone else follows.
+    let cu = null, arr = [], dirtyC = false, pick = null;
+    const CUG = () => cu && cu.installed ? cu.galleries.find(x => x.gallery_id === g) : null;
+    function loadArr() { const x = CUG(); arr = x ? x.draft.filter(r => !r.hidden).map(r => ({ artist_id: r.artist_id, artwork_id: r.artwork_id, new: !!r.new })) : []; dirtyC = false; pick = null; }
+    function moveTo(i, j) {
+      if (j < 0 || j >= arr.length || i === j) return;
+      const x = CUG(), it = { ...arr.splice(i, 1)[0], new: false }; arr.splice(j, 0, it);   // placed by the founder: no longer "new"
+      // anyone now in the opening row needs an artwork: keep theirs, or start from the one the gallery shows for them
+      arr.forEach((r, k) => { if (k < 3 && !r.artwork_id) { const a = x.artists.find(z => z.artist_id === r.artist_id), w = a && a.works.find(v => v.eligible); if (w) r.artwork_id = w.artwork_id; } });
+      dirtyC = true; pick = null;
+    }
+    function curateCard() {
+      const x = CUG(); if (!x) return '';
+      const prep = x.status !== 'open', A = id => x.artists.find(a => a.artist_id === id);
+      const shownOf = (it, i) => { const a = A(it.artist_id); if (!a) return null; const c = it.artwork_id && a.works.find(w => w.artwork_id === it.artwork_id && w.eligible);
+        return i < 3 ? c || null : c || a.works.find(w => w.eligible) || null; };
+      const gone = x.draft.filter(r => r.hidden);
+      const pubNotice = new Map(x.published.filter(r => r.notice).map(r => [r.artist_id, r.notice]));
+      const row = (it, i) => { const a = A(it.artist_id), w = shownOf(it, i), open = i < 3;
+        const note = open && !w ? 'Opening row: choose an available artwork' : it.new ? 'Newly published: added at the end' : (!open && !it.artwork_id && w ? `Automatic: “${E(w.title)}” (their first available work)` : (pubNotice.get(it.artist_id) && !dirtyC ? E(pubNotice.get(it.artist_id)) : ''));
+        return `<li class="st-cu-row${open ? ' is-open' : ''}" data-i="${i}">
+          <span class="st-cu-n">${String(i + 1).padStart(2, '0')}</span>
+          <button type="button" class="st-cu-thumb" data-cu="pick" data-i="${i}" aria-label="Choose the artwork for ${E(a ? a.display_name : '')}">${w && w.image ? `<img src="/api/admin/featured/image/${E(w.image.id)}" alt="">` : '<span class="st-gm-noimg" aria-hidden="true"></span>'}</button>
+          <div class="st-cu-who"><p class="st-work-t">${E(a ? a.display_name : it.artist_id)}${TB(it.artist_id)}</p><p class="st-work-s">${w ? `<i>${E(w.title)}</i>${w.year ? ', ' + E(w.year) : ''}` : 'No artwork shown'}</p>${note ? `<p class="${open && !w ? 'st-err' : 'st-muted'} st-cu-note">${note}</p>` : ''}</div>
+          <span class="st-row st-cu-ctl"><button class="st-btn st-btn--small" data-cu="up" data-i="${i}" aria-label="Move earlier"${i ? '' : ' disabled'}>↑</button><button class="st-btn st-btn--small" data-cu="down" data-i="${i}" aria-label="Move later"${i < arr.length - 1 ? '' : ' disabled'}>↓</button>
+            <label class="st-sr" for="cu-to-${i}">Move ${E(a ? a.display_name : '')} to position</label><select id="cu-to-${i}" data-cu-to="${i}">${arr.map((_, j) => `<option value="${j}"${j === i ? ' selected' : ''}>${j < 3 ? `${j + 1} · opening` : j + 1}</option>`).join('')}</select>
+            <button class="st-btn st-btn--small" data-cu="pick" data-i="${i}">Artwork…</button></span>
+          ${pick === i && a ? `<div class="st-cu-pick" role="group" aria-label="Artworks by ${E(a.display_name)}">${open ? '' : `<button type="button" class="st-cu-opt${!it.artwork_id ? ' is-on' : ''}" data-cu="art" data-i="${i}" data-w=""><span class="st-cu-auto">Automatic</span><span>First available work</span></button>`}
+            ${a.works.filter(w2 => w2.eligible).map(w2 => `<button type="button" class="st-cu-opt${it.artwork_id === w2.artwork_id ? ' is-on' : ''}" data-cu="art" data-i="${i}" data-w="${E(w2.artwork_id)}"><img src="/api/admin/featured/image/${E(w2.image.id)}" alt=""><span>${E(w2.title)}</span></button>`).join('') || '<p class="st-muted">No available artwork.</p>'}</div>` : ''}
+          ${i === 2 && arr.length > 3 ? '' : ''}</li>${i === 2 && arr.length > 3 ? '<li class="st-cu-sep" aria-hidden="true">The rest of the gallery</li>' : ''}`; };
+      const prev = arr.map((it, i) => ({ it, i, w: shownOf(it, i), a: A(it.artist_id) })).filter(v => v.a);
+      const op = prev.filter(v => v.i < 3 && v.w), rest = prev.filter(v => v.i >= 3);
+      return `<section class="st-card st-cu"><h2>Curate ${E(x.title)}</h2>
+        <p class="st-muted">One list for the whole ${E(x.title)} page. Places 1–3 are the large opening row; everyone else follows in this order, each once, with the artwork you choose (or their first available work). Saving keeps a private draft; the website changes only when you publish.${prep ? ` <b style="color:var(--ivory);font-weight:500">${E(x.title)} is in preparation: you can arrange it privately; it can be published once the gallery is open.</b>` : ''}</p>
+        ${x.notices.filter(n => n.opening).length ? `<div class="st-sc-alert" role="alert">${x.notices.filter(n => n.opening).map(n => `<p style="margin:0 0 4px"><b>Opening place ${n.position} is empty on the public page:</b> “${E(n.title || '')}” by ${E(n.display_name)}: ${E(n.notice)}. Nothing has been put in its place.</p>`).join('')}</div>` : ''}
+        ${gone.length ? `<p class="st-muted">No longer shown, and left out when you save: ${gone.map(r => E(r.display_name)).join(', ')}.</p>` : ''}
+        ${arr.length ? `<ol class="st-cu-list">${arr.map(row).join('')}</ol>` : '<p class="st-muted">No published members yet.</p>'}
+        <details class="st-cu-prev" open><summary>Preview the whole page</summary>
+          ${op.length ? `<ol class="st-sc-preview n-${op.length}">${op.map(v => `<li><img src="/api/admin/featured/image/${E(v.w.image.id)}" alt=""><p class="st-work-t" style="margin:6px 0 0">${E(v.a.display_name)}</p><p class="st-work-s" style="margin:0"><i>${E(v.w.title)}</i></p></li>`).join('')}</ol>` : '<p class="st-muted">The opening row is empty.</p>'}
+          ${rest.length ? `<p class="st-lab" style="margin:16px 0 6px">Explore the Gallery</p><ol class="st-cu-grid">${rest.map(v => `<li>${v.w && v.w.image ? `<img src="/api/admin/featured/image/${E(v.w.image.id)}" alt="">` : '<span class="st-gm-noimg" aria-hidden="true"></span>'}<p class="st-work-t">${E(v.a.display_name)}</p></li>`).join('')}</ol>` : ''}</details>
+        <div class="st-row st-cu-save"><button type="button" class="st-btn st-btn--small${dirtyC ? ' st-btn--solid' : ''}" data-cu-save${dirtyC ? '' : ' disabled'}>Save draft</button>
+          <button type="button" class="st-btn st-btn--small${!dirtyC && x.unpublished_changes && !prep ? ' st-btn--solid' : ''}" data-cu-publish${dirtyC || prep ? ' disabled' : ''}>Publish…</button>
+          <span class="st-muted">${dirtyC ? 'Unsaved changes.' : x.unpublished_changes ? 'The saved draft differs from the published gallery.' : 'The draft matches the published gallery.'}</span></div></section>`;
+    }
     function loadShow() { const x = SCG(); show = [1, 2, 3].map(p => { const r = x && x.draft.find(d => d.position === p); return r ? { position: p, artist_id: r.artist_id, artwork_id: r.artwork_id, eligible: r.eligible, reason: r.reason, title: r.title } : { position: p, artist_id: '', artwork_id: '' }; }); dirtyS = false; }
     function showcaseCard() {
       const x = SCG(); if (!x) return '';
@@ -1034,7 +1084,7 @@
           <div class="st-row">${x.status !== 'open' ? `<button class="st-btn st-btn--solid st-btn--small" data-status="open">Open ${TITLE[g]}…</button>` : ''}
             ${x.status === 'open' ? '<button class="st-btn st-btn--small" data-status="paused">Pause</button>' : ''}
             ${x.status !== 'in_preparation' ? '<button class="st-btn st-btn--small" data-status="in_preparation">Back to preparation</button>' : ''}</div>`
-        : `<p class="st-muted">Always open. Every artist is a member unless taken out, and every published work appears unless taken out here. Positions 01–25 stay in <a href="/admin/gallery">Gallery order</a>; Artists in Focus stays in <a href="/admin/featured">Featured Artists</a>.</p>
+        : `<p class="st-muted">Always open. Every artist is a member unless taken out, and every published work appears unless taken out here.${CUG() ? ' The order of the page and each artist’s artwork are set in Curate below.' : ' Positions 01–25 stay in <a href="/admin/gallery">Gallery order</a>; Artists in Focus stays in <a href="/admin/featured">Featured Artists</a>.'}</p>
           <p class="st-gm-num"><b>${x.live_artists}</b> published artists · <b>${x.live_works}</b> works</p>`}</section>`;
     }
     function membersCard() {
@@ -1119,14 +1169,30 @@
         <nav class="st-gm-tabs" aria-label="Gallery">${Object.entries(TITLE).map(([k, v]) => { const y = d.galleries.find(z => z.gallery_id === k), n = d.memberships.filter(m => m.gallery_id === k && ['artist_accepted', 'proposed'].includes(m.state)).length + d.placements.filter(p => p.gallery_id === k && ['artist_accepted', 'proposed'].includes(p.state)).length;
           return `<button type="button" data-g="${k}"${k === g ? ' aria-current="true"' : ''}><b>${v}</b><span>${STATUS[y.status]}${n ? ` · <em>${n} waiting</em>` : ''}</span></button>`; }).join('')}</nav>
         ${msg ? `<p class="st-gm-msg st-err" role="alert">${E(msg)}</p>` : ''}
-        ${statusCard(x)}${showcaseCard()}<div class="st-gm-cols"><div>${membersCard()}${orderCard()}</div><div>${worksCard()}${focusCard()}</div></div>${useCard()}`;
+        ${CUG() ? `${statusCard(x)}${curateCard()}<div class="st-gm-cols"><div>${membersCard()}</div><div>${worksCard()}</div></div>${useCard()}`
+          : `${statusCard(x)}${showcaseCard()}<div class="st-gm-cols"><div>${membersCard()}${orderCard()}</div><div>${worksCard()}${focusCard()}</div></div>${useCard()}`}`;
     }
-    async function act(fn, ok) { try { await fn(); d = await api('GET', '/api/admin/galleries'); await loadSc(); load(); loadShow(); msg = ''; say(ok); } catch (e) { msg = e.message; say(e.message, true); } draw(); }
+    async function act(fn, ok) { try { await fn(); d = await api('GET', '/api/admin/galleries'); await loadSc(); load(); loadShow(); loadArr(); msg = ''; say(ok); } catch (e) { msg = e.message; say(e.message, true); } draw(); }
     const confirmTyped = (word, text) => (prompt(`${text}\n\nType ${word} to confirm.`) || '').trim().toUpperCase() === word;
     app.onclick = async e => {
       if (location.pathname.replace(/\/$/, '') !== '/admin/galleries') { app.onclick = null; return; }
       const b = e.target.closest('button'); if (!b || b.disabled || (b.type === 'submit' && b.form)) return;
-      if (b.dataset.g) { if ((dirtyO || dirtyF || dirtyS) && !confirm('Leave without saving the order, Artists in Focus or the showcase draft?')) return; g = b.dataset.g; sessionStorage.setItem('pa-gal', g); msg = ''; inv = { artist_id: '', source: 'founder_curation', application_ref: '' }; load(); loadShow(); return draw(); }
+      if (b.dataset.g) { if ((dirtyO || dirtyF || dirtyS || dirtyC) && !confirm('Leave without saving your changes?')) return; g = b.dataset.g; sessionStorage.setItem('pa-gal', g); msg = ''; inv = { artist_id: '', source: 'founder_curation', application_ref: '' }; load(); loadShow(); loadArr(); return draw(); }
+      if (b.dataset.cu) {
+        const i = +b.dataset.i, x = CUG();
+        if (b.dataset.cu === 'pick') { pick = pick === i ? null : i; return draw(); }
+        if (b.dataset.cu === 'art') { arr[i] = { ...arr[i], artwork_id: b.dataset.w || null }; pick = null; dirtyC = true; return draw(); }
+        const j = b.dataset.cu === 'up' ? i - 1 : i + 1; moveTo(i, j); return draw();
+      }
+      if (b.hasAttribute('data-cu-save')) {
+        const bad = arr.slice(0, 3).find(it => { const a = CUG().artists.find(z => z.artist_id === it.artist_id); return !it.artwork_id || !a || !a.works.some(w => w.eligible && w.artwork_id === it.artwork_id); });
+        if (bad) { msg = 'Each of the three opening places needs an available artwork: choose one with “Artwork…”.'; return draw(); }
+        return act(() => api('PUT', `/api/admin/curation/${g}`, { items: arr.map(it => ({ artist_id: it.artist_id, artwork_id: it.artwork_id || null })) }), 'Draft saved (not published)');
+      }
+      if (b.hasAttribute('data-cu-publish')) {
+        if (!confirm(`Publish this arrangement on the ${TITLE[g]} page? The opening row and the whole gallery order change together, through the usual protected publishing.`)) return;
+        return act(() => api('POST', `/api/admin/curation/${g}/publish`), 'Published: the website updates through the publishing workflow');
+      }
       if (b.dataset.status) {
         const want = b.dataset.status, x = G();
         if (want === 'open') {
@@ -1173,6 +1239,7 @@
       const t = e.target;
       if (t.id === 'gm-src') { inv.source = t.value; app.querySelector('[data-ref]').hidden = t.value !== 'application'; }
       if (t.id === 'gm-who') inv.artist_id = t.value;
+      if (t.dataset.cuTo !== undefined) { moveTo(+t.dataset.cuTo, +t.value); return draw(); }
       if (t.dataset.scA !== undefined) { const i = +t.dataset.scA; show[i] = { position: show[i].position, artist_id: t.value, artwork_id: '' }; dirtyS = true; draw(); }
       if (t.dataset.scW !== undefined) { const i = +t.dataset.scW; show[i] = { ...show[i], artwork_id: t.value, eligible: true, reason: null }; dirtyS = true; draw(); }
       if (t.id === 'gm-focus' && t.value) { const [artist_id, artwork_id] = t.value.split('|'); focus.push({ artist_id, artwork_id }); dirtyF = true; draw(); }
@@ -1195,9 +1262,9 @@
           purpose: v.purpose, channels: v.channels, valid_until: v.valid_until || null }), 'Request sent to the artist’s Studio');
       }
     };
-    addEventListener('beforeunload', e => { if ((dirtyO || dirtyF || dirtyS) && location.pathname.startsWith('/admin/galleries')) { e.preventDefault(); e.returnValue = ''; } });
+    addEventListener('beforeunload', e => { if ((dirtyO || dirtyF || dirtyS || dirtyC) && location.pathname.startsWith('/admin/galleries')) { e.preventDefault(); e.returnValue = ''; } });
     await loadSc();
-    if (d.installed) { load(); loadShow(); }
+    if (d.installed) { load(); loadShow(); loadArr(); }
     draw();
   }
 

@@ -22,7 +22,8 @@ import * as O from './opportunities.js';   // Opportunities & delivery (developm
 import * as G from './galleries.js';   // Three galleries (Phase B, migration 0023): memberships, placements, order, Artists in Focus, image-use consent
 import * as LOC from './location.js';   // Artist location and delivery coverage (Phase C, migration 0025), kept apart
 import * as T from './test-artists.js';
-import * as SC from './showcase.js';   // Gallery Showcase (Report 37, migration 0028): the three opening artworks of each gallery   // internal test artist accounts (26 Nov 2026): TEST_ARTIST_IDS, never published
+import * as SC from './showcase.js';
+import * as CU from './curation.js';   // unified gallery curation (migration 0029): one arrangement per gallery, opening row + the rest   // Gallery Showcase (Report 37, migration 0028): the three opening artworks of each gallery   // internal test artist accounts (26 Nov 2026): TEST_ARTIST_IDS, never published
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
@@ -1280,6 +1281,7 @@ async function route(req, env) {
       const ids = T.testIds(env), rows = ids.length ? await all(env, `SELECT id, slug FROM artists WHERE id IN (${ids.map(() => '?').join(',')})`, ...ids) : [];
       return json({ ok: true, artists: ids.map(id => ({ id, slug: (rows.find(r => r.id === id) || {}).slug || null })) });
     }
+    if (p === '/api/pipeline/gallery-curation' && m === 'GET') return json({ ok: true, ...(await CU.pipeline(env, await HP.published(env, pubSql(env)))) });   // 0029: opening row + the rest, published and eligible only
     if (p === '/api/pipeline/gallery-showcase' && m === 'GET') return json({ ok: true, ...(await SC.pipeline(env, await HP.published(env, pubSql(env)))) });   // Report 37: published, eligible positions only
     if (p === '/api/pipeline/galleries' && m === 'GET') return json({ ok: true, ...(await G.pipeline(env, await HP.published(env, pubSql(env)))) });   // Phase B: read-only, public identifiers   // gallery address + artwork id only
     // the earlier homepage route, kept only so a publisher from before this release keeps working (it now receives artists only)
@@ -1435,6 +1437,15 @@ async function route(req, env) {
     // Gallery Showcase (Report 37): founder-only; drafts never publish; Publish copies the draft and starts the protected
     // publishing workflow. Independent of Artists in Focus and Gallery order.
     if (p === '/api/admin/showcase' && m === 'GET') return json({ ok: true, ...(await SC.view(env, await HP.published(env, pubSql(env)))) });
+    // Unified curation (0029): one arrangement per gallery; the separate showcase writes are closed once it is installed,
+    // so the opening row and the rest are only ever saved and published together.
+    if (p === '/api/admin/curation' && m === 'GET') return json({ ok: true, ...(await CU.view(env, await HP.published(env, pubSql(env)))) });
+    if ((mm = p.match(/^\/api\/admin\/curation\/([a-z]+)$/)) && m === 'PUT') return json({ ok: true, ...(await CU.saveDraft(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, pubSql(env)))) });
+    if ((mm = p.match(/^\/api\/admin\/curation\/([a-z]+)\/publish$/)) && m === 'POST') {
+      const r = await CU.publish(env, me.email, mm[1], await HP.published(env, pubSql(env)));
+      return json({ ok: true, ...r, publish: await requestGalleryPublish(env) });
+    }
+    if (p.startsWith('/api/admin/showcase/') && ['PUT', 'POST'].includes(m) && await CU.installed(env)) throw new Bad('The opening row is now part of Curate: arrange the whole gallery there', 409);
     if ((mm = p.match(/^\/api\/admin\/showcase\/([a-z]+)$/)) && m === 'PUT') return json({ ok: true, ...(await SC.saveDraft(env, me.email, mm[1], await req.json().catch(() => null), await HP.published(env, pubSql(env)))) });
     if ((mm = p.match(/^\/api\/admin\/showcase\/([a-z]+)\/publish$/)) && m === 'POST') {
       const r = await SC.publish(env, me.email, mm[1], await HP.published(env, pubSql(env)));

@@ -131,19 +131,12 @@ def layout():
     return {"positions": r.get("positions", []), "extra": r.get("extra", [])}
 
 
-def regrid(lay=None, selection=None):
-    """Rebuild the Artists' Gallery from the published galleries: Featured Artists first (the founder's selection, or the
-    page's current one), then Explore More Artists, which leaves out whoever is featured (17 Nov 2026), so an artist who
-    is featured, unfeatured, withdrawn or newly published is always shown exactly once."""
-    pkgs = P.gallery_order(published())
-    FEAT.refresh(ROOT, pkgs, selection, SHOWCASE)
-    html = open(VG, encoding="utf-8").read()
-    span = P.vg_region(html)
-    if not span:
-        raise RuntimeError("the Virtual Gallery collection region was not found")
-    lay = layout() if lay is None else lay
-    shown = [x["artist"] for x in FEAT.selection_in(html)]
-    open(VG, "w", encoding="utf-8").write(html[:span[0]] + P.vg_collection(pkgs, layout=lay, featured=shown) + html[span[1]:])
+def regrid(arr=None):
+    """Rebuild the Contemporary gallery page from the published galleries and the founder's arrangement (one curated
+    gallery, 26 Nov 2026): the opening row, then Explore the Gallery, each artist once. With no arrangement from the
+    Studio this run, the page's own arrangement is kept (so withdrawn or unpublished work drops out, and newly published
+    artists are added at the end, on every publication)."""
+    FEAT.refresh(ROOT, published(), ARRANGEMENT if arr is None else arr)
 
 
 def records(slug, new):
@@ -296,8 +289,8 @@ def main():
         test_accounts_consistent()
     except G.Refused as e:
         sys.exit("REFUSED: %s" % e)
-    global SHOWCASE
-    SHOWCASE = showcase_selection()
+    global ARRANGEMENT
+    ARRANGEMENT = arrangement()
     items = call("GET", "/api/pipeline/queue")["items"]
     failed = 0
     for q in items:
@@ -308,8 +301,7 @@ def main():
                 break
             print("PLOTART CONTENT · %s v%d · main moved during the release: rebuilding on the new main (attempt %d of %d)"
                   % (q["artist_id"], q["version"], n + 1, REBUILDS), flush=True)
-    failed += with_rebuilds("gallery order", order_sync)
-    failed += with_rebuilds("featured artists", featured_sync)
+    failed += with_rebuilds("gallery arrangement", curation_sync)
     if not items:
         print("PLOTART CONTENT · nothing to publish")
     return 1 if failed else 0
@@ -340,7 +332,7 @@ def publish_item(q, final=True):
             sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
             C.refresh(ROOT, published())
             OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
-            FEAT.refresh(ROOT, published(), None, SHOWCASE)    # Featured Artists and the Gallery Showcase: the founder's current choices, published work only
+            regrid()                            # the founder's arrangement: opening row and Explore the Gallery, published work only
     except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
         why = "refused: %s: %s" % (type(e).__name__, e)
     if why is None:
@@ -373,95 +365,11 @@ def publish_item(q, final=True):
     return 0, False
 
 
-def order_sync(final=True):
-    """Gallery order (31 Oct 2026): after the queue, rebuild the Virtual Gallery grid from the founder's order. If only
-    the grid changed (a move, reservation or release), commit it as a content-only update, run every guard and push
-    exactly as for a gallery. Nothing changes when the order is unchanged."""
-    moved = False
-    if git("status", "--porcelain"):
-        return 0, False
-    if PUSH:
-        git("fetch", "-q", "origin", "main")
-        git("reset", "-q", "--hard", "origin/main")
-    base = git("rev-parse", "HEAD")
-    try:
-        lay = layout()
-        if lay is None:
-            return 0, False
-        regrid(lay)
-    except Exception as e:                           # noqa: BLE001
-        subprocess.run(["git", "checkout", "-q", "--", "plotart/gallery/index.html"], cwd=ROOT)
-        print("PLOTART CONTENT · gallery order · FAILED · %s" % e)
-        return 1, False
-    if not git("status", "--porcelain"):
-        return 0, False
-    git("add", "plotart/gallery/index.html")
-    git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
-        "PlotArt content: Virtual Gallery order (founder's Gallery order in PlotArt Studio)")
-    why = guards(base, False)
-    if why is None and PUSH:
-        ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-gallery-order-%s" % git("rev-parse", "--short", "HEAD"))
-        ok2, o2 = release("plotart-gallery-order") if ok1 else (False, "")
-        if not (ok1 and ok2):
-            why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
-            moved = ok1 and main_advanced(o2, base)
-    sha = git("rev-parse", "HEAD")
-    if why:
-        subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
-        if moved and not final:
-            print("PLOTART CONTENT · ancestry guard: %s" % guard_line(o2), flush=True)
-            return 1, True
-    try:
-        call("POST", "/api/pipeline/gallery-order/result", {"status": "failed" if why else "published",
-             "detail": (why or "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else ""))[:1900]})
-    except Exception:                                # noqa: BLE001 - the record is best-effort; the commit stands or was dropped
-        pass
-    print("PLOTART CONTENT · gallery order · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
-    return (1, moved) if why else (0, False)
-
-
-SHOWCASE = None   # the founder's published Gallery Showcase for Contemporary (Report 37), read once per run
-
-
-def showcase_selection():
-    """The founder's published Gallery Showcase for Contemporary from PlotArt Studio (Report 37, migration 0028): its
-    eligible published positions, left to right (gallery address and artwork id only). A Studio without the route (404) or
-    without the table means: keep what the page shows. Only the founder's Publish in the Studio changes it; a routine
-    artist publication re-renders the same choice and leaves out a place whose work is no longer eligible."""
-    try:
-        r = call("GET", "/api/pipeline/gallery-showcase")
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        raise
-    if not r.get("installed"):
-        return None
-    g = next((x for x in r.get("galleries", []) if x.get("gallery") == "contemporary"), None)
-    if g is None or g.get("status") != "open":
-        return None
-    return [{"artist": i["artist"], "work": i["work"]} for i in sorted(g.get("items", []), key=lambda i: i.get("position", 0))]
-
-
-def featured_selection():
-    """The founder's Featured Artists selection from PlotArt Studio (Review Desk "Featured Artists"; migration 0016's
-    table, unchanged): gallery addresses and artwork ids only. A Studio without the route (404), or without the table
-    yet, means nothing to change."""
-    try:
-        r = call("GET", "/api/pipeline/featured-artists")
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        raise
-    if not r.get("installed"):
-        return None
-    return FEAT.check_selection(r.get("items", []))
-
-
-def featured_sync(final=True):
-    """Featured Artists (17 Nov 2026; moved from the homepage): after the queue and the gallery order, re-render the
-    Featured Artists region of the Artists' Gallery from the founder's selection and the published galleries. Only that
-    region can change (content boundary, launch guard L20); the complete collection below is not touched. It is
-    committed, guarded and released exactly like the gallery order. Nothing happens when nothing changed."""
+def curation_sync(final=True):
+    """The founder's arrangement (Curate in PlotArt Studio; before migration 0029, the Gallery Showcase, Gallery order and
+    Artists in Focus artworks): after the queue, re-render the Contemporary gallery page. Only its two generated regions
+    may change (content boundary, launch guard). Committed, guarded and released like a gallery; nothing happens when
+    nothing changed."""
     page = "plotart/" + FEAT.PAGE
     moved = False
     if git("status", "--porcelain"):
@@ -471,37 +379,27 @@ def featured_sync(final=True):
         git("reset", "-q", "--hard", "origin/main")
     base = git("rev-parse", "HEAD")
     try:
-        sel = featured_selection()
-        if sel is None:
+        if ARRANGEMENT is None:
             return 0, False
         before = open(os.path.join(ROOT, page), encoding="utf-8").read()
-        lay = layout()
-        if lay is None:                    # no Gallery order from the Studio: the page cannot be rebuilt safely
-            return 0, False
-        regrid(lay, sel)                   # Featured Artists, then Explore More Artists without them (17 Nov 2026)
+        regrid()
         after = open(os.path.join(ROOT, page), encoding="utf-8").read()
-        # only the two generated regions may change: nothing else on the page, and never an artist's position. The public
-        # positions index was removed (21 Nov 2026), so the positions are read from the wall (each work's data-pa-position
-        # since 23 Nov 2026, when the visible numerals were removed): any artist positioned on the wall both before and
-        # after must keep the same position.
         blank = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
-        nums = lambda d: P.wall_positions(d[slice(*P.vg_region(d))])
-        moved = lambda b, a: any(s in b and b[s] != n for s, n in a.items())
-        if P.vg_region(before) is None or blank(before) != blank(after) or moved(nums(before), nums(after)):
-            raise ValueError("the Featured Artists update would change the page outside its two regions or the positions")
+        if P.vg_region(before) is None or blank(before) != blank(after):
+            raise ValueError("the arrangement update would change the page outside its two generated regions")
     except Exception as e:                           # noqa: BLE001
         subprocess.run(["git", "checkout", "-q", "--", page], cwd=ROOT)
-        print("PLOTART CONTENT · featured artists · FAILED · %s" % e)
+        print("PLOTART CONTENT · gallery arrangement · FAILED · %s" % e)
         return 1, False
     if not git("status", "--porcelain"):
         return 0, False
     git("add", page)
     git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
-        "PlotArt content: Featured Artists (founder's selection in PlotArt Studio)")
+        "PlotArt content: gallery arrangement (founder's Curate in PlotArt Studio)")
     why = guards(base, False)
     if why is None and PUSH:
-        ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-featured-%s" % git("rev-parse", "--short", "HEAD"))
-        ok2, o2 = release("plotart-featured") if ok1 else (False, "")
+        ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-arrangement-%s" % git("rev-parse", "--short", "HEAD"))
+        ok2, o2 = release("plotart-arrangement") if ok1 else (False, "")
         if not (ok1 and ok2):
             why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
             moved = ok1 and main_advanced(o2, base)
@@ -511,8 +409,62 @@ def featured_sync(final=True):
         if moved and not final:
             print("PLOTART CONTENT · ancestry guard: %s" % guard_line(o2), flush=True)
             return 1, True
-    print("PLOTART CONTENT · featured artists · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
+    try:   # the live Studio before 0029 records the outcome on its Gallery order desk (best-effort)
+        call("POST", "/api/pipeline/gallery-order/result", {"status": "failed" if why else "published",
+             "detail": (why or "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else ""))[:1900]})
+    except Exception:                                # noqa: BLE001
+        pass
+    print("PLOTART CONTENT · gallery arrangement · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
     return (1, moved) if why else (0, False)
+
+
+ARRANGEMENT = None   # the founder's arrangement for Contemporary, read once per run
+
+
+def _get(path):
+    try:
+        return call("GET", path)
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None
+        raise
+
+
+def arrangement():
+    """The founder's arrangement for Contemporary, as gallery addresses and artwork ids only.
+    - A Studio with unified curation (migration 0029): GET /api/pipeline/gallery-curation (published stage; opening places
+      whose work is not eligible are absent, and their artists are listed as held).
+    - The live Studio before 0029 (the route answers 404): the same arrangement migration 0029 sets up, composed from the
+      published Gallery Showcase (the opening row), the Gallery order (everyone else, in order, the opening artists left
+      out) and the Artists in Focus artworks for those artists.
+    - Neither available: None (the page keeps the arrangement it shows)."""
+    r = _get("/api/pipeline/gallery-curation")
+    if r is not None and r.get("installed"):
+        g = next((x for x in r.get("galleries", []) if x.get("gallery") == "contemporary"), None)
+        if g is None or g.get("status") != "open":
+            return None
+        return FEAT.check_arrangement({"opening": sorted(g.get("opening", []), key=lambda i: i.get("position", 0)),
+                                       "rest": g.get("rest", []), "held": g.get("held", [])})
+    lay = layout()
+    if lay is None:
+        return None
+    sc = _get("/api/pipeline/gallery-showcase")
+    g = next((x for x in (sc or {}).get("galleries", []) if x.get("gallery") == "contemporary"), None) if (sc or {}).get("installed") else None
+    if g is not None and g.get("status") == "open":
+        opening = [{"artist": i["artist"], "work": i["work"]} for i in sorted(g.get("items", []), key=lambda i: i.get("position", 0))]
+    else:
+        doc = open(os.path.join(ROOT, "plotart", FEAT.PAGE), encoding="utf-8").read()
+        opening = FEAT.arrangement_in(doc)["opening"]
+    feat = _get("/api/pipeline/featured-artists")
+    works = {i["artist"]: i["work"] for i in (feat or {}).get("items", [])} if (feat or {}).get("installed") else {}
+    first = {o["artist"] for o in opening}
+    order = [e["slug"] for e in sorted(lay["positions"], key=lambda e: int(e["position"])) if e.get("slug")] + list(lay.get("extra", []))
+    seen, rest = set(first), []
+    for s in order:
+        if s not in seen:
+            seen.add(s)
+            rest.append({"artist": s, "work": works.get(s)})
+    return FEAT.check_arrangement({"opening": opening, "rest": rest, "held": []})
 
 
 if __name__ == "__main__":

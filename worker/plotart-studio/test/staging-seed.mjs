@@ -17,7 +17,12 @@ export async function seedStaging(db, { ROOT, snapshot }) {
   // is a list item like the others, so it is added only when the page does not already carry it
   const listed = [...vg.matchAll(/<li class="pa-vgc-work" data-pa-position="(\d\d)">[\s\S]*?href="\.\.\/artists\/([a-z0-9-]+)\/"/g)].map(m => [m[1], m[2]]);
   const positions = [...(listed.some(([p]) => p === '01') ? [] : [['01', 'leah-hewson']]), ...listed];
-  const featured = JSON.parse(execFileSync('python3', ['-c', 'import sys,json; sys.path.insert(0,"atlas-tools"); import plotart_featured as F; print(json.dumps(F.selection_in(open("plotart/gallery/index.html").read())))'], { cwd: ROOT, encoding: 'utf8' }));
+  // One curated gallery (26 Nov 2026): the page no longer carries founding positions or a separate Artists in Focus. When
+  // it carries the unified arrangement, the staging positions follow its order (opening row first) and the Artists in
+  // Focus records are the cards whose artwork the founder chose (as migration 0029 set them up from those records).
+  const arr = JSON.parse(execFileSync('python3', ['-c', 'import sys,json; sys.path.insert(0,"atlas-tools"); import plotart_featured as F; d=open("plotart/gallery/index.html").read(); print(json.dumps(F.arrangement_in(d) if "data-pa-curated" in d else None))'], { cwd: ROOT, encoding: 'utf8' }));
+  if (arr && !listed.length) { positions.length = 0; [...arr.opening, ...arr.rest].slice(0, 25).forEach((x, i) => positions.push([String(i + 1).padStart(2, '0'), x.artist])); }
+  const featured = arr ? arr.rest.filter(x => x.work).slice(0, 6) : JSON.parse(execFileSync('python3', ['-c', 'import sys,json; sys.path.insert(0,"atlas-tools"); import plotart_featured as F; print(json.dumps(F.selection_in(open("plotart/gallery/index.html").read())))'], { cwd: ROOT, encoding: 'utf8' }));
 
   const L = { snapshot };
   let shownWorks = 0;

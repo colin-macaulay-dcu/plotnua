@@ -36,8 +36,10 @@ check('H1 the founder sees only published galleries, their shown works with a ma
   r.j.galleries[0].works.length === 3 && typeof r.j.galleries[0].intro === 'string' && !r.t.includes('Draft work') && !r.t.includes('unpub'), r.t);
 r = await call('GET', '/admin/featured', FOUNDER);
 const old = await mf.dispatchFetch(url + '/admin/homepage', { redirect: 'manual', headers: { 'Cf-Access-Jwt-Assertion': token(FOUNDER) } }).then(x => ({ s: x.status, loc: x.headers.get('location') || '' }));
-check('H2 the Review Desk tab is now "Featured Artists" (no "Homepage" tab); its earlier address redirects to it',
-  r.s === 200 && r.t.includes('href="/admin/featured" data-t="feat">Featured Artists</a>') && !r.t.includes('>Homepage</a>') && old.s === 302 && old.loc.endsWith('/admin/featured'), `${r.s} ${old.s} ${old.loc}`);
+// 26 Nov 2026: one curated gallery (Galleries -> Curate) replaces the Featured Artists tab; the desk itself still answers
+// at its address (its records are kept) and the earlier address still redirects to it
+check('H2 the Featured Artists desk still answers at its address (tab retired with unified curation); its earlier address redirects to it',
+  r.s === 200 && !r.t.includes('data-t="feat">Featured Artists</a>') && !r.t.includes('>Homepage</a>') && r.t.includes('data-t="gals">Galleries</a>') && old.s === 302 && old.loc.endsWith('/admin/featured'), `${r.s} ${old.s} ${old.loc}`);
 
 // H3 select, order, save: artists only, each with the artwork the founder chose
 const F = (a, w) => ({ artist_id: a, artwork_id: w });
@@ -157,7 +159,7 @@ const ddl = s => s.slice(s.indexOf('CREATE TABLE IF NOT EXISTS homepage_features
 check('H18 migration 0016 creates only homepage_features, exactly as schema.sql declares it', ddl(mig).length > 50 && ddl(mig) === ddl(schema) && (mig.match(/CREATE TABLE/g) || []).length === 1 && !/ALTER|DROP TABLE (?!homepage)|UPDATE |DELETE /.test(mig.split('@@DDL-BEGIN')[1].split('@@DDL-END')[0]));
 
 // H19 a Studio without the migration: the Featured Artists view says so and saving is refused, everything else unaffected
-const { mf: mf2, url: url2, db: db2 } = await start({ port: 8799, schemaSql: schema.replace(/CREATE TABLE IF NOT EXISTS homepage_features[\s\S]*?\);\n/, '') });
+const { mf: mf2, url: url2, db: db2 } = await start({ port: 8799, schemaSql: schema.split(/\n-- PlotArt Studio · migration 0029\b/)[0].replace(/CREATE TABLE IF NOT EXISTS homepage_features[\s\S]*?\);\n/, '') });   // (0029 reads homepage_features once, so it is left out with it)
 const c2 = async (m, b) => { const x = await mf2.dispatchFetch(url2 + '/api/admin/featured', { method: m, headers: { 'X-Studio': '1', 'Content-Type': 'application/json', 'Cf-Access-Jwt-Assertion': token(FOUNDER) }, body: b && JSON.stringify(b) }); return { s: x.status, j: await x.json().catch(() => ({})) }; };
 const g2 = await c2('GET'), s2 = await c2('PUT', { items: [] });
 const pp2 = await mf2.dispatchFetch(url2 + '/api/pipeline/featured-artists', { headers: { Authorization: 'Bearer ' + PIPELINE_TOKEN } }).then(x => x.json());
@@ -176,7 +178,7 @@ await mf2.dispose();
   // (the Studio's CSP forbids eval, so poll from here rather than with waitForFunction)
   const saveNow = async () => { await pg.click('#hp-save'); for (let n = 0; n < 100 && !/^Saved/.test(await pg.textContent('#hp-state')); n++) await pg.waitForTimeout(100); };
   await pg.goto(url + '/admin/featured'); await pg.waitForSelector('[data-artist="abri"]');
-  const tab = await pg.$eval('.st-tabs a[aria-current]', a => a.textContent);
+  const tab = await pg.$$eval('.st-tabs a[aria-current]', a => a.length ? a[0].textContent : '(no tab: retired 26 Nov 2026)');
   await pg.click('[data-artist="abri"]');
   const offered = await pg.$$eval('[data-rep]', bs => bs.map(b => b.dataset.rep));
   const added = await pg.$$eval('.st-fa-card', c => c.length);
@@ -193,8 +195,8 @@ await mf2.dispose();
   const removed = (await call('GET', '/api/admin/featured', FOUNDER)).j.items.map(i => `${i.artist_id}/${i.artwork_id}`);
   const grid = await pg.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
   await br.close();
-  check('H20 in the Review Desk ("Featured Artists" tab): "Feature artist" offers only that artist\'s published works and adds nothing until one is chosen; a featured artist cannot be added twice; reorder, replace, change artwork, preview (eyebrow, heading, introduction, credit, View Gallery), save and remove all work; no sideways scrolling',
-    tab === 'Featured Artists' && offered.join() === 'wabri1,wabri2' && added === 0 && dupDisabled &&
+  check('H20 in the Review Desk (Featured Artists desk, reached by its address since its tab was retired 26 Nov 2026): "Feature artist" offers only that artist\'s published works and adds nothing until one is chosen; a featured artist cannot be added twice; reorder, replace, change artwork, preview (eyebrow, heading, introduction, credit, View Gallery), save and remove all work; no sideways scrolling',
+    tab === '(no tab: retired 26 Nov 2026)' && offered.join() === 'wabri1,wabri2' && added === 0 && dupDisabled &&
     /Selected by PlotArt.*Featured Artists.*A changing selection of artists and their work\./.test(preview.head) &&
     preview.cards.length === 2 && /Cara Test is a synthetic test artist/.test(preview.cards[0]) && /Work 2.*Cara Test/.test(preview.cards[0]) && /View Gallery/.test(preview.cards[1]) &&
     saved.join() === 'acar/wacar2,adar/wadar1' && removed.join() === 'adar/wadar1' && grid && !errs.length,

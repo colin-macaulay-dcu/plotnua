@@ -219,8 +219,8 @@ def outside_grid(raw):
     if raw.count(VG_BEGIN) != 1 or raw.count(VG_END) != 1 or not 0 <= a < b:
         return raw
     raw = raw[:a] + VG_BEGIN + b"<!-- collection -->" + raw[b:]
-    # Featured Artists (17 Nov 2026): the founder's selection above the collection is generated too; its content is
-    # checked by L20. Without exactly one pair of its markers the page is returned unchanged (never matches the pin).
+    # The opening row (one curated gallery, 26 Nov 2026) above the collection is generated too; its content is checked
+    # by L20. Without exactly one pair of its markers the page is returned unchanged (never matches the pin).
     try:
         return FEAT.outside(raw.decode()).encode()
     except ValueError:
@@ -510,72 +510,67 @@ if vg:
     _ra, _rb = vg.find(VG_BEGIN.decode()), vg.find(VG_END.decode())
     _region = vg[_ra:_rb] if (vg.count(VG_BEGIN.decode()) == 1 and vg.count(VG_END.decode()) == 1 and 0 <= _ra < _rb) else ""
     need(bool(_region), "L11 the Virtual Gallery collection region (pa-vg-collection markers) is missing or duplicated")
-    _hang_m = re.search(r'\n  <ol class="pa-vgc-hang n-([123])" aria-label="Open galleries">(.*?)\n  </ol>', _region, re.S)
-    # 23 Nov 2026 (founder brief): no number beside the artist's name. A work's founding position is data-pa-position on
-    # its <li> (never shown or announced); the label is the name, the practice line and "Enter the gallery" only.
-    _works = re.findall(r'\n    <li class="pa-vgc-work"(?: data-pa-position="(\d\d)")?>(.*?)</li>', _hang_m.group(2), re.S) if _hang_m else []
-    need(not _hang_m or len(re.findall(r"<li\b", _hang_m.group(2))) == len(_works), "L11 the wall holds something other than open galleries")
-    need(not re.search(r'pa-vgc-n\b|<span class="pa-vgc-sr">Position', _region),
-         "L11 the Artists' Gallery shows position numbers beside artist names again (removed 23 Nov 2026)")
-    _cards, _wnums, _bad_work = [], [], []
-    for _pn, _w in _works:
-        _m = re.search(r'<div class="pa-vgc-label"><h3 class="pa-vgc-name">'
-                       r'<a href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist">([^<]+)</a></h3>', _w)
-        if not _m:
-            _bad_work.append(_w[:80]); continue
-        _cards.append(_m.group(1)); _wnums.append(int(_pn) if _pn else None)
+    # One curated gallery (founder approval 26 Nov 2026): below the opening row, "Explore the Gallery" introduces every
+    # other artist with the editorial card (artwork, title and year, photo credit, name, practice and public location,
+    # a short introduction from their own biography, View Gallery), in the founder's order, each artist ONCE across the
+    # opening row and the cards. No position numbers, no Founding positions index, no prices.
+    _gl = re.search(r'\n  <ol class="pa-fa-list pa-gl n-([123])" aria-label="Artists in the gallery">(.*?)\n  </ol>', _region, re.S)
+    _items = re.findall(r'\n    <li class="pa-fa-item( is-textonly)?" data-pa-curated="([a-z0-9-]+):([a-z0-9]+)">(.*?)</li>', _gl.group(2), re.S) if _gl else []
+    need(not _gl or len(re.findall(r"<li\b", _gl.group(2))) == len(_items), "L11 the gallery holds something other than artist cards")
+    need(not re.search(r'pa-vgc-n\b|<span class="pa-vgc-sr">Position|data-pa-position', _region),
+         "L11 the gallery shows or carries position numbers again (removed 23 Nov 2026; the founder's arrangement orders it)")
+    _cards, _bad_work, _textonly = [], [], 0
+    for _to, _sl, _ch, _w in _items:
+        _cards.append(_sl)
         _imgs = re.findall(r"<img\b[^>]*>", _w)
-        _empty = '<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>' in _w
-        _own = re.compile(r"\.\./artists/%s/img/[a-z0-9-]+\.webp" % re.escape(_m.group(1)))
+        _own = re.compile(r"\.\./artists/%s/img/[a-z0-9-]+\.webp" % re.escape(_sl))
         _urls = []
         for t in _imgs:
             _src = re.search(r'\ssrc="([^"]*)"', t); _set = re.search(r'\ssrcset="([^"]*)"', t)
             _urls += [_src.group(1) if _src else ""] + ([x.strip().split(" ")[0] for x in _set.group(1).split(",")] if _set else [])
-        if len(_imgs) != (0 if _empty else 1) or _w.count('<a ') != 1 or not all(_own.fullmatch(u) for u in _urls):
-            _bad_work.append(_m.group(1))
-    need(_hang_m is not None or not GALLERY_SLUGS, "L11 the Virtual Gallery has published galleries but no wall of open galleries")
-    need(not _hang_m or int(_hang_m.group(1)) == min(len(_works), 3), "L11 the wall's size class does not match the number of open galleries")
-    need(not _bad_work, "L11 an open gallery on the wall is malformed, links elsewhere or shows another artist's image (%s)" % _bad_work)
-    # The public "Founding positions" index was removed on 21 Nov 2026 (founder brief: a public presentation change only;
-    # the founding records, numbers, agreements and the Studio's Gallery order are unchanged). It must not return, and
-    # the wall's positions (data-pa-position since 23 Nov 2026) must still be a clean founding order: each 01-25, each used once, ascending, every
-    # numbered gallery before any gallery without a position.
+        _links = re.findall(r'href="([^"]*)"', _w)
+        _textonly += bool(_to)
+        if len(_imgs) != (0 if _to else 1) or not all(_own.fullmatch(u) for u in _urls) \
+                or not _links or not all(re.fullmatch(r"\.\./artists/%s/(?:[a-z0-9-]+\.html)?" % re.escape(_sl), h) for h in _links):
+            _bad_work.append(_sl)
+    need(_gl is not None or not GALLERY_SLUGS, "L11 the gallery has published artists but no artist cards")
+    need(not _gl or int(_gl.group(1)) == min(len(_items), 3), "L11 the gallery's size class does not match the number of cards")
+    need(not _bad_work, "L11 an artist card is malformed, links elsewhere or shows another artist's image (%s)" % _bad_work)
     need(not re.search(r'pa-vgc-(index|plan|pos|line|key)\b|vgIdxH', vg) and "Founding positions" not in vgv
          and not re.search(r"\b(twenty-five|25) (numbered )?positions\b", vgv, re.I),
          "L11 the Artists' Gallery shows the founding positions index again (removed from public view 21 Nov 2026)")
-    _numbered = [(n, s) for n, s in zip(_wnums, _cards) if n is not None]
-    _ns = [n for n, _ in _numbered]
-    need(all(1 <= n <= 25 for n in _ns) and _ns == sorted(set(_ns)) and all(n is None for n in _wnums[len(_numbered):]),
-         "L11 the wall's positions are out of order, repeated, outside 01-25, or follow a gallery without a position")
-    # the "N of 25 galleries open" counter and the twenty-five-gallery heading were removed (founder brief 17 Nov 2026)
     need("pa-vgc-count" not in vg and not re.search(r"\d+ of 25 galleries", vgv), "L11 the Artists' Gallery still shows the 25-gallery counter")
     need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
-    # Explore More Artists (17 Nov 2026): the wall is every published gallery EXCEPT the artists featured above it, so the
-    # two sections together show each published artist exactly once
+    # every published artist exactly once: the opening row, then the cards; an artist whose opening place is empty (held)
+    # is the only one left out, and only while held
     try:
-        _featured = sorted({x["artist"] for x in FEAT.selection_in(vg)})
+        _arr = FEAT.arrangement_in(vg)
+        _opening = [x["artist"] for x in _arr["opening"]]; _held = _arr["held"]
     except ValueError:
-        _featured = []
-    need(sorted(_cards) == sorted(set(GALLERY_SLUGS) - set(_featured)) and len(set(_cards)) == len(_cards),
-         "L11 the wall must show every published artist gallery except the featured artists (wall %s, galleries %s, featured %s)" % (_cards, GALLERY_SLUGS, _featured))
-    # the collection checks below look at the page without the Featured Artists region above it (checked by L20)
+        _opening, _held = [], []
+        need(False, "L11 the Contemporary gallery's opening row or collection region is missing or duplicated")
+    _all = _opening + _cards
+    need(len(set(_all)) == len(_all) and sorted(set(_all) | set(_held)) == sorted(GALLERY_SLUGS) and not set(_held) & set(_all),
+         "L11 the gallery must introduce every published artist exactly once (opening %s, cards %s, held %s, galleries %s)" % (_opening, _cards, _held, GALLERY_SLUGS))
     try:
         _vg_nf = FEAT.outside(vg)
     except ValueError:
         _vg_nf = vg
-        need(False, "L11 the Artists' Gallery Featured Artists region (pa-featured-artists markers) is missing or duplicated")
     _vgm = _vg_nf.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
-    need('<p class="pa-eyebrow">Explore the collection</p><h2 id="vgColH">Explore More Artists</h2>' in vg and "twenty-five galleries" not in vgv,
-         "L11 the Artists' Gallery collection heading is not the approved wording (Explore the collection / Explore More Artists, 17 Nov 2026)")
+    need('<h2 id="vgColH">Explore the Gallery</h2>' in vg and "Explore More Artists" not in vgv and "Artists in Focus" not in vgv and "twenty-five galleries" not in vgv,
+         "L11 the gallery heading is not the approved wording (Explore the Gallery, 26 Nov 2026; Artists in Focus retired)")
+    _vgall = vg.split("<main", 1)[-1].split("</main>")[0]
+    need(not re.search(r"€|\bEUR\b|Price on request|\bprice\b|\bsold\b|\bcm\b", re.sub(r"\s+", " ", visible_text(_vgall)), re.I),
+         "L11 the gallery overview shows prices or sale details (they stay in the artists' galleries and Browse All Artworks)")
     _vgimgs = re.findall(r"<img\b[^>]*>", _vgm)
     # A published gallery with no works on show keeps its place with the empty state and no picture (founder decision
     # 1 Nov 2026): one picture per open gallery, except those. Every picture is a published artist's own work image.
-    _empty_cards = _vgm.count('<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>')
-    need(not re.search(r"<picture\b|<svg\b|background-image|url\(", _vgm) and len(_vgimgs) == len(_cards) - _empty_cards and
+    need(not re.search(r"<picture\b|<svg\b|background-image|url\(", _vgm) and len(_vgimgs) == len(_cards) - _textonly and
          all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
          "L11 the Virtual Gallery shows an image other than a published artist's own work image")
-    need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(_vgm), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
+    # (artwork titles in the cards' credit lines are the artists' own titles and may carry quotation marks)
+    need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(re.sub(r"<figcaption\b.*?</figcaption>", " ", _vgm, flags=re.S)), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
     # search title changed by the founder for the three-gallery Phase A (24 Nov 2026); the address /plotart/gallery/ is unchanged
     need("<title>Contemporary Irish Art Gallery | PlotArt</title>" in vg and vg.count("Contemporary Irish Art Gallery | PlotArt") == 3,
          "L11 the Contemporary Art gallery's search title (title, og:title, twitter:title) is not the approved one")
@@ -1145,34 +1140,27 @@ for _rel in OPP.PAGES:
         for _s in re.findall(r'href="(?:\.\./)*artists/([a-z0-9-]+)/"', OPP.REGION.search(open(_fp, encoding="utf-8").read()).group(0)):
             need(_s in _slugs, "L19 %s lists an artist whose gallery is not published: %s" % (_rel, _s))
 
-# L20 · Featured Artists in the Artists' Gallery (founder brief 17 Nov 2026; moved from the homepage): the region is
-# exactly what its own selection renders from the published galleries (at most six, each artist once; every image is a
-# published derivative of a main photograph shown in that artist's gallery; text only from the published package), every
-# link goes to a published gallery or artwork page, and every featured artist is ALSO in the complete collection below.
+# L20 · the Contemporary gallery (one curated gallery, founder approval 26 Nov 2026): both generated regions are exactly
+# what the page's own arrangement renders from the published galleries (the opening row: at most three, each the
+# founder's work while eligible, never a substitute; then every other artist once, with their chosen or first eligible
+# work); every image is a published derivative in that artist's gallery; every link goes to a published gallery or
+# artwork page; and nothing outside the regions changes (pinned by the manifest).
 _gp = os.path.join(PA, FEAT.PAGE)
 if os.path.exists(_gp):
     _doc = open(_gp, encoding="utf-8").read()
     try:
-        _sel = FEAT.selection_in(_doc)
-        need(_doc == FEAT.update(_doc, _sel, _pk), "L20 gallery/index.html: Featured Artists differs from what its selection renders from the published galleries")
+        need(FEAT.consistent(_doc, _pk), "L20 gallery/index.html: the gallery differs from what its arrangement renders from the published galleries")
         _reg = FEAT.region(_doc)
-        need(_doc.index(FEAT.FEAT_END) < _doc.index(VG_BEGIN.decode()), "L20 gallery/index.html: Featured Artists must sit above the complete collection")
-        for _s, _f in re.findall(r'src="\.\./artists/([a-z0-9-]+)/img/([a-z0-9-]+\.webp)"', _reg):
-            need(os.path.exists(os.path.join(PA, "artists", _s, "img", _f)), "L20 gallery/index.html: a featured image is not a published file: %s/%s" % (_s, _f))
-        for _h in re.findall(r'href="\.\./(artists/[^"]+)"', _reg):
-            need(os.path.exists(os.path.join(PA, _h + ("index.html" if _h.endswith("/") else ""))), "L20 gallery/index.html: a featured link goes nowhere: " + _h)
-        # Browse All Artworks (21 Nov 2026): besides the artists' galleries, exactly one link, to the All Artworks page
+        need(_doc.index(FEAT.FEAT_END) < _doc.index(VG_BEGIN.decode()), "L20 gallery/index.html: the opening row must sit above Explore the Gallery")
+        need(len(re.findall(r'class="pa-op-item"', _reg)) <= FEAT.OPEN_MAX and "pa-fa-list" not in _reg and "Artists in Focus" not in _reg,
+             "L20 gallery/index.html: the opening row holds more than three artists, or Artists in Focus returned")
+        _both = _reg + _doc[_doc.index(VG_BEGIN.decode()):_doc.index(VG_END.decode())]
+        for _s, _f in re.findall(r'src="\.\./artists/([a-z0-9-]+)/img/([a-z0-9-]+\.webp)"', _both):
+            need(os.path.exists(os.path.join(PA, "artists", _s, "img", _f)), "L20 gallery/index.html: an image is not a published file: %s/%s" % (_s, _f))
+        for _h in re.findall(r'href="\.\./(artists/[^"]+)"', _both):
+            need(os.path.exists(os.path.join(PA, _h + ("index.html" if _h.endswith("/") else ""))), "L20 gallery/index.html: a link goes nowhere: " + _h)
         _out = re.findall(r'href="(?!\.\./artists/)[^"]*"', _reg)
-        need(_out in ([], ['href="../artworks/"']) and (not _out or os.path.exists(os.path.join(PA, "artworks", "index.html"))),
-             "L20 gallery/index.html: Featured Artists links outside the artists' galleries (only Browse All Artworks may)")
-        need(len(re.findall(r'class="pa-fa-item"', _reg)) <= FEAT.MAX, "L20 gallery/index.html: more than %d featured artists" % FEAT.MAX)
-        _fs = [x["artist"] for x in _sel]
-        need(len(_fs) == len(set(_fs)), "L20 gallery/index.html: an artist is featured more than once")
-        _col = _doc[_doc.index(VG_BEGIN.decode()):_doc.index(VG_END.decode())]
-        _wall = re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', _col)
-        need(not set(_fs) & set(_wall), "L20 gallery/index.html: a featured artist is repeated in Explore More Artists")
-        need(sorted(set(_fs) | set(_wall)) == GALLERY_SLUGS or not os.path.isdir(os.path.join(PA, "artists")),
-             "L20 gallery/index.html: Featured Artists and Explore More Artists together must show every published artist exactly once")
+        need(_out == [], "L20 gallery/index.html: the opening row links outside the artists' galleries")
     except ValueError as _e:
         need(False, "L20 gallery/index.html: %s" % _e)
 

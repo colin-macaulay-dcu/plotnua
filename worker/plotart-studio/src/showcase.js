@@ -54,7 +54,7 @@ export async function eligible(env, g, published) {
 }
 
 /* Why a chosen work is not eligible now (plain words for the founder). */
-async function reason(env, g, row, published) {
+export async function reason(env, g, row, published) {
   if (T.isTest(env, row.artist_id)) return 'it belongs to an internal test account';
   const art = await one(env, 'SELECT display_name, account_status FROM artists WHERE id = ?', row.artist_id);
   if (!art || !['active', 'invited'].includes(art.account_status)) return 'the artist is no longer taking part';

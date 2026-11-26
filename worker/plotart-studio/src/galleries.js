@@ -288,7 +288,8 @@ export async function founderPlacement(env, founder, g, artworkId, action) {
   if (g === 'contemporary') {
     if (action === 'withdraw') {
       if (cur) throw new Bad('Already taken out of Contemporary', 409);
-      if (await one(env, 'SELECT position FROM homepage_features WHERE artwork_id = ?', w.id)) throw new Bad('This work is one of the Artists in Focus in Contemporary; change that selection first', 409);
+      // (26 Nov 2026) no longer refused for an Artists in Focus work: that section is retired and a curated arrangement
+      // falls back to the artist's first available work, so taking a work out is never blocked by a curatorial choice
       await commit(env, [env.DB.prepare(`INSERT INTO artwork_placements (artwork_id, artist_id, gallery_id, state, proposed_by, proposed_at, closed_by, closed_at, updated_at)
         VALUES (?,?,'contemporary','withdrawn',?,?,?,?,?) ON CONFLICT(artwork_id, gallery_id) DO NOTHING`).bind(w.id, w.artist_id, founder, at, founder, at, at)], 0);
     } else if (action === 'restore') {

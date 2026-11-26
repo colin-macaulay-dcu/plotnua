@@ -160,8 +160,10 @@ def main(base, rel, instant):
                 else:
                     names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()
                     packages = [json.loads(show(rel, n)) for n in names if re.fullmatch(r"plotart/artists/[a-z0-9-]+/gallery.json", n)]
-                    if b != FEAT.update(b, FEAT.selection_in(b), packages):
-                        refused.append(path + ": the Featured Artists region differs from what its selection renders from the published galleries")
+                    # one curated gallery (26 Nov 2026): both regions must be exactly what the page's own arrangement renders
+                    # from the published galleries (each artist once; nothing unpublished; no prices)
+                    if not FEAT.consistent(b, packages):
+                        refused.append(path + ": the gallery differs from what its arrangement renders from the published galleries")
             except (ValueError, TypeError) as e:
                 refused.append(path + ": " + str(e))
             continue

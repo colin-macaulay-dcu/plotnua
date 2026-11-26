@@ -9,8 +9,6 @@ explains several of them. Re-run each with full history and the browser tooling 
 
 | Proof | What fails | Likely cause | Suggested next step |
 |---|---|---|---|
-| `atlas-tools/prove-plotart-featured.py` | Stops with `TypeError: 'NoneType' object is not callable` at `sync_playwright()` (line 339), so the browser checks never run | The Python `playwright` package is not installed in that environment | Install Python Playwright (`pip install playwright`), re-run, then judge the real result |
-| `atlas-tools/prove-plotart-vg-collection.py` | G10 ("the markers are removed → refused"): the launch guard raises `ValueError: substring not found` instead of reporting a refusal; C2: two artist gallery pages (`anna-marie-savage/index.html`, `mark-kavanagh-rasher/index.html`) differ from the current renderer's body | G10: `prove-plotart-launch.py` reads a region without first checking its markers exist (it refuses, but by crashing). C2: those two pages were published by an older renderer and have not been re-published since | G10: make that guard read fail with a clear L-message. C2: a routine re-publication of the two galleries brings them up to date |
 | `atlas-tools/prove-plotart-join.py` | O1 compares the Join form with the Founding 25 form at commit `43655d8^`, which a shallow clone does not have, so the comparison list is empty; then `ValueError: substring not found` (line 165) for the same reason | Needs git history (`git show 43655d8^:…`) | Re-run in a full clone |
 | `atlas-tools/prove-plotart-hire-release.py` | D2b: "no commit with Art for Hire off was found", then `TypeError` (line 79) | Searches git history for a commit with `art_for_hire_page` off; a shallow clone has none | Re-run in a full clone |
 | `atlas-tools/prove-plotart-commissions.py` | C2: "every artwork page byte-identical to main's renderer" fails | The same stale artist pages as vg-collection C2 (published by an older renderer) | Re-publish the affected galleries, then re-run |
@@ -18,3 +16,6 @@ explains several of them. Re-run each with full history and the browser tooling 
 
 No production, payment, image-rights or publishing safeguard depends on fixing these first: the publisher's own guards
 (content boundary, launch guard, image provenance, image rights) all pass.
+
+
+Retired 26 Nov 2026 (one curated Contemporary gallery): `prove-plotart-featured.py` (Artists in Focus) and `prove-plotart-vg-collection.py` (the founding-position wall) proved sections the page no longer has. `prove-plotart-gallery-curation.py` proves the unified page, its builder, the publisher's arrangement and the guards.
