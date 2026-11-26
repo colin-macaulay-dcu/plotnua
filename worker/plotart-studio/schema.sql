@@ -1422,3 +1422,29 @@ ALTER TABLE artist_delivery ADD COLUMN methods TEXT
   CHECK (methods IS NULL OR methods IN ('personal', 'courier', 'specialist', 'personal,courier', 'personal,specialist', 'courier,specialist', 'personal,courier,specialist', 'collection', 'arrangement'))
   CHECK (methods IS NULL OR ((scope = 'none') = (methods IN ('collection', 'arrangement'))));
 ALTER TABLE artist_opportunities ADD COLUMN placement_area TEXT CHECK (placement_area IS NULL OR placement_area IN ('general', 'own'));
+
+-- PlotArt Studio · migration 0028 · Gallery Showcase (development 26 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- See migrations/0028_gallery_showcase.sql.
+CREATE TABLE IF NOT EXISTS gallery_showcase (
+  gallery_id TEXT NOT NULL CHECK (gallery_id IN ('contemporary', 'spaces', 'being')),
+  stage TEXT NOT NULL CHECK (stage IN ('draft', 'published')),
+  position INTEGER NOT NULL CHECK (position BETWEEN 1 AND 3),
+  artist_id TEXT NOT NULL REFERENCES artists(id) ON DELETE CASCADE,
+  artwork_id TEXT NOT NULL REFERENCES artworks(id) ON DELETE CASCADE,
+  updated_at TEXT NOT NULL CHECK (length(updated_at) BETWEEN 20 AND 30),
+  updated_by TEXT NOT NULL CHECK (length(updated_by) BETWEEN 3 AND 200),
+  PRIMARY KEY (gallery_id, stage, position),
+  UNIQUE (gallery_id, stage, artwork_id)
+);
+CREATE TRIGGER IF NOT EXISTS gallery_showcase_artist_insert BEFORE INSERT ON gallery_showcase
+  WHEN NOT EXISTS (SELECT 1 FROM artworks WHERE id = NEW.artwork_id AND artist_id = NEW.artist_id)
+  BEGIN SELECT RAISE(ABORT, 'gallery_showcase: the artwork does not belong to that artist'); END;
+CREATE TRIGGER IF NOT EXISTS gallery_showcase_artist_update BEFORE UPDATE OF artist_id, artwork_id ON gallery_showcase
+  WHEN NOT EXISTS (SELECT 1 FROM artworks WHERE id = NEW.artwork_id AND artist_id = NEW.artist_id)
+  BEGIN SELECT RAISE(ABORT, 'gallery_showcase: the artwork does not belong to that artist'); END;
+INSERT OR IGNORE INTO gallery_showcase (gallery_id, stage, position, artist_id, artwork_id, updated_at, updated_by)
+  SELECT 'contemporary', s.stage, 1, w.artist_id, w.id, '2026-11-21T00:00:00.000Z', 'existing' FROM artworks w, (SELECT 'draft' AS stage UNION ALL SELECT 'published') s WHERE w.id = 'wg1by72jg3b';
+INSERT OR IGNORE INTO gallery_showcase (gallery_id, stage, position, artist_id, artwork_id, updated_at, updated_by)
+  SELECT 'contemporary', s.stage, 2, w.artist_id, w.id, '2026-11-21T00:00:00.000Z', 'existing' FROM artworks w, (SELECT 'draft' AS stage UNION ALL SELECT 'published') s WHERE w.id = 'wfhtcyurvgf';
+INSERT OR IGNORE INTO gallery_showcase (gallery_id, stage, position, artist_id, artwork_id, updated_at, updated_by)
+  SELECT 'contemporary', s.stage, 3, w.artist_id, w.id, '2026-11-21T00:00:00.000Z', 'existing' FROM artworks w, (SELECT 'draft' AS stage UNION ALL SELECT 'published') s WHERE w.id = 'w226r60hfsh';

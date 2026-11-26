@@ -132,8 +132,14 @@
     const o = await api('GET', '/api/admin/overview');
     const ready = o.queue.filter(q => q.status === 'awaiting_founder');
     const live = o.artists.filter(a => a.gallery_live).length;  // galleries on plotnua.ie, even with an update queued
+    // Gallery Showcase (Report 37): any published position that is no longer shown is named here, prominently
+    let scv = null; try { scv = await api('GET', '/api/admin/showcase'); } catch { scv = null; }
+    const vac = scv && scv.installed ? scv.galleries.flatMap(gx => gx.vacant.map(v => ({ ...v, gallery: gx.title }))) : [];
     app.innerHTML = `
       <h1 class="st-h1" style="margin-bottom:1.75rem">Review desk</h1>
+      ${vac.length ? `<section class="st-card st-sc-alert" role="alert"><h2>Gallery Showcase: ${vac.length === 1 ? 'a position is' : vac.length + ' positions are'} empty on the public page</h2>
+        <ul>${vac.map(v => `<li><b>${E(v.gallery)}, ${E(v.side.toLowerCase())}:</b> “${E(v.title)}” by ${E(v.display_name)}: ${E(v.reason)}.</li>`).join('')}</ul>
+        <p class="st-muted" style="margin:0">Nothing has been put in its place. <a href="/admin/galleries">Choose a replacement in Galleries</a>, save, then publish the showcase.</p></section>` : ''}
       <div class="st-kpis">
         <div class="st-kpi"><b>${o.submissions.length}</b><span>to review</span></div>
         <div class="st-kpi"><b>${ready.length}</b><span>ready to publish</span></div>
@@ -964,6 +970,37 @@
     const pubOf = id => d.published.find(p => p.artist_id === id);
     const img = w => w && w.image ? `<img src="/api/admin/featured/image/${E(w.image.id)}" alt="" loading="lazy">` : '<span class="st-gm-noimg" aria-hidden="true"></span>';
     let order = null, focus = null, dirtyO = false, dirtyF = false, inv = { artist_id: '', source: 'founder_curation', application_ref: '' };
+    // Gallery Showcase (Report 37): the three opening artworks, per gallery; a draft until the founder publishes it
+    let sc = null, show = [], dirtyS = false;
+    const SIDE = { 1: 'Left', 2: 'Centre', 3: 'Right' };
+    const SCG = () => sc && sc.installed ? sc.galleries.find(x => x.gallery_id === g) : null;
+    async function loadSc() { try { sc = await api('GET', '/api/admin/showcase'); } catch { sc = null; } }
+    function loadShow() { const x = SCG(); show = [1, 2, 3].map(p => { const r = x && x.draft.find(d => d.position === p); return r ? { position: p, artist_id: r.artist_id, artwork_id: r.artwork_id, eligible: r.eligible, reason: r.reason, title: r.title } : { position: p, artist_id: '', artwork_id: '' }; }); dirtyS = false; }
+    function showcaseCard() {
+      const x = SCG(); if (!x) return '';
+      const arts = x.artists, workOf = (a, w) => { const ar = arts.find(z => z.artist_id === a); return ar && ar.works.find(z => z.artwork_id === w); };
+      const prep = x.status !== 'open';
+      const slot = (it, i) => { const ar = arts.find(z => z.artist_id === it.artist_id), w = workOf(it.artist_id, it.artwork_id);
+        return `<div class="st-sc-slot"><p class="st-lab">${SIDE[it.position]}</p>
+          <div class="st-sc-img">${w && w.image ? `<img src="/api/admin/featured/image/${E(w.image.id)}" alt="">` : `<span class="st-gm-noimg" aria-hidden="true"></span>`}</div>
+          ${it.artwork_id && !w ? `<p class="st-err" style="margin:6px 0">“${E(it.title || 'This artwork')}” can’t be used: ${E(it.reason || 'it is not eligible for this gallery')}.</p>` : ''}
+          <label class="st-sr" for="sc-a-${i}">Artist, ${SIDE[it.position].toLowerCase()}</label><select id="sc-a-${i}" data-sc-a="${i}"><option value="">Choose an artist…</option>${arts.map(a => `<option value="${a.artist_id}"${a.artist_id === it.artist_id ? ' selected' : ''}>${E(a.display_name)}</option>`).join('')}</select>
+          <label class="st-sr" for="sc-w-${i}">Artwork, ${SIDE[it.position].toLowerCase()}</label><select id="sc-w-${i}" data-sc-w="${i}"${ar ? '' : ' disabled'}><option value="">${ar ? 'Choose an artwork…' : 'Choose an artist first'}</option>${ar ? ar.works.map(w2 => `<option value="${w2.artwork_id}"${w2.artwork_id === it.artwork_id ? ' selected' : ''}>${E(w2.title)}${w2.year ? ' (' + w2.year + ')' : ''}</option>`).join('') : ''}</select>
+          <div class="st-row st-sc-move">${i > 0 ? `<button type="button" class="st-btn st-btn--small" data-sc="swap" data-i="${i}" data-j="${i - 1}" aria-label="Swap ${SIDE[it.position].toLowerCase()} with ${SIDE[it.position - 1].toLowerCase()}">←</button>` : ''}${i < 2 ? `<button type="button" class="st-btn st-btn--small" data-sc="swap" data-i="${i}" data-j="${i + 1}" aria-label="Swap ${SIDE[it.position].toLowerCase()} with ${SIDE[it.position + 1].toLowerCase()}">→</button>` : ''}${it.artist_id ? `<button type="button" class="st-btn st-btn--small" data-sc="clear" data-i="${i}">Clear</button>` : ''}</div></div>`; };
+      const chosen = show.filter(it => workOf(it.artist_id, it.artwork_id));
+      const pubLine = x.published.length ? x.published.map(p => `${SIDE[p.position]}: “${E(p.title)}”${p.eligible ? '' : ` <span class="st-err">(not shown: ${E(p.reason)})</span>`}`).join(' · ') : 'Nothing published yet.';
+      return `<section class="st-card st-sc"><h2>Gallery Showcase</h2>
+        <p class="st-muted">The three opening artworks on the ${E(x.title)} page, left to right. Separate from Artists in Focus and Gallery order. Saving keeps a draft; nothing changes on the website until you publish.${prep ? ` <b style="color:var(--ivory);font-weight:500">${E(x.title)} is in preparation: you can prepare a showcase privately; it can be published once the gallery is open.</b>` : ''}</p>
+        ${x.vacant.length ? `<div class="st-sc-alert" role="alert">${x.vacant.map(v => `<p style="margin:0 0 4px"><b>${E(v.side)} is empty on the public page:</b> “${E(v.title)}” by ${E(v.display_name)}: ${E(v.reason)}. Nothing has been put in its place.</p>`).join('')}</div>` : ''}
+        <div class="st-sc-slots">${show.map(slot).join('')}</div>
+        <h3 class="st-gm-h3">Preview</h3>
+        ${chosen.length ? `<ol class="st-sc-preview n-${chosen.length}">${chosen.map(it => { const w = workOf(it.artist_id, it.artwork_id), a = arts.find(z => z.artist_id === it.artist_id);
+          return `<li><img src="/api/admin/featured/image/${E(w.image.id)}" alt=""><p class="st-work-t" style="margin:6px 0 0">${E(w.title)}</p><p class="st-work-s" style="margin:0">${E(a.display_name)}</p></li>`; }).join('')}</ol>` : '<p class="st-muted">Choose artworks to preview them together.</p>'}
+        <p class="st-muted" style="margin:12px 0 4px">Published now: ${pubLine}</p>
+        <div class="st-row"><button type="button" class="st-btn st-btn--small${dirtyS ? ' st-btn--solid' : ''}" data-sc-save${dirtyS ? '' : ' disabled'}>Save draft</button>
+          <button type="button" class="st-btn st-btn--small${!dirtyS && x.unpublished_changes && !prep ? ' st-btn--solid' : ''}" data-sc-publish${dirtyS || prep || !x.draft.length || (!x.unpublished_changes && !x.vacant.length) ? ' disabled' : ''}>Publish showcase…</button>
+          <span class="st-muted">${dirtyS ? 'Unsaved changes.' : x.unpublished_changes ? 'The saved draft differs from the published showcase.' : 'The draft matches the published showcase.'}</span></div></section>`;
+    }
     const G = () => d.galleries.find(x => x.gallery_id === g);
     function load() {
       const x = G();
@@ -1073,14 +1110,14 @@
         <nav class="st-gm-tabs" aria-label="Gallery">${Object.entries(TITLE).map(([k, v]) => { const y = d.galleries.find(z => z.gallery_id === k), n = d.memberships.filter(m => m.gallery_id === k && ['artist_accepted', 'proposed'].includes(m.state)).length + d.placements.filter(p => p.gallery_id === k && ['artist_accepted', 'proposed'].includes(p.state)).length;
           return `<button type="button" data-g="${k}"${k === g ? ' aria-current="true"' : ''}><b>${v}</b><span>${STATUS[y.status]}${n ? ` · <em>${n} waiting</em>` : ''}</span></button>`; }).join('')}</nav>
         ${msg ? `<p class="st-gm-msg st-err" role="alert">${E(msg)}</p>` : ''}
-        ${statusCard(x)}<div class="st-gm-cols"><div>${membersCard()}${orderCard()}</div><div>${worksCard()}${focusCard()}</div></div>${useCard()}`;
+        ${statusCard(x)}${showcaseCard()}<div class="st-gm-cols"><div>${membersCard()}${orderCard()}</div><div>${worksCard()}${focusCard()}</div></div>${useCard()}`;
     }
-    async function act(fn, ok) { try { await fn(); d = await api('GET', '/api/admin/galleries'); load(); msg = ''; say(ok); } catch (e) { msg = e.message; say(e.message, true); } draw(); }
+    async function act(fn, ok) { try { await fn(); d = await api('GET', '/api/admin/galleries'); await loadSc(); load(); loadShow(); msg = ''; say(ok); } catch (e) { msg = e.message; say(e.message, true); } draw(); }
     const confirmTyped = (word, text) => (prompt(`${text}\n\nType ${word} to confirm.`) || '').trim().toUpperCase() === word;
     app.onclick = async e => {
       if (location.pathname.replace(/\/$/, '') !== '/admin/galleries') { app.onclick = null; return; }
       const b = e.target.closest('button'); if (!b || b.disabled || (b.type === 'submit' && b.form)) return;
-      if (b.dataset.g) { if ((dirtyO || dirtyF) && !confirm('Leave without saving the order or Artists in Focus?')) return; g = b.dataset.g; sessionStorage.setItem('pa-gal', g); msg = ''; inv = { artist_id: '', source: 'founder_curation', application_ref: '' }; load(); return draw(); }
+      if (b.dataset.g) { if ((dirtyO || dirtyF || dirtyS) && !confirm('Leave without saving the order, Artists in Focus or the showcase draft?')) return; g = b.dataset.g; sessionStorage.setItem('pa-gal', g); msg = ''; inv = { artist_id: '', source: 'founder_curation', application_ref: '' }; load(); loadShow(); return draw(); }
       if (b.dataset.status) {
         const want = b.dataset.status, x = G();
         if (want === 'open') {
@@ -1105,6 +1142,16 @@
       }
       if (b.dataset.o) { const i = +b.dataset.i, j = b.dataset.o === 'up' ? i - 1 : i + 1; [order[i], order[j]] = [order[j], order[i]]; dirtyO = true; return draw(); }
       if (b.dataset.f) { const i = +b.dataset.i; if (b.dataset.f === 'rm') focus.splice(i, 1); else { const j = b.dataset.f === 'up' ? i - 1 : i + 1; [focus[i], focus[j]] = [focus[j], focus[i]]; } dirtyF = true; return draw(); }
+      if (b.dataset.sc === 'swap') { const i = +b.dataset.i, j = +b.dataset.j; [show[i], show[j]] = [{ ...show[j], position: show[i].position }, { ...show[i], position: show[j].position }]; dirtyS = true; return draw(); }
+      if (b.dataset.sc === 'clear') { const i = +b.dataset.i; show[i] = { position: show[i].position, artist_id: '', artwork_id: '' }; dirtyS = true; return draw(); }
+      if (b.hasAttribute('data-sc-save')) {
+        const items = show.filter(it => it.artist_id && it.artwork_id).map(it => ({ position: it.position, artist_id: it.artist_id, artwork_id: it.artwork_id }));
+        return act(() => api('PUT', `/api/admin/showcase/${g}`, { items }), 'Showcase draft saved (not published)');
+      }
+      if (b.hasAttribute('data-sc-publish')) {
+        if (!confirm(`Publish this showcase on the ${TITLE[g]} page? It goes through the usual protected publishing, like Artists in Focus.`)) return;
+        return act(() => api('POST', `/api/admin/showcase/${g}/publish`), 'Showcase published: the website updates through the publishing workflow');
+      }
       if (b.hasAttribute('data-save-order')) return act(() => api('PUT', `/api/admin/galleries/${g}/order`, { artists: order }), 'Order saved');
       if (b.hasAttribute('data-save-focus')) return act(() => api('PUT', `/api/admin/galleries/${g}/features`, { items: focus }), 'Artists in Focus saved');
       if (b.dataset.u) {
@@ -1117,6 +1164,8 @@
       const t = e.target;
       if (t.id === 'gm-src') { inv.source = t.value; app.querySelector('[data-ref]').hidden = t.value !== 'application'; }
       if (t.id === 'gm-who') inv.artist_id = t.value;
+      if (t.dataset.scA !== undefined) { const i = +t.dataset.scA; show[i] = { position: show[i].position, artist_id: t.value, artwork_id: '' }; dirtyS = true; draw(); }
+      if (t.dataset.scW !== undefined) { const i = +t.dataset.scW; show[i] = { ...show[i], artwork_id: t.value, eligible: true, reason: null }; dirtyS = true; draw(); }
       if (t.id === 'gm-focus' && t.value) { const [artist_id, artwork_id] = t.value.split('|'); focus.push({ artist_id, artwork_id }); dirtyF = true; draw(); }
       if (t.id === 'gu-a') { const p = pubOf(t.value), box = app.querySelector('[data-works]');
         box.innerHTML = p ? p.works.map(w => `<label class="st-check"><input type="checkbox" name="artwork_ids" value="${w.id}" style="accent-color:var(--terra);width:20px;height:20px"> ${E(w.title)}</label>`).join('') : '<p class="st-muted">Choose an artist first.</p>'; }
@@ -1137,8 +1186,9 @@
           purpose: v.purpose, channels: v.channels, valid_until: v.valid_until || null }), 'Request sent to the artist’s Studio');
       }
     };
-    addEventListener('beforeunload', e => { if ((dirtyO || dirtyF) && location.pathname.startsWith('/admin/galleries')) { e.preventDefault(); e.returnValue = ''; } });
-    if (d.installed) load();
+    addEventListener('beforeunload', e => { if ((dirtyO || dirtyF || dirtyS) && location.pathname.startsWith('/admin/galleries')) { e.preventDefault(); e.returnValue = ''; } });
+    await loadSc();
+    if (d.installed) { load(); loadShow(); }
     draw();
   }
 

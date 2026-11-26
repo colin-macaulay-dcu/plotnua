@@ -151,46 +151,38 @@ def _portrait(w):
         return True
 
 
+def check_showcase(showcase):
+    """A Gallery Showcase is a list of at most three {"artist": <gallery address>, "work": <artwork id>}, left to right
+    (Report 37: chosen by the founder in the Review Desk; the Studio sends only its published, eligible positions)."""
+    if not isinstance(showcase, list) or len(showcase) > 3:
+        raise ValueError("the gallery showcase must be a list of at most 3 items")
+    out, seen = [], set()
+    for it in showcase:
+        if not isinstance(it, dict) or set(it) - {"position", "artist", "work"} or not {"artist", "work"} <= set(it) \
+                or not isinstance(it["artist"], str) or not SLUG.match(it["artist"]) or not isinstance(it["work"], str) or not WORK_ID.match(it["work"]):
+            raise ValueError("a showcase item carries an unexpected field or value: %r" % (it,))
+        if it["work"] in seen:
+            raise ValueError("an artwork appears more than once in the showcase")
+        seen.add(it["work"])
+        out.append((it["artist"], it["work"]))
+    return out
+
+
 def opening_items(selection, packages, choice=OPENING):
-    """The three opening works (founder approval 21 Nov 2026). The curated works always come first, each in its own place,
-    whenever eligible. A place whose curated work is sold, withdrawn, unpublished, without a main photograph or already
-    featured below is filled by a replacement chosen deterministically from the other eligible published works, so the
-    opening never changes between builds unless the published galleries do. A replacement is never a featured artwork or a
-    work already in the row, and is preferred, in this order: by an artist not already in the row; by an artist not in
-    Featured Artists; in the same orientation as the curated work it replaces (portrait or landscape); not the work its
-    artist already shows on the Explore More Artists wall; then by the All Artworks collection's own stable order."""
+    """The opening works, left to right: the founder's Gallery Showcase (Report 37; before it, the curated three of
+    21 Nov 2026). A work appears only while it is shown and available in its approved, published gallery with a main
+    photograph. A place whose work is not eligible is LEFT OUT, never filled with another work (founder instruction,
+    26 Nov 2026): the row closes up (two or one works, centred by the existing n-2 / n-1 layout), and the Studio names the
+    vacant position to the founder. Artists in Focus and Gallery order are separate and do not affect this row."""
     by = {p["artist"]["slug"]: p for p in packages}
-    sel = check_selection(selection)
-    featured_works = {(x["artist"], x["work"]) for x in sel}
-    featured_artists = {x["artist"] for x in sel}
-    slots = []
+    check_selection(selection)
+    out = []
     for slug, wid in choice:
         pkg = by.get(slug)
         w = next((x for x in pkg["works"] if x.get("id") == wid), None) if pkg else None
-        ok = w is not None and _eligible(pkg, w) and (slug, wid) not in featured_works
-        slots.append([(pkg, w) if ok else None, w])                 # [chosen, the curated work (for its orientation)]
-    if any(s[0] is None for s in slots):
-        pool = [(pkg, w) for pkg, w in C.collection_order([p for p in packages if p.get("publication", {}).get("state") == "approved"])
-                if _eligible(pkg, w) and (pkg["artist"]["slug"], w["id"]) not in featured_works]
-        rank = {(pkg["artist"]["slug"], w["id"]): n for n, (pkg, w) in enumerate(pool)}
-        wall = {}
-        for pkg in packages:
-            first = P.card_image(pkg)[0] if pkg.get("works") else None
-            if first:
-                wall[pkg["artist"]["slug"]] = first.get("id")
-        for s in slots:
-            if s[0] is not None:
-                continue
-            used = {x[0][0]["artist"]["slug"] for x in slots if x[0] is not None}
-            taken = {(x[0][0]["artist"]["slug"], x[0][1]["id"]) for x in slots if x[0] is not None}
-            want_portrait = _portrait(s[1]) if s[1] is not None else True
-            cands = [(pkg, w) for pkg, w in pool if (pkg["artist"]["slug"], w["id"]) not in taken]
-            if not cands:
-                continue
-            s[0] = min(cands, key=lambda c: (c[0]["artist"]["slug"] in used, c[0]["artist"]["slug"] in featured_artists,
-                                             _portrait(c[1]) != want_portrait, wall.get(c[0]["artist"]["slug"]) == c[1]["id"],
-                                             rank[(c[0]["artist"]["slug"], c[1]["id"])]))
-    return [(pkg, w, _main(w)) for pkg, w in (s[0] for s in slots if s[0] is not None)]
+        if w is not None and _eligible(pkg, w):
+            out.append((pkg, w, _main(w)))
+    return out
 
 
 def _opening_item(pkg, w, im, base):
@@ -208,11 +200,25 @@ def _opening_item(pkg, w, im, base):
         E(im["alt"]), E(page), E(w["title"]), E(gallery), E(a["display_name"]))
 
 
-def opening(selection, packages, base=BASE):
+SHOWCASE_MARK = "<!-- pa-showcase -->"   # the row is the founder's showcase: never re-seeded from the 21 Nov 2026 default
+OPEN_SECTION = re.compile(r'<section class="pa-op"')
+
+
+def showcase_in(doc):
+    """The showcase the page currently shows, left to right, read back from its items; None if the page has never carried
+    a showcase (then the 21 Nov 2026 curated three are the starting point)."""
+    r = region(doc)
+    items = OPEN_ITEM.findall(r)
+    if items or SHOWCASE_MARK in r:
+        return [(s, w) for s, w in items]
+    return None
+
+
+def opening(selection, packages, base=BASE, choice=OPENING, managed=False):
     # Browse All Artworks moved beside the heading (founder visual refinements 21 Nov 2026), so the row stands alone
-    items = opening_items(selection, packages)
+    items = opening_items(selection, packages, choice)
     if not items:
-        return ""
+        return SHOWCASE_MARK if managed else ""
     # tabindex: on phones and tablets the row scrolls sideways; as a focusable region keyboard users can move it with the
     # arrow keys (and every title and artist is a link in the tab order)
     row = '\n  <ol class="pa-op-row n-%d" aria-label="Selected artworks" tabindex="0">%s\n  </ol>' % (
@@ -220,9 +226,9 @@ def opening(selection, packages, base=BASE):
     return '<section class="pa-op" aria-label="Selected artworks"><div class="pa-wrap">%s\n</div></section>' % row
 
 
-def content(selection, packages, base=BASE):
+def content(selection, packages, base=BASE, showcase=None):
     items = resolve(selection, packages)
-    first = opening(selection, packages, base)
+    first = opening(selection, packages, base, OPENING if showcase is None else showcase, managed=showcase is not None)
     feat = ('<section class="pa-sec pa-fa" aria-labelledby="featArtH"><div class="pa-wrap">\n'
             # the public heading reads "Artists in Focus" (founder refinement 21 Nov 2026); the Studio's tab keeps "Featured Artists"
             '  <div class="pa-fa-head"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Artists in Focus</h2>'
@@ -244,9 +250,15 @@ def selection_in(doc):
     return [{"artist": s, "work": w} for s, w in ITEM.findall(region(doc))]
 
 
-def update(doc, selection, packages):
-    region(doc)
-    inner = content(selection, packages)
+def update(doc, selection, packages, showcase=None):
+    """showcase: the founder's published showcase from the Studio [(gallery address, artwork id)], or None to keep the one
+    the page shows (so routine publications never change the founder's choice; a place whose work became ineligible
+    stays out until the founder publishes a new showcase)."""
+    if showcase is None:
+        showcase = showcase_in(doc)
+    else:
+        showcase = check_showcase(showcase)
+    inner = content(selection, packages, showcase=showcase)
     return REGION.sub(lambda m: FEAT_BEGIN + ("\n" + inner + "\n" if inner else "") + FEAT_END, doc, count=1)
 
 
@@ -256,12 +268,12 @@ def outside(doc):
     return REGION.sub(FEAT_BEGIN + FEAT_END, doc, count=1)
 
 
-def refresh(root, packages, selection=None):
+def refresh(root, packages, selection=None, showcase=None):
     """Re-render the region from the published galleries; with no new selection, keep the founder's current one (read
     back from the page), so withdrawn or unpublished work drops out on every publication."""
     path = root / "plotart" / PAGE if hasattr(root, "__truediv__") else root + "/plotart/" + PAGE
     doc = open(path, encoding="utf-8").read()
-    new = update(doc, selection_in(doc) if selection is None else selection, packages)
+    new = update(doc, selection_in(doc) if selection is None else selection, packages, showcase)
     if new != doc:
         open(path, "w", encoding="utf-8").write(new)
     return new != doc

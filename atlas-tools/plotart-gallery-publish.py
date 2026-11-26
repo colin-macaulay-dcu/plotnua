@@ -136,7 +136,7 @@ def regrid(lay=None, selection=None):
     page's current one), then Explore More Artists, which leaves out whoever is featured (17 Nov 2026), so an artist who
     is featured, unfeatured, withdrawn or newly published is always shown exactly once."""
     pkgs = P.gallery_order(published())
-    FEAT.refresh(ROOT, pkgs, selection)
+    FEAT.refresh(ROOT, pkgs, selection, SHOWCASE)
     html = open(VG, encoding="utf-8").read()
     span = P.vg_region(html)
     if not span:
@@ -296,6 +296,8 @@ def main():
         test_accounts_consistent()
     except G.Refused as e:
         sys.exit("REFUSED: %s" % e)
+    global SHOWCASE
+    SHOWCASE = showcase_selection()
     items = call("GET", "/api/pipeline/queue")["items"]
     failed = 0
     for q in items:
@@ -338,7 +340,7 @@ def publish_item(q, final=True):
             sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
             C.refresh(ROOT, published())
             OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
-            FEAT.refresh(ROOT, published())    # Featured Artists: the founder's current choice, published work only
+            FEAT.refresh(ROOT, published(), None, SHOWCASE)    # Featured Artists and the Gallery Showcase: the founder's current choices, published work only
     except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
         why = "refused: %s: %s" % (type(e).__name__, e)
     if why is None:
@@ -416,6 +418,28 @@ def order_sync(final=True):
         pass
     print("PLOTART CONTENT · gallery order · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
     return (1, moved) if why else (0, False)
+
+
+SHOWCASE = None   # the founder's published Gallery Showcase for Contemporary (Report 37), read once per run
+
+
+def showcase_selection():
+    """The founder's published Gallery Showcase for Contemporary from PlotArt Studio (Report 37, migration 0028): its
+    eligible published positions, left to right (gallery address and artwork id only). A Studio without the route (404) or
+    without the table means: keep what the page shows. Only the founder's Publish in the Studio changes it; a routine
+    artist publication re-renders the same choice and leaves out a place whose work is no longer eligible."""
+    try:
+        r = call("GET", "/api/pipeline/gallery-showcase")
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None
+        raise
+    if not r.get("installed"):
+        return None
+    g = next((x for x in r.get("galleries", []) if x.get("gallery") == "contemporary"), None)
+    if g is None or g.get("status") != "open":
+        return None
+    return [{"artist": i["artist"], "work": i["work"]} for i in sorted(g.get("items", []), key=lambda i: i.get("position", 0))]
 
 
 def featured_selection():
