@@ -137,7 +137,8 @@ export function deliveryLine(del, loc) {
 export function generalView(d) {
   if (!d) return null;
   const line = d.scope === 'none' ? (NO_AREA[d.methods] || 'No delivery or by arrangement (answered before these were separate)') : deliveryLine(d, d);
-  return { scope: d.scope, counties: covered(d, d), country: d.country || null, line, methods: d.methods ?? null, how: d.scope === 'none' ? null : methodsLine(d) };
+  return { scope: d.scope, counties: covered(d, d), country: d.country || null, line, methods: d.methods ?? null,
+    how: d.scope === 'none' ? null : d.methods === null ? 'how not yet given (answered before this question)' : methodsLine(d) };
 }
 /* How the work travels (founder and artist only; never public). */
 export function methodsLine(del) {
