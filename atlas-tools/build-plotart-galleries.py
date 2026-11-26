@@ -32,6 +32,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import plotart_seo as SEO  # noqa: E402
 import plotart_shell as S  # noqa: E402
+import plotart_search_content as C  # noqa: E402  (the homepage availability line, Sprint 1, 26 Nov 2026)
 S.HIRE_NAV = SEO.switches().get("art_for_hire_page") is True   # as plotart-gallery-publish.py: the Art for Hire tab follows its switch
 
 E = S.E
@@ -128,10 +129,14 @@ def tile(key, arts):
             '<span aria-hidden="true">→</span></a></div>\n    </li>\n') % (key, art, status, E(g["title"]), E(g["text"]), HREF[key], key, label)
 
 
-def home_region(arts=None):
+def home_region(arts=None, avail=None):
+    """avail: the homepage availability line's generated region (Commercial Conversion Sprint 1, founder approval 26 Nov
+    2026), directly under the heading. This builder never writes its CONTENT: it keeps the region exactly as the
+    publishing pipeline last refreshed it (plotart_search_content, checked by L3 and recomputed by L22)."""
     arts = entrances() if arts is None else arts
+    avail = (C.BEGIN + "\n" + C.END) if avail is None else avail
     return (HOME_BEGIN + '\n<section class="pa-gx" aria-labelledby="homeH"><div class="pa-wrap">\n'
-            '  <h1 class="pa-gx-h1" id="homeH">A new home for Irish art.</h1>\n'
+            '  <h1 class="pa-gx-h1" id="homeH">A new home for Irish art.</h1>\n' + avail + '\n'
             '  <ul class="pa-gx-tiles" aria-label="PlotArt galleries">\n' + "".join(tile(k, arts) for k, *_ in S.GALLERIES) +
             '  </ul>\n</div></section>\n' + HOME_END)
 
@@ -207,7 +212,11 @@ def plan(root, entrances_path=None):
     pa = os.path.join(root, "plotart")
     out = {}
     home = open(os.path.join(pa, "index.html"), encoding="utf-8").read()
-    out["index.html"] = replace_region(home, HOME_BEGIN, HOME_END, home_region(entrances(entrances_path)), "index.html")
+    kept = C.REGION.findall(home)
+    if len(kept) > 1:
+        raise ValueError("index.html: more than one availability region")
+    avail = kept[0] if kept else C.BEGIN + "\n" + C.content("index.html", SEO.public_packages(root)) + "\n" + C.END
+    out["index.html"] = replace_region(home, HOME_BEGIN, HOME_END, home_region(entrances(entrances_path), avail), "index.html")
     vg = open(os.path.join(pa, "gallery", "index.html"), encoding="utf-8").read()
     vg = replace_region(vg, TABS_BEGIN, TABS_END, tabs_region("contemporary"), "gallery/index.html")
     out["gallery/index.html"] = replace_region(vg, HERO_BEGIN, HERO_END, hero_region(), "gallery/index.html")

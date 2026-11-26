@@ -76,6 +76,10 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       gallery/, spaces/ and being/. No page names Environment, Landscape Art, Places & Spaces or Portraiture as a gallery or
       links to environment/, landscape/, places-and-spaces/ or portraiture/, which are only generated redirect pages (noindex,
       canonical straight to the final address, outside the sitemap; no chains).
+  L22 The homepage availability line (Commercial Conversion Sprint 1, founder approval 26 Nov 2026): one generated
+      region directly under the heading, whose works, artists and lowest public price are recomputed here from the
+      published galleries independently of the builder; it claims nothing the data does not hold (no "Irish", no
+      online purchase) and links only to the available-artworks page; with nothing available there is no line.
   L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
       notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
       homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
@@ -605,7 +609,7 @@ NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": None, "li
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery", "spaces/index.html": None, "being/index.html": None}
 # the page each Galleries menu link is current on (the menu itself is then marked as the current section)
 DD_CURRENT = {"gallery/index.html": "contemporary", "spaces/index.html": "spaces", "being/index.html": "being"}
-NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
+NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS if p not in SEO.HOME_PATHS})   # the homepage stays 'Discover PlotArt' (Sprint 1)
 NAV_CURRENT.update({"join.html": None, "curatorial-policy.html": None})
 NAV_CURRENT[HIRE_PAGE] = "Art for Hire"
 NAV_CURRENT[SERVICES_PAGE] = "Services"
@@ -1172,9 +1176,46 @@ if os.path.exists(_gp):
     except ValueError as _e:
         need(False, "L20 gallery/index.html: %s" % _e)
 
+# L22 · the homepage availability line (Commercial Conversion Sprint 1, founder approval 26 Nov 2026). Recomputed here
+# INDEPENDENTLY of plotart_search_content: straight from every published gallery.json, without its helpers. Exactly one
+# generated region, directly under the one heading; the three figures must match; the wording may not claim more than
+# the data holds ("Irish", "for sale online", "buy online"); the link goes to the available-artworks page only; and with
+# nothing available there is no line at all.
+if os.path.exists(os.path.join(PA, "index.html")):
+    _h = home
+    _b, _e = "<!-- pa-guide-collection:begin -->", "<!-- pa-guide-collection:end -->"
+    need(_h.count(_b) == 1 and _h.count(_e) == 1, "L22 index.html must carry exactly one availability region")
+    if _h.count(_b) == 1 and _h.count(_e) == 1:
+        need(re.search(r'<h1 class="pa-gx-h1" id="homeH">A new home for Irish art\.</h1>\s*' + re.escape(_b), _h) is not None,
+             "L22 the availability line must sit directly under the homepage heading")
+        _reg = _h[_h.index(_b) + len(_b):_h.index(_e)]
+        _works, _artists, _prices = 0, set(), []
+        _adir = os.path.join(PA, "artists")
+        for _gj in sorted(os.path.join(_adir, _d, "gallery.json") for _d in (os.listdir(_adir) if os.path.isdir(_adir) else []) if os.path.exists(os.path.join(_adir, _d, "gallery.json"))):
+            _g = json.load(open(_gj, encoding="utf-8"))
+            for _w in _g.get("works", []):
+                if _w.get("availability") == "available":
+                    _works += 1
+                    _artists.add(_g["artist"]["slug"])
+                    if _w.get("price_eur") and not _w.get("price_on_request"):
+                        _prices.append(_w["price_eur"])
+        _vt = re.sub(r"\s+", " ", visible_text(_reg)).strip()
+        need(not re.search(r"(?i)\birish\b|for sale online|buy online|add to basket", _vt), "L22 the availability line claims more than the published data shows: " + _vt)
+        if _works == 0:
+            need(_vt == "", "L22 nothing is available, so the homepage must show no availability line")
+        else:
+            _want = "%d original %s by %d %s" % (_works, "work" if _works == 1 else "works", len(_artists), "artist" if len(_artists) == 1 else "artists")
+            if _prices:
+                _low = min(_prices)
+                _want += ", from €" + "{:,}".format(_low)
+            need(_vt.startswith(_want + " · Browse available artworks"), "L22 the availability line must read '%s · Browse available artworks →', found '%s'" % (_want, _vt))
+            _links = re.findall(r'<a\b[^>]*href="([^"]+)"', _reg)
+            need(_links == ["artworks/"] and os.path.exists(os.path.join(PA, "artworks", "index.html")),
+                 "L22 the availability line must link to the available-artworks page only, found %s" % _links)
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L21 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L22 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))

@@ -692,15 +692,30 @@ console.log('— artist: Online sales in the Studio (card, tab, steps; 22 Nov 20
       await bp.route(ORIGIN + '/**', async r => { const rq = r.request(); const res = await CW.fetch(rq.url(), { method: rq.method(), headers: { origin: 'https://plotnua.ie' } });
         r.fulfill({ status: res.status, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' }, body: await res.text() }); });
       const js = readFileSync(HERE + '../../plotart/assets/pa-basket.js', 'utf8');
-      const buyerPage = async id => { await bp.setContent(`<main><div class="pa-aw-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie">Enquire about this work</a><p class="pa-aw-cta-note">Your enquiry comes to PlotArt and is passed to the artist. The artist is the seller and arranges any sale with you directly.</p><div class="pa-basket" data-pa-basket-origin="${ORIGIN}" data-pa-artwork="${id}" hidden><a class="pa-btn pa-btn--ghost" href="${ORIGIN}/basket?add=${id}">Add to basket</a><p class="pa-aw-cta-note">Or buy online: one secure card payment for works from several artists. Each artist is the seller.</p></div></div></main><script>${js}</script>`);
+      // the CTA exactly as the gallery builder writes it (Sprint 1, 26 Nov 2026: plotart_gallery_pages.basket_block)
+      const buyerPage = async id => { await bp.setContent(`<main><div class="pa-aw-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie" data-pa-track="artwork_enquiry">Enquire to purchase</a><p class="pa-aw-cta-note">Buy directly from the artist: your enquiry is passed to the artist through PlotArt, and you agree the price, delivery and payment together. Nothing is paid until you have both agreed.</p><div class="pa-basket" data-pa-basket-origin="${ORIGIN}" data-pa-artwork="${id}" hidden><a class="pa-btn pa-btn--solid" href="${ORIGIN}/basket?add=${id}" data-pa-track="artwork_basket_add">Buy online</a><p class="pa-aw-cta-note">Adds this work to your PlotArt basket, where you see the delivery cost and the total before paying securely by card. Online purchase delivers in the Republic of Ireland only; for delivery elsewhere, please enquire.</p><ul class="pa-aw-assure" aria-label="Buying this work online" hidden></ul></div></div></main><script>${js}</script>`);
         await bp.waitForTimeout(700);
-        return bp.evaluate(() => { const b = document.querySelector('.pa-basket'); return { shown: !b.hidden, add: !!b.querySelector('a'), note: b.hidden ? null : b.querySelector('.pa-aw-cta-note').textContent, enquire: !!document.querySelector('a.pa-btn--solid') }; }); };
+        return bp.evaluate(() => { const b = document.querySelector('.pa-basket'), c = document.querySelector('.pa-aw-cta'), l = b.querySelector('.pa-aw-assure'), q = c.querySelector('a[data-pa-track="artwork_enquiry"]');
+          return { shown: !b.hidden, add: !!b.querySelector('a'), note: b.hidden ? null : b.querySelector('.pa-aw-cta-note').textContent, enquire: !!q,
+            enquirySolid: !!q && q.classList.contains('pa-btn--solid'), buyFirst: c.firstElementChild === b && !b.hidden, buyLabel: b.querySelector('a') ? b.querySelector('a').textContent : null,
+            assure: l && !l.hidden ? [...l.children].map(li => li.textContent) : [], assureHtml: l ? l.innerHTML : '' }; }); };
       const bFix = await buyerPage(dFix), bArr = await buyerPage(dArr);
       if (process.env.BASKET_UI_SHOTS) await bp.screenshot({ path: `${process.env.BASKET_UI_SHOTS}/buyer-arranged-phone.png` });
       const bNew = await buyerPage(nW);
       await bc.close();
-      check('OS19 buyer page (phone): fixed and approved → “Add to basket”; arranged personally → no basket button and “Delivery for this work is arranged with the artist. Enquire for a delivery quote and the full price before you buy.”; not set up → unchanged enquiry page. “Enquire” is always there',
-        bFix.shown && bFix.add && bArr.shown && !bArr.add && /arranged with the artist\. Enquire for a delivery quote and the full price before you buy/.test(bArr.note) && !bNew.shown && bFix.enquire && bArr.enquire && bNew.enquire, { bFix, bArr, bNew });
+      check('OS19 buyer page (phone): fixed and approved → “Buy online” first, “Enquire to purchase” second (outlined); arranged personally → no basket button and “Delivery for this work is arranged with the artist. Enquire for a delivery quote and the full price before you buy.”; not set up → unchanged enquiry page. “Enquire” is always there',
+        bFix.shown && bFix.add && bFix.buyFirst && bFix.buyLabel === 'Buy online' && !bFix.enquirySolid && bArr.shown && !bArr.add && !bArr.buyFirst && bArr.enquirySolid
+        && /arranged with the artist\. Enquire for a delivery quote and the full price before you buy/.test(bArr.note) && !bNew.shown && bNew.enquirySolid && bFix.enquire && bArr.enquire && bNew.enquire, { bFix, bArr, bNew });
+      // Sprint 1: the eligible work's own details, straight from the checkout's answer (as text): delivery cost and days,
+      // the 14-day right to cancel with the work's return cost, the seller; nothing for the other two works
+      check('OS19b buyer page: the eligible work lists its own delivery price and days, cover, the 14-day right to cancel with its return cost, and the seller (text only); the other works list nothing',
+        bFix.assure.length >= 3 && /^Delivery in Ireland €\d[\d,]*\.\d\d · dispatched within \d+ days?, delivered within \d+ days? of payment$/.test(bFix.assure[0])
+        && bFix.assure.some(t => /^14-day right to cancel after delivery · Return cost if you change your mind: /.test(t)) && bFix.assure.some(t => /^Sold by .+ · secure card payment through PlotArt$/.test(t))
+        && !/<[a-z]/i.test(bFix.assure.join(' ')) && bArr.assure.length === 0 && bNew.assure.length === 0, { assure: bFix.assure });
+      // the 14-day line on the gallery page must match the issued buyer basket terms the checkout applies (PA-BBT §7.2)
+      const bbt = readFileSync(HERE + 'agreements/basket-issued/PA-BBT-2026-11.html', 'utf8');
+      check('OS19c the gallery page’s “14-day right to cancel after delivery” is what the issued buyer terms give (PA-BBT-2026-11 §7.2)',
+        /You may cancel without giving any reason within 14 days from the day you/.test(bbt) && /14-day right to cancel after delivery/.test(js));
       // the artist switches one work between the two choices (phone, taps)
       const ac = await BR.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true }), apg = await ac.newPage();
       await apg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token('walkphone@example.test') });

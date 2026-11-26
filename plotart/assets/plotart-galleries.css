@@ -11,6 +11,12 @@
 .pa-gx{ padding-top:clamp(24px, 3vw, 42px); padding-bottom:clamp(52px, 6.4vw, 96px);
   background:radial-gradient(ellipse 60% 70% at 50% -10%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%); }
 .pa-gx-h1{ font-size:clamp(40px, 4.4vw, 64px); line-height:1; letter-spacing:-.015em; margin:0 0 clamp(20px, 2.4vw, 32px); }
+/* the availability line under the heading (Commercial Conversion Sprint 1, 26 Nov 2026): one quiet line of body text,
+   generated from published galleries; the heading's spacing moves below it so the entrances keep their place */
+.pa-gx-h1:has(+ .pa-gx-avail){ margin-bottom:12px; }
+.pa-gx-avail{ margin:0 0 clamp(20px, 2.4vw, 32px); font-size:15px; line-height:1.55; color:var(--stone); letter-spacing:.005em; }
+.pa-gx-avail a{ color:var(--ivory); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:4px; }
+.pa-gx-avail a:hover{ text-decoration-thickness:2px; }
 .pa-gx-tiles{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(18px, 2.2vw, 32px); list-style:none; margin:0; padding:0; }
 .pa-gx-tile{ position:relative; display:flex; flex-direction:column; min-width:0; }
 .pa-gx-art{ position:relative; margin:0; aspect-ratio:5 / 4.1; display:grid; grid-template:minmax(0, 1fr) / minmax(0, 1fr); place-items:center; overflow:hidden;

@@ -245,7 +245,77 @@ def refine_bar(rows):
             '</div></div>') % (len(rows), "work" if len(rows) == 1 else "works")
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Commercial Conversion Sprint 1 (founder approval 26 Nov 2026)
+# The homepage availability line: three figures, all from published, AVAILABLE works only (reserved, sold and not-for-sale
+# never count). "Artists" is said, never "Irish artists": nationality is not recorded. "Available", never "for sale
+# online": which works can be bought online is decided live by the checkout, not here. No line when nothing is available.
+def priced(w):
+    """A work with a public asking price (not 'price on request')."""
+    return bool(w.get("price_eur")) and not w.get("price_on_request")
+
+
+def home_figures(packages):
+    rows = available(packages)
+    prices = [w["price_eur"] for _, w in rows if priced(w)]   # the published values themselves (euro() formats them)
+    return len(rows), len({pkg["artist"]["slug"] for pkg, _ in rows}), (min(prices) if prices else None)
+
+
+def home_line(packages):
+    works, artists, low = home_figures(packages)
+    if not works:
+        return ""
+    text = "%d original %s by %d %s" % (works, "work" if works == 1 else "works", artists, "artist" if artists == 1 else "artists")
+    if low is not None:
+        text += ", from " + P.euro(low)
+    return ('<p class="pa-gx-avail">%s <span aria-hidden="true">·</span> <a href="artworks/" data-pa-track="home_browse_artworks">'
+            'Browse available artworks<span aria-hidden="true"> →</span></a></p>') % E(text)
+
+
+# Price-band recommendations for the buying guides: one available, publicly priced work per band, in the artwork
+# collection's own fair order (collection_order), never two from the same artist. A band with no such work is left out.
+PRICE_BANDS = ((0, 500, "Under €500"), (500, 1500, "€500 to €1,500"), (1500, 5000, "€1,500 to €5,000"), (5000, None, "€5,000 and over"))
+
+
+def band_picks(packages):
+    rows, used, out = collection_order(packages), set(), []   # noqa
+    for lo, hi, label in PRICE_BANDS:
+        for pkg, w in rows:
+            if not priced(w) or pkg["artist"]["slug"] in used:
+                continue
+            p = float(w["price_eur"])
+            if p >= lo and (hi is None or p < hi):
+                out.append((label, pkg, w))
+                used.add(pkg["artist"]["slug"])
+                break
+    return out
+
+
+def band_row(packages, prefix=""):
+    picks = band_picks(packages)
+    if not picks:
+        return ""
+    cards = []
+    for label, pkg, w in picks:
+        im = P.main_image(w)
+        d = P.pick(im, 1200)
+        img = prefix + "artists/%s/img/" % pkg["artist"]["slug"]
+        url = prefix + work_url(pkg, w)
+        cards.append('<li><a class="pa-band-art" href="%s"><img src="%s" srcset="%s" sizes="(max-width:700px) 44vw, 240px" width="%d" height="%d" '
+                     'alt="%s" loading="lazy" decoding="async"></a><p class="pa-band-label">%s</p><p class="pa-band-t"><a href="%s">%s</a></p>'
+                     '<p class="pa-band-m">%s · %s</p></li>' % (
+                         E(url), E(img + d["file"]), E(P.srcset(im, img)), d["pixels"][0], d["pixels"][1], E(im["alt"]), E(label),
+                         E(url), E(w["title"]), E(pkg["artist"]["display_name"]), E(P.price_line(w))))
+    return ('<div class="pa-band" aria-labelledby="bandH"><h2 class="pa-band-h" id="bandH">Available now, by price</h2>'
+            '<ul class="pa-band-list">%s</ul><p class="pa-band-more"><a href="%sartworks/">See all available artworks<span aria-hidden="true"> →</span></a></p></div>') % (
+                "".join(cards), E(prefix))
+
+
 def content(path, packages):
+    if path in SEO.HOME_PATHS:
+        return home_line(packages)
+    if path in SEO.RECOMMEND_PATHS:
+        return band_row(packages)
     if path in COLLECTIONS:
         return collection(packages, path)
     if path == "buy-original-art-ireland.html":
@@ -265,8 +335,13 @@ def content(path, packages):
     if path != "abstract-contemporary-art-ireland.html":
         raise ValueError("Unknown buyer guide")
     rows = available(packages, abstract=True)[:3]
+    # Sprint 1 (26 Nov 2026): the selection stays editorial (abstract only, never auto-classified); one generated line
+    # points to every available work, at every price, without calling any of it abstract.
+    works, _artists, low = home_figures(packages)
+    every = ('<p class="pa-band-more">Looking across every style and price? Browse <a href="artworks/">all %d available original %s</a>%s.</p>' % (
+        works, "work" if works == 1 else "works", (", from " + E(P.euro(low))) if low is not None else "")) if works else ""
     if not rows:
-        return '<p>No available works are currently featured in this selection. <a href="gallery/">Explore the artist galleries</a> for the latest work.</p>'
+        return '<p>No available works are currently featured in this selection. <a href="gallery/">Explore the artist galleries</a> for the latest work.</p>' + every
     cards = []
     for pkg, w in rows:
         im = P.main_image(w)
@@ -281,7 +356,7 @@ def content(path, packages):
                          E(w["medium"]), E(P.size_line(w)[0]), E(P.price_line(w))))
     return ('<p>A selection from the available abstract and contemporary work published on PlotArt. '
             'Each link opens the artist-supplied details, dimensions, price and enquiry route.</p>'
-            '<ul class="pa-guide-works">%s</ul><p><a class="pa-btn pa-btn--ghost" href="gallery/">Explore all artist galleries →</a></p>') % "".join(cards)
+            '<ul class="pa-guide-works">%s</ul><p><a class="pa-btn pa-btn--ghost" href="gallery/">Explore all artist galleries →</a></p>%s') % ("".join(cards), every)
 
 
 def update(document, path, packages):

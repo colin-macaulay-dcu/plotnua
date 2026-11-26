@@ -37,7 +37,7 @@
             status.setAttribute('data-state', 'error'); send.disabled = false; send.removeAttribute('aria-busy');
           }
         }, function () {
-          status.textContent = 'No connection. Please try again in a moment.'; status.setAttribute('data-state', 'error');
+          status.textContent = 'No connection. Please try again in a moment, or email hello@plotnua.ie.'; status.setAttribute('data-state', 'error');
           send.disabled = false; send.removeAttribute('aria-busy');
         });
     });

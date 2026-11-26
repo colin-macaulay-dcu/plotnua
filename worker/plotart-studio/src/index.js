@@ -25,6 +25,7 @@ import * as T from './test-artists.js';   // internal test artist accounts (26 N
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
+import { outcomes as OUTCOMES } from './outcomes.js';   // founder-only aggregate commercial outcomes (Sprint 1, 26 Nov 2026)
 import { send } from './mailer.js';
 import { AREAS as IDEA_AREAS, clean as ideaClean, problem as ideaProblem } from './ideas-rules.js';
 import { KINDS as G_KINDS, SPACE_TYPES as G_SPACE, AVAILABILITY as G_AVAIL, LISTING_DAYS as G_DAYS, clean as gClean, textProblem as gTextProblem, areaProblem as gAreaProblem } from './garden-rules.js';
@@ -1485,6 +1486,8 @@ async function route(req, env) {
     if ((p === '/admin/basket-gallery' || /^\/admin\/basket-gallery\/[A-Za-z0-9_-]{1,64}$/.test(p)) && m === 'GET' && BP.stagingGallery(env) && ['test', 'local'].includes(env.ENVIRONMENT)) {
       const r = await BG.route(env, url, { page: BP.page, esc: BP.esc, eur: BP.eur }, 'studio'); if (r) return r;
     }
+    // Commercial Conversion Sprint 1 (26 Nov 2026): aggregate, server-confirmed outcomes from existing records; counts only
+    if (p === '/api/admin/outcomes' && m === 'GET') return json({ ok: true, ...(await OUTCOMES(env)) });
     if (p.startsWith('/api/admin/checkout')) {
       if (p === '/api/admin/checkout' && m === 'GET') return json({ ok: true, ...(await CO.adminView(env)) });
       if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not installed' }, 409);

@@ -19,8 +19,13 @@ COLLECTION_PATHS = ("artworks/index.html", "large-artworks/index.html")
 # each collection has its own indexing and sitemap switches (prepared separately, released separately)
 COLLECTION_SWITCHES = {"artworks/index.html": ("artworks_indexable", "artworks_in_sitemap"),
                        "large-artworks/index.html": ("large_artworks_indexable", "large_artworks_in_sitemap")}
-GENERATED_PATHS = GUIDE_PATHS + COLLECTION_PATHS
 EDITORIAL_PATHS = ("choose-art-for-living-room.html",)
+# Commercial Conversion Sprint 1 (founder approval 26 Nov 2026): the homepage's availability line and the living-room
+# guide's price-band recommendations are generated regions too, refreshed from published galleries at every publication
+# (guard L22 recomputes the homepage figures independently; L3 checks every generated region is current).
+HOME_PATHS = ("index.html",)
+RECOMMEND_PATHS = EDITORIAL_PATHS
+GENERATED_PATHS = GUIDE_PATHS + COLLECTION_PATHS + HOME_PATHS + RECOMMEND_PATHS
 TOOL_PATHS = ("art-size-calculator.html",)
 SWITCHES = Path(__file__).resolve().parent / "release/plotart-launch-switches.json"
 
