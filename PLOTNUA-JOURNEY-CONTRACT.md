@@ -463,3 +463,17 @@ any readiness decision.
 **C · SUPPLIER CONTACT / DISPATCH.** AT-1 remains open. The Enquiry screen is built and
 test-gated; what is missing is supplier contact evidence, not a composer. PlotNua must not
 describe the enquiry route as live while it is gated at `?enquiry=test`.
+
+**D · INTRODUCTION REQUESTS (Package N, 26 Nov 2026, development only).** A "Request an
+introduction" block exists **outside** the Your Plot journey: on supplier showcase pages, two
+guides and the Garden Retreat discovery, built by `atlas-tools/plotnua_introductions.py` and
+posting to the garden-lead Worker's `/v1/introduction`. It does not change §3, J07 or the
+single outbound door: Your Plot is not a placement (proved by P03), and the block opens no
+window and links only to the privacy notice. Binding rules while it exists:
+- the switch `atlas-tools/release/plotnua-introductions.json` `public` and the Worker's
+  `INTRO_PUBLIC_ENABLED` / `INTRO_WRITES_ENABLED` / `INTRO_NOTIFY_ENABLED` ship off; flipping any
+  of them is a founder decision with its own production approval;
+- a supplier-specific form appears only for a supplier with a written agreement to receive
+  introductions, listed identically in the config and the Worker's `INTRO_SUPPLIERS` (both empty);
+- no automatic supplier forwarding exists; forwarding is a human act recorded in Airtable;
+- the block must not claim that anything was sent to a supplier.
