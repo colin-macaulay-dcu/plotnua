@@ -1,10 +1,9 @@
 {
- "_purpose": "Package N Step B. Airtable Web API create-table payload for the existing PlotNua base (POST /v0/meta/bases/{baseId}/tables). Create ONLY with founder approval. The Worker writes with typecast:false, so names and choices must match exactly (proved by prove-introduction.mjs I56). The first field is the primary field.",
+ "_purpose": "Package N Step B. Airtable Web API create-table payload for the existing PlotNua base (POST /v0/meta/bases/{baseId}/tables). Create ONLY with founder approval. 19 fields (founder decision 26 Nov 2026: supplier_slug, consent_at and reviewer removed). The Worker writes with typecast:false, so names and choices must match exactly (proved by prove-introduction.mjs I56). The first field is the primary field.",
  "worker_writes": [
   "request_id",
   "created_at",
   "kind",
-  "supplier_slug",
   "supplier_name",
   "homeowner_name",
   "homeowner_email",
@@ -13,7 +12,6 @@
   "description",
   "page",
   "consent_text_hash",
-  "consent_at",
   "privacy_version",
   "status",
   "delete_after",
@@ -21,7 +19,6 @@
  ],
  "founder_fills": [
   "retain_reason",
-  "reviewer",
   "introduced_to",
   "supplier_consent_at",
   "notes"
@@ -45,7 +42,8 @@
       "name": "24hour"
      },
      "timeZone": "utc"
-    }
+    },
+    "description": "UTC time the request was received; also the moment of consent."
    },
    {
     "name": "kind",
@@ -62,12 +60,9 @@
     }
    },
    {
-    "name": "supplier_slug",
-    "type": "singleLineText"
-   },
-   {
     "name": "supplier_name",
-    "type": "singleLineText"
+    "type": "singleLineText",
+    "description": "Empty for a general request. For a supplier request, the unique allow-listed trading name the homeowner agreed to."
    },
    {
     "name": "homeowner_name",
@@ -114,20 +109,8 @@
    },
    {
     "name": "consent_text_hash",
-    "type": "singleLineText"
-   },
-   {
-    "name": "consent_at",
-    "type": "dateTime",
-    "options": {
-     "dateFormat": {
-      "name": "iso"
-     },
-     "timeFormat": {
-      "name": "24hour"
-     },
-     "timeZone": "utc"
-    }
+    "type": "singleLineText",
+    "description": "SHA-256 of the exact sentence agreed to. General: the general sentence. Supplier: the supplier sentence naming supplier_name. Verifiable from this record alone."
    },
    {
     "name": "privacy_version",
@@ -163,7 +146,8 @@
      "dateFormat": {
       "name": "iso"
      }
-    }
+    },
+    "description": "created + 12 months. The Worker deletes the row the day after, unless retain_reason is set."
    },
    {
     "name": "test_record",
@@ -171,15 +155,13 @@
     "options": {
      "icon": "check",
      "color": "greenBright"
-    }
+    },
+    "description": "Ticked while the public route is closed."
    },
    {
     "name": "retain_reason",
-    "type": "singleLineText"
-   },
-   {
-    "name": "reviewer",
-    "type": "singleLineText"
+    "type": "singleLineText",
+    "description": "Fill ONLY to stop automatic deletion (active request; legal or accounting record). Clear it when the reason ends."
    },
    {
     "name": "introduced_to",

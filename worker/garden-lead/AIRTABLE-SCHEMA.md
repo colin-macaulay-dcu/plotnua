@@ -59,10 +59,9 @@ exist exactly as written or the write is refused.
 | Field | Type | Written by Worker | Notes |
 |---|---|---|---|
 | request_id | Single line text (primary) | yes | `PNI-YYYYMMDD-XXXXXXXX`, minted by the Worker |
-| created_at | Date and time (UTC, ISO) | yes | |
+| created_at | Date and time (UTC, ISO) | yes | also the moment of consent |
 | kind | Single select: `general`, `supplier` | yes | `supplier` only for an allow-listed supplier |
-| supplier_slug | Single line text | yes | empty for general |
-| supplier_name | Single line text | yes | empty for general |
+| supplier_name | Single line text | yes | empty for general; the unique allow-listed name (the consent hash is verifiable from it) |
 | homeowner_name | Single line text | yes | |
 | homeowner_email | Email | yes | |
 | county | Single line text | yes | validated against the 32-county list |
@@ -70,16 +69,16 @@ exist exactly as written or the write is refused.
 | description | Long text | yes | optional, ≤ 1,000 characters |
 | page | Single line text | yes | the plotnua.ie path the request came from |
 | consent_text_hash | Single line text | yes | SHA-256 of the exact sentence shown |
-| consent_at | Date and time | yes | |
 | privacy_version | Single line text | yes | `INTRO_PRIVACY_VERSION` |
 | status | Single select: `RECEIVED`, `REVIEWED`, `SUPPLIER_CONSENT_REQUESTED`, `INTRODUCED`, `CLOSED` | `RECEIVED` only | every later status is a human act |
 | delete_after | Date | yes | created + 12 months |
 | test_record | Checkbox | yes | true while the public route is closed |
 | retain_reason | Single line text | no | founder fills ONLY to stop automatic deletion (active request, legal or accounting record) |
-| reviewer | Single line text | no | founder fills |
 | introduced_to | Single line text | no | founder fills, only with a recorded supplier consent |
 | supplier_consent_at | Date and time | no | founder fills when a general request later consents to a named supplier |
 | notes | Long text | no | founder fills |
 
 Retention is enforced by the Worker's daily cron (`purgeExpired`, 03:23 UTC): every row whose
 `delete_after` is before today and whose `retain_reason` is empty is **deleted** (not anonymised).
+
+19 fields (founder decision 26 Nov 2026: `supplier_slug`, `consent_at` and `reviewer` removed).

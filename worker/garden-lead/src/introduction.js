@@ -53,7 +53,11 @@ export const supplierConsent = (name) => SUPPLIER_CONSENT_TEMPLATE.replace('[sup
    their details to go to that supplier. It requires: a written agreement with
    the supplier to receive introductions, founder authorisation, and the same
    supplier added to atlas-tools/release/plotnua-introductions.json.
-   Shape: 'supplier-slug': { name: 'Trading Name', agreement: 'ref/date' }   */
+   Shape: 'supplier-slug': { name: 'Trading Name', agreement: 'ref/date' }
+   NAMES MUST BE UNIQUE (proved by I57): a record identifies its supplier by
+   supplier_name alone, and its consent_text_hash must equal
+   sha256(supplierConsent(supplier_name)), so the record proves on its own which
+   supplier the homeowner agreed to. created_at is also the moment of consent. */
 export const INTRO_SUPPLIERS = Object.freeze({});
 
 export const TIMEFRAMES = Object.freeze({
@@ -197,11 +201,11 @@ export async function handleIntroduction(request, env, now, cors, json) {
   if (typeof b.elapsed_ms !== 'number' || !(b.elapsed_ms >= MIN_FILL_MS)) return REFUSED('timing');
 
   /* supplier: absent = general; present = must be on the written-agreement list */
-  let kind = 'general', supplierSlug = '', supplierName = '';
+  let kind = 'general', supplierName = '';
   if (b.supplier !== undefined && b.supplier !== null && b.supplier !== '') {
     const s = cleanText(b.supplier, 41);
     if (!s || !SLUG_RE.test(s) || !Object.prototype.hasOwnProperty.call(INTRO_SUPPLIERS, s)) return REFUSED('supplier');
-    kind = 'supplier'; supplierSlug = s; supplierName = INTRO_SUPPLIERS[s].name;
+    kind = 'supplier'; supplierName = INTRO_SUPPLIERS[s].name;
   }
 
   const name = cleanText(b.name, MAX_NAME);
@@ -233,7 +237,6 @@ export async function handleIntroduction(request, env, now, cors, json) {
     request_id: ref,
     created_at: stamp,
     kind,
-    supplier_slug: supplierSlug,
     supplier_name: supplierName,
     homeowner_name: name,
     homeowner_email: email,
@@ -242,7 +245,6 @@ export async function handleIntroduction(request, env, now, cors, json) {
     description,
     page,
     consent_text_hash: canonicalHash,
-    consent_at: stamp,
     privacy_version: env.INTRO_PRIVACY_VERSION || '',
     status: INTRO_STATUS,
     delete_after: deleteAfter(now),

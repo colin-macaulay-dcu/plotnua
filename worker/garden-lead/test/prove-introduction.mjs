@@ -95,11 +95,11 @@ const NOW = Date.now();
     r.s === 200 && r.j.ok === true && /^PNI-\d{8}-[0-9A-F]{8}$/.test(r.j.reference) && a.length === 1 && mail().length === 0, r.t);
   check('I10', 'written to "Introduction Requests" with typecast:false, status RECEIVED, kind general, no supplier',
     a[0] && a[0].url.endsWith('/' + encodeURIComponent('Introduction Requests')) && a[0].body.typecast === false &&
-    f.status === 'RECEIVED' && f.kind === 'general' && f.supplier_slug === '' && f.supplier_name === '', JSON.stringify(f));
+    f.status === 'RECEIVED' && f.kind === 'general' && f.supplier_name === '', JSON.stringify(f));
   const exp = new Date(NOW); exp.setUTCMonth(exp.getUTCMonth() + 12);
   check('I11', 'every record carries delete_after = created + 12 months', f && f.delete_after === exp.toISOString().slice(0, 10), f && f.delete_after);
   check('I12', 'the record keeps the approved fields only: no phone, Eircode or address field exists',
-    f && Object.keys(f).sort().join() === ['request_id','created_at','kind','supplier_slug','supplier_name','homeowner_name','homeowner_email','county','timeframe','description','page','consent_text_hash','consent_at','privacy_version','status','delete_after','test_record'].sort().join(), f && Object.keys(f).join());
+    f && Object.keys(f).sort().join() === ['request_id','created_at','kind','supplier_name','homeowner_name','homeowner_email','county','timeframe','description','page','consent_text_hash','privacy_version','status','delete_after','test_record'].sort().join(), f && Object.keys(f).join());
   check('I13', 'while the public route is closed every record is marked test_record:true', f && f.test_record === true);
   check('I14', 'the reply carries the reference only: none of the homeowner\'s details are echoed', !r.t.includes(EMAIL) && !r.t.includes('Testperson') && !r.t.includes('private garden'), r.t);
   check('I15', 'the consent hash recorded is the hash of the approved general sentence', f && f.consent_text_hash === await I.sha256Hex(I.GENERAL_CONSENT)); }
@@ -182,7 +182,7 @@ mailOk = true;
     let r = await fcall(sup, N);
     const f = at()[0] && at()[0].body.records[0].fields, mb = mail()[0] ? JSON.stringify(mail()[0].body) : '';
     check('I42', 'an allow-listed supplier with its exact named sentence -> received, kind supplier, supplier recorded',
-      r.s === 200 && f && f.kind === 'supplier' && f.supplier_slug === 'fixture-maker' && f.supplier_name === 'Fixture Maker' &&
+      r.s === 200 && f && f.kind === 'supplier' && f.supplier_name === 'Fixture Maker' &&
       f.consent_text_hash === await F.sha256Hex(F.supplierConsent('Fixture Maker')), r.t);
     check('I43', 'the founder email names the supplier but still carries no homeowner details, and goes to the founder only',
       mb.includes('Fixture Maker') && !mb.includes(EMAIL) && !mb.includes('Testperson') && mail()[0].body.to[0] === N.NOTIFY_TO, mb);
@@ -257,12 +257,24 @@ mailOk = true;
 {
   const spec = JSON.parse(readFileSync(join(HERE, '..', 'airtable-introduction-requests.json'), 'utf8'));
   const byName = Object.fromEntries(spec.table.fields.map(f => [f.name, f]));
-  const written = ['request_id','created_at','kind','supplier_slug','supplier_name','homeowner_name','homeowner_email','county','timeframe','description','page','consent_text_hash','consent_at','privacy_version','status','delete_after','test_record'];
+  const written = ['request_id','created_at','kind','supplier_name','homeowner_name','homeowner_email','county','timeframe','description','page','consent_text_hash','privacy_version','status','delete_after','test_record'];
   const ch = n => (byName[n] && byName[n].options && byName[n].options.choices || []).map(c => c.name);
   check('I56', 'the Airtable table spec has every field the Worker writes, the retention field, and select choices matching the Worker exactly',
+    spec.table.fields.length === 19 && JSON.stringify(spec.worker_writes.slice().sort()) === JSON.stringify(written.slice().sort()) &&
+    ['supplier_slug','consent_at','reviewer'].every(n => !byName[n]) &&
     spec.table.name === I.T_INTROS && written.every(n => byName[n]) && byName.retain_reason && spec.table.fields[0].name === 'request_id' &&
     JSON.stringify(ch('timeframe')) === JSON.stringify(Object.values(I.TIMEFRAMES)) && ch('status').includes(I.INTRO_STATUS) &&
     JSON.stringify(ch('kind')) === '["general","supplier"]' && byName.delete_after.type === 'date' && byName.test_record.type === 'checkbox');
+}
+
+/* ============================================ unambiguous evidence ====== */
+{
+  const names = Object.values(I.INTRO_SUPPLIERS).map(x => x.name);
+  const src = readFileSync(join(HERE, '..', 'src', 'introduction.js'), 'utf8');
+  check('I57', 'consent evidence and supplier identity are self-contained: supplier names are unique, and each record hash is the hash of the sentence rebuilt from that record alone (general -> general sentence; supplier -> sentence naming supplier_name)',
+    new Set(names).size === names.length && /NAMES MUST BE UNIQUE/.test(src) &&
+    await I.sha256Hex(I.GENERAL_CONSENT) !== await I.sha256Hex(I.supplierConsent('')) &&
+    await I.sha256Hex(I.supplierConsent('A')) !== await I.sha256Hex(I.supplierConsent('B')));
 }
 
 for (const [v, id, w, d] of rows) console.log(`  ${v}  ${id} ${w}${d ? '  [' + d + ']' : ''}`);

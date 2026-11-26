@@ -114,7 +114,7 @@ These should be stated in the ROPA entry (question 9).
 - No public page changes: proved byte-identical, and nothing is deployed to Cloudflare.
 
 **B. Airtable table (prepared).**
-- Create `Introduction Requests` in the existing PlotNua base from `worker/garden-lead/airtable-introduction-requests.json`. That file is the exact create-table API payload (22 fields; names and choices proved against the Worker by I56).
+- Create `Introduction Requests` in the existing PlotNua base from `worker/garden-lead/airtable-introduction-requests.json`. That file is the exact create-table API payload (19 fields after the founder-approved reduction; names and choices proved against the Worker by I56, consent evidence self-contained by I57).
 - It can be done through the Airtable connector or the Airtable interface; no new service.
 - After creation, read the schema back and compare names, types and choices.
 
