@@ -20,7 +20,10 @@ const results = []; const check = (n, ok, d = '') => { results.push(!!ok); conso
 const MIG_FILE = HERE + 'migrations/0027_delivery_transport.sql', MIG = readFileSync(MIG_FILE, 'utf8');
 const SHA = createHash('sha256').update(readFileSync(MIG_FILE)).digest('hex');
 const tmp = mkdtempSync(join(tmpdir(), 'pa-m27-')), MAIN = join(tmp, 'main'), PERSIST = join(tmp, 'd1');
-execFileSync('git', ['-C', ROOT, 'worktree', 'add', '-q', '--detach', MAIN, 'origin/main']);
+// the production database and live Studio BEFORE 0027: b7ea0c4 (Sprint 1, live Studio since 26 Nov 2026 13:10; production
+// main has carried the 0027 file since release R1 96b269a, but the migration itself is not applied)
+const BASE = 'b7ea0c44cce2c52c905b8a3f060fa8cc0761ffca';
+execFileSync('git', ['-C', ROOT, 'worktree', 'add', '-q', '--detach', MAIN, BASE]);
 const mainHead = execFileSync('git', ['-C', MAIN, 'rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
 const prodSchema = readFileSync(join(MAIN, 'worker/plotart-studio/schema.sql'), 'utf8');
 console.log(`PROVE · migration 0027 · SHA-256 ${SHA} · production baseline ${mainHead}`);
