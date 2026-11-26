@@ -318,7 +318,7 @@ async function lineFor(env, artworkId, at) {
   const money = R.amounts({ artwork_cents: artworkCents, delivery_cents: offer.delivery_cents, commission_bp: e.bp });
   return { ok: true, artist, work: w, pw, prof, mem, bm, offer, delivery, review, entitlement: e, money };
 }
-const artworkUrl = (env, artist, w) => env.STAGING_GALLERY === 'true' && ['staging', 'test', 'local'].includes(env.ENVIRONMENT) ? `${env.STAGING_GALLERY_URL || '/gallery'}/${w.id}` : `${env.GALLERY_ORIGIN || 'https://plotnua.ie'}/plotart/artists/${artist.slug}/${w.slug}.html`;
+const artworkUrl = (env, artist, w) => env.STAGING_GALLERY === 'true' && ['staging', 'test', 'local'].includes(env.ENVIRONMENT) ? `${env.STAGING_GALLERY_URL || '/gallery'}/${w.id}` : `${String(env.PUBLIC_GALLERY_URL || `${env.GALLERY_ORIGIN || 'https://plotnua.ie'}/plotart`).replace(/\/$/, '')}/artists/${artist.slug}/${w.slug}.html`;
 const deliverySummary = d => ({ islands: d.offshore_islands === true, dispatch_days: d.dispatch_days, delivery_days: d.delivery_days, window: d.delivery_window, transporter: d.transporter_name, tracking: d.tracking, cover: `${d.cover_provider}, up to €${(d.covered_value_cents / 100).toFixed(2)}`,
   from: d.collection_county, returns: d.return_cost_basis === 'fixed' ? `Return cost if you change your mind: €${(d.return_cost_cents / 100).toFixed(2)}` : `Return cost if you change your mind: up to about €${(d.return_cost_cents / 100).toFixed(2)}` });
 

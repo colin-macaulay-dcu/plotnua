@@ -69,8 +69,11 @@ const sc = async (name, bindings, expect, when = 'before', must) => {
 };
 await sc("today's live relay (29 Oct: open, email on, no garden switch yet)", TODAY, true, 'before', /will be added, with no change in behaviour: GARDEN_ENQUIRIES_ENABLED="false", HIRE_ENQUIRIES_ENABLED="false", HIRE_TERMS_ENABLED="false", HIRE_SCREEN_USE="false"/);
 const HIRE_OFF = ['HIRE_ENQUIRIES_ENABLED', 'HIRE_TERMS_ENABLED', 'HIRE_SCREEN_USE'].map(k => plain(k, 'false'));
-await sc('after the deploy: exactly the expected settings', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF], true, 'after');
-await sc('after the deploy: an Art for Hire switch missing', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF.slice(1)], false, 'after');
+const DOMAIN_EMPTY = [plain('EXTRA_ORIGINS', ''), plain('PUBLIC_GALLERY_URL', '')];   // domain migration R1: empty = unchanged
+await sc('after the deploy: exactly the expected settings', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF, ...DOMAIN_EMPTY], true, 'after');
+await sc('after the deploy: an Art for Hire switch missing', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF.slice(1), ...DOMAIN_EMPTY], false, 'after');
+await sc('domain migration: an unapproved origin already live → deploy REFUSED', [...TODAY, plain('EXTRA_ORIGINS', 'https://evil.example')], false);
+await sc('domain migration: the two settings are added empty (no change)', TODAY, true, 'before', /domain migration setting \(approved values only\): EXTRA_ORIGINS="", PUBLIC_GALLERY_URL=""/);
 await sc('live Art for Hire enquiries ON: the deploy would close them', [...TODAY, plain('HIRE_ENQUIRIES_ENABLED', 'true')], false);
 await sc('after the deploy: the garden switch missing', TODAY, false, 'after');
 await sc('live relay with email OFF (MAILER none): the deploy would switch it on', TODAY.map(b => b.name === 'MAILER' ? plain('MAILER', 'none') : b), false);

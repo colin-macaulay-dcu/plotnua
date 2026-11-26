@@ -1,0 +1,4 @@
+{
+  "_note": "plotart.ie site settings (domain migration R1). analytics: \"off\" removes the PlotArt analytics head block (Consent Mode defaults, Cookiebot b8abbc45, GA4) from every page on plotart.ie, because the Cookiebot domain group covers plotnua.ie only and no consent solution for plotart.ie is approved yet (founder, 26 Nov 2026: no non-essential tracking until valid consent, including during testing). Changing it needs a founder-approved consent decision AND a matching Content-Security-Policy change in src/index.js; the build refuses any other value.",
+  "analytics": "off"
+}

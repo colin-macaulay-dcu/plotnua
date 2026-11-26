@@ -21,6 +21,7 @@ preview_urls = false    # one endpoint, not a family of live hostnames.
 WRITES_ENABLED  = "true"
 EMAIL_ENABLED   = "false"   # there is NO mail adapter in this Worker.
 ORIGIN          = "https://plotnua.ie"
+EXTRA_ORIGINS   = ""        # domain migration R1: "https://plotart.ie" at the founder-approved test go-live; empty = unchanged
 # The privacy notice version that will carry the Art Space Register section.
 # DRAFT — governance/PRIVACY-VERSION-2026-10-PHASE2-V4-DRAFT.md. It must be
 # approved AND published on plotnua.ie before writes are ever enabled.

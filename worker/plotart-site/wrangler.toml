@@ -1,0 +1,22 @@
+# PlotArt public site · plotart.ie (domain migration R1, prepared 26 Nov 2026). Not deployed.
+# Deployed only by .github/workflows/plotart-site-deploy.yml, which first builds ./dist from plotart/ with
+# atlas-tools/plotart_site_build.py. The Worker code is in src/index.js; the pages are static assets.
+#
+# Custom domains are NOT in this file. They are attached once, at the founder-approved test go-live checkpoint
+# (Cloudflare dashboard: Workers & Pages -> plotart-site -> Settings -> Domains & Routes -> plotart.ie, www.plotart.ie),
+# so a routine content deploy can never change routing.
+name = "plotart-site"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = true      # every request goes through src/index.js (exact GitHub Pages URL behaviour, headers)
+html_handling = "none"       # no automatic /x.html -> /x redirects: every existing address must stay exact
+not_found_handling = "none"
+
+[vars]
+INDEXING = "noindex"         # "index" only at the founder-approved cutover (see PLOTART-DOMAIN-RUNBOOK.md)

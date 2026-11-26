@@ -118,7 +118,8 @@ const CONSENT_TEXT =
 /* ------------------------------------------------------------------ cors -- */
 function allowedOrigin(env, request) {
   const o = request.headers.get('origin') || '';
-  return o && o === env.ORIGIN ? o : null;
+  const extra = String(env.EXTRA_ORIGINS || '').split(',').map(x => x.trim()).filter(Boolean);   // plotart.ie (domain migration R1)
+  return o && (o === env.ORIGIN || extra.includes(o)) ? o : null;
 }
 
 function corsHeaders(origin) {

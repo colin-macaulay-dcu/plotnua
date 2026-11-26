@@ -19,6 +19,9 @@ export const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&l
 export const eur = c => c == null ? '—' : '€' + (c / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const nonce = () => [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2, '0')).join('');
 const gallery = env => env.GALLERY_ORIGIN || 'https://plotnua.ie';
+// the gallery's other address during the domain migration (R1): plotart.ie may ask too; empty = unchanged
+const galleryOrigins = env => [gallery(env), ...String(env.EXTRA_GALLERY_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean)];
+const galleryHome = env => String(env.PUBLIC_GALLERY_URL || gallery(env) + '/plotart').replace(/\/$/, '');
 /* STAGING ONLY: synthetic artwork pages served by this Worker so testers can browse, add to a basket and pay in Stripe TEST
    mode. Never in production or live mode: all three conditions must hold. */
 const galleryLink = env => env.STAGING_GALLERY_URL || '/gallery';
@@ -87,7 +90,7 @@ export function page(env, title, body, { status = 200, script = '', stripe = fal
   const n = nonce();
   return new Response(`<!DOCTYPE html><html lang="en-IE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
 <title>${esc(title)} · PlotArt</title>${STYLE}</head><body>
-<header class="top"><div class="in"><a class="brand" href="${stagingGallery(env) ? esc(galleryLink(env)) : esc(gallery(env)) + '/plotart/'}">PlotArt<small>Artists’ Gallery${stagingGallery(env) ? ' · staging' : ''}</small></a><span class="small"><a href="${stagingGallery(env) ? esc(galleryLink(env)) : esc(gallery(env)) + '/plotart/gallery/'}">Continue browsing</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="${esc(String(env.CHECKOUT_ORIGIN || '').replace(/\/$/, ''))}/basket">Basket</a></span></div></header>
+<header class="top"><div class="in"><a class="brand" href="${stagingGallery(env) ? esc(galleryLink(env)) : esc(galleryHome(env)) + '/'}">PlotArt<small>Artists’ Gallery${stagingGallery(env) ? ' · staging' : ''}</small></a><span class="small"><a href="${stagingGallery(env) ? esc(galleryLink(env)) : esc(galleryHome(env)) + '/gallery/'}">Continue browsing</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="${esc(String(env.CHECKOUT_ORIGIN || '').replace(/\/$/, ''))}/basket">Basket</a></span></div></header>
 ${stagingGallery(env) ? '<div class="wrap" style="padding-bottom:0"><p class="note test" style="margin:0"><strong>Private staging.</strong> Synthetic artists and artworks, Stripe test mode. No real payment is taken and nothing is sold. Card <strong>4242 4242 4242 4242</strong> pays; <strong>4000 0000 0000 0341</strong> is declined; <strong>4000 0027 6000 3184</strong> asks for a bank check. Any future expiry, any CVC.</p></div>' : ''}
 <main class="wrap">${body}<footer>Each artwork is sold by its artist. PlotArt introduces buyers to artists and is not the seller. Questions: <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></footer></main>
 ${stripe ? '<script src="https://js.stripe.com/v3/"></script>' : ''}${script ? `<script nonce="${n}">${script}</script>` : ''}</body></html>`, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', ...headers(env, n, { stripe }) } });
@@ -229,7 +232,8 @@ export async function handle(req, env, url) {
     const ids = String(url.searchParams.get('ids') || '').split(',').filter(Boolean);
     const out = await B.preview(env, ids);
     // the gallery (plotnua.ie) may ask which works can be added to a basket; nothing else is exposed cross-origin
-    return json(env, out, 200, { 'Access-Control-Allow-Origin': gallery(env), 'Vary': 'Origin' });
+    const asker = req.headers.get('Origin');
+    return json(env, out, 200, { 'Access-Control-Allow-Origin': galleryOrigins(env).includes(asker) ? asker : gallery(env), 'Vary': 'Origin' });
   }
   if (p === '/basket/checkout' && m === 'POST') {
     if (req.headers.get('Origin') !== env.CHECKOUT_ORIGIN) return json(env, { error: 'Refused' }, 403);

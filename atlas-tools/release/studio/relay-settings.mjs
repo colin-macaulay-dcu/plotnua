@@ -9,7 +9,7 @@
 import { readFileSync } from 'node:fs';
 const [file, when = 'before'] = process.argv.slice(2);
 const E = process.env, SCRIPT = 'plotart-enquiry';
-const SHOWN = ['ENQUIRIES_ENABLED', 'MAILER', 'GARDEN_ENQUIRIES_ENABLED', 'HIRE_ENQUIRIES_ENABLED', 'HIRE_TERMS_ENABLED', 'HIRE_SCREEN_USE', 'ENVIRONMENT', 'ORIGIN', 'MAIL_FROM', 'REPLY_TO'];
+const SHOWN = ['ENQUIRIES_ENABLED', 'MAILER', 'GARDEN_ENQUIRIES_ENABLED', 'HIRE_ENQUIRIES_ENABLED', 'HIRE_TERMS_ENABLED', 'HIRE_SCREEN_USE', 'ENVIRONMENT', 'ORIGIN', 'MAIL_FROM', 'REPLY_TO', 'EXTRA_ORIGINS', 'PUBLIC_GALLERY_URL'];
 const fail = m => { console.log('FAIL  ' + m); process.exit(1); };
 const base = E.CF_API_BASE && /^http:\/\/127\.0\.0\.1:\d+$/.test(E.CF_API_BASE) ? E.CF_API_BASE : 'https://api.cloudflare.com/client/v4';
 if (!E.CLOUDFLARE_API_TOKEN || !/^[0-9a-f]{32}$/.test(E.CLOUDFLARE_ACCOUNT_ID || '')) fail('the Cloudflare token or account is not available: nothing was deployed');
@@ -34,11 +34,16 @@ console.log(`  secrets: ${secrets.join(', ') || 'none'} (names only) · database
 // Art for Hire (Stage 3B-5): its three switches likewise predate nothing live; each is closed unless exactly "true", so adding
 // them as "false" changes nothing. Any other value, or changing one already set, is refused as before.
 const ADDABLE = { GARDEN_ENQUIRIES_ENABLED: 'false', HIRE_ENQUIRIES_ENABLED: 'false', HIRE_TERMS_ENABLED: 'false', HIRE_SCREEN_USE: 'false' }, added = [];
+// Domain migration R1 (26 Nov 2026): these two may be added or changed, but only to exactly these values. Empty means
+// today's behaviour; "https://plotart.ie" is set only by a founder-approved release and this deploy's own approval.
+const DOMAIN = { EXTRA_ORIGINS: ['', 'https://plotart.ie'], PUBLIC_GALLERY_URL: ['', 'https://plotart.ie'] }, domain = [];
 for (const [k, v] of Object.entries(want.vars)) {
   if (plain[k] === v) continue;
+  if (when === 'before' && k in DOMAIN && DOMAIN[k].includes(v) && (!(k in plain) || DOMAIN[k].includes(plain[k]))) { domain.push(`${k}=${JSON.stringify(v)}`); continue; }
   if (when === 'before' && !(k in plain) && ADDABLE[k] === v) { added.push(`${k}=${JSON.stringify(v)}`); continue; }
   problems.push(`${k} would change from ${k in plain ? JSON.stringify(plain[k]) : '(not set)'} to ${JSON.stringify(v)}`);
 }
+if (domain.length) console.log(`  domain migration setting (approved values only): ${domain.join(', ')}`);
 if (added.length) console.log(`  will be added, with no change in behaviour: ${added.join(', ')}`);
 for (const k of Object.keys(plain)) if (!(k in want.vars)) problems.push(`live variable ${k} would be removed`);
 for (const b of d1) if (want.d1[b.name] !== b.id) problems.push(`database binding ${b.name} would ${b.name in want.d1 ? 'point elsewhere' : 'be removed'}`);
