@@ -14,9 +14,20 @@ import plotart_seo as SEO
 BEGIN = "<!-- pa-guide-collection:begin -->"
 END = "<!-- pa-guide-collection:end -->"
 REGION = re.compile(re.escape(BEGIN) + r".*?" + re.escape(END), re.S)
-# Editorial classification, based on Leah's already-published artist statement
-# ("abstract language") and practice. New artists are never auto-classified.
-ABSTRACT_ARTISTS = frozenset({"leah-hewson"})
+# Editorial classification, based on each artist's own published statement or practice line. New artists are never
+# auto-classified. Leah Hewson ("abstract language", 5 Nov 2026). Widened 26 Nov 2026 (SEO and analytics package,
+# section 2.3, founder approval) to the artists who describe themselves as abstract painters or artists in their own
+# published words: Anna Marie Savage ("abstract painter"), Carmel Marrinan ("Abstract Expressionist artist"), Clare
+# O'Connor ("Abstract Painter"), Fintan Whelan ("Irish abstract artist"), Karen Ebbs ("Abstract painting and colour are
+# central to my practice"), Lena Fawaz ("emerging abstract artist"), Naomi Taitz Duffy ("abstract painter ... geometric
+# abstraction"), Nessa McCormack ("I am an abstract painter") and Olivia Jones ("hard-edge geometric abstraction").
+# Artists who describe a mix (abstraction and representation, abstraction and pop art, abstract painting and
+# photography) are left out.
+ABSTRACT_ARTISTS = frozenset({"leah-hewson", "anna-marie-savage", "carmel-marrinan", "clare-o-connor", "fintan-whelan", "karen-ebbs",
+                              "lena-fawaz", "naomi-taitz-duffy", "nessa-mccormack", "olivia-jones"})
+ABSTRACT_SHOWN = 16      # the abstract page's curated grid: up to this many available works, one artist at a time
+# Section 2.6: the abstract page links to these artists' galleries ("[artist]'s abstract work") while they are published
+ABSTRACT_LINKED = ("karen-ebbs", "clare-o-connor", "naomi-taitz-duffy", "fintan-whelan")
 E = lambda x: html.escape(str(x), quote=True)
 
 
@@ -334,7 +345,11 @@ def content(path, packages):
                 'Ask the artist to confirm what applies to the particular work.</p>') % body
     if path != "abstract-contemporary-art-ireland.html":
         raise ValueError("Unknown buyer guide")
-    rows = available(packages, abstract=True)[:3]
+    # the curated grid: available works by the artists above, one from each in turn (the collection's own fair order)
+    rows = collection_order([p for p in packages if p["artist"]["slug"] in ABSTRACT_ARTISTS])[:ABSTRACT_SHOWN]
+    by_slug = {p["artist"]["slug"]: p for p in packages}
+    linked = ['<a href="artists/%s/">%s’s abstract work</a>' % (E(sl), E(by_slug[sl]["artist"]["display_name"])) for sl in ABSTRACT_LINKED if sl in by_slug]
+    further = ('<p>Go further into %s, or see <a href="large-artworks/">large abstract paintings</a> among the works of 100 cm or more.</p>' % series(linked)) if linked else ""
     # Sprint 1 (26 Nov 2026): the selection stays editorial (abstract only, never auto-classified); one generated line
     # points to every available work, at every price, without calling any of it abstract.
     works, _artists, low = home_figures(packages)
@@ -356,19 +371,105 @@ def content(path, packages):
                          E(w["medium"]), E(P.size_line(w)[0]), E(P.price_line(w))))
     return ('<p>A selection from the available abstract and contemporary work published on PlotArt. '
             'Each link opens the artist-supplied details, dimensions, price and enquiry route.</p>'
-            '<ul class="pa-guide-works">%s</ul><p><a class="pa-btn pa-btn--ghost" href="gallery/">Explore all artist galleries →</a></p>%s') % ("".join(cards), every)
+            '<ul class="pa-guide-works">%s</ul>%s<p><a class="pa-btn pa-btn--ghost" href="gallery/">Explore all artist galleries →</a></p>%s') % ("".join(cards), further, every)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Search titles and descriptions of the generated pages (SEO and analytics package, founder approval 26 Nov 2026, section
+# 2.4). Every figure (works, artists, lowest and highest price, large-work counts) is computed here from the published
+# galleries, never typed in, and refreshed with the collection region at every publication (update()), so it never goes
+# stale; outside() leaves the descriptions out of the manifest pin, and update() == page (guard L3, the boundary) pins them.
+# They say "enquire", never "buy online": whether a work can be bought online is decided live by the checkout.
+LIVING_TITLE = "How to Choose Art for Your Living Room | PlotArt"
+LIVING_DESCRIPTION = ("Choose living-room art with confidence: sofa proportions in centimetres, colour, placement, light and framing. "
+                      "Includes a free printable art-buying checklist.")
+KIND_PLURAL = (("Painting", "paintings"), ("Print", "prints"), ("Mixed Media", "mixed-media works"), ("Drawing", "drawings"))
+
+
+def plural(n, one, many):
+    return "%d %s" % (n, one if n == 1 else many)
+
+
+def series(words):
+    return words[0] if len(words) == 1 else ", ".join(words[:-1]) + " and " + words[-1]
+
+
+def figures(packages):
+    """The published, available collection in numbers: works, artists, lowest and highest public asking price, the kinds
+    of work, and the large works (100 cm or more on the longest side) with their artists and how many are 150 cm or more."""
+    rows = available(packages)
+    prices = [w["price_eur"] for _, w in rows if priced(w)]
+    large = [(p, w) for p, w in rows if is_large(w)]
+    kinds = {P.artwork_kind(w["medium"]) for _, w in rows}
+    return {"works": len(rows), "artists": len({p["artist"]["slug"] for p, _ in rows}),
+            "low": min(prices) if prices else None, "high": max(prices) if prices else None,
+            "kinds": [many for one, many in KIND_PLURAL if one in kinds],
+            "large": len(large), "large_artists": len({p["artist"]["slug"] for p, _ in large}),
+            "large_150": sum(1 for _, w in large if max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0)) >= 150)}
+
+
+def _home(f):
+    if not f["works"]:
+        return "An online gallery of original art by Irish artists. Each work is shown with its size and price. Enquire with the artist directly."
+    return ("An online gallery of original art by %s. %s%s, each shown with its size and price. Enquire with the artist directly." % (
+        plural(f["artists"], "Irish artist", "Irish artists"), plural(f["works"], "available work", "available works"),
+        (" from " + P.euro(f["low"])) if f["low"] is not None else ""))
+
+
+def _artworks(f):
+    if not f["works"]:
+        return "Original paintings, prints and mixed-media works by Irish artists. See each size and price and enquire with the artist."
+    span = (", from %s to %s" % (P.euro(f["low"]), P.euro(f["high"]))) if f["low"] is not None and f["high"] != f["low"] else \
+        (", at %s" % P.euro(f["low"]) if f["low"] is not None else "")
+    return "%d original %s by %s%s. See each size and price and enquire with the artist." % (
+        f["works"], series(f["kinds"] or ["works"]), plural(f["artists"], "Irish artist", "Irish artists"), span)
+
+
+def _large(f):
+    if not f["large"]:
+        return "Large original works of 100 cm or more by Irish artists. See each size and price, and enquire with the artist."
+    over = (", %d of them 150 cm and over" % f["large_150"]) if f["large_150"] else ""
+    return "%d original %s of 100 cm or more by %s%s. See each size and price, and enquire with the artist." % (
+        f["large"], "work" if f["large"] == 1 else "works", plural(f["large_artists"], "Irish artist", "Irish artists"), over)
+
+
+def _buy(f):
+    tail = (" See live prices from %s." % P.euro(f["low"])) if f["low"] is not None else " See the live artwork prices."
+    return "Where to buy original Irish art, what it costs, and what to ask about framing, VAT and delivery before you buy." + tail
+
+
+HUB_META = {
+    "index.html": ("PlotArt | Original Art by Irish Artists, Online", _home),
+    "artworks/index.html": ("Original Irish Art for Sale | Paintings & Prints | PlotArt", _artworks),
+    "large-artworks/index.html": ("Large Original Paintings for Sale in Ireland | PlotArt", _large),
+    "buy-original-art-ireland.html": ("Buy Original Art in Ireland | Prices & Guide | PlotArt", _buy),
+    "abstract-contemporary-art-ireland.html": ("Abstract Art Ireland | Original Irish Abstract Art | PlotArt",
+                                               lambda f: "Original abstract paintings and prints by Irish artists, with sizes and prices, and a short "
+                                                         "guide to choosing abstract art you want to live with."),
+    "choose-art-for-living-room.html": (LIVING_TITLE, lambda f: LIVING_DESCRIPTION),
+}
+
+
+def hub_meta(path, packages):
+    """(title, description) of a generated page, from the published galleries."""
+    title, desc = HUB_META[path]
+    return title, desc(figures(packages))
 
 
 def update(document, path, packages):
     if document.count(BEGIN) != 1 or document.count(END) != 1 or not REGION.search(document):
         raise ValueError("Missing or duplicate buyer-guide collection region")
-    return REGION.sub(lambda m: BEGIN + "\n" + content(path, packages) + "\n" + END, document, count=1)
+    document = REGION.sub(lambda m: BEGIN + "\n" + content(path, packages) + "\n" + END, document, count=1)
+    # a whole page (with a <head>) must carry the generated title and description; a bare region fixture has none
+    return SEO.set_meta(document, *hub_meta(path, packages)) if path in HUB_META and "<head>" in document else document
 
 
 def outside(document):
+    """The page outside its generated parts (what the launch manifest pins): the collection region and the generated
+    descriptions are blanked (update() == page, checked by guard L3 and the content boundary, pins those)."""
     if document.count(BEGIN) != 1 or document.count(END) != 1 or not REGION.search(document):
         raise ValueError("Missing or duplicate buyer-guide collection region")
-    return REGION.sub(BEGIN + "<!-- collection -->" + END, document, count=1)
+    return SEO.blank_meta(REGION.sub(BEGIN + "<!-- collection -->" + END, document, count=1))
 
 
 def refresh(root, packages):

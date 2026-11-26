@@ -82,7 +82,7 @@ COLLECTION
 </div></section>
 <section class="pa-coll-more"><div class="pa-wrap">
 <h2>Before you choose.</h2>
-<p>Measure the wall you have in mind, read the medium and dimensions, and ask the artist about framing, delivery and the total price. Each artist’s gallery tells you more about their practice and the rest of their work.</p>
+<p>Measure the wall you have in mind, read the medium and dimensions, and ask the artist about framing, delivery and the total price. Each artist’s gallery tells you more about their practice and the rest of their work. If nothing here suits the space, you can <a href="../commissions/" data-pa-track="artworks_commissions">commission a new work from an Irish artist</a>.</p>
 <div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../choose-art-for-living-room.html">Choosing art for your living room →</a><a class="pa-btn pa-btn--ghost" href="../abstract-contemporary-art-ireland.html">Abstract &amp; contemporary art →</a><a class="pa-btn pa-btn--ghost" href="../large-artworks/">Large artworks, 100 cm or more →</a></div>
 </div></section>
 '''
@@ -111,6 +111,7 @@ COLLECTION
 <p><strong>Ask about weight and hanging.</strong> Ask the artist whether the work is framed, how much it weighs and what fixings it needs, and make sure the wall can take it.</p>
 <p><strong>Agree delivery with the artist.</strong> Collection, delivery, any installation and the total price are arranged directly between you and the artist. Ask for them in writing before you pay.</p>
 <p><strong>For a workplace or commercial interior,</strong> consider light, heat and where people will see the work, and ask the artist how it should be cared for.</p>
+<p><strong>Need a particular size?</strong> Some PlotArt artists welcome commissions: you can <a href="../commissions/" data-pa-track="large_commissions">commission a work for a specific wall</a>.</p>
 <div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a></div>
 </div></section>
 '''
@@ -124,7 +125,10 @@ def relink(fragment):
 
 
 def render(packages, path=PATH):
-    title, description, body_copy = PAGES[path]
+    _t, _d, body_copy = PAGES[path]
+    # SEO and analytics package (26 Nov 2026, section 2.4): the search title and the description, whose figures are
+    # computed from the published galleries and refreshed with the collection at every publication
+    title, description = C.hub_meta(path, packages)
     home = (ROOT / "plotart/index.html").read_text()
     header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0).replace(' aria-current="page"', "")
     footer = re.search(r'<footer class="pa-foot">.*?</footer>', home, re.S).group(0)

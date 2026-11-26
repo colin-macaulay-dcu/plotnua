@@ -25,6 +25,8 @@ Header, navigation and footer are copied from founding-25.html, so every PlotArt
 No new imagery: the pages are type, hairlines and space on the existing dark identity (design refinement 14 Nov 2026).
 """
 import html, json, os, re, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from plotart_shell import ANALYTICS_HEAD as ANALYTICS  # noqa: E402  (the approved analytics head, 26 Nov 2026)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PA = os.path.join(os.path.abspath(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else ROOT, "plotart")   # --out SITE: build into a copy
@@ -69,7 +71,7 @@ def head(path, title, desc, extra_style=""):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{E(title)}</title>
+{ANALYTICS}<title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
 <!-- Not for indexing until the founder approves it through the SEO workstream. Planned canonical:
      https://plotnua.ie/plotart/{path} -->

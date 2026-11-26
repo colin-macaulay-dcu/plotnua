@@ -89,18 +89,42 @@ for pkg in packages:
                           (ROOT / "plotart" / node["contentUrl"].removeprefix(SEO.ORIGIN)).is_file())
 future_work_path = "artists/future-test/test-work.html"
 future_graph = graph(dict(pages)[future_work_path])
-art = next(n for n in future_graph if n["@type"] == "VisualArtwork")
+is_art = lambda n: "VisualArtwork" in (n["@type"] if isinstance(n["@type"], list) else [n["@type"]])
+art = next(n for n in future_graph if is_art(n))
 check("artwork entity identifies its actual creator and medium",
       art["creator"]["@id"] == SEO.canonical("artists/future-test/index.html") + "#artist" and art["artMedium"] == "Acrylic")
-check("metadata adds no invented reviews, merchant offers or reuse licence",
-      not any(k in json.dumps(future_graph) for k in ('aggregateRating', 'reviewCount', 'offers', 'license', 'acquireLicensePage')))
+check("metadata adds no invented reviews or reuse licence",
+      not any(k in json.dumps(future_graph) for k in ('aggregateRating', 'reviewCount', 'review', 'license', 'acquireLicensePage')))
+# SEO and analytics package (founder approval 26 Nov 2026, section 2.5): the artwork is also a Product, and its one Offer
+# states exactly the published asking price and availability, sold by the artist; no price on request, no Offer.
+check("an available, priced work is a Product whose Offer is exactly its published price and availability, sold by the artist",
+      art["@type"] == ["VisualArtwork", "Product"] and art["offers"] == {
+          "@type": "Offer", "price": "100", "priceCurrency": "EUR", "availability": "https://schema.org/InStock",
+          "itemCondition": "https://schema.org/NewCondition", "seller": {"@id": SEO.canonical("artists/future-test/index.html") + "#artist"},
+          "url": SEO.canonical(future_work_path)})
+def offer_of(**work):
+    fx = copy.deepcopy(future)
+    fx["works"][0].update(work)
+    return next(n for n in graph(SEO.artist_metadata(future_work_path, fx)) if is_art(n)).get("offers")
+check("price on request, not for sale or no published price: no Offer",
+      offer_of(price_on_request=True) is None and offer_of(availability="not_for_sale") is None and offer_of(availability="sold", price_eur=None) is None)
+check("reserved and sold works say so in their Offer",
+      offer_of(availability="reserved")["availability"] == "https://schema.org/LimitedAvailability"
+      and offer_of(availability="sold")["availability"] == "https://schema.org/SoldOut")
+for pkg in packages:
+    for w in pkg["works"]:
+        path = "artists/%s/%s.html" % (pkg["artist"]["slug"], w["slug"])
+        if path in SEO.sitemap_paths([pkg], launch):
+            node = next(n for n in graph((ROOT / "plotart" / path).read_text()) if is_art(n))
+            want = None if (w.get("price_on_request") or not w.get("price_eur") or w["availability"] not in ("available", "reserved", "sold")) else "%g" % w["price_eur"]
+            check("published offer matches the approved export: " + path, (node.get("offers") or {}).get("price") == want)
 check("head enrichment leaves visible page and enquiry form byte-identical",
       all(doc.split("</head>", 1)[1] == SEO.enrich_artist(path, doc, future).split("</head>", 1)[1] for path, doc in pages))
 unsafe = copy.deepcopy(future)
 unsafe["works"][0]["description"] = '</script><script>alert("test")</script>&'
 unsafe_doc = SEO.enrich_artist(future_work_path, dict(pages)[future_work_path], unsafe)
 check("artist text cannot break out of JSON script",
-      '<script>alert(' not in unsafe_doc and next(n for n in graph(unsafe_doc) if n["@type"] == "VisualArtwork")["description"] == unsafe["works"][0]["description"])
+      '<script>alert(' not in unsafe_doc and next(n for n in graph(unsafe_doc) if is_art(n))["description"] == unsafe["works"][0]["description"])
 check("drafts emit no public entity metadata", SEO.artist_metadata(future_work_path, dict(future, publication={"state": "draft"})) == "")
 check("closed artist indexing emits no public entity metadata",
       SEO.artist_metadata(future_work_path, future, dict(launch, artist_pages_indexable=False)) == "")

@@ -123,6 +123,8 @@ PAGES = {
 
 def render(path, packages):
     title, desc, body = PAGES[path]
+    if path in C.HUB_META:     # SEO and analytics package (26 Nov 2026): generated title and description (section 2.4)
+        title, desc = C.hub_meta(path, packages)
     home = (ROOT / 'plotart/index.html').read_text()
     header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0)
     header = header.replace(' aria-current="page"', '')

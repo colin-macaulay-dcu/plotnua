@@ -17,6 +17,7 @@ from pathlib import Path
 import plotart_opportunities as OPP
 import plotart_featured as FEAT
 import plotart_seo as SEO
+import plotart_shell as S  # the approved analytics head (26 Nov 2026)
 
 ROOT = Path(__file__).resolve().parent.parent
 PATH = OPP.HUB
@@ -65,7 +66,7 @@ COM_BODY = """
 <section class="pa-com-how" aria-labelledby="com-how-h"><div class="pa-wrap pa-com-how-in">
 <h2 id="com-how-h">How a commission works</h2>
 <ol class="pa-steps">
-<li><div><h3>Choose an artist</h3><p>Look through the galleries of the artists listed below and find work that speaks to you.</p></div></li>
+<li><div><h3>Choose an artist</h3><p>Look through the galleries of the artists listed below and find work that speaks to you. You can also <a href="../artworks/" data-pa-track="commissions_artworks">see available original works</a> by every PlotArt artist.</p></div></li>
 <li><div><h3>Send an enquiry through PlotArt</h3><p>On the artist’s gallery, use “Enquire about a commission”, or “Enquire through PlotArt”. PlotArt passes your name, email address and message to the artist, who replies to you directly.</p></div></li>
 <li><div><h3>Agree it with the artist</h3><p>The artist decides whether to take the commission on. The size, subject, price, timescale, payment and delivery are agreed between you and the artist. PlotArt doesn’t take payment.</p></div></li>
 </ol>
@@ -83,6 +84,8 @@ PAGES = {OPP.HUB: (TITLE, DESC, lambda region: BODY % {"jumps": "".join('<li><a 
 
 def render(packages, path=PATH):
     title, desc, body = PAGES[path]
+    if path == OPP.COMMISSIONS:   # SEO and analytics package (26 Nov 2026): the number of artists comes from the galleries
+        title, desc = OPP.commissions_meta(packages)
     home = (ROOT / "plotart/index.html").read_text(encoding="utf-8")
     header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0).replace(' aria-current="page"', "")
     footer = re.search(r'<footer class="pa-foot">.*?</footer>', home, re.S).group(0)
@@ -97,7 +100,7 @@ def render(packages, path=PATH):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>%s</title>
+%s<title>%s</title>
 <meta name="description" content="%s">
 %s
 <meta name="theme-color" content="#27282A">
@@ -120,7 +123,7 @@ def render(packages, path=PATH):
 <script src="/assets/identity/pn-menu.js?v=1" defer></script>
 </body>
 </html>
-""" % (E(title), E(desc), robots, header, body(region), footer)
+""" % (S.ANALYTICS_HEAD, E(title), E(desc), robots, header, body(region), footer)
 
 
 def main():
