@@ -1,0 +1,17 @@
+{
+  "schema": "plotnua.introductions.v1",
+  "purpose": "Package N switch and placements for the 'Request an introduction' block. While public is false every placement page is byte-for-byte unchanged. Read by atlas-tools/plotnua_introductions.py only.",
+  "public": false,
+  "endpoint": "https://plotnua-garden-lead.colin-a41.workers.dev/v1/introduction",
+  "privacy_anchor": "privacy.html#introductions",
+  "suppliers": {},
+  "suppliers_rule": "A slug appears here ONLY with a written agreement to receive introductions and founder authorisation, and must match INTRO_SUPPLIERS in worker/garden-lead/src/introduction.js exactly (proved by prove-plotnua-introductions.py). Shape: \"slug\": {\"name\": \"Trading Name\", \"agreement\": \"reference and date\"}.",
+  "placements": [
+    { "page": "suppliers/nook-prefab.html",      "supplier": "nook-prefab",      "label": "NOOK Prefab",     "page_type": "supplier", "tone": "dark" },
+    { "page": "suppliers/the-pod-factory.html",  "supplier": "the-pod-factory",  "label": "The Pod Factory", "page_type": "supplier", "tone": "dark" },
+    { "page": "suppliers/arctic-wellness.html",  "supplier": "arctic-wellness",  "label": "Arctic Wellness", "page_type": "supplier", "tone": "dark" },
+    { "page": "garden-room-prices-ireland.html", "supplier": null, "label": null, "page_type": "guide",     "tone": "auto" },
+    { "page": "garden-saunas-ireland.html",      "supplier": null, "label": null, "page_type": "guide",     "tone": "dark" },
+    { "page": "discovery-garden-retreat.html",   "supplier": null, "label": null, "page_type": "discovery", "tone": "auto" }
+  ]
+}

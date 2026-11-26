@@ -343,6 +343,10 @@ if (window.matchMedia && matchMedia("(max-width:700px)").matches) document.query
 
 def main():
     txt = build()
+    # Package N: the "Request an introduction" block. No-op while
+    # atlas-tools/release/plotnua-introductions.json "public" is false.
+    sys.path.insert(0, str(ROOT / "atlas-tools")); import plotnua_introductions as _pni
+    txt = _pni.apply(txt, "suppliers/arctic-wellness.html")
     if "--check" in sys.argv:
         ok = OUT.exists() and OUT.read_text(encoding="utf-8") == txt
         print(("CHECK OK " if ok else "STALE    ") + str(OUT.relative_to(ROOT)))

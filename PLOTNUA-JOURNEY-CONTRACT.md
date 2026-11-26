@@ -222,7 +222,10 @@ dispatch route is built. It is test-gated, which is not the same as absent.
 - **Entry** — **Progress**, at sufficient readiness. (Currently entered from Option Detail — a
   recorded violation, §5.)
 - **Exit** — the supplier's own site, in a new tab.
-- **State owned** — none today. Tracking is designed, not built.
+- **State owned** — none. **Referral attribution (Package N, founder-approved principles, 26 Nov 2026):** the door
+  adds `utm_source=plotnua`, `utm_medium=referral`, `utm_campaign=your-plot` and the handing-over stage as `utm_content`
+  (`pnReferralUrl()`), and opens with `noopener` only, so the browser sends the origin (`https://plotnua.ie/`) and never a
+  path or query. No homeowner data is ever added (`atlas-tools/prove-referral-attribution.mjs`). Counting is still not built.
 - **Allowed next** — TRANSACTION (off-platform)
 - **Prohibited bypasses**
   - **No stage earlier than Progress may introduce a supplier handoff** without an explicit
@@ -270,6 +273,9 @@ dispatch route is built. It is test-gated, which is not the same as absent.
   - `window.open(` must appear **exactly once** in `your-plot.html`, inside `pnSupplierHandover()`.
   - PlotNua must not claim to request a quote, send an enquiry, start a purchase, or track a
     handoff until each is actually built.
+    Package N (26 Nov 2026) applied this to Resolve: its panel reads "Questions to ask the maker" ("Take these with you
+    when you contact the maker.") and the pending slot "Ask the maker directly" ("Take the questions above with you"),
+    no longer "Enquiry through PlotNua / Coming shortly" (First Lead proof F22 pins the new wording).
 - **Status** — **BUILT · MISPLACED** — the function is sound; its call site is too early.
 - **Blocker** — **AT-1.** Measured across all 5 suppliers: email 0/5, telephone 0/5,
   contact/enquiry URL 0/5; homepage 5/5; postal `contractingEntity` 5/5, shown nowhere.
@@ -457,3 +463,17 @@ any readiness decision.
 **C · SUPPLIER CONTACT / DISPATCH.** AT-1 remains open. The Enquiry screen is built and
 test-gated; what is missing is supplier contact evidence, not a composer. PlotNua must not
 describe the enquiry route as live while it is gated at `?enquiry=test`.
+
+**D · INTRODUCTION REQUESTS (Package N, 26 Nov 2026, development only).** A "Request an
+introduction" block exists **outside** the Your Plot journey: on supplier showcase pages, two
+guides and the Garden Retreat discovery, built by `atlas-tools/plotnua_introductions.py` and
+posting to the garden-lead Worker's `/v1/introduction`. It does not change §3, J07 or the
+single outbound door: Your Plot is not a placement (proved by P03), and the block opens no
+window and links only to the privacy notice. Binding rules while it exists:
+- the switch `atlas-tools/release/plotnua-introductions.json` `public` and the Worker's
+  `INTRO_PUBLIC_ENABLED` / `INTRO_WRITES_ENABLED` / `INTRO_NOTIFY_ENABLED` ship off; flipping any
+  of them is a founder decision with its own production approval;
+- a supplier-specific form appears only for a supplier with a written agreement to receive
+  introductions, listed identically in the config and the Worker's `INTRO_SUPPLIERS` (both empty);
+- no automatic supplier forwarding exists; forwarding is a human act recorded in Airtable;
+- the block must not claim that anything was sent to a supplier.

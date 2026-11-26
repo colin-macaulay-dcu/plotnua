@@ -1,0 +1,189 @@
+{
+ "_purpose": "Package N Step B. Airtable Web API create-table payload for the existing PlotNua base (POST /v0/meta/bases/{baseId}/tables). Create ONLY with founder approval. 19 fields (founder decision 26 Nov 2026: supplier_slug, consent_at and reviewer removed). The Worker writes with typecast:false, so names and choices must match exactly (proved by prove-introduction.mjs I56). The first field is the primary field.",
+ "worker_writes": [
+  "request_id",
+  "created_at",
+  "kind",
+  "supplier_name",
+  "homeowner_name",
+  "homeowner_email",
+  "county",
+  "timeframe",
+  "description",
+  "page",
+  "consent_text_hash",
+  "privacy_version",
+  "status",
+  "delete_after",
+  "test_record"
+ ],
+ "founder_fills": [
+  "retain_reason",
+  "introduced_to",
+  "supplier_consent_at",
+  "notes"
+ ],
+ "table": {
+  "name": "Introduction Requests",
+  "description": "PlotNua introduction requests (Package N). Rows are deleted automatically the day after delete_after unless retain_reason is set.",
+  "fields": [
+   {
+    "name": "request_id",
+    "type": "singleLineText"
+   },
+   {
+    "name": "created_at",
+    "type": "dateTime",
+    "options": {
+     "dateFormat": {
+      "name": "iso"
+     },
+     "timeFormat": {
+      "name": "24hour"
+     },
+     "timeZone": "utc"
+    },
+    "description": "UTC time the request was received; also the moment of consent."
+   },
+   {
+    "name": "kind",
+    "type": "singleSelect",
+    "options": {
+     "choices": [
+      {
+       "name": "general"
+      },
+      {
+       "name": "supplier"
+      }
+     ]
+    }
+   },
+   {
+    "name": "supplier_name",
+    "type": "singleLineText",
+    "description": "Empty for a general request. For a supplier request, the unique allow-listed trading name the homeowner agreed to."
+   },
+   {
+    "name": "homeowner_name",
+    "type": "singleLineText"
+   },
+   {
+    "name": "homeowner_email",
+    "type": "email"
+   },
+   {
+    "name": "county",
+    "type": "singleLineText"
+   },
+   {
+    "name": "timeframe",
+    "type": "singleSelect",
+    "options": {
+     "choices": [
+      {
+       "name": "Within 3 months"
+      },
+      {
+       "name": "3 to 6 months"
+      },
+      {
+       "name": "6 to 12 months"
+      },
+      {
+       "name": "More than 12 months"
+      },
+      {
+       "name": "Not sure yet"
+      }
+     ]
+    }
+   },
+   {
+    "name": "description",
+    "type": "multilineText"
+   },
+   {
+    "name": "page",
+    "type": "singleLineText"
+   },
+   {
+    "name": "consent_text_hash",
+    "type": "singleLineText",
+    "description": "SHA-256 of the exact sentence agreed to. General: the general sentence. Supplier: the supplier sentence naming supplier_name. Verifiable from this record alone."
+   },
+   {
+    "name": "privacy_version",
+    "type": "singleLineText"
+   },
+   {
+    "name": "status",
+    "type": "singleSelect",
+    "options": {
+     "choices": [
+      {
+       "name": "RECEIVED"
+      },
+      {
+       "name": "REVIEWED"
+      },
+      {
+       "name": "SUPPLIER_CONSENT_REQUESTED"
+      },
+      {
+       "name": "INTRODUCED"
+      },
+      {
+       "name": "CLOSED"
+      }
+     ]
+    }
+   },
+   {
+    "name": "delete_after",
+    "type": "date",
+    "options": {
+     "dateFormat": {
+      "name": "iso"
+     }
+    },
+    "description": "created + 12 months. The Worker deletes the row the day after, unless retain_reason is set."
+   },
+   {
+    "name": "test_record",
+    "type": "checkbox",
+    "options": {
+     "icon": "check",
+     "color": "greenBright"
+    },
+    "description": "Ticked while the public route is closed."
+   },
+   {
+    "name": "retain_reason",
+    "type": "singleLineText",
+    "description": "Fill ONLY to stop automatic deletion (active request; legal or accounting record). Clear it when the reason ends."
+   },
+   {
+    "name": "introduced_to",
+    "type": "singleLineText"
+   },
+   {
+    "name": "supplier_consent_at",
+    "type": "dateTime",
+    "options": {
+     "dateFormat": {
+      "name": "iso"
+     },
+     "timeFormat": {
+      "name": "24hour"
+     },
+     "timeZone": "utc"
+    }
+   },
+   {
+    "name": "notes",
+    "type": "multilineText"
+   }
+  ]
+ }
+}

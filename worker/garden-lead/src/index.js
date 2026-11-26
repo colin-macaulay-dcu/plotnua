@@ -356,8 +356,16 @@ async function handleEnquiry(env, body, now, cors) {
   return RECEIVED(cors, leadId);
 }
 
+import { INTRO_PATH, handleIntroduction, purgeExpired } from './introduction.js';
+
 /* ========================================================================= */
 export default {
+  /* PACKAGE N retention: the daily cron deletes expired introduction requests
+     (src/introduction.js purgeExpired). A no-op while every INTRO switch is off. */
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(purgeExpired(env, new Date()));
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
     const now = new Date();
@@ -385,6 +393,11 @@ export default {
     if (request.method !== 'POST') {
       return json(405, { ok: false, state: 'refused' }, cors);
     }
+
+    /* PACKAGE N · introduction requests. Their own gate, switches and table
+       (src/introduction.js). Dispatched BEFORE the Yard Box gate so neither
+       route's switches can open the other. */
+    if (url.pathname === INTRO_PATH) return handleIntroduction(request, env, now, cors, json);
 
     /* THE RELEASE GATE, BEFORE THE BODY IS EVEN READ. A closed Worker does no
        work on an unauthorised request and reveals nothing about what it would

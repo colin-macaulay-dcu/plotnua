@@ -18,8 +18,14 @@ image-provenance-records.json as a SUPPLIER_IMAGE pointing at NOOK's rights reco
 guard's P2 binds the bytes, P4 the live grant. One photograph, five visualisations, each labelled; every image
 carries the credit "Image: NOOK Prefab" linked to nookprefab.com. No other imagery, no AI imagery.
 
-COMMERCIAL. PlotNua has proposed referral terms; NOOK has NOT agreed them. guard() refuses any percentage,
-discount, offer, exclusivity or commission wording on the page.
+COMMERCIAL (reconciled against the correspondence, 26 Nov 2026). NOOK pointed PlotNua to its standard, published
+affiliate programme (11 Nov) and PlotNua replied that it "sounds like a good starting point" and asked how NOOK
+tracks referrals. That is an expression of interest on both sides: PlotNua has NOT enrolled, no tracking method
+and no commercial terms are agreed, so there is NO active arrangement and NOOK is correctly absent from
+atlas-tools/commercial-arrangements-register.json. Separately, NOOK agreed in writing (12 Nov) that PlotNua may
+introduce homeowners directly, as a trial; the details for that are being confirmed (Package N). Rates and terms
+stay out of this public repository. guard() refuses any percentage, discount, offer, exclusivity or commission
+wording on the page.
 
 Run: python3 supplier-preview-system/build-nook-prefab-showcase.py [--check]
 """
@@ -290,6 +296,10 @@ def guard(s):
 
 def main():
     s = page()
+    # Package N: the "Request an introduction" block. No-op while
+    # atlas-tools/release/plotnua-introductions.json "public" is false.
+    sys.path.insert(0, str(ROOT / "atlas-tools")); import plotnua_introductions as _pni
+    s = _pni.apply(s, "suppliers/nook-prefab.html")
     f = guard(s)
     if f:
         sys.exit("REFUSED: " + "; ".join(f))
