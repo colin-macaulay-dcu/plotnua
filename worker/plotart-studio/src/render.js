@@ -112,8 +112,8 @@ export function artworkBody(p, w, prev, next) {
   const credit = im.photo_credit ? ` <span>Photo: ${E(im.photo_credit)}</span>` : '';
   const av = w.availability;
   const cta = ['available', 'reserved'].includes(av)
-    ? `<a class="pa-btn pa-btn--solid" href="${E(enquiryHref(p, w))}" data-pa-track="artwork_enquiry">${av === 'available' ? 'Enquire about this work' : 'Ask to be told if it becomes available'}</a>` +
-      `<p class="pa-aw-cta-note">Your enquiry is passed to ${E(a.display_name)} through PlotArt. Nothing is paid until you have agreed the price and delivery with the artist.</p>`
+    ? `<a class="pa-btn pa-btn--solid" href="${E(enquiryHref(p, w))}" data-pa-track="artwork_enquiry">${av === 'available' ? 'Enquire to purchase' : 'Ask to be told if it becomes available'}</a>` +
+      `<p class="pa-aw-cta-note">Buy directly from the artist: your enquiry is passed to ${E(a.display_name)} through PlotArt, and you agree the price, delivery and payment together. Nothing is paid until you have both agreed.</p>`
     : `<a class="pa-btn pa-btn--ghost" href="${E(enquiryHref(p))}" data-pa-track="artwork_enquiry_other">Ask about ${E(a.display_name)}'s other work</a>`;
   const ai = w.ai_involvement && w.ai_involvement !== 'none' ? `<p class="pa-aw-ai"><strong>AI disclosure.</strong> ${E(w.ai_note)}</p>` : '';
   const nav = `<nav class="pa-aw-pn" aria-label="More works by ${E(a.display_name)}">${prev ? `<a href="${E(prev.slug)}.html" rel="prev"><span aria-hidden="true">←</span> ${E(prev.title)}</a>` : '<span></span>'}<a href="index.html">All works</a>${next ? `<a href="${E(next.slug)}.html" rel="next">${E(next.title)} <span aria-hidden="true">→</span></a>` : '<span></span>'}</nav>`;

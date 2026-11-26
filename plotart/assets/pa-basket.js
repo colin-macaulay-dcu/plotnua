@@ -4,7 +4,7 @@
    otherwise the page stays the enquiry page it was. The basket itself lives on the checkout
    Worker's page. Sends no cookies and stores nothing on plotnua.ie.
    Commercial Conversion Sprint 1 (founder approval 26 Nov 2026): for a work the checkout confirms, "Buy online" becomes
-   the first button and "Enquire about this work" the second; under it, the work's OWN delivery, cancellation and seller
+   the first button and "Enquire to purchase" (buying directly from the artist) the second; under it, the work's OWN delivery, cancellation and seller
    details, taken only from the checkout's answer (written as text, never as HTML). A line whose detail is missing is
    left out rather than guessed. On any error or delay nothing changes: the page stays enquiry-only. */
 (function () {

@@ -240,7 +240,7 @@
       if (!priced) h += `<p class="st-muted st-dv-s">Add a price to this artwork in Studio to offer a fixed delivery price. Until then buyers enquire.</p>`;
       else if (fixed) h += `<p class="st-dv-s">Delivery ${eur(w.offer.delivery_cents)} · <span class="${rv && rv.state === 'approved' ? 'st-ok' : 'st-warn'}">${esc(rv ? rv.text : 'Waiting for PlotArt to review it')}</span>${rv && rv.note ? `<br><small>PlotArt’s note: ${esc(rv.note)}</small>` : ''}</p>`
         + `<div class="st-dv-off" hidden><p>Stop the fixed delivery price for this artwork? Buyers will enquire instead. A basket already being paid is not affected.</p><button data-withdraw-offer="${esc(w.id)}">Yes, arrange delivery personally</button> <button type="button" data-dv-cancel>Keep the fixed price</button></div>`;
-      else h += `<p class="st-muted st-dv-s">Buyers see “Enquire about this work” and a note that delivery is arranged with you. You agree delivery and the full price with them before any payment.</p>`;
+      else h += `<p class="st-muted st-dv-s">Buyers see “Enquire to purchase” and a note that delivery is arranged with you. You agree delivery and the full price with them before any payment.</p>`;
       if (priced) h += offerForm(w, bj);
       h += `</li>`;
     }

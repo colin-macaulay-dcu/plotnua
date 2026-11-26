@@ -309,9 +309,9 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
     avail = w["availability"]
     if avail in ("available", "reserved"):
         cta = ('<a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artwork_enquiry"%s>%s</a>'
-               '<p class="pa-aw-cta-note">Your enquiry is passed to %s through PlotArt. Nothing is paid until you have agreed the price and delivery with the artist.</p>%s') % (
+               '<p class="pa-aw-cta-note">Buy directly from the artist: your enquiry is passed to %s through PlotArt, and you agree the price, delivery and payment together. Nothing is paid until you have both agreed.</p>%s') % (
             E(enquiry_href(pkg, w)), " data-pa-enquire" if enquiry_endpoint else "",
-            "Enquire about this work" if avail == "available" else "Ask to be told if it becomes available", E(a["display_name"]),
+            "Enquire to purchase" if avail == "available" else "Ask to be told if it becomes available", E(a["display_name"]),
             enquiry_form(pkg, w, enquiry_endpoint))
         if basket_origin and avail == "available":
             cta += basket_block(w, basket_origin)
