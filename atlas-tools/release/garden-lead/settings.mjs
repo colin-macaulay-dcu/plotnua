@@ -28,3 +28,13 @@ console.log(`  AIRTABLE_BASE ${'AIRTABLE_BASE' in plain ? 'set (not shown)' : 'n
 const open = SWITCHES.filter(k => plain[k] === 'true');
 if (open.length) fail(`switch(es) open on the live Worker: ${open.join(', ')}. This workflow deploys a CLOSED Worker only; opening a switch is a separate founder step`);
 console.log('PASS  every switch is closed');
+// Secrets are never touched by the deploy; prove it by comparing secret NAMES before and after (SECRETS_FILE).
+if (E.SECRETS_FILE) {
+  const fs = await import('node:fs');
+  if (when === 'before') fs.writeFileSync(E.SECRETS_FILE, JSON.stringify(secrets));
+  else if (fs.existsSync(E.SECRETS_FILE)) {
+    const was = JSON.parse(fs.readFileSync(E.SECRETS_FILE, 'utf8')), lost = was.filter(n => !secrets.includes(n));
+    if (lost.length) fail('secret(s) missing after the deploy: ' + lost.join(', '));
+    console.log(`PASS  every secret present before is still present (${was.length})`);
+  }
+}

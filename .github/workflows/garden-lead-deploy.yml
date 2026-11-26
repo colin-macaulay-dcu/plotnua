@@ -9,7 +9,7 @@
 #      read the existing Cloudflare token STUDIO_CF_DEPLOY_TOKEN (no new secret or token).
 #   3. It READS the Worker's live settings (it may not exist yet: first deployment) and refuses if any switch is open.
 #   4. It deploys with --keep-vars, so a value set at the console (AIRTABLE_BASE) is kept, and secrets are never touched.
-#   5. It reads the settings again and checks the Worker from outside WITHOUT writing anything (no preview key is sent).
+#   5. It reads the settings again (and proves every secret present before is still present) and checks the Worker from outside WITHOUT writing anything (no preview key is sent).
 #      If that fails after replacing an existing version, it rolls back at once.
 # Logs are public: switch names and values, secret NAMES and PASS/FAIL only.
 name: PlotNua garden-lead deploy
@@ -96,6 +96,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          SECRETS_FILE: ${{ runner.temp }}/secret-names.json
         run: |
           set -o pipefail
           node atlas-tools/release/garden-lead/settings.mjs before | tee "$RUNNER_TEMP/before.txt" | tee -a "$GITHUB_STEP_SUMMARY"
@@ -126,6 +127,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          SECRETS_FILE: ${{ runner.temp }}/secret-names.json
         run: |
           set -euo pipefail
           sleep 10
