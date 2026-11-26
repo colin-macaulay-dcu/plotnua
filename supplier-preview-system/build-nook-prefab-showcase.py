@@ -290,6 +290,10 @@ def guard(s):
 
 def main():
     s = page()
+    # Package N: the "Request an introduction" block. No-op while
+    # atlas-tools/release/plotnua-introductions.json "public" is false.
+    sys.path.insert(0, str(ROOT / "atlas-tools")); import plotnua_introductions as _pni
+    s = _pni.apply(s, "suppliers/nook-prefab.html")
     f = guard(s)
     if f:
         sys.exit("REFUSED: " + "; ".join(f))
