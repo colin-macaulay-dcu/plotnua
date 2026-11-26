@@ -86,6 +86,9 @@ for f in pkgs:
     shows = bool(OPP.open_to(pkg))
     for ep in (None, ENDPOINT):
         a, b = pages(M, pkg, ep), pages(P, pkg, ep)
+        # SEO and analytics package (founder approval 26 Nov 2026, section 2.5): an artwork page gains exactly one line,
+        # the two links (size calculator, available artworks); nothing else may differ
+        b = {k: (v.replace("      " + P.MORE_LINKS + "\n", "", 1) if k != "index" else v) for k, v in b.items()}
         for k in a:
             if a[k] == b.get(k) or (k == "index" and shows):
                 same += 1

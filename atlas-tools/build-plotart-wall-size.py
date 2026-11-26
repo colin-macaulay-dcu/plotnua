@@ -7,8 +7,8 @@ from pathlib import Path
 import plotart_seo as SEO
 ROOT = Path(__file__).resolve().parent.parent
 PATH = 'art-size-calculator.html'
-TITLE = 'Art Size Calculator | What Size Art Fits My Wall? | PlotArt'
-DESC = 'Compare artwork sizes above a sofa or on a clear wall. A free visual art size calculator in centimetres, with practical advice for choosing art for your home.'
+TITLE = 'Art Size Calculator: What Size Art Above a Sofa? | PlotArt'   # SEO and analytics package, 26 Nov 2026 (section 2.4)
+DESC = 'Compare artwork sizes in centimetres above a sofa or on a clear wall. A free visual art size calculator, with practical guidance on proportion.'
 BODY = '''
 <section class="pa-guide-hero"><div class="pa-wrap">
 <p class="pa-eyebrow">PlotArt · Make room for art</p>

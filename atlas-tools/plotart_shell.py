@@ -6,9 +6,61 @@ page() writes for a gallery page (Virtual Gallery pill current, artist fine prin
 prove-plotart-galleries.py requires the two to be byte-identical, so they cannot drift apart.
 """
 import html
+import re
 import plotart_seo as SEO
 
 E = lambda s: html.escape(str(s), quote=True)
+
+# Analytics (SEO and analytics package, founder approval 26 Nov 2026, section 1.2): the one approved head block, identical
+# to PlotNua's except content_group. Consent Mode v2 defaults (Basic: everything denied until the visitor allows statistics;
+# exempt from Cookiebot's blocking so it runs first), then the existing Cookiebot banner (domain group b8abbc45..., auto-
+# blocking), then the existing GA4 property G-PKKJ0RK6N8, which Cookiebot holds back until consent. It is the first script
+# in <head> of every PlotArt page, directly after the viewport meta (charset stays within the first 1024 bytes). Every
+# PlotArt builder writes it from here; atlas-tools/plotart-analytics-head.py applies the same block to hand-built and
+# already-published pages; prove-plotart-launch.py L23 and prove-plotart-wall-size.py check it is exactly this and nothing else.
+COOKIEBOT_CBID = "b8abbc45-15b0-4d27-8f95-83ebd240a305"
+GA4_ID = "G-PKKJ0RK6N8"
+ANALYTICS_HEAD = """<script data-cookieconsent="ignore">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'denied',
+    personalization_storage: 'denied', security_storage: 'granted',
+    wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="%s" data-blockingmode="auto" type="text/javascript"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', '%s', { content_group: 'PlotArt' });
+</script>
+""" % (COOKIEBOT_CBID, GA4_ID, GA4_ID)
+_VIEWPORT = re.compile(r'<head>\n<meta charset="utf-8">\n<meta name="viewport" content="[^"]*">\n')
+
+
+def with_analytics(doc):
+    """doc with the approved analytics block directly after its viewport meta (unchanged if it is already there).
+    Refuses a page whose head does not open with charset + viewport, or that holds any other copy of the block."""
+    m = _VIEWPORT.search(doc)
+    if not m or doc.count("<head>") != 1:
+        raise ValueError("the page's <head> does not open with the charset and viewport metas")
+    if doc[m.end():m.end() + len(ANALYTICS_HEAD)] == ANALYTICS_HEAD and doc.count(ANALYTICS_HEAD) == 1:
+        return doc
+    if "googletagmanager.com" in doc or "consent.cookiebot.com" in doc or "dataLayer" in doc:
+        raise ValueError("the page already carries another analytics or consent script")
+    return doc[:m.end()] + ANALYTICS_HEAD + doc[m.end():]
+
+
+def analytics_ok(doc):
+    """True when the approved block is present exactly once, first in <head> after charset and viewport, and the page loads
+    no other third-party script (every other <script src> is same-site)."""
+    m = _VIEWPORT.search(doc)
+    if not m or doc[m.end():m.end() + len(ANALYTICS_HEAD)] != ANALYTICS_HEAD or doc.count(ANALYTICS_HEAD) != 1:
+        return False
+    rest = doc[:m.end()] + doc[m.end() + len(ANALYTICS_HEAD):]
+    return not re.search(r'<script\b[^>]*\bsrc="(?:https?:)?//', rest) and "dataLayer" not in rest and "gtag(" not in rest
 ARTIST_FINE = ("Artworks in this gallery are offered by the artist. PlotArt introduces buyers to artists. The artist is the "
                "seller and arranges delivery. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
 # Art for Hire (Stage 3B-4): the fourth gallery tab. OFF until the founder releases the Art for Hire page; with it off every
@@ -135,7 +187,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
+{analytics}<title>{title}</title>
 <meta name="description" content="{desc}">
 {robots}
 <meta name="theme-color" content="#27282A">
@@ -176,5 +228,5 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
 <script src="/assets/identity/pn-menu.js?v=1" defer></script>
 </body>
 </html>
-""".format(title=E(title), desc=E(desc), robots=robots, R=R, T=T, header=header, body=body, footlinks=footlinks, fine=fine, sc=sc,
+""".format(analytics=ANALYTICS_HEAD, title=E(title), desc=E(desc), robots=robots, R=R, T=T, header=header, body=body, footlinks=footlinks, fine=fine, sc=sc,
            styles="".join('\n<link rel="stylesheet" href="%s">' % s for s in styles))

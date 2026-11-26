@@ -138,7 +138,7 @@ check("B5 no Offer, price, availability or merchant claim", not re.search(r'"(?:
 
 # B6
 head = page.split("</head>")[0]
-check("B6 the approved title", "<title>Large Original Paintings &amp; Artworks for Sale in Ireland | PlotArt</title>" in head)
+check("B6 the approved title (SEO and analytics package, 26 Nov 2026)", "<title>Large Original Paintings for Sale in Ireland | PlotArt</title>" in head)
 check("B6 exactly one H1, the approved heading", re.findall(r"<h1>(.*?)</h1>", page) == ["Large original artworks for sale in Ireland."])
 check("B6 one meta description of at most 160 characters", len(re.findall(r'<meta name="description" content="([^"]{1,160})">', head)) == 1)
 if SEO.indexable(PATH, launch):

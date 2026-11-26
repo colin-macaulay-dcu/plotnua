@@ -55,7 +55,7 @@ FAULTS = [
     ("F5 a holding page made indexable", "spaces/index.html", '<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">', "L21 spaces/index.html must be noindex"),
     ("F6 entrance artwork cropped", "assets/plotart-galleries.css", "object-fit:contain", "object-fit:cover", "L21 gallery entrance artwork must be shown whole"),
     ("F7 the gallery tabs removed from Contemporary", "gallery/index.html", '<nav class="pa-gtabs"', '<nav class="pa-gtabs-gone"', "L21 gallery/index.html must carry the gallery tabs"),
-    ("F8 the Contemporary heading reverted", "gallery/index.html", 'id="vgH">Contemporary.</h1>', 'id="vgH">Contemporary Art.</h1>', "L21 gallery/index.html must open with the shared heading block"),
+    ("F8 the Contemporary heading reverted", "gallery/index.html", 'id="vgH">Contemporary Irish art.</h1>', 'id="vgH">Contemporary Art.</h1>', "L21 gallery/index.html must open with the shared heading block"),
     ("F9 an extra label under the homepage heading", "index.html", "A new home for Irish art.</h1>", "A new home for Irish art.</h1><p>Three curated galleries</p>", "L6 the homepage heading must be exactly"),
     ("F10 'Real art. Real homes.' restored", "index.html", "<h3>Living Gallery</h3>", "<h3>Real art. Real homes.</h3>", "L21 the homepage must present the Living Gallery"),
     ("F11 Art for Hire enquiries wording removed", "index.html", " Hire enquiries are not yet open.</p>", "</p>", "L21 the homepage must say Art for Hire enquiries are not yet open"),
@@ -63,7 +63,7 @@ FAULTS = [
      'data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="../../gallery/" data-pa-track="nav_virtual_gallery">Artists’ Gallery</a>', "L21 artists/carolyn-walsh/coastal-series-8.html must carry exactly one Galleries menu"),
     ("F13 a holding page implying an opening date", "being/index.html", "This gallery is being prepared.", "This gallery is opening soon.", "L9"),
     ("F16 an artist link on the Being entrance", "index.html", '<p class="pa-gx-text">Life, identity', '<a href="artists/carolyn-walsh/">x</a><p class="pa-gx-text">Life, identity', "L21 the being entrance must say In preparation, link only to its holding page and never to an artist"),
-    ("F17 the Contemporary search title reverted", "gallery/index.html", "<title>Contemporary Irish Art Gallery | PlotArt</title>", "<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>", "L11 the Contemporary Art gallery's search title"),
+    ("F17 the Contemporary search title reverted", "gallery/index.html", "<title>Contemporary Irish Art: Abstract &amp; Expressive | PlotArt</title>", "<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>", "L11 the Contemporary Art gallery's search title"),
     # final curatorial identity (25 Nov 2026): names, editorial full stops, taglines, introductions, plain navigation and redirects
     ("F21 a former name (Landscape Art) back in a footer", "about.html", '>Spaces</a></li>', '>Landscape Art</a></li>', "L21 about.html still uses a former gallery name"),
     ("F22 a link to a former address (portraiture/)", "for-artists.html", 'href="being/" data-pa-track="nav_gallery_being">', 'href="portraiture/" data-pa-track="nav_gallery_being">', "L21 for-artists.html still uses a former gallery name"),

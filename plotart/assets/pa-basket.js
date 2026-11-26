@@ -6,7 +6,11 @@
    Commercial Conversion Sprint 1 (founder approval 26 Nov 2026): for a work the checkout confirms, "Buy online" becomes
    the first button and "Enquire to purchase" (buying directly from the artist) the second; under it, the work's OWN delivery, cancellation and seller
    details, taken only from the checkout's answer (written as text, never as HTML). A line whose detail is missing is
-   left out rather than guessed. On any error or delay nothing changes: the page stays enquiry-only. */
+   left out rather than guessed. On any error or delay nothing changes: the page stays enquiry-only.
+   Analytics (SEO and analytics package, founder approval 26 Nov 2026, section 1.3): a click on "Buy online" sends
+   "begin_checkout" (a purchase intention, never a sale: payment happens on the checkout's own page) to the page's existing
+   GA4 tag, only when it is there and the visitor has allowed statistics; it carries the artwork id and the checkout's
+   price, nothing personal. The link itself works exactly as before. */
 (function () {
   'use strict';
   var box = document.querySelector('.pa-basket[data-pa-basket-origin][data-pa-artwork]');
@@ -52,6 +56,15 @@
         return;
       }
       var a = box.querySelector('a'), img = document.querySelector('.pa-aw-frame img');
+      if (a) a.addEventListener('click', function () {
+        try {
+          if (typeof window.gtag === 'function' && window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics) {
+            var ev = { currency: 'EUR', items: [{ item_id: id }] };
+            if (typeof it.price_cents === 'number' && it.price_cents > 0) { ev.value = it.price_cents / 100; ev.items[0].price = it.price_cents / 100; }
+            window.gtag('event', 'begin_checkout', ev);
+          }
+        } catch (err) { /* analytics never affects the checkout link */ }
+      });
       var src = img && (img.currentSrc || img.src);
       if (a && src && /^https:\/\/plotnua\.ie\/plotart\/artists\/[a-z0-9-]+\/img\/[A-Za-z0-9._-]+$/.test(src)) a.href += '&img=' + encodeURIComponent(src);
       var list = box.querySelector('.pa-aw-assure');

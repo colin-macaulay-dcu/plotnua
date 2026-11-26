@@ -4,6 +4,7 @@ import json,runpy,re,sys
 from pathlib import Path
 from html.parser import HTMLParser
 import plotart_seo as S
+import plotart_shell as SH
 ROOT=Path(__file__).resolve().parent.parent
 B=runpy.run_path(str(ROOT/'atlas-tools/build-plotart-wall-size.py'))
 checks=[]
@@ -31,6 +32,10 @@ check('no-JavaScript advice is included','<noscript>' in doc and '133–150 cm' 
 check('source and limits are stated','saatchiart.com/pages/art-for-the-living-room' in doc and 'including any frame' in doc and '75 cm high' in doc)
 check('live result and SVG have accessible descriptions','aria-live="polite"' in doc and 'aria-labelledby="size-svg-title size-svg-desc"' in doc)
 js=(ROOT/'plotart/assets/plotart-wall-size.js').read_text()
+# Analytics (SEO and analytics package, founder approval 26 Nov 2026, section 1.2): consent and analytics are site-wide.
+# The page may load exactly the approved consent and analytics block (plotart_shell.ANALYTICS_HEAD), first in <head>,
+# and no other third-party script; the calculator's own script below still has no network, cookie or storage access.
+check('page loads no third-party script except exactly the approved consent and analytics head block',SH.analytics_ok(doc))
 check('calculator has no network, cookie, storage, upload or external scripts',not re.search(r'\bfetch\s*\(|XMLHttpRequest|localStorage|sessionStorage|document\.cookie|sendBeacon|https?://',js))
 check('DOM updates use text, not HTML insertion','innerHTML' not in js and 'outerHTML' not in js and 'insertAdjacentHTML' not in js)
 check('shared dimensions stay in URL fragment',"return '#'+params.toString()" in js and 'location.origin+location.pathname+encode(lastValid)' in js)

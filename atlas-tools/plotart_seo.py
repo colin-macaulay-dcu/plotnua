@@ -77,6 +77,28 @@ def head(path, title, description, launch=None):
             '<meta property="og:description" content="%s">') % (url, url, esc(title), esc(description))
 
 
+# Generated search titles and descriptions (SEO and analytics package, 26 Nov 2026): shared by plotart_search_content
+# (the collection and guide pages) and plotart_opportunities (the commissions page).
+_META = re.compile(r'(<meta (?:name="description"|property="og:description"|name="twitter:description") content=")[^"]*(">)')
+_TITLES = re.compile(r'(<meta (?:property="og:title"|name="twitter:title") content=")[^"]*(">)')
+
+
+def set_meta(document, title, desc):
+    """The page's <title>, description, og: and twitter: title and description set to these (each tag the page has;
+    the title and the description are required). Everything else is unchanged."""
+    if len(re.findall(r"<title>.*?</title>", document, re.S)) != 1 or len(re.findall(r'<meta name="description" content="[^"]*">', document)) != 1:
+        raise ValueError("a generated page must have exactly one <title> and one meta description")
+    document = re.sub(r"<title>.*?</title>", lambda m: "<title>" + html.escape(title, quote=False) + "</title>", document, count=1, flags=re.S)
+    document = _TITLES.sub(lambda m: m.group(1) + html.escape(title, quote=True) + m.group(2), document)
+    return _META.sub(lambda m: m.group(1) + html.escape(desc, quote=True) + m.group(2), document)
+
+
+def blank_meta(document):
+    """The page with its description, og:description and twitter:description emptied (for the manifest's outside pins of
+    pages whose descriptions are generated from the published galleries)."""
+    return _META.sub(lambda m: m.group(1) + m.group(2), document)
+
+
 def sitemap_paths(packages, launch):
     paths = [p for p in ("index.html", "gallery/index.html", "about.html", "founding-25.html") + GUIDE_PATHS + EDITORIAL_PATHS + TOOL_PATHS if indexable(p, launch)]
     # The collection is listed only by its own sitemap switch (prepared 13 Nov 2026; off until the founder approves).
@@ -150,8 +172,24 @@ META_END = "<!-- pa-artist-search:end -->"
 META_REGION = re.compile(re.escape(META_BEGIN) + r".*?" + re.escape(META_END), re.S)
 
 
+OFFER_AVAILABILITY = {"available": "https://schema.org/InStock", "sold": "https://schema.org/SoldOut",
+                      "reserved": "https://schema.org/LimitedAvailability"}
+
+
+def artwork_offer(work, url, seller_id):
+    """The one Offer for an artwork page, or None: only a published asking price (never 'price on request') and only for
+    an available, reserved or sold work. Prices are whole euro as published; nothing is inferred."""
+    price = work.get("price_eur")
+    if work.get("price_on_request") or not price or work["availability"] not in OFFER_AVAILABILITY:
+        return None
+    return {"@type": "Offer", "price": "%g" % price, "priceCurrency": "EUR", "availability": OFFER_AVAILABILITY[work["availability"]],
+            "itemCondition": "https://schema.org/NewCondition", "seller": {"@id": seller_id}, "url": url}
+
+
 def artist_metadata(path, pkg, launch=None):
-    """Public facts only. VisualArtwork describes art; it does not claim merchant eligibility."""
+    """Public facts only. The artwork is a VisualArtwork and, since the SEO and analytics package (founder approval 26 Nov
+    2026, section 2.5), also a Product whose one Offer states exactly the published asking price (EUR) and availability, sold
+    by the artist (the artist is always the seller). A work with its price on request, or not for sale, has no Offer."""
     launch = switches() if launch is None else launch
     if pkg["publication"].get("state") != "approved" or not indexable(path, launch):
         return ""
@@ -192,7 +230,7 @@ def artist_metadata(path, pkg, launch=None):
                            for k, v in zip(("width", "height"), derivative["pixels"])]
     crumbs = [("PlotArt", ORIGIN), ("Artists’ Gallery", canonical("gallery/index.html")), (a["display_name"], artist_url)]
     if work:
-        art = {"@type": "VisualArtwork", "@id": url + "#artwork", "url": url, "name": work["title"],
+        art = {"@type": ["VisualArtwork", "Product"], "@id": url + "#artwork", "url": url, "name": work["title"],
                "creator": {"@id": person["@id"]}, "artMedium": work["medium"]}
         if work.get("description"):
             art["description"] = work["description"]
@@ -202,7 +240,10 @@ def artist_metadata(path, pkg, launch=None):
             if work.get(field):
                 art[key] = {"@type": "QuantitativeValue", "value": work[field], "unitCode": "CMT"}
         if "primaryImageOfPage" in page:
-            art["image"] = page["primaryImageOfPage"]
+            art["image"] = image_url
+        offer = artwork_offer(work, url, person["@id"])
+        if offer:
+            art["offers"] = offer
         graph.append(art)
         page["mainEntity"] = {"@id": art["@id"]}
         crumbs.append((work["title"], url))

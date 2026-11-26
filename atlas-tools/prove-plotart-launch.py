@@ -80,6 +80,11 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       region directly under the heading, whose works, artists and lowest public price are recomputed here from the
       published galleries independently of the builder; it claims nothing the data does not hold (no "Irish", no
       online purchase) and links only to the available-artworks page; with nothing available there is no line.
+  L23 Analytics (SEO and analytics package, founder approval 26 Nov 2026, section 1.2): every PlotArt page except the
+      four generated former-address redirect pages carries exactly the approved consent and analytics block
+      (plotart_shell.ANALYTICS_HEAD: Consent Mode v2 defaults, Cookiebot b8abbc45..., GA4 G-PKKJ0RK6N8 with
+      content_group 'PlotArt'), once, as the first script in <head>, and loads no other third-party script; the redirect
+      pages carry none.
   L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
       notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
       homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
@@ -572,8 +577,9 @@ if vg:
          "L11 the Virtual Gallery shows an image other than a published artist's own work image")
     # (artwork titles in the cards' credit lines are the artists' own titles and may carry quotation marks)
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(re.sub(r"<figcaption\b.*?</figcaption>", " ", _vgm, flags=re.S)), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
-    # search title changed by the founder for the three-gallery Phase A (24 Nov 2026); the address /plotart/gallery/ is unchanged
-    need("<title>Contemporary Irish Art Gallery | PlotArt</title>" in vg and vg.count("Contemporary Irish Art Gallery | PlotArt") == 3,
+    # search title changed by the founder for the three-gallery Phase A (24 Nov 2026), and again in the SEO and analytics
+    # package (founder approval 26 Nov 2026, section 2.4); the address /plotart/gallery/ is unchanged
+    need("<title>Contemporary Irish Art: Abstract &amp; Expressive | PlotArt</title>" in vg and vg.count("Contemporary Irish Art: Abstract &amp; Expressive | PlotArt") == 3,
          "L11 the Contemporary Art gallery's search title (title, og:title, twitter:title) is not the approved one")
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
@@ -728,7 +734,7 @@ for _rel, _key, _hid in (("gallery/index.html", "contemporary", "vgH"), ("spaces
     _s = open(_fp, encoding="utf-8").read() if os.path.exists(_fp) else ""
     _w = _GX_WORDS[_key]
     _blk = ('<div class="pa-gt"><h1 class="pa-gt-h" id="%s">%s.</h1>\n  <p class="pa-gt-tag">%s</p>%s</div>'
-            % (_hid, _w[0], html.escape(_w[1], quote=True), ('\n  <p class="pa-gt-intro">%s</p>' % html.escape(_w[2], quote=True)) if _w[2] else ""))
+            % (_hid, {"contemporary": "Contemporary Irish art"}.get(_key, _w[0]), html.escape(_w[1], quote=True), ('\n  <p class="pa-gt-intro">%s</p>' % html.escape(_w[2], quote=True)) if _w[2] else ""))
     if not _w[2]:
         need("pa-gt-intro" not in _s and "Exploring artistic expression" not in _s, "L21 %s must carry no introduction (founder, 26 Nov 2026)" % _rel)
     need(_s.count('class="pa-gt"') == 1 and _blk in _s and _s.count("<h1") == 1,
@@ -1202,9 +1208,27 @@ if os.path.exists(os.path.join(PA, "index.html")):
             need(_links == ["artworks/"] and os.path.exists(os.path.join(PA, "artworks", "index.html")),
                  "L22 the availability line must link to the available-artworks page only, found %s" % _links)
 
+# L23 · the approved consent and analytics block (SEO and analytics package, founder approval 26 Nov 2026, section 1.2).
+_L23_REDIRECTS = set(GX.LEGACY)
+for _d, _, _fs in os.walk(PA):
+    for _f in _fs:
+        if not _f.endswith(".html"):
+            continue
+        _rel = os.path.relpath(os.path.join(_d, _f), PA).replace(os.sep, "/")
+        _doc = open(os.path.join(_d, _f), encoding="utf-8").read()
+        if _rel in _L23_REDIRECTS:
+            need(SHELL.ANALYTICS_HEAD not in _doc and "googletagmanager" not in _doc and "cookiebot" not in _doc.lower(),
+                 "L23 %s is a redirect page and must carry no consent or analytics script" % _rel)
+        else:
+            need(SHELL.analytics_ok(_doc), "L23 %s must carry exactly the approved consent and analytics block, first in <head>, and no other third-party script" % _rel)
+need(SHELL.COOKIEBOT_CBID == "b8abbc45-15b0-4d27-8f95-83ebd240a305" and SHELL.GA4_ID == "G-PKKJ0RK6N8"
+     and "content_group: 'PlotArt'" in SHELL.ANALYTICS_HEAD and "analytics_storage: 'denied'" in SHELL.ANALYTICS_HEAD
+     and SHELL.ANALYTICS_HEAD.index("gtag('consent', 'default'") < SHELL.ANALYTICS_HEAD.index('id="Cookiebot"') < SHELL.ANALYTICS_HEAD.index("googletagmanager"),
+     "L23 the analytics block must be the approved one: consent defaults (denied) first, then Cookiebot b8abbc45..., then GA4 G-PKKJ0RK6N8 (PlotArt)")
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L22 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L23 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
