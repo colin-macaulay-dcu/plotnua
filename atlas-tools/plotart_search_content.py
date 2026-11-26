@@ -421,7 +421,7 @@ def _artworks(f):
         return "Original paintings, prints and mixed-media works for sale in Ireland. See each size and price and enquire with the artist."
     span = (", from %s to %s" % (P.euro(f["low"]), P.euro(f["high"]))) if f["low"] is not None and f["high"] != f["low"] else \
         (", at %s" % P.euro(f["low"]) if f["low"] is not None else "")
-    return "%d original %s by %s, for sale in Ireland%s. See each size and price and enquire with the artist." % (
+    return "%d original %s by %s, for sale in Ireland%s. Enquire with the artist." % (
         f["works"], series(f["kinds"] or ["works"]), plural(f["artists"], "artist", "artists"), span)
 
 
