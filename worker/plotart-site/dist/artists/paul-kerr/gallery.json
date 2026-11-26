@@ -1,0 +1,306 @@
+{
+ "artist": {
+  "bio": "I was born in 1965 in Dungannon, Co Tyrone. My passion for art began in my early teens and became an obsession by the time i was accepted for art college in 1983. Unfortunately i was unable to go as my life took a different direction . It would be another decade or more before i returned to art.\n\nI moved to Dublin in 1996 determined to pursue my artistic life and have been painting professionally since then. My first solo show was with the Gordon Galleries , Derry in 1996 and my most recent have been with Sol Art Gallery, Dublin in 2018, 2022 and 2024. In between I've had numerous solo and group shows including the RHA Annual 2019, exhibiting in London , New York, Florence, Milan and Beijing, plus residencies and awards. \n\nThe gap that occured in my art practice when i was young was driven by a religious calling. Although i am no longer on that path i still seek the mystery and the divine in my paintings and drawings. I try to find the connections in everything with the realisation that reality is always beyond me. Imagination brings me closest to that understanding. I rely only on that inner vision and the craft i've learned, never resorting to artificial means.\n\nPerhaps its best put by the art critic Michael J. Pearce Ph.D. MFA who interviewed me for Mutual Art Magazine:\n\n\" For Kerr paints at the threshold of the otherworld and opens himself to the inspiration he is gifted by the lush land.\"\n\"The Irish woodlands are the setting of many of Kerr's paintings,which drift from anchored realism into dreamy visions. One stroke leads to another, he says, and nature prompts him to make new marks. Under each finished picture there are five more which he has painted over in the process of finding the image- they are revelations of what lies hidden within the trees.\n\nKerr shows us how nature knows itself.\"",
+  "county": "Donegal",
+  "display_name": "Paul Kerr",
+  "founding": true,
+  "instagram": "paulpaulkerr",
+  "medium": "painting",
+  "open_for_commissions": true,
+  "open_to": [
+   "exhibitions",
+   "mobile_gallery",
+   "commissions",
+   "talks"
+  ],
+  "portrait": {
+   "alt": "The artist against a painting of a wall.",
+   "aspect": 0.7098,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      426,
+      600
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    1108,
+    1561
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "paul-kerr",
+  "statement": "Everything seems filled with mystery, and that is the starting point for all my art.",
+  "website": "https://paulkerr.ie"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "f1c88e9d8d39f1b2",
+   "source_sha256": "012b46c0a310a21aedb13e03fa1ef43ae2a03ffaa32fc8815cbfbc6194d33638",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "0d25e67c7b23accd",
+   "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+   "stem": "things-that-go-unseen-1"
+  },
+  {
+   "dhash": "624118e1e4646070",
+   "source_sha256": "a64bdcdcee121ed149d21be412215da2a9ba671e09a25fa9fc5b162e3a60b95c",
+   "stem": "life-goes-on-1"
+  },
+  {
+   "dhash": "1d47d8b060881a78",
+   "source_sha256": "dbb0a760ba1ec673e22ec40a41452f6dca63637e60b694005741258b6928966f",
+   "stem": "resurrection-of-the-roadkill-1"
+  },
+  {
+   "dhash": "8f93a4f1bb3bcb9e",
+   "source_sha256": "88f1ff26410c8bebb4fdcab7e82d5b061da9bb20ee418c19de7867b221c7ef97",
+   "stem": "the-creation-of-adam-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-21T08:49:34.980Z",
+  "approved_by": "founder",
+  "first_approved_at": "2026-11-19T22:41:57.876Z",
+  "licence_accepted_at": "2026-11-19T16:23:00.626Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-a4p7ruywdrw",
+  "state": "approved",
+  "test_note": null,
+  "version": "v5"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 100,
+   "id": "w7qm51rtg2y",
+   "images": [
+    {
+     "alt": "Visionary painting revealing the hidden elements of nature.",
+     "aspect": 0.68972,
+     "derivatives": [
+      {
+       "file": "things-that-go-unseen-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        414,
+        600
+       ]
+      },
+      {
+       "file": "things-that-go-unseen-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        828,
+        1200
+       ]
+      },
+      {
+       "file": "things-that-go-unseen-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1379,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4568,
+      6623
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil on canvas",
+   "price_eur": 9250,
+   "price_on_request": false,
+   "slug": "things-that-go-unseen",
+   "title": "Things That Go Unseen",
+   "w_cm": 70,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 120,
+   "id": "wgmndmanly4",
+   "images": [
+    {
+     "alt": "Swirling image painted in monochrome.",
+     "aspect": 0.68193,
+     "derivatives": [
+      {
+       "file": "life-goes-on-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        409,
+        600
+       ]
+      },
+      {
+       "file": "life-goes-on-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        818,
+        1200
+       ]
+      },
+      {
+       "file": "life-goes-on-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1364,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4273,
+      6266
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil on gessoed fabriano paper mounted on board",
+   "price_eur": 6950,
+   "price_on_request": false,
+   "slug": "life-goes-on",
+   "title": "Life Goes On",
+   "w_cm": 84,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": null,
+   "h_cm": 60,
+   "id": "ws988zl1oz7",
+   "images": [
+    {
+     "alt": "Black and white drawing of a vision",
+     "aspect": 0.69414,
+     "derivatives": [
+      {
+       "file": "resurrection-of-the-roadkill-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        416,
+        600
+       ]
+      },
+      {
+       "file": "resurrection-of-the-roadkill-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        833,
+        1200
+       ]
+      },
+      {
+       "file": "resurrection-of-the-roadkill-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1388,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1398,
+      2014
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Pen and ink on paper",
+   "price_eur": 2800,
+   "price_on_request": false,
+   "slug": "resurrection-of-the-roadkill",
+   "title": "Resurrection Of The Roadkill",
+   "w_cm": 42,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 70,
+   "id": "wccuh7z57jx",
+   "images": [
+    {
+     "alt": "Intricate flowing colourful forms",
+     "aspect": 0.71432,
+     "derivatives": [
+      {
+       "file": "the-creation-of-adam-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        429,
+        600
+       ]
+      },
+      {
+       "file": "the-creation-of-adam-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        857,
+        1200
+       ]
+      },
+      {
+       "file": "the-creation-of-adam-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1429,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2953,
+      4134
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 4500,
+   "price_on_request": false,
+   "slug": "the-creation-of-adam",
+   "title": "The Creation Of Adam",
+   "w_cm": 50,
+   "year": 2026
+  }
+ ]
+}

@@ -1,0 +1,614 @@
+{
+ "artist": {
+  "bio": "Naomi Taitz Duffy is an abstract painter whose practice is rooted in geometric abstraction with a focus on color relationships. Using heavy body acrylics, inks, and raw pigments on wood panels, Naomi explores the fragmented nature and interconnectivity of objects, developing bold, textured compositions that begin as visual puzzles and are developed into unique and vibrant forms.\n\nOriginally from New York City, Naomi now lives and works in Dublin, where she has participated in numerous exhibitions including at the RHA and Taylor Galleries. Naomi's work has been acquired by the Fingal County Municipal Arts Collection and the Office of Public Works for the state art collection of Ireland, as well as many private collections internationally.",
+  "county": null,
+  "display_name": "Naomi Taitz Duffy",
+  "founding": true,
+  "instagram": "naomitaitzduffy",
+  "medium": "painting",
+  "open_for_commissions": true,
+  "open_to": [
+   "exhibitions",
+   "living_gallery",
+   "art_for_hire",
+   "mobile_gallery",
+   "venues",
+   "commissions",
+   "talks"
+  ],
+  "portrait": {
+   "alt": "The artist in her studio.",
+   "aspect": 1.0646,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      564
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    1170,
+    1099
+   ],
+   "role": "portrait"
+  },
+  "practice": "painter",
+  "slug": "naomi-taitz-duffy",
+  "statement": null,
+  "website": "https://www.naomitaitzduffy.com"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "a3a3979250280203",
+   "source_sha256": "0027b61f3f37a204f6c6255872efa70d31bc4e660535830ca8e88d72ff6b2a9b",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "da4e2a21445cb6b4",
+   "source_sha256": "842b1da047dcaca13779146d09ba5add3e22bb53d3b797c3cf68b080aaaa3234",
+   "stem": "somersault-1"
+  },
+  {
+   "dhash": "830d09230d1b1b1b",
+   "source_sha256": "7d22347bda173aa942d2cfda852db027c720ef456809d940328a93bafb6d7458",
+   "stem": "portal-2-1"
+  },
+  {
+   "dhash": "9c161c585c181958",
+   "source_sha256": "fa6532ce8aa3ceb274211a10ae24a757028a109fa79de461b62eb53f7b991bd1",
+   "stem": "pandora-s-box-1"
+  },
+  {
+   "dhash": "73e08406a88cdcdc",
+   "source_sha256": "10f0d649663345e0e65d872683fa6138d3a493f48cdd327cd5e874526a8f8583",
+   "stem": "sleeping-acrobat-1"
+  },
+  {
+   "dhash": "d8646662b2b0b0f0",
+   "source_sha256": "0383aed9d36284c467919529338b840a4399f3e33b27c1c566b60274593366b7",
+   "stem": "seek-1"
+  },
+  {
+   "dhash": "802d494b4e425201",
+   "source_sha256": "a553e703e1a2fe33e01f8d87139da26885c368c818b3fefe9ac1498fbd794f5c",
+   "stem": "drift-1"
+  },
+  {
+   "dhash": "a80e4741c3c73e3e",
+   "source_sha256": "4047fedf6e7cea6d5d100e5d4d1c1cc967a14afe938164feb08c009f4a25c6ed",
+   "stem": "peacock-1"
+  },
+  {
+   "dhash": "068f871313333765",
+   "source_sha256": "9168916968f8e9d91bdff3e99c49b813a0a184ef13dd50a91c5a91b1db160b93",
+   "stem": "blue-phoenix-1"
+  },
+  {
+   "dhash": "9999397d99636720",
+   "source_sha256": "37afc8de299078a69de4fa07752937151db86a3b9cc31902922d28dc68ffb817",
+   "stem": "momentum-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-22T12:35:55.695Z",
+  "approved_by": "founder",
+  "first_approved_at": "2026-11-22T10:57:52.645Z",
+  "licence_accepted_at": "2026-11-22T09:01:34.433Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-ac6pnyekuex",
+  "state": "approved",
+  "test_note": null,
+  "version": "v3"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 75,
+   "id": "wdla03fe6e3",
+   "images": [
+    {
+     "alt": "abstract painting with orange background",
+     "aspect": 0.99602,
+     "derivatives": [
+      {
+       "file": "somersault-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        598,
+        600
+       ]
+      },
+      {
+       "file": "somersault-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1195,
+        1200
+       ]
+      },
+      {
+       "file": "somersault-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1992,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3753,
+      3768
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 2400,
+   "price_on_request": true,
+   "slug": "somersault",
+   "title": "Somersault",
+   "w_cm": 75,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 50,
+   "id": "wrf7rygv30q",
+   "images": [
+    {
+     "alt": "abstract painting with blocks of color",
+     "aspect": 1.21735,
+     "derivatives": [
+      {
+       "file": "portal-2-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        493
+       ]
+      },
+      {
+       "file": "portal-2-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        986
+       ]
+      },
+      {
+       "file": "portal-2-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1643
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4800,
+      3943
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 1100,
+   "price_on_request": false,
+   "slug": "portal-2",
+   "title": "Portal",
+   "w_cm": 60,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": null,
+   "h_cm": 50,
+   "id": "w9ksiiicvsh",
+   "images": [
+    {
+     "alt": "abstract painting of box on mint background",
+     "aspect": 0.99881,
+     "derivatives": [
+      {
+       "file": "pandora-s-box-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        599,
+        600
+       ]
+      },
+      {
+       "file": "pandora-s-box-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1199,
+        1200
+       ]
+      },
+      {
+       "file": "pandora-s-box-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1998,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      5883,
+      5890
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 950,
+   "price_on_request": false,
+   "slug": "pandora-s-box",
+   "title": "Pandora's box",
+   "w_cm": 50,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 30,
+   "id": "wwx67kyfe0y",
+   "images": [
+    {
+     "alt": "abstract painting with peach background",
+     "aspect": 0.98285,
+     "derivatives": [
+      {
+       "file": "sleeping-acrobat-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        590,
+        600
+       ]
+      },
+      {
+       "file": "sleeping-acrobat-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1179,
+        1200
+       ]
+      },
+      {
+       "file": "sleeping-acrobat-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1966,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4184,
+      4257
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 425,
+   "price_on_request": false,
+   "slug": "sleeping-acrobat",
+   "title": "Sleeping Acrobat",
+   "w_cm": 30,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "reserved",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 50,
+   "id": "wfvruv2p52h",
+   "images": [
+    {
+     "alt": "abstract painting with green background",
+     "aspect": 0.99536,
+     "derivatives": [
+      {
+       "file": "seek-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        597,
+        600
+       ]
+      },
+      {
+       "file": "seek-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1194,
+        1200
+       ]
+      },
+      {
+       "file": "seek-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1991,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      5792,
+      5819
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": null,
+   "price_on_request": false,
+   "slug": "seek",
+   "title": "Seek",
+   "w_cm": 50,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "sold",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 50,
+   "id": "wddr74qsqra",
+   "images": [
+    {
+     "alt": "abstract paintings with blue background",
+     "aspect": 1.22172,
+     "derivatives": [
+      {
+       "file": "drift-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        491
+       ]
+      },
+      {
+       "file": "drift-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        982
+       ]
+      },
+      {
+       "file": "drift-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1637
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      5086,
+      4163
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": null,
+   "price_on_request": false,
+   "slug": "drift",
+   "title": "Drift",
+   "w_cm": 60,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 40,
+   "id": "wclvfm5o7wr",
+   "images": [
+    {
+     "alt": "abstract painting with green background",
+     "aspect": 1.24583,
+     "derivatives": [
+      {
+       "file": "peacock-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        482
+       ]
+      },
+      {
+       "file": "peacock-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        963
+       ]
+      },
+      {
+       "file": "peacock-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1605
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3887,
+      3120
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 875,
+   "price_on_request": false,
+   "slug": "peacock",
+   "title": "Peacock",
+   "w_cm": 50,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 70,
+   "id": "w836jb6ls2d",
+   "images": [
+    {
+     "alt": "abstract painting with blue background",
+     "aspect": 1.41423,
+     "derivatives": [
+      {
+       "file": "blue-phoenix-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        424
+       ]
+      },
+      {
+       "file": "blue-phoenix-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        849
+       ]
+      },
+      {
+       "file": "blue-phoenix-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1414
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      7948,
+      5620
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 3200,
+   "price_on_request": false,
+   "slug": "blue-phoenix",
+   "title": "Blue Phoenix",
+   "w_cm": 100,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 60,
+   "id": "wnz7o4euf20",
+   "images": [
+    {
+     "alt": "abstract painting with green background",
+     "aspect": 1.31954,
+     "derivatives": [
+      {
+       "file": "momentum-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        455
+       ]
+      },
+      {
+       "file": "momentum-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        909
+       ]
+      },
+      {
+       "file": "momentum-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1516
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      5199,
+      3940
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "acrylic on wood panel",
+   "price_eur": 1600,
+   "price_on_request": false,
+   "slug": "momentum",
+   "title": "Momentum",
+   "w_cm": 80,
+   "year": 2026
+  }
+ ]
+}

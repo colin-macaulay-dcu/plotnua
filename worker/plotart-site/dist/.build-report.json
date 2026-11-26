@@ -1,0 +1,19 @@
+{
+ "mode": "test",
+ "pages_and_files": 708,
+ "root_assets_copied": [
+  "assets/brand/plotart-apple-touch-180.png",
+  "assets/brand/plotart-favicon-32.png",
+  "assets/brand/plotart-logo-stacked.svg",
+  "assets/brand/plotnua-icon-transparent.svg",
+  "assets/founder/colin-macaulay-founder-portrait-440x550.jpg",
+  "assets/identity/pn-menu.js",
+  "assets/identity/pn-section-menu.css",
+  "assets/img/dfb125ba9dd7cd87.jpg"
+ ],
+ "sitemap_urls": 148,
+ "missing_links": [],
+ "old_address_left_in": [],
+ "tracking_or_consent_scripts": [],
+ "analytics_blocks_removed": 157
+}

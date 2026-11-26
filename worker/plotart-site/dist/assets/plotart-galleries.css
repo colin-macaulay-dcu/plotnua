@@ -1,0 +1,108 @@
+/* =====================================================================
+   PLOTART · three galleries (Phase A, founder approval 24 Nov 2026)
+   The homepage gallery entrances, the gallery tabs shared by the three gallery pages, and the
+   Spaces / Being holding pages. Scoped to body.pa classes that exist nowhere else.
+   Artwork in an entrance is always shown whole (object-fit:contain on a wall mount): never cropped.
+   ===================================================================== */
+
+/* ---- homepage: one heading, then the three entrances (final Phase A refinement, 24 Nov 2026) ----
+   Editorial, not cards: no box around an entrance, only a quiet wall mount for the artwork. Every mount has the same
+   shape and keeps its credit inside it (under the work), so status, title and description line up across the three. */
+.pa-gx{ padding-top:clamp(24px, 3vw, 42px); padding-bottom:clamp(52px, 6.4vw, 96px);
+  background:radial-gradient(ellipse 60% 70% at 50% -10%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%); }
+.pa-gx-h1{ font-size:clamp(40px, 4.4vw, 64px); line-height:1; letter-spacing:-.015em; margin:0 0 clamp(20px, 2.4vw, 32px); }
+/* the availability line under the heading (Commercial Conversion Sprint 1, 26 Nov 2026): one quiet line of body text,
+   generated from published galleries; the heading's spacing moves below it so the entrances keep their place */
+.pa-gx-h1:has(+ .pa-gx-avail){ margin-bottom:12px; }
+.pa-gx-avail{ margin:0 0 clamp(20px, 2.4vw, 32px); font-size:15px; line-height:1.55; color:var(--stone); letter-spacing:.005em; }
+.pa-gx-avail a{ color:var(--ivory); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:4px; }
+.pa-gx-avail a:hover{ text-decoration-thickness:2px; }
+.pa-gx-tiles{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(18px, 2.2vw, 32px); list-style:none; margin:0; padding:0; }
+.pa-gx-tile{ position:relative; display:flex; flex-direction:column; min-width:0; }
+.pa-gx-art{ position:relative; margin:0; aspect-ratio:5 / 4.1; display:grid; grid-template:minmax(0, 1fr) / minmax(0, 1fr); place-items:center; overflow:hidden;
+  padding:clamp(16px, 1.8vw, 26px) clamp(16px, 1.8vw, 26px) clamp(34px, 3vw, 44px);
+  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%), #222325;
+  border:1px solid rgba(237,235,231,.05); border-radius:3px; transition:background-color .4s, border-color .4s; }
+.pa-gx-tile:hover .pa-gx-art{ background-color:#262729; border-color:rgba(237,235,231,.10); }
+.pa-gx-art img{ width:100%; height:100%; min-height:0; object-fit:contain; filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)) drop-shadow(0 16px 30px rgba(0,0,0,.35)); transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.pa-gx-tile:hover .pa-gx-art img{ transform:scale(1.015); }
+.pa-gx-credit{ position:absolute; left:clamp(16px, 1.8vw, 26px); right:clamp(16px, 1.8vw, 26px); bottom:clamp(10px, 1vw, 14px); margin:0;
+  font-size:12px; line-height:1.35; color:var(--mute); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pa-gx-prep{ display:grid; justify-items:center; align-content:center; gap:16px; width:100%; height:100%; text-align:center; color:var(--mute);
+  background:repeating-linear-gradient(135deg, rgba(237,235,231,.035) 0 1px, transparent 1px 14px), linear-gradient(180deg, #2A2B2E, #232426); }
+.pa-gx-prep{ min-height:0; overflow:hidden; }
+.pa-gx-prep svg{ width:auto; height:clamp(64px, 7.4vw, 112px); max-width:60%; color:#5E5F63; }
+.pa-gx-prep p{ margin:0; max-width:28ch; font-size:13.5px; line-height:1.45; color:var(--stone); }
+.pa-gx-body{ display:grid; grid-template-columns:minmax(0, 1fr) auto; align-items:start; align-content:start; gap:4px 16px; padding:clamp(14px, 1.3vw, 18px) 2px 0; flex:1; }
+.pa-gx-body > *{ grid-column:1; }
+.pa-gx-status{ justify-self:start; display:inline-flex; align-items:center; gap:7px; margin:0 0 4px; font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; padding:3px 9px; border-radius:999px; border:1px solid var(--line-2); color:var(--stone); }
+.pa-gx-status--open{ color:var(--ivory); border-color:rgba(237,235,231,.40); }
+.pa-gx-status--open::before{ content:""; width:6px; height:6px; border-radius:50%; background:#8FBF9A; }
+.pa-gx-tile h2{ font-size:clamp(32px, 2.9vw, 44px); line-height:1.04; }
+.pa-gx-text{ margin:0; color:var(--stone); font-size:15px; line-height:1.5; max-width:38ch; }
+:where(body.pa) a.pa-gx-go{ grid-column:2; grid-row:2; align-self:center; display:inline-grid; place-items:center; width:44px; height:44px; border-radius:50%; border:1px solid var(--line-2); color:var(--ivory); font-size:17px; text-decoration:none; transition:background .3s, color .3s, border-color .3s; }
+a.pa-gx-go::before{ content:""; position:absolute; inset:0; }      /* the whole entrance is the link */
+a.pa-gx-go:focus-visible{ outline:none; }
+.pa-gx-tile:focus-within .pa-gx-art{ border-color:var(--ivory); }
+:where(body.pa) .pa-gx-tile:hover a.pa-gx-go{ background:var(--paper); color:var(--anth); border-color:var(--paper); }
+@media (max-width:1060px) and (min-width:721px){
+  .pa-gx-art{ aspect-ratio:3 / 3.4; padding:14px 14px 34px; }
+  .pa-gx-credit{ white-space:normal; font-size:11.5px; }
+  .pa-gx-body{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; }
+  .pa-gx-text{ margin-bottom:14px; }
+  :where(body.pa) a.pa-gx-go{ margin-top:auto; align-self:flex-start; width:40px; height:40px; }   /* the three arrows share one line */
+  .pa-gx-tile h2{ font-size:31px; }
+  .pa-gx-text{ font-size:14.5px; }
+}
+@media (max-width:720px){
+  .pa-gx-tiles{ grid-template-columns:1fr; gap:26px; }
+  .pa-gx-art{ aspect-ratio:4 / 2.75; padding:12px 12px 30px; }
+  .pa-gx-credit{ bottom:8px; font-size:11.5px; }
+  .pa-gx-prep{ gap:10px; }
+  .pa-gx-prep svg{ height:62px; }
+  .pa-gx-prep p{ font-size:12.5px; }
+  .pa-gx-body{ padding-top:12px; gap:2px 14px; }
+  .pa-gx-status{ margin-bottom:2px; }
+  .pa-gx-tile h2{ font-size:31px; }
+  .pa-gx-text{ font-size:14.5px; line-height:1.45; }
+  :where(body.pa) a.pa-gx-go{ width:40px; height:40px; }
+}
+
+/* ---- the homepage band of other PlotArt programmes (text only) ---- */
+.pa-gx-more{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(16px, 2vw, 28px); list-style:none; margin:0; padding:0; }
+.pa-gx-more li{ display:flex; flex-direction:column; gap:8px; padding-top:18px; border-top:1px solid var(--line-2); min-width:0; }
+.pa-gx-more h3{ font-size:28px; }
+.pa-gx-more p{ margin:0; font-size:15.5px; color:var(--stone); }
+.pa-gx-more .pa-gx-chip{ align-self:flex-start; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:4px 9px; border-radius:999px; border:1px solid var(--line-2); color:var(--stone); }
+@media (max-width:820px){ .pa-gx-more{ grid-template-columns:1fr; } }
+
+/* ---- the gallery tabs (Contemporary · Spaces · Being) ---- */
+.pa-gtabs{ border-bottom:1px solid var(--line); background:var(--wall); }
+.pa-gtabs-list{ display:flex; gap:clamp(4px, 1.6vw, 28px); list-style:none; margin:0; padding:0; overflow-x:auto; scrollbar-width:none; }
+.pa-gtabs-list::-webkit-scrollbar{ display:none; }
+.pa-gtabs-list li{ flex:none; }
+:where(body.pa) a.pa-gtab{ display:inline-flex; align-items:baseline; gap:10px; padding:16px 4px 14px; border-bottom:2px solid transparent; color:var(--stone); font-family:var(--serif); font-size:clamp(20px, 1.9vw, 25px); line-height:1.1; text-decoration:none; white-space:nowrap; }
+:where(body.pa) a.pa-gtab:hover{ color:var(--ivory); }
+:where(body.pa) a.pa-gtab[aria-current="page"]{ color:var(--ivory); border-bottom-color:var(--ivory); }
+.pa-gtab-note{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
+@media (max-width:520px){ .pa-gtab-note{ display:none; } :where(body.pa) a.pa-gtab{ font-size:19px; padding:14px 2px 12px; } .pa-gtabs-list{ gap:18px; } }
+
+/* ---- the heading block every gallery page opens with (final curatorial identity, 25 Nov 2026) ----
+   The same on Contemporary, Spaces and Being: heading with its editorial full stop, the tagline in the serif, then the
+   curatorial introduction. Same sizes, same spacing, same top offset under the gallery tabs. */
+.pa-gt .pa-gt-h{ font-size:clamp(46px, 5.2vw, 80px); line-height:.98; letter-spacing:-.018em; margin:0; }
+.pa-gt .pa-gt-tag{ font-family:var(--serif); font-size:clamp(22px, 2.1vw, 30px); line-height:1.2; color:var(--ivory); margin:clamp(10px, 1vw, 14px) 0 0; max-width:none; }
+.pa-gt .pa-gt-intro{ font-family:var(--sans); font-size:clamp(16.5px, 1.3vw, 19px); line-height:1.6; color:var(--lime); max-width:58ch; margin:clamp(14px, 1.5vw, 20px) 0 0; }
+
+/* ---- the holding page of a gallery in preparation ---- */
+.pa-gh{ padding-top:clamp(18px, 1.8vw, 26px); padding-bottom:clamp(56px, 7vw, 104px); }   /* the Contemporary hero's top offset (plotart-featured.css) */
+.pa-gh-grid{ display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, 1fr); gap:clamp(32px, 5vw, 80px); align-items:start; }
+.pa-gh .pa-gh-status{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; padding:6px 12px; border-radius:999px; border:1px solid var(--line-2); color:var(--stone); margin:clamp(22px, 2.2vw, 30px) 0 18px; }
+.pa-gh-note{ color:var(--stone); font-size:16px; max-width:52ch; }
+.pa-gh-acts{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+.pa-gh-art{ margin:0; aspect-ratio:4 / 4.2; display:grid; place-items:center; overflow:hidden; border:1px solid var(--line); border-radius:6px; }
+.pa-gh-artists{ border-top:1px solid var(--line); padding-top:clamp(48px, 6vw, 88px); padding-bottom:clamp(56px, 7vw, 104px); }
+.pa-gh-artists .pa-wrap{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.2fr); gap:24px clamp(32px, 5vw, 80px); align-items:end; }
+.pa-gh-artists h2{ font-size:clamp(32px, 3.6vw, 50px); }
+.pa-gh-artists p{ margin:0 0 16px; max-width:56ch; }
+@media (max-width:820px){ .pa-gh-grid, .pa-gh-artists .pa-wrap{ grid-template-columns:1fr; } .pa-gh-art{ aspect-ratio:16 / 11; } }
