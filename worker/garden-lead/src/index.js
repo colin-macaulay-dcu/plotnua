@@ -356,6 +356,8 @@ async function handleEnquiry(env, body, now, cors) {
   return RECEIVED(cors, leadId);
 }
 
+import { INTRO_PATH, handleIntroduction } from './introduction.js';
+
 /* ========================================================================= */
 export default {
   async fetch(request, env) {
@@ -385,6 +387,11 @@ export default {
     if (request.method !== 'POST') {
       return json(405, { ok: false, state: 'refused' }, cors);
     }
+
+    /* PACKAGE N · introduction requests. Their own gate, switches and table
+       (src/introduction.js). Dispatched BEFORE the Yard Box gate so neither
+       route's switches can open the other. */
+    if (url.pathname === INTRO_PATH) return handleIntroduction(request, env, now, cors, json);
 
     /* THE RELEASE GATE, BEFORE THE BODY IS EVEN READ. A closed Worker does no
        work on an unauthorised request and reveals nothing about what it would

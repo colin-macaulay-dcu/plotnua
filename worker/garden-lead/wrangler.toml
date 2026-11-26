@@ -35,10 +35,26 @@ EMAIL_ENABLED       = "false"
 ORIGIN              = "https://plotnua.ie"
 PRIVACY_VERSION     = "2026-10-FIRSTLEAD-V1"
 
+# ---------------------------------------------------------------------------
+# PACKAGE N · INTRODUCTION REQUESTS (/v1/introduction). ALL SHIP OFF.
+#   INTRO_PUBLIC_ENABLED  public route; 'false' -> preview secret only.
+#   INTRO_WRITES_ENABLED  'false' -> nothing written to "Introduction Requests".
+#   INTRO_NOTIFY_ENABLED  'false' -> no founder email. Also needs the
+#                         RESEND_API_KEY secret and NOTIFY_TO / NOTIFY_FROM.
+#   The supplier allow-list lives in src/introduction.js and ships EMPTY.
+# ---------------------------------------------------------------------------
+INTRO_PUBLIC_ENABLED  = "false"
+INTRO_WRITES_ENABLED  = "false"
+INTRO_NOTIFY_ENABLED  = "false"
+INTRO_PRIVACY_VERSION = "2026-12-INTRODUCTIONS-V1"
+
 # NOT SET HERE, AND DELIBERATELY SO:
 #   AIRTABLE_BASE      -> set as a var at deploy time
 #   AIRTABLE_TOKEN     -> wrangler secret put AIRTABLE_TOKEN
 #   LEAD_PREVIEW_KEY   -> wrangler secret put LEAD_PREVIEW_KEY
+#   RESEND_API_KEY     -> wrangler secret put RESEND_API_KEY  (Package N, at activation)
+#   NOTIFY_TO / NOTIFY_FROM -> set as vars at activation (founder address; a
+#                         verified plotnua.ie sender)
 #
 # writesEnabled() requires the token and the base, so a missing secret is a
 # hard stop rather than a default-open. releaseOpen() requires a preview key of

@@ -4,6 +4,6 @@
   "type": "module",
   "description": "Garden Room first-lead Worker. Phase A. All three switches ship off.",
   "scripts": {
-    "prove": "node test/prove-lead-worker.mjs && node test/prove-lead-mutations.mjs"
+    "prove": "node test/prove-lead-worker.mjs && node test/prove-lead-mutations.mjs && node test/prove-introduction.mjs && node test/prove-introduction-mutations.mjs"
   }
 }

@@ -33,6 +33,7 @@ function disposable() {
   const t = mkdtempSync(join(tmpdir(), 'glead-'));
   mkdirSync(join(t, 'src')); mkdirSync(join(t, 'test'));
   copyFileSync(SRC, join(t, 'src', 'index.js'));
+  copyFileSync(join(HERE, '..', 'src', 'introduction.js'), join(t, 'src', 'introduction.js'));
   copyFileSync(PROOF, join(t, 'test', 'prove-lead-worker.mjs'));
   writeFileSync(join(t, 'package.json'), '{"type":"module"}');
   return t;
