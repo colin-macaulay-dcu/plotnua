@@ -22742,10 +22742,26 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
      It sends no personal data, and it counts nothing. A counter that lived in
      a page variable would be discarded on reload, so calling it "aggregate
      click tracking" would be a claim, not a measurement. */
+  /* PACKAGE N · REFERRAL ATTRIBUTION (founder-approved principles, 26 Nov 2026). The supplier can now see that
+     PlotNua sent the visit: utm_source=plotnua, utm_medium=referral, utm_campaign=your-plot and, as utm_content,
+     the stage that handed over. Nothing about the homeowner is ever added (no Eircode, county, budget, answers or
+     saved options), and 'noreferrer' is dropped so the browser's default policy sends the origin only
+     ("https://plotnua.ie/"), never a path or query. Still the single outbound door (contract J07). */
+  function pnReferralUrl(href, action){
+    let u;
+    try { u = new URL(href); } catch (e) { return href; }
+    if (u.protocol !== 'https:') return href;
+    const keep = /^[a-z0-9-]{1,32}$/.test(String(action || '')) ? String(action) : 'option';
+    u.searchParams.set('utm_source', 'plotnua');
+    u.searchParams.set('utm_medium', 'referral');
+    u.searchParams.set('utm_campaign', 'your-plot');
+    u.searchParams.set('utm_content', keep);
+    return u.toString();
+  }
   function pnSupplierHandover(product, action){
     const next = pnNextAction(product);
     if (!next || !next.href) return;
-    window.open(next.href, '_blank', 'noopener,noreferrer');
+    window.open(pnReferralUrl(next.href, action), '_blank', 'noopener');
   }
 
   /* WHAT THE HOMEOWNER CAN ACTUALLY DO NEXT, DECIDED BY EVIDENCE.
@@ -34297,13 +34313,13 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     if (!qs.length) return null;
     const sec = rsvEl('section', 'rsv-panel rsv-panel-enquiry');
     const head = rsvEl('div', 'rsv-panel-head');
-    head.appendChild(rsvEl('h3', 'rsv-panel-title', 'Questions to send with your enquiry'));
+    head.appendChild(rsvEl('h3', 'rsv-panel-title', 'Questions to ask the maker'));
     /* H1 - THE LINE SAYS WHAT THE LIST IS, not what PlotNua will do to
        the maker. It also stops naming the organisation: the name is
        already in the hero and in the button below, and a third mention
        in three lines reads as a mail-merge. */
     head.appendChild(rsvEl('p', 'rsv-panel-lede',
-      'These are the questions we’ll include with your enquiry.'));
+      'Take these with you when you contact the maker.'));   /* Package N (26 Nov 2026): no enquiry is sent from here, so none is promised */
     sec.appendChild(head);
     const ol = rsvEl('ol', 'rsv-qlist');
     qs.forEach(function(q){
@@ -35389,9 +35405,9 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       } else {
       const pend = rsvEl('div', 'rsv-close-pending');
       pend.appendChild(rsvEl('span', 'rsv-close-pending-main',
-        'Enquiry through PlotNua'));
+        'Ask the maker directly'));
       pend.appendChild(rsvEl('span', 'rsv-close-pending-sub',
-        'Coming shortly'));
+        'Take the questions above with you'));   /* Package N: honest until PlotNua introductions open (contract §3) */
       rsvGo.appendChild(pend);
       rsvHasAction = true;
       }

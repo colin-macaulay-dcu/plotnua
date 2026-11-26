@@ -222,7 +222,10 @@ dispatch route is built. It is test-gated, which is not the same as absent.
 - **Entry** — **Progress**, at sufficient readiness. (Currently entered from Option Detail — a
   recorded violation, §5.)
 - **Exit** — the supplier's own site, in a new tab.
-- **State owned** — none today. Tracking is designed, not built.
+- **State owned** — none. **Referral attribution (Package N, founder-approved principles, 26 Nov 2026):** the door
+  adds `utm_source=plotnua`, `utm_medium=referral`, `utm_campaign=your-plot` and the handing-over stage as `utm_content`
+  (`pnReferralUrl()`), and opens with `noopener` only, so the browser sends the origin (`https://plotnua.ie/`) and never a
+  path or query. No homeowner data is ever added (`atlas-tools/prove-referral-attribution.mjs`). Counting is still not built.
 - **Allowed next** — TRANSACTION (off-platform)
 - **Prohibited bypasses**
   - **No stage earlier than Progress may introduce a supplier handoff** without an explicit
@@ -270,6 +273,9 @@ dispatch route is built. It is test-gated, which is not the same as absent.
   - `window.open(` must appear **exactly once** in `your-plot.html`, inside `pnSupplierHandover()`.
   - PlotNua must not claim to request a quote, send an enquiry, start a purchase, or track a
     handoff until each is actually built.
+    Package N (26 Nov 2026) applied this to Resolve: its panel reads "Questions to ask the maker" ("Take these with you
+    when you contact the maker.") and the pending slot "Ask the maker directly" ("Take the questions above with you"),
+    no longer "Enquiry through PlotNua / Coming shortly" (First Lead proof F22 pins the new wording).
 - **Status** — **BUILT · MISPLACED** — the function is sound; its call site is too early.
 - **Blocker** — **AT-1.** Measured across all 5 suppliers: email 0/5, telephone 0/5,
   contact/enquiry URL 0/5; homepage 5/5; postal `contractingEntity` 5/5, shown nowhere.

@@ -88,9 +88,9 @@ check('F20', 'the CTA consults the gate before it is drawn',
       PAGE.includes('const leadSup = leadSupplierFor(product);'));
 check('F21', 'the screen re-checks the gate when it opens',
       PAGE.includes('const sup = leadSupplierFor(product);'));
-check('F22', 'the pending status is preserved for everyone else',
+check('F22', 'the pending status is preserved for everyone else, and promises no enquiry (Package N, 26 Nov 2026)',
       PAGE.includes("rsvEl('div', 'rsv-close-pending')")
-      && PAGE.includes("'Enquiry through PlotNua'"));
+      && PAGE.includes("'Ask the maker directly'") && !PAGE.includes("'Enquiry through PlotNua'") && !PAGE.includes("'Coming shortly'"));
 check('F23', 'the CTA reuses the measured slot class',
       PAGE.includes("rsvEl('button', 'rsv-close-cta',\n          'Ask '"));
 check('F24', 'the lead transport is the Worker, not Formspree',
