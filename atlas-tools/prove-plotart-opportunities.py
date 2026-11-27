@@ -275,9 +275,9 @@ vis = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", regions)))
 check("O4i the wording is interest, never participation or a booking", "Being listed is not a booking, and nothing is confirmed until it’s agreed." in vis
       and not re.search(r"(?i)participating artists|confirmed artists|book now|available now|partner", vis))
 hire = after["art-for-hire/index.html"]
-check("O4j Art for Hire (22 Nov 2026): the artists' mini gallery sits straight after the hero, apart from the works catalogue, which is unchanged; its introduction is the founder's wording and availability is agreed with the artist",
+check("O4j Art for Hire (design standard, 27 Nov 2026): the artists' gallery follows the hero and the offer, apart from the works catalogue, which is unchanged; PlotArt confirms availability with the artist",
       hire.index("</section>") < hire.index(OPP.BEGIN) < hire.index("<!-- pa-hire-catalogue:begin -->") and "afh3-hero" in hire[:hire.index(OPP.BEGIN)]
-      and OPP.HIRE_SAID in html.unescape(hire) and "Availability, rental terms and arrangements are agreed directly with the artist." in html.unescape(hire) and
+      and OPP.HIRE_SAID in html.unescape(hire) and "Rental enquiries come through PlotArt: we confirm availability, price and dates with the artist for you." in html.unescape(hire) and
       re.search(r"<!-- pa-hire-catalogue:begin -->.*?<!-- pa-hire-catalogue:end -->", hire, re.S).group(0) == re.search(r"<!-- pa-hire-catalogue:begin -->.*?<!-- pa-hire-catalogue:end -->", before["art-for-hire/index.html"], re.S).group(0))
 
 print("— O5 the content-only boundary")

@@ -153,10 +153,10 @@ def _rows(pkgs, base, commission_page=False, choices=None):
 # published size; never cropped (contained in its frame). These are artists open to discussing hire: the page never says a
 # particular work is available for hire. Up to GALLERY_FIRST cards show at once; any others are one click away.
 GALLERY_FIRST = 8
-HIRE_SAID = ("Discover Irish artists interested in making their work available for hire. Explore their galleries and enquire "
-             "directly about individual artworks. Availability and arrangements are agreed with each artist.")   # founder wording, 22 Nov 2026
-HIRE_INVITE = ("<h3>Interested in hiring a work?</h3><p>Explore the artists above and get in touch about a piece that interests you. "
-               "Availability, rental terms and arrangements are agreed directly with the artist.</p>")
+HIRE_SAID = "Original work from PlotArt artists who welcome hire and rental. Every placement is arranged through PlotArt."   # communication standard, founder approval 27 Nov 2026
+HIRE_HEAD = "Artists open to hire."
+HIRE_INVITE = ('<h3>Seen a work you like?</h3><p>Tell us which piece, and where it would go. Rental enquiries come through PlotArt: we confirm availability, price and dates with the artist for you.</p>'
+               '<p class="afx-acts"><a class="afx-btn" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%3A%20a%20specific%20work" data-pa-track="hire_ask_work">Ask about a work</a></p>')
 
 
 def gallery_image(pkg, choice=None):
@@ -214,8 +214,8 @@ def section(key, packages, base, hub, commission_page=False, gallery=False, choi
     if gallery:      # the Art for Hire page's artwork-led mini gallery (22 Nov 2026)
         return ('<section class="pa-opp pa-afg" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap">\n'
                 '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
-                '  <div class="pa-afg-invite">%s</div>\n  <p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>\n</div></section>'
-                % (sid, key, key, E(head), E(HIRE_SAID), _gallery(pkgs, base, choices=choices), HIRE_INVITE, E(base)))
+                '  <div class="pa-afg-invite">%s</div>\n</div></section>'
+                % (sid, key, key, E(HIRE_HEAD), E(HIRE_SAID), _gallery(pkgs, base, choices=choices), HIRE_INVITE))
     about = {"art_for_hire": "About Art for Hire", "commissions": "About commissions"}.get(key, "About the " + label)
     more = ('<p class="pa-opp-more"><a href="%s">%s →</a></p>' % (E(base + page), E(about))) if hub and page else \
            ('<p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>' % E(base)) if not hub else ""
