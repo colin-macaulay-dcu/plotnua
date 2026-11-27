@@ -12,6 +12,8 @@ import privacy_v18_layer as V18  # noqa: E402
 bad = []
 ok = lambda c, m: None if c else bad.append(m)
 priv = (ROOT / "privacy.html").read_text(encoding="utf-8")
+import privacy_v20_layer as V20  # noqa: E402  (V20 sits on top of V19: V19 is proved on the page beneath it)
+priv = V20.without_v20(priv)
 if V.MARKER not in priv:
     try:
         priv = V.apply_v19(priv)

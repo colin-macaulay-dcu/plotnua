@@ -42,6 +42,8 @@ def apply_v19(text: str) -> str:
 def without_v19(text: str) -> str:
     """The exact page beneath V19. A page without V19 passes through untouched; a page that carries the V19 marker but
     not exactly the governed V19 text raises."""
+    from privacy_v20_layer import without_v20       # V20 (PlotArt business enquiries, 27 Nov 2026) sits on top of V19: take it off first
+    text = without_v20(text)
     if MARKER not in text:
         return text
     for _, new in PAIRS:
