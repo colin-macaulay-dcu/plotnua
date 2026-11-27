@@ -1,0 +1,20 @@
+# PlotNua public site · plotnua.ie (prepared 27 Nov 2026). NOT DEPLOYED; GitHub Pages serves plotnua.ie.
+# A separate Worker from plotart-site: its own deploys, versions and rollback, so neither site can replace the other.
+# Custom domains (plotnua.ie, www.plotnua.ie) are attached only at a founder-approved checkpoint, never by a deploy.
+name = "plotnua-site"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# pages, directories and the PlotArt move go through the Worker; images, fonts, CSS and JS are free static assets
+run_worker_first = ["/*", "!/assets/*", "!/plotart/assets/*", "!/plotart/artists/*/img/*"]
+html_handling = "none"
+not_found_handling = "none"
+
+[vars]
+INDEXING = "index"            # plotnua.ie is the live site; workers.dev and any test host stay noindex regardless
+PLOTART_ADDRESS = "plotnua.ie" # "plotart.ie" only at the approved cutover (the /plotart 301s)

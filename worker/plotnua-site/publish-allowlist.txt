@@ -1,0 +1,45 @@
+# plotnua.ie publication allowlist (fail-closed, prepared 27 Nov 2026).
+# A tracked file is published ONLY if it matches a line below AND GitHub Pages/Jekyll would publish it today
+# (_config.yml exclude list and Jekyll's default exclusions). The build FAILS if any file Jekyll would publish is not
+# covered here, so a new kind of file (a new top-level folder, a new root data file) needs a reviewed line in this file
+# before it can go public. Patterns are fnmatch globs on repository paths; "**" is not special (fnmatch "*" spans "/").
+#
+# Pages and site furniture at the root
+*.html
+CNAME
+robots.txt
+sitemap.xml
+site.webmanifest
+favicon.ico
+favicon-*.png
+android-chrome-*.png
+apple-touch-icon.png
+404-hidden-discovery.png
+search.css
+search.js
+maker-explorer.css
+maker-explorer.js
+provider-explorer.js
+# Public data files read by the site's own pages (each reviewed 27 Nov 2026; see the review list in the Stage 6 report)
+additional-home-universe-v1.json
+atlas-match-pool.json
+atlas-recognition-pool.json
+atlas-stats.json
+borrowed-garden-provider-universe-v1.json
+disc026-evidence.json
+driveway-evidence.json
+garden-room-detail-*-v1.json
+garden-room-recommendation-universe-v1.json
+image-adaptation-licences.json
+image-provenance-records.json
+parking-platform-evidence.json
+power-station-provider-universe-v1.json
+recommendation-universe-v1.json
+search-index-v1.json
+supplier-export-evidence.json
+wellness-universe-v1.json
+# Folders
+assets/*
+plotart/*
+suppliers/*
+gridnua/*

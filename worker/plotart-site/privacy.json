@@ -1,0 +1,21 @@
+{
+  "site": "plotart.ie",
+  "consentKey": "pa-consent",
+  "functional": [
+    "plotart-checkout.colin-a41.workers.dev",
+    "plotart-enquiry.colin-a41.workers.dev",
+    "plotnua-art-space-register.colin-a41.workers.dev"
+  ],
+  "analytics": [
+    "www.googletagmanager.com",
+    "*.google-analytics.com",
+    "*.analytics.google.com"
+  ],
+  "pages": [
+    "/",
+    "/gallery/",
+    "/artists/clare-o-connor/",
+    "/join.html"
+  ],
+  "_note": "Privacy regression test config for atlas-tools/prove-privacy.mjs. functional: PlotArt's own services a page may contact before any choice, strictly for the page to work (artwork availability for the basket, Art for Hire availability, enquiry and application forms); they set no cookies and are covered by the privacy notice. Anything else before consent fails the test."
+}
