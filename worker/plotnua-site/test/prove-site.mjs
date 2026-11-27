@@ -44,6 +44,7 @@ ok((await get('https://plotnua-site.colin-a41.workers.dev/')).headers.get('x-rob
 { const r = await get('https://plotnua.ie/robots.txt'); ok(Buffer.from(await r.arrayBuffer()).equals(readFileSync(join(root, 'robots.txt'))), 'plotnua.ie robots.txt is the published file'); }
 { const t = readFileSync(join(root, 'worker/plotnua-site/wrangler.toml'), 'utf8');
   ok(/^run_worker_first = \["\/\*", "!\/assets\/\*"\]$/m.test(t), 'only /assets/* bypasses the Worker (pages, JSON and /plotart/* always go through it)'); }
+{ const r = await get('https://plotnua.ie/no-such.html'); ok(r.headers.get('cache-control') === null, '404 carries no cache-control (as GitHub Pages)'); }
 // header parity with GitHub Pages (plotnua.ie today): cache-control and content types
 for (const [path, type] of [['/', 'text/html; charset=utf-8'], ['/discoveries.html', 'text/html; charset=utf-8'], ['/robots.txt', 'text/plain; charset=utf-8'], ['/sitemap.xml', 'application/xml'], ['/CNAME', null]]) {
   const r = await get('https://plotnua.ie' + path);

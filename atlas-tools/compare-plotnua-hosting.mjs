@@ -67,7 +67,8 @@ async function worker() {
     try {
       const [a, b] = await Promise.all([one(pagesBase, path), one(workerBase, path)]);
       // Option B: files under /assets/ bypass the Worker and carry Cloudflare's own cache-control (expected, listed separately)
-      for (const k of ['status', 'loc', 'type', 'cache']) if (a[k] !== b[k]) (k === 'cache' && path.startsWith('/assets/') ? expected : diffs).push({ path, what: k, pages: a[k], worker: b[k] });
+      // a redirect's or error's body type is not content: types are compared for 200 responses (status and Location always)
+      for (const k of ['status', 'loc', 'type', 'cache']) if (a[k] !== b[k] && !(k === 'type' && a.status !== 200)) (k === 'cache' && path.startsWith('/assets/') ? expected : diffs).push({ path, what: k, pages: a[k], worker: b[k] });
       if (a.status === 200 && a.sha !== b.sha) (path === '/robots.txt' && workerIsTestAddress ? expected : diffs).push({ path, what: 'bytes', pages: a.sha.slice(0, 12), worker: b.sha.slice(0, 12) });
       for (const [host, x] of [['pages', a], ['worker', b]]) {
         const bad = x.status === 200 && typeProblem(x.raw, path);

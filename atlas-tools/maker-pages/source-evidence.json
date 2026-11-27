@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.garden-maker-editorial-pilot.v1",
-  "checked": "2026-10-26",
+  "checked": "2026-11-27",
   "publication_status": "PUBLISHED",
   "listing_basis": "PUBLIC_INFORMATION_TEXT_ONLY",
   "supplier_permission_asserted": false,
@@ -25,7 +25,7 @@
     "all-in-one-single": {
       "url": "https://allinonecabins.ie/single-room-cabins/",
       "verification": "DIRECT_PRIMARY_HTTP_200",
-      "sha256": "c57fa08c9770c91829936d8b87b80057f0ecd49a366252a959156ea37222f55f"
+      "sha256": "2bb95c8bd6253150f8e8408d7c8d81785d1b38f71d07e59c43978712b407089a"
     }
   },
   "facts": {
