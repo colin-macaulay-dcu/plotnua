@@ -18,7 +18,7 @@ Exit 1 if anything needs attention before a nameserver change.
 import json, re, sys, urllib.request
 
 ZONE = 'plotnua.ie'
-NAMES = ['', 'www', '_dmarc', 'google._domainkey', 'resend._domainkey', 'send', 'mail', 'autodiscover', 'em', 'bounce',
+NAMES = ['', 'www', '_dmarc', 'google._domainkey', 'resend._domainkey', 'send', 'rsend', 'mail', 'autodiscover', 'em', 'bounce',
          'k1._domainkey', 's1._domainkey', 's2._domainkey', 'selector1._domainkey', 'selector2._domainkey', 'calendar',
          'drive', 'sites', 'docs', '_github-pages-challenge-colin-macaulay-dcu']
 TYPES = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'CAA', 'NS', 'DS', 'SRV']
@@ -84,7 +84,7 @@ def classify(owner, typ, data):
     if 'v=spf1' in d: return 'SPF (mail authentication)', 'DNS only'
     if owner.startswith('_dmarc.'): return 'DMARC (mail authentication)', 'DNS only'
     if owner.startswith('google._domainkey'): return 'Google Workspace DKIM', 'DNS only'
-    if owner.startswith('resend._domainkey') or owner.startswith('send.') or 'rmta.net' in d or 'amazonses' in d:
+    if owner.startswith('resend._domainkey') or owner.startswith(('send.', 'rsend.')) or 'rmta.net' in d or 'amazonses' in d:
         return 'Resend (transactional email)', 'DNS only'
     if '._domainkey.' in owner: return 'DKIM (other sender)', 'DNS only'
     if 'verification' in d or owner.startswith('_github-pages-challenge'): return 'site / service verification', 'DNS only'
@@ -127,7 +127,10 @@ def main():
     for need, test in (('MX at the apex', lambda o, t, d: o == ZONE and t == 'MX'),
                        ('DMARC', lambda o, t, d: o == '_dmarc.' + ZONE and t == 'TXT'),
                        ('Google DKIM', lambda o, t, d: o == 'google._domainkey.' + ZONE),
-                       ('Resend DKIM', lambda o, t, d: o == 'resend._domainkey.' + ZONE)):
+                       ('Resend DKIM', lambda o, t, d: o == 'resend._domainkey.' + ZONE),
+                       # Resend Forge sending records, as listed in the Resend dashboard (checked 27 Nov 2026)
+                       ('Resend send CNAME', lambda o, t, d: o == 'send.' + ZONE and t == 'CNAME'),
+                       ('Resend rsend CNAME (Forge)', lambda o, t, d: o == 'rsend.' + ZONE and t == 'CNAME')):
         if not any(test(*r) for r in recs): problems.append(f'{need} not found in the export')
     by = {}
     for o, t, d in recs: by.setdefault(o, set()).add(t)
