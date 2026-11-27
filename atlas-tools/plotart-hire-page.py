@@ -220,8 +220,8 @@ def status(listed, form, business_on):
                  "Hire enquiries through this page are not yet open. To register interest, email PlotArt.")
     terms = ('<dt>The rental terms</dt><dd>The monthly rate, the six-month initial term, the artist’s and PlotArt’s shares, and the '
              'arrangements for insurance, transport and sales described below are PlotArt’s proposed model. They are not yet in use.</dd>'
-             '<dt>Signed agreements</dt><dd>The agreement template has not yet been reviewed by a solicitor or an insurer, and no '
-             'placement agreement has been signed.</dd>') if business_on else ""
+             '<dt>The agreement</dt><dd>The agreement template has not yet been independently reviewed by a solicitor or an insurer. '
+             'Nothing is agreed until each side signs the completed details.</dd>') if business_on else ""
     return """<section class="afx-sec" id="status" aria-labelledby="afx-status-h"><div class="pa-wrap">
   <div class="afx-head"><h2 class="afx-h2" id="afx-status-h">Where Art for Hire stands.</h2><p class="afx-lede">Art for Hire is being prepared. Here is what you can do today, and what is still proposed.</p></div>
   <div class="afx-offers">
