@@ -24,7 +24,8 @@ let r = await call('GET', '/api/admin/gallery-order', FOUNDER);
 check('G1 the founder sees all 25 positions (open on a new Studio) and the artists who can be placed',
   r.s === 200 && r.j.positions.length === 25 && r.j.positions.every((p, i) => p.position === i + 1 && p.state === 'open') && r.j.artists.length === 3);
 r = await call('GET', '/admin/gallery', FOUNDER);
-check('G2 the founder can open the Gallery order screen through the Review Desk shell', r.s === 200 && r.t.includes('id="app"') && r.t.includes('/assets/admin.js'));
+check('G2 the Review Desk visibly links to Artist Numbers and opens it in the normal admin shell', r.s === 200 && r.t.includes('id="app"') && r.t.includes('/assets/admin.js') &&
+  r.t.includes('href="/admin/gallery" data-t="order">Artist Numbers</a>'));
 
 r = await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: NOTE }, { position: 5, state: 'artist', artist_id: A }] });
 check('G3 the founder reserves 01 with a private note and places an artist at 05', r.s === 200 && r.j.positions[0].state === 'reserved' && r.j.positions[0].note === NOTE &&

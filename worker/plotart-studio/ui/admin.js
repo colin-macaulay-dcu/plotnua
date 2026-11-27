@@ -439,11 +439,13 @@
         <div class="st-go-acts"><button class="st-btn st-btn--small st-go-mv" data-up="${i}" aria-label="Move position ${two(p.position)} up"${i === 0 ? ' disabled' : ''}>↑</button><button class="st-btn st-btn--small st-go-mv" data-down="${i}" aria-label="Move position ${two(p.position)} down"${i === pos.length - 1 ? ' disabled' : ''}>↓</button>${acts}</div></li>`;
     }
     function draw(focus) {
-      app.innerHTML = `<h1 class="st-h1">Gallery order</h1>
-        <p class="st-sub">The 25 positions of the public Virtual Gallery, in order. Drag a card onto another to swap them, or use ↑ ↓. Only you can change this. Saved changes reach plotnua.ie on the next publishing run (within about 10 minutes).</p>
+      app.innerHTML = `<h1 class="st-h1">Artist numbers</h1>
+        <p class="st-sub"><b>Gallery position</b> is the artist's current place in the public gallery and can change. <b>Founding Artist number</b> is permanent and is managed separately below.</p>
+        <h2>Gallery positions 1–25</h2>
+        <p class="st-muted">Drag a card onto another to swap positions, or use ↑ ↓. Only you can change this. Saved changes reach plotnua.ie on the next publishing run (within about 10 minutes).</p>
         <div class="st-go-bar"><span id="go-state" class="st-muted">${dirty ? 'Unsaved changes' : 'Saved'}</span><button class="st-btn st-btn--solid" id="go-save"${dirty ? '' : ' disabled'}>Save order</button></div>
         <ol class="st-go" id="go">${pos.map(row).join('')}</ol>
-        <section class="st-card" style="margin-top:22px"><h2>Founding Artist numbers</h2>
+        <section class="st-card" style="margin-top:22px"><h2>Permanent Founding Artist numbers</h2>
           <p class="st-muted">Each Founding Artist's permanent number. It is separate from the gallery order above: moving a card never changes it. Numbers are set only here, by you, and are never assigned automatically.</p>
           <div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Founding No.</th></tr></thead><tbody>
           ${d.artists.filter(a => a.founding).map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.live ? ' <span class="st-muted">· live</span>' : ''}</td><td><input type="number" min="1" max="999" step="1" data-fn="${a.id}" aria-label="Founding Artist number for ${E(a.display_name)}" value="${a.founding_number || ''}" placeholder="—"></td></tr>`).join('') || '<tr><td colspan="2" class="st-muted">No Founding Artists yet.</td></tr>'}
