@@ -1,0 +1,75 @@
+# PlotNua · nameserver cutover checks (hosting migration A3, prepared 27 Nov 2026). READ-ONLY.
+#
+# Manual runs only. Uses no secret and no environment, changes nothing anywhere, sends no email and submits no form.
+#   * baseline: run shortly before the nameserver change; the result is kept as the artifact "cutover-baseline".
+#   * compare:  run after the change (and again at +1 h, +24 h and +48 h); give the run ID of the baseline run.
+# Runs from GitHub's network, so TLS certificates are observed as visitors see them (not through a proxy).
+name: PlotNua cutover check (read-only)
+run-name: "Cutover check · ${{ inputs.mode }}${{ inputs.baseline_run_id && format(' vs {0}', inputs.baseline_run_id) || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'baseline (before the change) or compare (after it)'
+        type: choice
+        options: [baseline, compare]
+        default: baseline
+      baseline_run_id:
+        description: 'compare only: the run ID of the baseline run'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  actions: read          # to download the baseline artifact of an earlier run of this workflow
+
+concurrency:
+  group: plotnua-cutover-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build the PlotNua publication (the list of every published file and its bytes)
+        run: python3 atlas-tools/plotnua_site_build.py . "$RUNNER_TEMP/dist" --mode live > /dev/null
+      - name: Baseline
+        if: inputs.mode == 'baseline'
+        run: |
+          set -o pipefail
+          python3 atlas-tools/release/cutover-check.py baseline --dist "$RUNNER_TEMP/dist" --out "$RUNNER_TEMP/cutover-baseline.json" | tee "$RUNNER_TEMP/log.txt"
+          tail -1 "$RUNNER_TEMP/log.txt" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: inputs.mode == 'baseline'
+        with:
+          name: cutover-baseline
+          path: ${{ runner.temp }}/cutover-baseline.json
+          retention-days: 30
+      - uses: actions/download-artifact@v4
+        if: inputs.mode == 'compare'
+        with:
+          name: cutover-baseline
+          run-id: ${{ inputs.baseline_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/base
+      - name: Compare with the baseline
+        if: inputs.mode == 'compare'
+        run: |
+          set -o pipefail
+          [[ "${{ inputs.baseline_run_id }}" =~ ^[0-9]+$ ]] || { echo "give the baseline run ID"; exit 1; }
+          python3 atlas-tools/release/cutover-check.py compare --dist "$RUNNER_TEMP/dist" --baseline "$RUNNER_TEMP/base/cutover-baseline.json" \
+            --out "$RUNNER_TEMP/cutover-after.json" | tee "$RUNNER_TEMP/log.txt"
+          grep -E "CHANGED|FAIL|note|delegation|CUTOVER CHECK" "$RUNNER_TEMP/log.txt" >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.mode == 'compare'
+        with:
+          name: cutover-after-${{ github.run_id }}
+          path: ${{ runner.temp }}/cutover-after.json
+          retention-days: 30
