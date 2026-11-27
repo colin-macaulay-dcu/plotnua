@@ -1,4 +1,4 @@
--- PlotArt Studio · migration 0031 · Commercial leads and placements (founder approval in principle, 27 Nov 2026)
+-- PlotArt Studio · migration 0032 · Commercial leads and placements (founder approval in principle, 27 Nov 2026)
 -- PROPOSAL FOR FOUNDER APPROVAL. NOT RUN against any real database.
 -- Adds SIX new tables and their indexes. No existing table, row, column, consent, agreement, artwork or artist record
 -- changes: artists and artworks are only REFERENCED (never written).
@@ -21,7 +21,7 @@
 -- the end of the sixth year after the invoice (Revenue record-keeping). The Studio's daily run deletes expired leads
 -- (events, selections, documents, payments and placements go with them: ON DELETE CASCADE).
 --
--- Safe to run again: CREATE ... IF NOT EXISTS only. Preconditions: migrations up to 0029 have run; the founder has approved
+-- Safe to run again: CREATE ... IF NOT EXISTS only. Preconditions: migrations up to 0031 have run (0030 Artist Agreement R2, 0031 open Founding Artist numbers); the founder has approved
 -- this exact file (SHA-256); it runs through studio-d1-migration (Time Travel restore point and encrypted full backup first).
 -- Compatibility: the live Studio never reads these tables; the new Studio uses them only once they exist.
 -- @@DDL-BEGIN (schema.sql carries this block verbatim for new installs and local tests)

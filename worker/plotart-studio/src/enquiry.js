@@ -9,7 +9,7 @@
 import { send } from './mailer.js';
 import { foundingAt } from './founding.js';
 import { hireEnquiry, hireListed } from './hire-enquiry.js';   // Art for Hire (Stage 3B-3): separate routes, switched off
-import { leadCapture, businessEnquiry } from './commercial-inbound.js';   // commercial leads (migration 0031): both OFF until approved
+import { leadCapture, businessEnquiry } from './commercial-inbound.js';   // commercial leads (migration 0032): both OFF until approved
 
 const NOTICE = 'PA-ENQ-2026-10-29';
 // Enquiry notice versions the relay accepts. The next version is accepted BEFORE any page shows it, so changing the notice

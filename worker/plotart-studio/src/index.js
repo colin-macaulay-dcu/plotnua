@@ -29,7 +29,7 @@ import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { outcomes as OUTCOMES } from './outcomes.js';   // founder-only aggregate commercial outcomes (Sprint 1, 26 Nov 2026)
 import { send } from './mailer.js';
-import * as CM from './commercial.js';   // commercial leads and placements (migration 0031, 27 Nov 2026)
+import * as CM from './commercial.js';   // commercial leads and placements (migration 0032, 27 Nov 2026)
 import { AREAS as IDEA_AREAS, clean as ideaClean, problem as ideaProblem } from './ideas-rules.js';
 import { KINDS as G_KINDS, SPACE_TYPES as G_SPACE, AVAILABILITY as G_AVAIL, LISTING_DAYS as G_DAYS, clean as gClean, textProblem as gTextProblem, areaProblem as gAreaProblem } from './garden-rules.js';
 
@@ -1129,7 +1129,7 @@ export default {
      30 days ago are erased from storage (Gallery Publication and Image Licence 6.3). */
   async scheduled(_event, env) {
     let enquiries_logged = 0;
-    try { await CM.expire(env); } catch { /* commercial leads not installed */ }   // retention: migration 0031
+    try { await CM.expire(env); } catch { /* commercial leads not installed */ }   // retention: migration 0032
     try { enquiries_logged = await logMissingRelayEnquiries(env); } catch { /* enquiry log not installed */ }
     await env.DB.prepare('DELETE FROM enquiries WHERE delete_after < ?').bind(now()).run();
     const cut = new Date(Date.now() - 30 * 86400_000).toISOString();
@@ -1424,7 +1424,7 @@ async function route(req, env) {
     if (p === '/admin/agreements') return html(A.ADMIN_HTML);
     if (p === '/admin/leaving') return html(A.ADMIN_HTML);
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
-    // Commercial leads and placements (migration 0031): its own page and script, like Basket readiness
+    // Commercial leads and placements (migration 0032): its own page and script, like Basket readiness
     if (p === '/admin/commercial') return html(A.COMMERCIAL_HTML);
     if (p.startsWith('/api/admin/commercial')) {
       const body = async () => (await req.json().catch(() => null)) || {};

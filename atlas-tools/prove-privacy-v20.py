@@ -1,6 +1,6 @@
 """PlotNua · Privacy Notice V20 proof: PlotArt business enquiries, rentals and placements. V20 applies exactly once on V19,
 is exactly reversible, leaves every earlier version's governed text intact beneath it, and says what Commercial Studio does
-(retention matches commercial.js and migration 0031; sharing limited to the artist involved; no marketing use).
+(retention matches commercial.js and migration 0032; sharing limited to the artist involved; no marketing use).
     python3 atlas-tools/prove-privacy-v20.py
 """
 import pathlib, re, sys

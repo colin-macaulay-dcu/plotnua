@@ -1504,8 +1504,8 @@ INSERT INTO gallery_curation (gallery_id, stage, position, artist_id, artwork_id
     AND NOT EXISTS (SELECT 1 FROM gallery_showcase c WHERE c.gallery_id = o.gallery_id AND c.stage = s.stage AND c.artist_id = o.artist_id)
     AND NOT EXISTS (SELECT 1 FROM gallery_curation x WHERE x.gallery_id = o.gallery_id AND x.stage = s.stage);
 
--- PlotArt Studio · migration 0031 · Commercial leads and placements (development 27 Nov 2026). NOT APPLIED IN PRODUCTION.
--- See migrations/0031_commercial.sql.
+-- PlotArt Studio · migration 0032 · Commercial leads and placements (development 27 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- See migrations/0032_commercial.sql.
 
 
 CREATE TABLE IF NOT EXISTS commercial_leads (
