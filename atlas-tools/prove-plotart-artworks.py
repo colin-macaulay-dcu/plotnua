@@ -150,8 +150,12 @@ check("A6 with the switch off the page is noindex (indexable() honours artworks_
 
 # A7
 sm = (ROOT / "sitemap.xml").read_text()
-on = dict(launch, artworks_indexable=True, artworks_in_sitemap=True)
 check("A7 sitemap.xml is exactly the generated PlotArt region for the current switches", SEO.update_sitemap(sm, packages, launch) == sm)
+if launch.get("plotart_domain_sitemap") is True:   # domain cutover: PlotArt is listed only in plotart.ie's own sitemap
+    check("A7 cutover: PlotNua's sitemap lists no PlotArt URL", "plotnua.ie/plotart" not in sm)
+    launch = dict(launch, plotart_domain_sitemap=False)   # the region the plotart.ie sitemap is generated from
+    sm = SEO.update_sitemap(sm, packages, launch)
+on = dict(launch, artworks_indexable=True, artworks_in_sitemap=True)
 want_listed = SEO.indexable(PATH, launch) and launch.get("artworks_in_sitemap") is True
 check("A7 the collection is listed exactly %s, by its canonical URL" % ("once" if want_listed else "never"),
       sm.count("<loc>https://plotnua.ie/plotart/artworks/</loc>") == (1 if want_listed else 0))
