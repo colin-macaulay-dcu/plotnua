@@ -22,3 +22,12 @@ exclude:
   # and are read only by the gate and the builders, never by a page.
   - image-rights-records.json
   - image-rights-manifest.json
+  # Root JSON review (founder-approved direction, 27 Nov 2026): read by the gate, builders and generators only, never
+  # by a public page (each verified: no page, script or service loads them from plotnua.ie).
+  - image-provenance-records.json
+  - image-adaptation-licences.json
+  - wellness-universe-v1.json
+  - garden-room-detail-alternatives-v1.json
+  - garden-room-detail-bestfor-v1.json
+  - garden-room-detail-strengths-v1.json
+  - garden-room-detail-typicalhomeowner-v1.json

@@ -15,6 +15,9 @@
 #     route or custom domain, and this workflow refuses one. After the deploy, the workers.dev address is checked; a
 #     failure rolls the Worker back automatically.
 #   * compare: the live parity check, GitHub Pages (plotnua.ie) against the Worker (workers.dev), file by file.
+#   * ref (default main): a development branch (dev/...) may be built and deployed to the workers.dev test address, so a
+#     change (for example the consent migration) is tested on Cloudflare BEFORE it is released. The workflow itself, its
+#     refusals (no route, no domain, workers.dev only) and the credential's main-only environment always come from main.
 # Logs are public: no step prints a credential or an account identifier.
 name: PlotNua site test deploy (workers.dev only)
 
@@ -26,6 +29,10 @@ on:
         type: choice
         options: [verify, deploy, compare]
         default: verify
+      ref:
+        description: 'what to build: main (default), or a development branch dev/... to TEST on workers.dev before it is released'
+        type: string
+        default: main
 
 permissions:
   contents: read
@@ -45,7 +52,15 @@ jobs:
     environment:
       name: plotart-site   # the existing Cloudflare credential (see above); main branch only
     steps:
+      - name: Only main or a development branch may be built
+        env:
+          REF: ${{ inputs.ref }}
+        run: |
+          [[ "$REF" == main || "$REF" =~ ^dev/[A-Za-z0-9._/-]+$ ]] || { echo "FAIL  ref must be main or dev/..."; exit 1; }
+          echo "Building: $REF" | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

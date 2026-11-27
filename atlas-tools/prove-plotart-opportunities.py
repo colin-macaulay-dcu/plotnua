@@ -125,6 +125,10 @@ else:
 
 print("— O3 every published gallery renders exactly as today")
 M = main_module()
+# When the working renderer IS main's renderer (the proof run on main itself, after those changes were released), the
+# declared one-way allowances below must not be applied: both sides are then compared byte for byte (27 Nov 2026).
+SAME_RENDERER = open(os.path.join(ROOT, "atlas-tools", "plotart_gallery_pages.py"), encoding="utf-8").read() == subprocess.run(
+    ["git", "show", "origin/main:atlas-tools/plotart_gallery_pages.py"], cwd=ROOT, capture_output=True, text=True, check=True).stdout
 pkgs = sorted(glob.glob(os.path.join(ROOT, "plotart", "artists", "*", "gallery.json")))
 same, diffs = 0, []
 for f in pkgs:
@@ -134,7 +138,7 @@ for f in pkgs:
         for k in a:
             # Sprint 1 (founder approval 26 Nov 2026) moved an artwork page's button block (one line, class pa-aw-cta)
             # directly under the price and reworded its notes; everything else on the page must still match main exactly
-            if k != "index":
+            if k != "index" and not SAME_RENDERER:
                 a[k], b[k] = (re.sub(r'(?m)^ *<div class="pa-aw-cta">.*\n', "", x) if x is not None else x for x in (a[k], b.get(k)))
                 # SEO and analytics package (founder approval 26 Nov 2026, section 2.5): one added line, the two links
                 # (size calculator, available artworks); nothing else may differ
