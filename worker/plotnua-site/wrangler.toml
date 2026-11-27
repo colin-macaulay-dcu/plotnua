@@ -1,0 +1,25 @@
+# PlotNua public site · plotnua.ie (prepared 27 Nov 2026). NOT DEPLOYED; GitHub Pages serves plotnua.ie.
+# A separate Worker from plotart-site: its own deploys, versions and rollback, so neither site can replace the other.
+# Custom domains (plotnua.ie, www.plotnua.ie) are attached only at a founder-approved checkpoint, never by a deploy.
+name = "plotnua-site"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# Option B (founder direction, 27 Nov 2026): PlotNua's own static files under /assets/ (images, fonts, CSS, JS) are served
+# straight from Cloudflare's static asset store: free, unlimited and never counted against the Worker's daily request
+# allowance. Everything else (pages, directories, robots.txt, sitemaps, JSON, everything under /plotart/ so the approved
+# PlotArt 301s cover every old URL) goes through the Worker. Files under /assets/ therefore have no security or noindex
+# headers; on plotnua.ie they are meant to be indexable, and on workers.dev the Worker's robots.txt (Disallow: /) keeps
+# them out of search. workers_dev is switched off at the approved switch-over.
+run_worker_first = ["/*", "!/assets/*"]
+html_handling = "none"
+not_found_handling = "none"
+
+[vars]
+INDEXING = "index"            # plotnua.ie is the live site; workers.dev and any test host stay noindex regardless
+PLOTART_ADDRESS = "plotnua.ie" # "plotart.ie" only at the approved cutover (the /plotart 301s)
