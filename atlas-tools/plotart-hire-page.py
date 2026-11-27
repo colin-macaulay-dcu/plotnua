@@ -155,89 +155,49 @@ def resolve(root, catalogue):
 
 
 def body(cards, api, form, bar=""):
-    # Version 3 (founder approval, 11 Nov 2026). The hero's primary action ships as "How it works"; hire-live.js turns it into
-    # "See works for hire" only while the live check is showing approved works (data-hire-cta).
-    # Premium redesign (founder brief, 16 Nov 2026): one page with a clear path for each audience. Hero, then who it is for,
-    # how a hire works, the settings, the catalogue, and (while business rental information is switched on) the bounded
-    # business, artist and contact sections. No new forms, data or services; every term and statement is kept.
+    # PlotArt communication standard (founder approval, 27 Nov 2026; supersedes the 16 and 22 Nov layouts): the offer at a
+    # glance, two ways to hire, a numbered process and clear pricing (the bounded business region), the artists open to hire,
+    # the approved-works catalogue (hidden until works are approved), the full terms on demand, then one closing action.
+    # PlotArt coordinates every placement; the approved rates, splits and protections are unchanged.
     business_on = SHELL.SEO.switches().get("business_rental_information") is True
+    lede = ("Rent original Irish art for your workplace, hotel or project. PlotArt selects the work, agrees the terms with the artist and coordinates the placement."
+            if business_on else "Hire original Irish art for an interior, a staged home or a project. PlotArt selects the work and coordinates it with the artist.")
+    second = '<a class="afh3-link" href="#pricing">See pricing</a>' if business_on else '<a class="afh3-link" href="#open-artists">See the artists</a>'
     return """
 <section class="afh3-hero" aria-labelledby="afh3-h">
   <div class="afh3-hero-art"><img src="%(art)s" alt="%(alt)s" width="1332" height="940" fetchpriority="high"></div>
   <div class="afh3-hero-copy">
     <h1 id="afh3-h">Original art,<br>on hire.</h1>
     <div class="afh3-hero-row">
-      <p class="afh3-sub">Show original work by Irish artists without buying it outright: for film and television, interiors and staged homes, or the walls of your workplace. You agree each hire directly with the artist.</p>
-      <p class="afh3-cta"><a class="afh3-btn" href="#afh3-how" data-hire-cta>How it works</a><a class="afh3-link" href="mailto:hello@plotnua.ie?subject=Art%%20for%%20Hire%%20brief">Send a brief</a></p>
+      <p class="afh3-sub">%(lede)s</p>
+      <p class="afh3-cta"><a class="afh3-btn" href="%(sel)s" data-pa-track="hire_request_selection">Request a selection</a>%(second)s</p>
     </div>
   </div>
   <p class="afh3-hero-credit">%(credit)s</p>
 </section>
 <p class="afh3-hero-credit-m">%(credit)s</p>
-
+%(business)s
 %(opportunities)s
 
-<section class="afh3-how" id="afh3-how" aria-labelledby="afh3-how-h"><div class="pa-wrap">
-  <div class="afh3-how-head"><h2 id="afh3-how-h">How Art for Hire works</h2><p>Three steps, agreed directly between you and the artist.%(business_how)s</p></div>
-  <ol class="afh3-steps">
-    <li><h3>Discover an artist</h3><p>Browse the artists open to Art for Hire and their galleries, and find work that suits your production, interior or space.</p></li>
-    <li><h3>Make an enquiry</h3><p>Tell the artist which work interests you, your dates, where the work will go and how it will be used. Your enquiry goes straight to the artist.</p></li>
-    <li><h3>Agree the arrangements</h3><p>The fee, dates, insurance, transport, installation and return are agreed directly between you and the artist, in writing.</p></li>
-  </ol>
-  <ul class="afh3-know">
-    <li><strong>PlotArt introduces you to the artist.</strong> We’re not a party to the artwork hire and we don’t collect artwork rent or deposits. Any PlotArt fee requires a separate agreement.</li>
-    <li><strong>Hire prices are agreed directly with the artist.</strong> Every work is price on request.</li>
-    <li><strong>Transport and insurance are arranged between you and the artist.</strong></li>
-    <li><strong>Photography and screen use are not automatically included.</strong> Any permission must be agreed in writing with the artist.</li>
-    <li><strong>Film and television screen use can’t yet be arranged through PlotArt.</strong></li>
-  </ul>
-</div></section>
-
-<section class="afh3-scenes" aria-labelledby="afh3-scenes-h">
-  <div class="pa-wrap afh3-scenes-h"><h2 id="afh3-scenes-h">Where a hired work goes</h2><p>One painting, three settings. The settings are illustrations; the painting is real.</p></div>
-  <div class="afh3-scene-row" role="region" aria-label="Three illustrated settings" tabindex="0">%(scenes)s</div>
-</section>
-
 <section class="pa-hire-gal afh3-works" id="afh3-works" aria-labelledby="pa-hire-gal-h" data-hire-section%(works_hidden)s><div class="pa-wrap">
-  <div class="afh3-works-h"><h2 id="pa-hire-gal-h">Available to hire</h2><p>Every work is offered by its artist and checked by PlotArt. Price on request.</p></div>
+  <div class="afh3-works-h"><h2 id="pa-hire-gal-h">Available to hire</h2><p>Every work is offered by its artist and checked by PlotArt.</p></div>
   <p class="pa-hire-note" data-hire-status role="status" hidden></p>
   <noscript><p class="pa-hire-note">Please turn on JavaScript to see which works are available for hire right now.</p></noscript>
   <p class="pa-hire-note" id="pa-hire-closed" data-hire-closed tabindex="-1" hidden>Hire enquiries are not yet open.</p>
   %(region)s
 </div></section>
-%(after)s
-%(next)s
+%(terms)s
+<section class="afx-sec afx-close" id="next-steps" aria-labelledby="afx-close-h"><div class="pa-wrap">
+  <h2 class="afx-h2" id="afx-close-h">Tell us about your space.</h2>
+  <p class="afx-lede">We’ll come back with a first selection, or a few questions.</p>
+  <p class="afx-acts"><a class="afx-btn" href="%(sel)s" data-pa-track="hire_request_selection">Request a selection</a><a class="afx-link" href="%(brief)s" data-pa-track="hire_project_brief">Send a project brief</a></p>
+  %(artist_line)s
+</div></section>
 <script src="hire-live.js" data-api="%(api)s" data-enquiries="%(enq)s" defer></script>
-""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards, bar), "opportunities": OPP.BEGIN + OPP.END, "works_hidden": "" if cards else " hidden",
-       "business_how": ' Renting for a workplace? See <a href="#business-rentals">Business rentals</a>.' if business_on else "", "next": NEXT % {"business": business_next(business_on)},
-       "api": E(api), "enq": "on" if form else "off",
-       "after": BUSINESS.REGION if business_on else ARTISTS_ONLY}
-
-
-# G · Enquiry and next steps (founder brief 22 Nov 2026): the two audience paths that used to follow the hero, at the close.
-NEXT = """<section class="afh-next" id="next-steps" aria-labelledby="afh-next-h"><div class="pa-wrap">
-  <h2 id="afh-next-h">Enquiry and next steps</h2>
-  <div class="afh-next-grid">
-    <div class="afh-next-col">
-      <h3>For businesses</h3>
-      %(business)s
-    </div>
-    <div class="afh-next-col">
-      <h3>For artists</h3>
-      <p>Offer selected works on your own terms from your PlotArt Studio, once Art for Hire opens to artists.</p>
-      <p class="afh-close-acts"><a class="afh3-link" href="#for-artists">Read the artist terms</a></p>
-    </div>
-  </div>
-</div></section>"""
-
-
-def business_next(business_on):
-    if business_on:
-        return ('<p>Hire original work for a set, an interior or a staged home. Or rent it for your workplace while it remains for sale.</p>\n'
-                '      <p class="afh-close-acts"><a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Business%20art%20purchase%20or%20rental">Discuss hiring art for your space</a>'
-                '<a class="afh3-link" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%20brief">Send a brief</a></p>')
-    return ('<p>Hire original work for a set, an interior or a staged home.</p>\n'
-            '      <p class="afh-close-acts"><a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%20brief">Discuss hiring art for your space</a></p>')
+""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "region": region(cards, bar), "opportunities": OPP.BEGIN + OPP.END,
+       "works_hidden": "" if cards else " hidden", "lede": lede, "second": second, "sel": BUSINESS.SELECTION, "brief": BUSINESS.BRIEF,
+       "business": ("\n" + BUSINESS.REGION + "\n") if business_on else "", "terms": BUSINESS.TERMS if business_on else ARTISTS_ONLY,
+       "artist_line": BUSINESS.ARTIST_LINE if business_on else "", "api": E(api), "enq": "on" if form else "off"}
 
 
 # Without business rental information: the artists' section alone (the same wording as before the redesign).

@@ -949,8 +949,11 @@ if HIRE_ON:
     need(('<meta name="robots" content="index, follow">' in _hp and 'href="https://plotnua.ie/plotart/art-for-hire/"' in _hp) if BUSINESS_ON else ('<meta name="robots" content="noindex, follow">' in _hp and 'rel="canonical"' not in _hp), "L17 the Art for Hire indexing must match the business information switch")
     need(_hp.count(HIRE_BEGIN.decode()) == 1 and _hp.count(HIRE_END.decode()) == 1, "L17 the Art for Hire page needs exactly one catalogue region")
     need("Original art," in _hv and "on hire." in _hv, "L17 the approved headline is missing")
-    for _st in ("PlotArt introduces you to the artist.", "Hire prices are agreed directly with the artist.", "Transport and insurance are arranged between you and the artist.",
-                "Photography and screen use are not automatically included.", "Film and television screen use can’t yet be arranged through PlotArt."):
+    # The approved Art for Hire statements (design standard, 27 Nov 2026): PlotArt coordinates; the artist approves; the hire
+    # agreement is between the business and the artist; screen use is excluded. Without business information, the headline alone.
+    for _st in (("PlotArt selects the work, agrees the terms with the artist and coordinates the placement.", "PlotArt coordinates the placement with the artist.",
+                 "Each artist approves the work, price basis and actual amounts before any proposal.", "The hire agreement itself is between you and the artist",
+                 "Film and television screen use can’t yet be arranged through PlotArt.") if BUSINESS_ON else ()):
         need(_st in _hv, "L17 the Art for Hire page lacks the statement: " + _st)
     _cards = re.findall(r'<li class="pa-hire-card" data-hire-work="([^"]+)" data-hire-ref="PA-([a-z0-9-]+)-\1"[^>]*>', _hp)
     need(len(_cards) == _hp.count('class="pa-hire-card"'), "L17 a card's reference does not match its work")

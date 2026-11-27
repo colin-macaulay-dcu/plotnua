@@ -16,7 +16,7 @@ outside=B.outside(page)
 css_version=hashlib.sha256((ROOT/"plotart/art-for-hire/art-for-hire.css").read_bytes()).hexdigest()[:12]
 check("stylesheet cache key matches the current CSS",'href="art-for-hire.css?v='+css_version+'"' in page)
 check("one exact approved business section",page.count(B.BEGIN)==1 and page.count(B.END)==1)
-check("business link independent of the live catalogue CTA",'href="#business-rentals">Business rentals' in page and 'href="#afh3-how" data-hire-cta' in page)
+check("hero actions: request a selection and see pricing",'>Request a selection</a>' in page and 'href="#pricing">See pricing' in page and 'id="pricing"' in page)
 check("closed enquiry form unchanged",'data-enquiries="off"' in page and '<form' not in page)
 check("no public artist rental inventory invented",'class="pa-hire-card"' not in page)
 check("download is the verified template",B.verify_document(ROOT,ROOT))
@@ -30,7 +30,7 @@ check("all template pages have readable text",len(reader.pages)>0 and all(len(p.
 check("current page indexable through its explicit switch",SEO.indexable("art-for-hire/index.html",SEO.switches()))
 check("switch off excludes rental page from search",not SEO.indexable("art-for-hire/index.html",dict(SEO.switches(),business_rental_information=False)))
 check("disabled hire page cannot become indexable",not SEO.indexable("art-for-hire/index.html",dict(SEO.switches(),art_for_hire_page=False)))
-check("sale priority and approval protect artist","Buying is the priority." in page and "Each artist approves" in page)
+check("sale priority and approval protect artist","Buying is the priority" in page and "Each artist approves" in page)
 check("company costs and no artist advance are explicit","The renting business pays" in page and "Neither artist nor PlotArt" in page)
 check("replacement fallback and refund are explicit","If none is agreed" in page and "refunded within 14 days" in page)
 for price,total,owner,fee in [(100000,4000,3000,1000),(200000,8000,6000,2000),(500000,20000,15000,5000),(99999,4000,3000,1000)]:
@@ -52,7 +52,7 @@ with tempfile.TemporaryDirectory(prefix="plotart-rental-proof-") as tmp:
         else:(site/child.name).symlink_to(child,target_is_directory=child.is_dir())
     target=site/"plotart/art-for-hire/index.html"
     for label,mutate,wanted in [
-        ("wrong customer rate",lambda x:x.replace("<strong>4%","<strong>5%",1),"L19"),
+        ("wrong customer rate",lambda x:x.replace("<dd>4% of the artwork","<dd>5% of the artwork",1),"L19"),
         ("wrong artist split",lambda x:x.replace("3% to the artist","2% to the artist",1),"L19"),
         ("duplicate terms",lambda x:x+B.REGION,"L19"),
         ("unapproved fee outside the bounded section",lambda x:x.replace("</main>","<p>Extra 9% fee</p></main>"),"L17"),
