@@ -69,11 +69,14 @@ const sc = async (name, bindings, expect, when = 'before', must) => {
 };
 await sc("today's live relay (29 Oct: open, email on, no garden switch yet)", TODAY, true, 'before', /will be added, with no change in behaviour: GARDEN_ENQUIRIES_ENABLED="false", HIRE_ENQUIRIES_ENABLED="false", HIRE_TERMS_ENABLED="false", HIRE_SCREEN_USE="false"/);
 const HIRE_OFF = ['HIRE_ENQUIRIES_ENABLED', 'HIRE_TERMS_ENABLED', 'HIRE_SCREEN_USE'].map(k => plain(k, 'false'));
-const DOMAIN_EMPTY = [plain('EXTRA_ORIGINS', ''), plain('PUBLIC_GALLERY_URL', '')];   // domain migration R1: empty = unchanged
-await sc('after the deploy: exactly the expected settings', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF, ...DOMAIN_EMPTY], true, 'after');
-await sc('after the deploy: an Art for Hire switch missing', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF.slice(1), ...DOMAIN_EMPTY], false, 'after');
+// domain migration R1: the two settings as wrangler.enquiry.toml declares them ("" = unchanged; "https://plotart.ie" once approved)
+const TOML_VAR = k => (readFileSync(join(HERE, '../../../worker/plotart-studio/wrangler.enquiry.toml'), 'utf8').match(new RegExp('^' + k + '\\s*=\\s*"([^"]*)"', 'm')) || [])[1];
+const DOMAIN_NOW = [plain('EXTRA_ORIGINS', TOML_VAR('EXTRA_ORIGINS')), plain('PUBLIC_GALLERY_URL', TOML_VAR('PUBLIC_GALLERY_URL'))];
+await sc('after the deploy: exactly the expected settings', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF, ...DOMAIN_NOW], true, 'after');
+await sc('after the deploy: an Art for Hire switch missing', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF.slice(1), ...DOMAIN_NOW], false, 'after');
 await sc('domain migration: an unapproved origin already live → deploy REFUSED', [...TODAY, plain('EXTRA_ORIGINS', 'https://evil.example')], false);
-await sc('domain migration: the two settings are added empty (no change)', TODAY, true, 'before', /domain migration setting \(approved values only\): EXTRA_ORIGINS="", PUBLIC_GALLERY_URL=""/);
+await sc('domain migration: the two settings are added with their declared, approved values', TODAY, true, 'before', new RegExp('domain migration setting \\(approved values only\\): EXTRA_ORIGINS="' + TOML_VAR('EXTRA_ORIGINS') + '", PUBLIC_GALLERY_URL="' + TOML_VAR('PUBLIC_GALLERY_URL') + '"'));
+await sc('domain migration: enquiries from plotart.ie added to a relay that already has the setting empty', [...TODAY, plain('EXTRA_ORIGINS', ''), plain('PUBLIC_GALLERY_URL', '')], true, 'before');
 await sc('live Art for Hire enquiries ON: the deploy would close them', [...TODAY, plain('HIRE_ENQUIRIES_ENABLED', 'true')], false);
 await sc('after the deploy: the garden switch missing', TODAY, false, 'after');
 await sc('live relay with email OFF (MAILER none): the deploy would switch it on', TODAY.map(b => b.name === 'MAILER' ? plain('MAILER', 'none') : b), false);
