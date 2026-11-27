@@ -144,7 +144,7 @@ jobs:
           sleep 20
           python3 atlas-tools/prove-plotart-domain.py . site --base "$WORKERS_DEV" --indexing noindex
           # plotart.ie is checked as well once it is attached to this Worker (its responses carry the Worker's headers)
-          if curl -fsSI --max-time 10 https://plotart.ie/robots.txt 2>/dev/null | grep -qi '^content-security-policy:.*fonts.gstatic.com'; then
+          if curl -fsSI --max-time 10 https://plotart.ie/robots.txt 2>/dev/null | grep -qi '^content-security-policy:.*plotart-enquiry.colin-a41.workers.dev'; then
             python3 atlas-tools/prove-plotart-domain.py . site --base https://plotart.ie --indexing "$INDEXING"
           else
             echo "plotart.ie is not attached to the Worker yet: only the workers.dev address was checked"
