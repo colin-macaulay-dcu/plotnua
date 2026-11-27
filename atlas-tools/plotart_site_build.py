@@ -236,6 +236,12 @@ def build(root, out, mode):
     xml, urls = plotart_sitemap(site.root, mode)
     with open(os.path.join(out, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(xml)
+    # headers for the files served without the Worker (wrangler.toml run_worker_first): images, fonts, CSS, JS
+    asset_headers = ["  X-Content-Type-Options: nosniff", "  Strict-Transport-Security: max-age=31536000"]
+    if mode == "test":
+        asset_headers.append("  X-Robots-Tag: noindex, nofollow")
+    with open(os.path.join(out, "_headers"), "w", encoding="utf-8") as f:
+        f.write("".join(f"{rule}\n" + "\n".join(asset_headers) + "\n" for rule in ("/assets/*", "/artists/*/img/*")))
     robots = ("User-agent: *\nDisallow: /\n" if mode == "test"
               else "User-agent: *\nAllow: /\n\nSitemap: https://plotart.ie/sitemap.xml\n")
     with open(os.path.join(out, "robots.txt"), "w", encoding="utf-8") as f:

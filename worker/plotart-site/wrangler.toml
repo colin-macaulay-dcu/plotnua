@@ -14,7 +14,11 @@ preview_urls = false
 [assets]
 directory = "./dist"
 binding = "ASSETS"
-run_worker_first = true      # every request goes through src/index.js (exact GitHub Pages URL behaviour, headers)
+# Pages, directories and redirects go through src/index.js (exact GitHub Pages URL behaviour, CSP, noindex switch).
+# Images, fonts, CSS and JS are served straight from static assets: free and unlimited on every plan, and they never count
+# towards the Free plan's 100,000 Worker requests a day (which would answer 429 beyond it). Their headers come from the
+# build's _headers file (plotart_site_build.py), including X-Robots-Tag while INDEXING is "noindex".
+run_worker_first = ["/*", "!/assets/*", "!/artists/*/img/*"]
 html_handling = "none"       # no automatic /x.html -> /x redirects: every existing address must stay exact
 not_found_handling = "none"
 

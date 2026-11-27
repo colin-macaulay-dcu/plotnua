@@ -7,9 +7,12 @@
      is NOT loaded at all (Basic Consent Mode): no request to Google, no cookie, no identifier.
    - The banner offers "Accept analytics" and "Reject optional" as two equal buttons, plus "Cookie settings" for the detail.
      Nothing is pre-ticked. Closing or ignoring the banner is not consent.
-   - Cross-domain measurement (plotnua.ie <-> plotart.ie) cannot override a choice: GA4, and with it the cross-domain
-     linker, runs on plotart.ie only after Accept here. A linker parameter (_gl) arriving from plotnua.ie is removed from
-     the address straight away unless this visitor has accepted analytics on plotart.ie, so it is never read or kept.
+   - No cross-domain measurement: visits are not linked between plotnua.ie and plotart.ie (no linker is configured, and
+     the GA4 "Configure your domains" setting must stay empty), so a choice on one site can never carry over to the other.
+     A linker parameter (_gl) that arrives anyway is removed from the address straight away unless this visitor has
+     accepted analytics on plotart.ie, so it is never read or kept.
+   - Analytics cookies are set with a fixed 6-month life from the moment of Accept (cookie_expires, cookie_update false),
+     the same as the consent record; when the choice expires, any analytics cookies left on plotart.ie are deleted.
    - Accept: Consent Mode update (analytics_storage granted; every advertising signal stays denied), then GA4 is loaded
      from googletagmanager.com with the same property as PlotNua (continuity) and site_name "PlotArt" (to tell traffic apart).
    - Reject: nothing is loaded; the choice is remembered.
@@ -50,7 +53,7 @@
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
     d.head.appendChild(s);
     w.gtag('js', new Date());
-    w.gtag('config', GA_ID, { site_name: 'PlotArt', cookie_domain: 'plotart.ie', cookie_expires: 15552000, allow_google_signals: false, allow_ad_personalization_signals: false });
+    w.gtag('config', GA_ID, { site_name: 'PlotArt', cookie_domain: 'plotart.ie', cookie_expires: 15552000, cookie_update: false, allow_google_signals: false, allow_ad_personalization_signals: false });
   }
   function stopAnalytics() {
     w['ga-disable-' + GA_ID] = true;
@@ -127,6 +130,7 @@
   }
 
   var choice = read();
+  if (!choice) stopAnalytics();          // no valid choice (first visit, or it expired): remove any leftover _ga cookies
   // a cross-domain linker parameter from plotnua.ie is only honoured with consent given here (see above)
   if (!(choice && choice.statistics) && /[?&]_gl=/.test(location.search) && w.history && history.replaceState) {
     var q = location.search.slice(1).split('&').filter(function (p) { return p.split('=')[0] !== '_gl'; }).join('&');

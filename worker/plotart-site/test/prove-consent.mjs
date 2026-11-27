@@ -42,6 +42,12 @@ ok(ga.length===0, 'no consent: nothing sent although arriving from plotnua.ie');
 await p.click('text=Accept analytics'); await p.goto(B+'/gallery/?_gl=1*abc*_ga*MTIz'); await p.waitForTimeout(300);
 ok(p.url().includes('_gl='), 'with consent here: _gl left for GA4 to read');
 await ctx.close();
+// 4c an expired choice: leftover analytics cookies are removed and the visitor is asked again
+({ctx,p,ga}=await page({width:1440,height:900}));
+await p.goto(B+'/gallery/'); await p.evaluate(()=>{localStorage.setItem('pa-consent', JSON.stringify({v:'PA-CK-2026-11',statistics:true,ts:Date.now()-200*864e5})); document.cookie='_ga=GA1.1.9.9; path=/'});
+await p.reload(); await p.waitForTimeout(400);
+ok(await p.isVisible('.pa-ck') && !(await p.evaluate(()=>document.cookie)).includes('_ga') && ga.length===0, 'expired choice: asked again, _ga removed, nothing sent');
+await ctx.close();
 // 5 mobile
 ({ctx,p,ga}=await page({width:390,height:844})); await p.goto(B+'/artists/clare-o-connor/'); await p.waitForTimeout(800);
 await p.screenshot({path:out+'3-banner-mobile.png'}); ok(await p.isVisible('.pa-ck'), 'mobile banner');
