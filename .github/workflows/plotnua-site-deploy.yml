@@ -8,9 +8,12 @@
 #
 #   * Manual runs only (Actions -> "PlotNua site test deploy" -> Run workflow). No push trigger until a cutover is approved.
 #   * verify (default): build, allowlist, 1,700 local proofs, Wrangler dry run. Deploys nothing.
-#   * deploy: only when the repository variable PLOTNUA_SITE_ENABLED = true and the environment "plotnua-site" holds
-#     the secret CLOUDFLARE_API_TOKEN and the variable CLOUDFLARE_ACCOUNT_ID (main branch only).
-#     After the deploy, the workers.dev address is checked; a failure rolls the Worker back automatically.
+#   * deploy: a deliberate manual run with mode = deploy. It uses the EXISTING Cloudflare credential in the "plotart-site"
+#     environment (main branch only; account-level Workers Scripts Edit, the narrowest Cloudflare offers: a token cannot
+#     be limited to one Worker, so a second token would grant exactly the same power and add nothing but upkeep).
+#     It can only ever deploy the plotnua-site Worker to its noindexed workers.dev address: wrangler.toml attaches no
+#     route or custom domain, and this workflow refuses one. After the deploy, the workers.dev address is checked; a
+#     failure rolls the Worker back automatically.
 #   * compare: the live parity check, GitHub Pages (plotnua.ie) against the Worker (workers.dev), file by file.
 # Logs are public: no step prints a credential or an account identifier.
 name: PlotNua site test deploy (workers.dev only)
@@ -40,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment:
-      name: plotnua-site
+      name: plotart-site   # the existing Cloudflare credential (see above); main branch only
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -53,24 +56,37 @@ jobs:
         run: |
           python3 atlas-tools/plotnua_site_build.py . worker/plotnua-site/dist --mode test
           node worker/plotnua-site/test/prove-site.mjs "$GITHUB_WORKSPACE/worker/plotnua-site/dist" "$GITHUB_WORKSPACE" | tail -3
+      - name: Privacy regression test and consent events (nothing before consent or after Reject; measurement after Accept)
+        run: |
+          set -o pipefail
+          # active once the PlotNua consent migration is on main (its privacy baseline and events proof arrive with it)
+          [ -f worker/plotnua-site/privacy.json ] || { echo "PlotNua privacy baseline not on main yet: skipped" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; }
+          npm install --prefix atlas-tools --no-save --no-package-lock --silent playwright@1.63.0 > /dev/null
+          (cd atlas-tools && npx playwright install --with-deps chromium > /dev/null)
+          node atlas-tools/serve-site-local.mjs "$GITHUB_WORKSPACE/worker/plotnua-site/src/index.js" "$GITHUB_WORKSPACE/worker/plotnua-site/dist" index &
+          sleep 2
+          node atlas-tools/prove-privacy.mjs worker/plotnua-site/privacy.json http://127.0.0.1:8799 --pages-from worker/plotnua-site/dist --choice-pages 12 | tee -a "$GITHUB_STEP_SUMMARY"
+          node atlas-tools/prove-plotnua-consent-events.mjs http://127.0.0.1:8799 | tail -1 | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Wrangler dry run
         if: inputs.mode == 'verify'
         working-directory: worker/plotnua-site
         run: |
           npx --yes wrangler@4.150.0 deploy --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/w.log" 2>&1 || { tail -8 "$RUNNER_TEMP/w.log" | grep -viE "token|account"; exit 1; }
       - name: Test deploy (workers.dev only)
-        if: inputs.mode == 'deploy' && vars.PLOTNUA_SITE_ENABLED == 'true'
+        if: inputs.mode == 'deploy'
         working-directory: worker/plotnua-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          if grep -Eq '^\s*(routes?|custom_domain)\s*=|^\[\[routes\]\]' wrangler.toml; then echo "FAIL  wrangler.toml declares a route or domain; test deploys are workers.dev only"; exit 1; fi
+          grep -Eq '^workers_dev = true' wrangler.toml || { echo "FAIL  workers_dev must be true for a test deploy"; exit 1; }
           npx --yes wrangler@4.150.0 deploy --message "test ${GITHUB_SHA::12}" > "$RUNNER_TEMP/w.log" 2>&1 \
             || { echo "FAIL  the deployment did not complete"; grep -iE "error|permission" "$RUNNER_TEMP/w.log" | grep -viE "token|https?://" | head -5; exit 1; }
           grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/w.log" || true
       - name: Live check (workers.dev is noindexed and serves the build)
         id: live
-        if: inputs.mode == 'deploy' && vars.PLOTNUA_SITE_ENABLED == 'true'
+        if: inputs.mode == 'deploy'
         run: |
           sleep 20
           curl -fsSI "$WORKERS_DEV/" | grep -qi '^x-robots-tag: noindex' || { echo "FAIL  workers.dev is not noindexed"; exit 1; }
