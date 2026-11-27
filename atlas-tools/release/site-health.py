@@ -59,7 +59,7 @@ def check(name, ok, detail=""):
 
 for path, mark in PAGES.items():
     s, body, _ = fetch(SITE + "/" + path)
-    check("H1 /%s answers 200 with its landmark" % path, s == 200 and mark.encode() in body, "HTTP %s" % s)
+    check("H1 /%s answers 200 with its landmark" % path, s == 200 and mark.encode() in body, "HTTP %s" % s)   # plotart/ follows the 301 after the cutover
 for path in FLAGS.get("must_not_exist", []):
     s, _, _ = fetch(SITE + "/" + path)
     check("H2 /%s is not public yet" % path, s == 404, "HTTP %s" % s)
@@ -77,6 +77,28 @@ if FLAGS.get("ideas_submissions_open"):
 else:
     s, _, _ = fetch(IDEAS, "POST", {"Origin": "https://plotnua.ie", "Content-Type": "application/json"}, b'{"idea":"health check"}')
     check("H4 Idea Board intake is closed (flags: submissions not open)", s == 503, "HTTP %s" % s)
+# H6 PlotArt's public address (domain migration R1). flags.json "plotart_address" says which state is approved:
+#   "plotnua.ie" (default, until the cutover): plotnua.ie/plotart/ is served by GitHub Pages, never redirected;
+#   "plotart.ie" (after the founder-approved cutover): plotnua.ie/plotart and /plotart/<path> answer exactly 301 to the
+#   same path on https://plotart.ie (query kept), unrelated paths such as /plotart-x are NOT redirected, and plotart.ie
+#   answers 200 with PlotArt. An unapproved redirect, or a missing one, fails the check (and so rolls the release back).
+addr = FLAGS.get("plotart_address", "plotnua.ie")
+s, _, h = fetch(SITE + "/plotart/", follow=False)
+loc = h.get("Location", h.get("location", ""))
+if addr == "plotnua.ie":
+    check("H6 plotnua.ie/plotart/ is served here, not redirected (plotart_address: plotnua.ie)", s == 200, "HTTP %s %s" % (s, loc))
+else:
+    cases = {"/plotart/": "https://plotart.ie/", "/plotart": "https://plotart.ie",
+             "/plotart/gallery/?utm_source=health": "https://plotart.ie/gallery/?utm_source=health",
+             "/plotart/artworks/": "https://plotart.ie/artworks/"}
+    for path, target in cases.items():
+        s, _, h = fetch(SITE + path, method="HEAD", follow=False)
+        loc = h.get("Location", h.get("location", ""))
+        check("H6 %s answers 301 to %s" % (path, target), s == 301 and loc.rstrip("/") == target.rstrip("/") and ("?" in target) == ("?" in loc), "HTTP %s -> %s" % (s, loc or "-"))
+    s, _, h = fetch(SITE + "/plotart-health-probe.html", method="HEAD", follow=False)
+    check("H6 an unrelated path beginning /plotart- is not redirected", s != 301 and "plotart.ie" not in h.get("Location", h.get("location", "")), "HTTP %s" % s)
+    s, body, _ = fetch("https://plotart.ie/")
+    check("H6 https://plotart.ie/ answers 200 with PlotArt", s == 200 and b"PlotArt" in body, "HTTP %s" % s)
 want = arg("--expect-commit")
 if want:
     tree = subprocess.run(["git", "ls-tree", "--name-only", want], cwd=ROOT, capture_output=True, text=True).stdout.split()

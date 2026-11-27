@@ -64,15 +64,20 @@ A goes first because the redirects then live in the Worker's own code (`PLOTART_
 
 ### A5. A merged release finishes the move
 
-- `workers_dev = false`, so the test copy disappears.
-- The deploy workflow gets a push trigger on main, with the same privacy test, live check and automatic rollback as plotart.ie.
-- The release scripts check the Worker instead of Pages.
-- **Rollback:** revert the release; detach as in A4 if needed.
+- **Prepared (inert):** `plotnua-site-deploy.yml` runs on every push to main.
+  - It does nothing while `atlas-tools/release/flags.json` has `"plotnua_host": "pages"`.
+  - With `"worker"` it builds, runs the same proofs and privacy test, and deploys.
+  - It then checks plotnua.ie live: served by the Worker, not noindexed, every page 200, and the site health checks.
+  - It rolls the Worker back automatically if the live check fails.
+- **The A5 release itself is two lines:** `"plotnua_host": "worker"` and `workers_dev = false`, so the test copy disappears. The job refuses the first without the second.
+- GitHub Pages keeps publishing on every push, so it stays a current rollback.
+- **Rollback:** revert the two lines. Detach the domains as in A4 if needed.
 
 ### A6. Optional, separate decision: make the repository private
 
 - Possible once GitHub Pages is no longer the host. It stops public access to internal records and their history.
-- **Cost:** private repositories get 2,000 free Actions minutes a month. Measured use is about 8,000 minutes a month (gate, publishers, deploys), so a private repository would incur Actions charges unless usage is reduced.
+- **Cost:** private repositories get 2,000 free Actions minutes a month. Measured use is about 5,600 minutes a month, excluding Pages builds (gate, publishers, deploys), so a private repository would incur Actions charges unless usage is reduced.
+- **Founder decision, 27 Nov 2026:** the repository stays public on the free plan.
 - GitHub Pages could no longer be the rollback; Worker version rollback replaces it.
 
 ---

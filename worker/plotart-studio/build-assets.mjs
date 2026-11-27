@@ -86,7 +86,7 @@ out.CHECKOUT_ARTIST_HTML = STUDIO_HTML.replace('<script src="/assets/studio.js" 
 if (out.CHECKOUT_ARTIST_HTML.includes('studio.js') || !out.CHECKOUT_ARTIST_HTML.includes('aria-current="page">Online sales')) throw new Error('CHECKOUT_ARTIST_HTML not built');
 // The Review desk's "Basket readiness" tab (22 Nov 2026): the Review desk header and tabs, with the payment pilot page's
 // own founder readiness section (checkout-pilot.js, /admin/baskets mode). One dashboard, two ways in.
-// Commercial leads and placements (migration 0030): its own page and script, the same header and tabs as the Review desk.
+// Commercial leads and placements (migration 0031): its own page and script, the same header and tabs as the Review desk.
 out.COMMERCIAL_HTML = ADMIN_HTML.replace('<script src="/assets/admin.js" defer></script>', '<script src="/assets/commercial.js" defer></script>').replace('data-t="commercial"', 'data-t="commercial" aria-current="page"');
 out.COMMERCIAL_JS = r('ui/commercial.js');
 out.BASKETS_HTML = ADMIN_HTML.replace('<script src="/assets/admin.js" defer></script>', '<script src="/assets/checkout-pilot.js" defer></script>')

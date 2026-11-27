@@ -1,4 +1,4 @@
-// PROVE · Commercial leads and placements (migration 0030, 27 Nov 2026): the Studio record, Gmail capture and the website form.
+// PROVE · Commercial leads and placements (migration 0031, 27 Nov 2026): the Studio record, Gmail capture and the website form.
 // Local Miniflare D1, synthetic rows only; nothing touches Cloudflare, Gmail or any real person.
 //   node test/prove-commercial.mjs
 import { readFileSync } from 'node:fs';
@@ -18,9 +18,9 @@ check('C0 rental figures match the website table (€1,000 / €2,000 / €3,000
 check('C0b six calendar months, clamped to the month’s end', addMonths('2026-12-01', 6) === '2027-06-01' && addMonths('2026-08-31', 6) === '2027-02-28');
 
 /* without the migration: the page says so, nothing breaks */
-const S0 = await start({ port: 8891, schemaSql: readFileSync(new URL('../schema.sql', import.meta.url), 'utf8').split('-- PlotArt Studio · migration 0030')[0] });
+const S0 = await start({ port: 8891, schemaSql: readFileSync(new URL('../schema.sql', import.meta.url), 'utf8').split('-- PlotArt Studio · migration 0031')[0] });
 const r0 = await S0.mf.dispatchFetch(S0.url + '/api/admin/commercial', { headers: { 'X-Studio': '1', 'Cf-Access-Jwt-Assertion': token(FOUNDER) } }).then(r => r.json());
-check('C1 before migration 0030 the Commercial page answers “not installed”', r0.ok && r0.installed === false, JSON.stringify(r0));
+check('C1 before migration 0031 the Commercial page answers “not installed”', r0.ok && r0.installed === false, JSON.stringify(r0));
 await S0.mf.dispose();
 
 const S = await start({ port: 8892, enquiry: { LEAD_CAPTURE_ENABLED: 'true', LEAD_CAPTURE_TOKEN: TOKEN, BUSINESS_ENQUIRIES_ENABLED: 'true' } });
