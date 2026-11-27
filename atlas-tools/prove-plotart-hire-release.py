@@ -15,6 +15,15 @@ repository. Nothing is committed to the repository, pushed or published.
   P  the gallery pipeline writes the tab exactly as the navigation tool does once the switch is on, and not before.
   B  the publishing boundary: a gallery release can never touch the hire page; the --hire boundary accepts only the
      catalogue region, and --removals-only accepts withdrawals and refuses additions."""
+import sys as _sys
+# HISTORICAL (27 Nov 2026): this was the development proof for the Stage 3B-6 Art for Hire release, which went live on
+# 11 Nov 2026. Its premises are now deliberately untrue (the hire page lists real works; galleries have moved on), so
+# on today's tree it reports failures that are not defects. Its lasting guarantees are enforced where they belong:
+# prove-plotart-launch.py L17 (run by the release scripts; passes), the content-boundary check in the PlotArt publisher,
+# and the image-rights gate. Run with --historical-anyway to execute it as written.
+if "--historical-anyway" not in _sys.argv:
+    print("HISTORICAL · Stage 3B-6 release proof (released 11 Nov 2026); superseded by prove-plotart-launch.py L17. Not run.")
+    _sys.exit(0)
 import glob
 import json
 import os

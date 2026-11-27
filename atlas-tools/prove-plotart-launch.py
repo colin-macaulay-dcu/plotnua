@@ -176,6 +176,7 @@ if SERVICES_ON:
                                                   "nicouriers-logo.png")}
     PAGES.append(SERVICES_PAGE)
 # No prices on the Services page (Hang-It asked for its pricing to be removed, 19 Nov 2026): the ordinary L3 rule applies.
+ALLOWED |= {"assets/fonts/" + f for f in os.listdir(os.path.join(SITE, "plotart", "assets", "fonts"))} if os.path.isdir(os.path.join(SITE, "plotart", "assets", "fonts")) else set()   # self-hosted fonts (founder approval 27 Nov 2026)
 ALLOWED |= {"assets/plotart-refine.css", "assets/plotart-refine.js"}   # Refine on All Artworks (founder approval 21 Nov 2026)
 # Three galleries, Phase A (founder approval 24 Nov 2026): the holding pages of the two galleries in preparation and the
 # galleries stylesheet (L21). They are launch pages, so every L2-L10 rule applies to them as well.
