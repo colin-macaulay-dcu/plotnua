@@ -165,7 +165,16 @@ async function agreementDocs(env) {
 }
 /* Gallery Artist terms (migration 0012). null when the artist has none (every Founding Artist) or 0012 has not run. */
 async function termsFor(env, artistId) {
-  try { return await one(env, 'SELECT * FROM artist_terms WHERE artist_id = ?', artistId); } catch { return null; }
+  let t;
+  try { t = await one(env, 'SELECT * FROM artist_terms WHERE artist_id = ?', artistId); } catch { return null; }
+  if (t) t.agreement_version = await agreementVersionFor(env, artistId);
+  return t;
+}
+/* The agreement version fixed for an artist at invitation (migration 0030). The row is written only in the invitation
+   batch and never changes (refusal-only guards in 0030). No row: the artist keeps the agreement they were invited under. */
+async function agreementVersionFor(env, artistId) {
+  try { const r = await one(env, 'SELECT agreement_version FROM artist_agreement_versions WHERE artist_id = ?', artistId); return r ? r.agreement_version : null; }
+  catch { return null; }   // migration 0030 not applied
 }
 async function termsInstalled(env) {
   try { await env.DB.prepare('SELECT 1 FROM artist_terms LIMIT 1').all(); return true; } catch { return false; }
@@ -176,12 +185,15 @@ async function acceptanceRows(env, artistId) {
   try { gaa = await all(env, 'SELECT * FROM gallery_agreement_acceptances WHERE artist_id = ? ORDER BY accepted_at, id', artistId); } catch { /* 0012 not applied */ }
   return gaa.length ? rows.concat(gaa).sort((x, y) => String(x.accepted_at).localeCompare(String(y.accepted_at)) || String(x.id).localeCompare(String(y.id))) : rows;
 }
+function agreementPairInstalled(docs, req) {
+  return !!docs && req.every(id => { const r = docs.find(d => d.doc_id === id), b = AG.doc(id);
+    return r && b && r.text_status === 'fixed' && r.html_sha256 === b.html_sha256 && r.pdf_sha256 === b.pdf_sha256; });
+}
 async function agreementState(env, artist) {
   const docs = await agreementDocs(env);
   const terms = await termsFor(env, artist.id);
   const req = AG.required(artist, terms);
-  const installed = !!docs && req.every(id => { const r = docs.find(d => d.doc_id === id), b = AG.doc(id);
-    return r && b && r.text_status === 'fixed' && r.html_sha256 === b.html_sha256 && r.pdf_sha256 === b.pdf_sha256; });
+  const installed = agreementPairInstalled(docs, req);
   const rows = docs ? await acceptanceRows(env, artist.id) : [];
   const current = id => rows.filter(r => r.doc_id === id && r.method === 'studio_checkbox' && AG.doc(id) && r.doc_sha256 === AG.doc(id).html_sha256).pop();
   const accepted = installed && req.every(id => current(id));
@@ -1365,12 +1377,12 @@ async function route(req, env) {
   }
 
   /* ---- agreement texts: the exact fingerprinted files, to any signed-in artist or the founder (read and download) */
-  if ((mm0 = p.match(/^\/agreements\/(PA-(?:FAA|GPIL|GAA)-\d{4}-\d{2}(?:-\d{2})?)\.(html|pdf)$/)) && m === 'GET') {
+  if ((mm0 = p.match(/^\/agreements\/(PA-(?:FAA|GPIL|GAA)-\d{4}-\d{2}(?:-\d{2}|-R2)?)\.(html|pdf)$/)) && m === 'GET') {
     const d = AG.doc(mm0[1]);
     if (!d) return html('Not found', 404);
     // the Gallery Artist Agreement is served to artists only once its approved text is installed (0013); the founder can
     // read the bundled text before that, to review exactly what will be installed
-    if (mm0[1].startsWith('PA-GAA-') && me.role !== 'founder') {
+    if ((mm0[1].startsWith('PA-GAA-') || mm0[1] === AG.GPIL_R2) && me.role !== 'founder') {
       const inst = ((await agreementDocs(env)) || []).find(x => x.doc_id === mm0[1]);
       if (!inst || inst.html_sha256 !== d.html_sha256 || inst.pdf_sha256 !== d.pdf_sha256) return html('Not found', 404);
     }
@@ -1723,6 +1735,10 @@ async function route(req, env) {
       if (b.application_ref && String(b.application_ref).startsWith('PA-AP-') && programme !== 'gallery_artist')
         throw new Bad('A PlotArt application (PA-AP-…) leads to a Gallery Artist invitation. Choose Gallery Artist, or leave the reference out.', 409);
       if (programme === 'gallery_artist' && !(await termsInstalled(env))) throw new Bad('Gallery Artist invitations become available once the Gallery Artist records are installed (migration 0012).', 503);
+      const documents = programme === 'gallery_artist' ? await agreementDocs(env) : null;
+      const useR2 = !!documents?.some(d => AG.GALLERY_R2.includes(d.doc_id));
+      if (useR2 && !agreementPairInstalled(documents, AG.GALLERY_R2))
+        throw new Bad('The new Artist Agreement documents are temporarily unavailable.', 503);
       // Three galleries (Phase B): an optional choice of galleries at invitation. Absent: Contemporary by default, as today.
       if (b.galleries !== undefined && !G.validInviteGalleries(b.galleries)) throw new Bad('Choose one or more galleries');
       if (b.galleries !== undefined && !(await G.installed(env))) throw new Bad('Gallery choice at invitation needs the three-gallery records (migration 0023)', 503);
@@ -1732,6 +1748,9 @@ async function route(req, env) {
           .bind(id, slug, email, name, programme === 'founding' ? 1 : 0, b.application_ref || null, at, at),
         ...(programme === 'gallery_artist' ? [env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
           VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)] : []),
+        // R2 (migration 0030): the version is fixed in the same batch as the invitation, at the artist's creation time
+        ...(useR2 ? [env.DB.prepare(`INSERT INTO artist_agreement_versions (artist_id, agreement_version, licence_version, assigned_by, assigned_at)
+          VALUES (?,?,?,?,?)`).bind(id, AG.GAA_R2, AG.GPIL_R2, me.email, at)] : []),
         // the chosen galleries go in the SAME batch: the artist and their gallery invitations are created together or not at all
         ...G.inviteStatements(env, me.email, id, b.galleries, b.application_ref || null, at)]);
       await audit(env, me.email, 'founder', 'invite', id, { slug, founding: programme === 'founding', programme });
@@ -1752,7 +1771,8 @@ async function route(req, env) {
         : '';
       // Gallery Artists only (Phase 2): one paragraph naming their agreement. The Founding Artist email is unchanged.
       const galleryPara = programme === 'gallery_artist'
-        ? `You're joining PlotArt as a Gallery Artist. Before your gallery is first published, the Studio will ask you to read and accept the PlotArt Gallery Artist Agreement, which sets out PlotArt's 15% commission on sales introduced through PlotArt. There are no fees to join or to stay.\n\n`
+        ? useR2 ? `You're joining PlotArt as a Gallery Artist. Before first publication, Studio will ask you to accept the Artist Agreement and Image Licence. PlotArt charges 15% on qualifying sales it introduces. Independent sales carry no PlotArt commission. Read both documents at https://plotnua.ie/plotart/for-artists.html.\n\n`
+          : `You're joining PlotArt as a Gallery Artist. Before your gallery is first published, the Studio will ask you to read and accept the PlotArt Gallery Artist Agreement, which sets out PlotArt's 15% commission on sales introduced through PlotArt. There are no fees to join or to stay.\n\n`
         : '';
       const r = await send(env, { to: email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt Studio is ready',
         text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nYour PlotArt Studio is registered to:\n\n${email}\n\nPlease use this exact email address when signing in. If you sign in with a different address, even another one of your own, the Studio won't recognise you and you won't be able to reach your gallery. Each time you sign in, you'll be emailed a one-time code; there's no password.\n\n${prefillPara}${galleryPara}Your gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
@@ -1907,8 +1927,16 @@ async function route(req, env) {
     return res(t.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': t.html_sha256 });
   }
   if (p.startsWith('/api/checkout')) {
-    if (p === '/api/checkout' && m === 'GET') return json({ ok: true, ...(await CO.artistView(env, artist)) });
+    if (p === '/api/checkout' && m === 'GET') {
+      const view = await CO.artistView(env, artist), terms = await termsFor(env, artist.id);
+      return json({ ok: true, ...view, ...(terms?.agreement_version === AG.GAA_R2 ? { agreement_unavailable: AG.R2_CHECKOUT_NOTE, checkout_available: false } : {}) });
+    }
     if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not available' }, 404);
+    if (m === 'POST' && (p === '/api/checkout/opt-in' || p === '/api/checkout/basket/opt-in')) {
+      const terms = await termsFor(env, artist.id);
+      if (terms?.agreement_version === AG.GAA_R2)
+        throw new Bad(AG.R2_CHECKOUT_NOTE, 409);
+    }
     const b = m === 'GET' ? null : await req.json().catch(() => ({}));
     if (p === '/api/checkout/opt-in' && m === 'POST') return json({ ok: true, ...(await CO.optIn(env, artist, b)) });
     if (p === '/api/checkout/leave' && m === 'POST') return json({ ok: true, ...(await CO.leave(env, artist)) });

@@ -58,10 +58,13 @@ Checkpoint 4 (cutover) consists of:
 - (d) a Cloudflare **Redirect Rule** on plotnua.ie;
 - (e) proxy (orange cloud) for the `plotnua.ie` apex and `www`, which the Redirect Rule needs. Set SSL/TLS mode to **Full**: GitHub Pages already serves HTTPS, and Flexible would loop.
 
-The Redirect Rule in (d):
+The Redirect Rule in (d) matches only the exact path `/plotart` and paths beginning `/plotart/`. Paths that merely start with the same letters (`/plotart-x.html`, `/plotartist/`) are never captured:
 
-- When: `http.host in {"plotnua.ie" "www.plotnua.ie"} and starts_with(http.request.uri.path, "/plotart")`
+- When: `(http.host in {"plotnua.ie" "www.plotnua.ie"}) and (http.request.uri.path eq "/plotart" or starts_with(http.request.uri.path, "/plotart/"))`
 - Then: dynamic redirect, expression `concat("https://plotart.ie", substring(http.request.uri.path, 8))`, status **301**, preserve query string.
+  - `/plotart` → `https://plotart.ie` (the browser requests `/`)
+  - `/plotart/x/y.html?q=1` → `https://plotart.ie/x/y.html?q=1`
+- After the cutover, `atlas-tools/release/flags.json` `"plotart_address": "plotart.ie"` makes every release's health check (H6) require exactly this. Until then (`"plotnua.ie"`) it fails if any redirect appears.
 
 ## Rollback (tested at each checkpoint, in this order)
 
