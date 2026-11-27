@@ -29,5 +29,6 @@
   "services_page": true,
   "services_indexable": true,
   "spaces_gallery_state": "in_preparation",
-  "being_gallery_state": "in_preparation"
+  "being_gallery_state": "in_preparation",
+  "plotart_domain_sitemap": true
 }
