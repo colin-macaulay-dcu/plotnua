@@ -35,6 +35,17 @@ import html, json, re, sys
 from pathlib import Path
 from urllib.parse import urlparse, quote
 
+# Consent and fonts release (27 Nov 2026): the page head is written in its current approved form (the shared consent
+# module and self-hosted fonts), through the same declared transforms that migrated the published pages.
+import sys as _pn_sys, os as _pn_os
+_pn_sys.path.insert(0, _pn_os.path.join(_pn_os.path.dirname(_pn_os.path.dirname(_pn_os.path.abspath(__file__))), "atlas-tools"))
+import seo_pn_consent as _pn_consent, seo_pn_fonts as _pn_fonts  # noqa: E402
+def _pn_current_head(t):
+    if _pn_consent.A.COOKIEBOT in t:
+        t = _pn_consent.transform(t)
+    return _pn_fonts.transform(t)
+
+
 ROOT = Path(__file__).resolve().parents[1]
 HERE = ROOT / "supplier-preview-system" / "showcases" / "superior-pergola-ireland"
 DATA = json.loads((HERE / "showcase.json").read_text(encoding="utf-8"))
@@ -358,6 +369,7 @@ def main():
         print("wrote review copy", dest)
         return
     txt = build()
+    txt = _pn_current_head(txt)
     if "--check" in sys.argv:
         ok = OUT.exists() and OUT.read_text(encoding="utf-8") == txt
         print(("CHECK OK " if ok else "STALE    ") + str(OUT.relative_to(ROOT)))

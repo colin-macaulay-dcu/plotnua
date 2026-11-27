@@ -60,6 +60,17 @@ if __name__ == "__main__":
     import premium_pages as _pl
     _pl.refuse_if_premium("build-triq-cube-public.py", ['triq-cube.html'])
 
+# HISTORICAL (27 Nov 2026): this builder created triq-cube.html once (13 Oct 2026) from the frozen supplier preview and the
+# then about.html head. Both inputs have since moved on through approved releases (the premium identity layer, the
+# global header, the consent and fonts release), and the page is now maintained by build-identity-stage1.py (PRODUCTS)
+# and the global-header builder, which the image-rights gate checks on every release. Re-running this builder would
+# overwrite those approved changes, so it no longer writes at all; --check reports that it is superseded.
+if "--historical-anyway" not in sys.argv:
+    if "--check" in sys.argv:
+        print("HISTORICAL · build-triq-cube-public.py (13 Oct 2026) is superseded; triq-cube.html is held by build-identity-stage1.py and the global header (gate-checked). Nothing checked or written here.")
+        sys.exit(0)
+    print("REFUSED: historical builder; it would overwrite approved changes to triq-cube.html (see the note above)."); sys.exit(2)
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PREVIEW = ROOT / "triq-cube-preview.html"
 ABOUT = ROOT / "about.html"

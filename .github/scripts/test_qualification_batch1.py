@@ -111,9 +111,12 @@ def main():
           not [r for r in rows if r["new"] in ("verified", "present-unverified")
                and r["p"].get("price") is None
                and (r["p"].get("priceEvidence") or {}).get("adjudication") != "ambiguous"])
-    check("the 8 governed-zero placeholder records are corrected",
-          len([r for r in rows if r["fixed"]]) == 8,
-          f"{len([r for r in rows if r['fixed']])} corrected")
+    # Batch 1 originally corrected 8 governed-zero placeholders in the then-shipped artefact. The generator has carried the
+    # fix since, so today the proof is the stronger one: NO record in the shipped artefact is still a governed zero
+    # (27 Nov 2026; the replay below would find and count any that came back).
+    check("no governed-zero placeholder is left in the shipped artefact (Batch 1 fix carried by the generator)",
+          len([r for r in rows if r["fixed"]]) == 0,
+          f"{len([r for r in rows if r['fixed']])} still to correct")
     check("unverified price never satisfies a verified-price test",
           a.get("verified", 0) == b.get("verified", 0),
           f"verified {b.get('verified',0)} -> {a.get('verified',0)} (must not grow)")
@@ -181,9 +184,10 @@ def main():
     check("substantive warnings are preserved, not stripped",
           any("80-year" in o and "STEEL FRAME ONLY" in o for _, o in after),
           "Berko frame-only guarantee warning retained")
+    _lab = gen.homeowner_text("CATEGORY INTEGRITY: Auroom supplies wellness/sauna cabins in Ireland.")
     check("useful sentences behind an internal label are kept",
-          any("Auroom supplies wellness/sauna cabins" in o for _, o in after),
-          "label removed, evidence retained")
+          _lab == "Auroom supplies wellness/sauna cabins in Ireland.",
+          f"label removed, evidence retained ({_lab!r})")
 
     print()
     if failures:

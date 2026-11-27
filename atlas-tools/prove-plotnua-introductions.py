@@ -84,8 +84,8 @@ check("P15", "the primary action reads 'Request an introduction' and expands in 
 check("P16", "no navigation is added: the block contains no <nav> and no link other than the privacy notice",
       all("<nav" not in b and re.findall(r'href="([^"]+)"', b) == ["/privacy.html#introductions"] for b in gen.values()))
 js = M.JS
-check("P17", "analytics: events fire only with Cookiebot statistics consent and carry kind, page type and supplier slug only",
-      "Cookiebot.consent.statistics" in js and re.findall(r"p=\{([^}]*)\}", js) == ["intro_kind:kind,page_type:pt"] and
+check("P17", "analytics: events fire only with analytics consent (shared consent module) and carry kind, page type and supplier slug only",
+      "siteConsent.statistics" in js and re.findall(r"p=\{([^}]*)\}", js) == ["intro_kind:kind,page_type:pt"] and
       "p.supplier=sup" in js and not re.search(r"gtag\([^)]*(email|name|county|description)", js))
 payload = set(re.findall(r"([a-z_]+):", js[js.find("var body={"):js.find("};", js.find("var body={"))]))
 allowed = set(re.findall(r"'([a-z_]+)'", WORKER[WORKER.find("const ALLOWED"):WORKER.find("];", WORKER.find("const ALLOWED"))]))
