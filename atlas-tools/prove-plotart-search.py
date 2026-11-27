@@ -203,6 +203,7 @@ with tempfile.TemporaryDirectory(prefix="pa-search-boundary-") as d:
                             base, sha] + (["--instant"] if instant else []), cwd=site, capture_output=True, text=True)
         return r.returncode
 
+    launch = dict(launch, plotart_domain_sitemap=False)   # the fixture proves the boundary on a populated region
     git("init", "-q")
     write("atlas-tools/release/plotart-launch-switches.json", json.dumps(launch))
     skeleton = '<urlset xmlns:image="' + SEO.IMAGE_NS + '"><url><loc>https://plotnua.ie/</loc></url>' + SEO.sitemap_block([], launch) + '</urlset>'
