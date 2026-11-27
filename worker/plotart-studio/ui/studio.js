@@ -918,7 +918,7 @@
         ${s.changes.some(c => c.from !== undefined) ? '<p class="st-muted st-diff-key">Shown against your live gallery: <del>removed</del> <ins>added</ins>.</p>' : ''}
       </section>
       ${s.checklist.length ? `<section class="st-card" aria-labelledby="todo-h"><div class="st-ck-top"><h3 id="todo-h">Still to do</h3><span class="st-ck-count">${plural(s.checklist.length, 'detail', 'details')}</span></div>${checklistHTML(s.checklist, { openWorks: true })}</section>` : ''}
-      ${s.agreement && s.agreement.installed && !s.agreement.accepted && s.tier === 'full' ? `<section class="st-card st-agr-ask"><h3>${s.agreement.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'}</h3>
+      ${s.agreement && s.agreement.installed && !s.agreement.accepted && s.tier === 'full' ? `<section class="st-card st-agr-ask"><h3>${E(agreementTitle(s.agreement))}</h3>
         <p class="st-muted" style="margin:0">Changes that we review need ${s.agreement.founding ? 'the Founding Artist Agreement' : 'the current licence'} accepted first. It takes a few minutes and you can download a copy.</p>
         <div class="st-actions"><a class="st-btn st-btn--solid st-btn--small" href="#/agreement">Read and accept</a></div></section>` : ''}
       <section class="st-card"><h3>What happens next</h3>
@@ -954,14 +954,15 @@
   /* ------------------------------------------------------------- Founding Artist Agreement (development 6 Nov 2026)
      One page with both documents in full, a PDF of each, an optional legal name and ONE tick for both. The page sends
      the fingerprint of the exact text it displayed; the server refuses anything that is not the current text. */
-  const DOCNAME = { 'PA-GAA-2026-11': 'Gallery Artist Agreement', 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Gallery Publication and Image Licence', 'PA-GPIL-2026-10-29': 'Gallery Publication and Image Licence' };
+  const DOCNAME = { 'PA-GAA-2026-11-R2': 'Artist Agreement', 'PA-GPIL-2026-11-R2': 'Gallery Publication and Image Licence', 'PA-GAA-2026-11': 'Gallery Artist Agreement', 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Gallery Publication and Image Licence', 'PA-GPIL-2026-10-29': 'Gallery Publication and Image Licence' };
+  const agreementTitle = g => DOCNAME[g.required?.[0]] || 'Artist agreement';
   const day = d => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Dublin' }) : '';
   const irish = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/Dublin' }) : '';
   function agreementCard(s) {
     const g = s.agreement;
     if (!g || !g.installed) return '';
-    const what = g.founding ? 'the Founding Artist Agreement' : 'the Gallery Publication and Image Licence';
-    if (g.accepted) return `<section class="st-card st-agr-ok"><h3>${g.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'} · accepted</h3>
+    const what = 'the ' + E(agreementTitle(g));
+    if (g.accepted) return `<section class="st-card st-agr-ok"><h3>${E(agreementTitle(g))} · accepted</h3>
       <p class="st-muted" style="margin:0">Accepted ${E(irish(g.accepted_at))}.${g.founding_year ? ` Your founding year: ${E(day(g.founding_year.start))} to ${E(day(g.founding_year.end))}.` : g.founding ? ' Your founding year starts on the day your gallery is first published.' : ''}</p>
       <div class="st-actions"><a class="st-btn st-btn--small" href="#/agreement">View or download</a></div></section>`;
     const published = !!g.first_published_at;
@@ -986,15 +987,17 @@
         ${g.founding ? `<dt>Founding year</dt><dd>${fy ? `${E(day(fy.start))} to ${E(day(fy.end))}` : 'Starts on the day your gallery is first published'}</dd>` : ''}
       </dl></section>` : '';
     const gallery = g.programme === 'gallery_artist';
+    const r2 = (g.required || []).includes('PA-GAA-2026-11-R2');   // the revised summary is for artists assigned R2 only
     const tm = ME.terms || {};
     const pct = bp => `${(bp / 100).toLocaleString('en-IE', { maximumFractionDigits: 2 })}%`;
     // Gallery Artists (Phase 2): until the approved agreement is installed there is nothing to read or accept yet
     const docs = gallery && !g.installed ? [] : g.documents;
     app.innerHTML = `
       <p><a href="#/" style="color:var(--stone);text-decoration:none">← Your gallery</a></p>
-      <h1 class="st-h1">${gallery ? 'Gallery Artist Agreement' : g.founding ? 'Founding Artist Agreement' : 'Image licence'}</h1>
+      <h1 class="st-h1">${E(agreementTitle(g))}</h1>
       <p class="st-sub">${gallery && !g.installed ? 'Your agreement isn’t ready to read yet. Everything else in your Studio works in the meantime.' : g.accepted ? 'You have accepted these documents. You can read or download them at any time.' : `Please read ${docs.length > 1 ? 'both documents' : 'the document'} below. ${g.founding || gallery ? 'The agreement includes the image licence, so one tick accepts both.' : ''} You can download a PDF of each to keep.`}</p>
       ${record}
+      ${mine.some(r => !g.required.includes(r.doc_id)) ? `<section class="st-card"><h2>Earlier accepted documents</h2><ul>${[...new Set(mine.map(r => r.doc_id))].filter(id => !g.required.includes(id)).map(id => `<li><a href="/agreements/${E(id)}.pdf" download>${E(DOCNAME[id] || id)} · ${E(id)}</a></li>`).join('')}</ul></section>` : ''}
       ${g.founding && !g.accepted ? `<section class="st-card"><h3>In short</h3><ul class="st-list">
         <li>No membership, subscription or listing fees, ever.</li>
         <li>No commission in your founding year${fy ? ` (${E(day(fy.start))} to ${E(day(fy.end))})` : ', which starts on the day your gallery is first published'}, and enquiries from that year stay commission-free for good.</li>
@@ -1005,7 +1008,9 @@
         <li>${tm.commission_bp !== undefined && tm.commission_bp !== 1500 ? `Commission of ${E(pct(tm.commission_bp))}, as individually agreed with you in writing${tm.variation_agreed_on ? ` on ${E(day(tm.variation_agreed_on))}` : ''}, on` : '15% commission on'} sales to collectors PlotArt introduces to you, agreed within 24 months of the introduction. You keep at least 85%.</li>
         <li>No upfront, joining, membership, subscription or listing fees.</li>
         <li>No exclusivity: you remain free to sell your work anywhere.</li>
-        <li>Collectors pay you directly. You report each sale and PlotArt invoices you for its commission.</li>
+        ${r2 ? `<li>Independent sales carry no PlotArt commission. Report qualifying sales that you complete directly to PlotArt.</li>
+        <li>Managed checkout (online sales) isn’t available under this agreement until compatible payment terms are issued. You can still take enquiries and sell directly.</li>`
+          : '<li>Collectors pay you directly. You report each sale and PlotArt invoices you for its commission.</li>'}
         <li>Newly commissioned artwork is not covered unless you and PlotArt agree it separately in writing.</li>
         <li>You keep your copyright. You can withdraw any work, or leave, at any time.</li>
       </ul><p class="st-muted" style="margin:10px 0 0">This summary isn’t part of the agreement: the full text below is what you accept.</p></section>` : ''}
