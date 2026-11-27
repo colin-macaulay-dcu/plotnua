@@ -54,6 +54,74 @@ def is_large(w):
     return max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0)) >= LARGE_CM
 
 
+# Original art under €500 (growth package, 27 Nov 2026): every published, AVAILABLE work with a public asking price
+# (never "price on request") below this, computed from the artist's own published price at every publication.
+UNDER_EUR = 500
+UNDER_LABEL = "€500"      # the threshold as the page writes it (P.euro(UNDER_EUR)); the only fixed figure on that page
+
+
+def is_under(w):
+    return bool(w.get("price_eur")) and not w.get("price_on_request") and float(w["price_eur"]) < UNDER_EUR
+
+
+# Landscape paintings (growth package, 27 Nov 2026). CURATED, NOT COMPUTED: the gallery exports carry no subject field, so
+# PlotArt decided each available work by reading its title, the artist's description and alt text, the artist's own
+# statement and the image (classification record: 13-landscape-classification.md, 27 Nov 2026). A work is here only if it
+# presents a landscape, seascape/coast or a particular place; abstract works whose titles merely mention nature are left
+# out. NEEDS REVIEW whenever works are published or changed: a new work is never added automatically, and a listed work
+# that is sold or withdrawn simply drops off the page. Keyed by artwork id (stable across title and slug edits).
+LANDSCAPE_WORKS = frozenset({
+    "wlmcbkhe75h",  # Carmel Marrinan: Over the river (alt text: "Abstract landscape"; a stylised river landscape)
+    "wh4ve2xmvb1",  # Carolyn Walsh: Coastal Series 8 (coastal scene; her bio: "inspired by the Irish landscape, coastal settings")
+    "w579di55chn",  # Carolyn Walsh: Coastal series 6
+    "w32zmc2ceav",  # Carolyn Walsh: Coastal Series 4
+    "wrbk7q2jeq1",  # Carolyn Walsh: Coastal Series 5
+    "w33b6qij369",  # Carolyn Walsh: Coastal Series 7
+    "wychp9cm2em",  # Daniel Chester: Forest Fest (a wild bank in Leitrim; statement: "Painter of landscapes")
+    "wfhtcyurvgf",  # Daniel Chester: Foxgloves and Gorse (a wild area at the end of the artist's road)
+    "w98mfl2ia7g",  # Daniel Chester: The Crossing (marshland and river in Sligo town)
+    "w8cfo8lh75j",  # Louise Shearer: A Room with a View (alt text: "Abstracted view of an Irish landscape")
+    "w64kalb4h7x",  # Louise Shearer: Be Here Now (description: "Abstracted landscape")
+})
+
+
+def is_landscape(w):
+    return w["id"] in LANDSCAPE_WORKS
+
+
+def _price_key(row):
+    return float(row[1]["price_eur"])
+
+
+def _plural(n, one, many):
+    return "%d %s" % (n, one if n == 1 else many)
+
+
+def under_note(rows):
+    """What the selection holds, by kind of work, from the artist's own medium wording (P.artwork_kind). Prints are named
+    separately so nobody mistakes an editioned print for a one-off painting."""
+    kinds = [P.artwork_kind(w["medium"]) for _, w in rows]
+    parts = [_plural(kinds.count(k), one, many) for k, one, many in (("Painting", "painting", "paintings"), ("Mixed Media", "mixed-media work", "mixed-media works"),
+                                                                    ("Drawing", "drawing", "drawings"), ("Print", "original print", "original prints")) if kinds.count(k)]
+    other = sum(1 for k in kinds if k is None)
+    if other:
+        parts.append(_plural(other, "other work", "other works"))
+    text = "This selection holds %s." % (parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]) if parts else ""
+    if "Print" in kinds:
+        text += (" An original print is made by the artist through a printmaking process: a monoprint is one of a kind, while a screen "
+                 "print or etching may be one of a small edition. The artwork page gives the artist’s own details.")
+    return '<p class="pa-coll-note">%s</p>' % E(text) if text else ""
+
+
+def size_note(rows):
+    """The range of sizes in the selection, from the artist's published height and width (longest side)."""
+    sides = sorted(max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0)) for _, w in rows)
+    if not sides:
+        return ""
+    span = ("%g cm" % sides[0]) if sides[0] == sides[-1] else ("%g cm to %g cm" % (sides[0], sides[-1]))
+    return '<p class="pa-coll-note">Longest side, from the artist’s own measurements: %s.</p>' % E(span)
+
+
 # One spec per generated collection page. Each lists only published, available works that pass its test; everything
 # else (cards, order, structured data) is shared, so both pages stay one system.
 COLLECTIONS = {
@@ -65,6 +133,16 @@ COLLECTIONS = {
                                   "crumbs": [("Artworks", "artworks/index.html"), ("Large artworks", "large-artworks/index.html")],
                                   "label": "Available large artworks", "count": "original %s of 100 cm or more",
                                   "empty": "No large artworks are available just now."},
+    # growth package (27 Nov 2026): lowest price first (ties keep the fair collection order); the note names the prints
+    "original-art-under-500/index.html": {"keep": is_under, "name": "Original art under €500",
+                                          "crumbs": [("Artworks", "artworks/index.html"), ("Original art under €500", "original-art-under-500/index.html")],
+                                          "label": "Available original artworks under €500", "count": "original %s under €500",
+                                          "empty": "No original works under €500 are available just now.",
+                                          "sort": _price_key, "note": under_note},
+    "landscape-paintings-ireland/index.html": {"keep": is_landscape, "name": "Landscape paintings for sale in Ireland",
+                                               "crumbs": [("Artworks", "artworks/index.html"), ("Landscape paintings", "landscape-paintings-ireland/index.html")],
+                                               "label": "Available landscape, coastal and place-based works", "count": "landscape, coastal and place-based %s",
+                                               "empty": "No landscape works are available just now.", "note": size_note},
 }
 
 
@@ -192,16 +270,19 @@ def collection_data(rows, path="artworks/index.html"):
 def collection(packages, path="artworks/index.html"):
     spec = COLLECTIONS[path]
     rows = collection_order(packages, spec["keep"])
+    if spec.get("sort"):
+        rows = sorted(rows, key=spec["sort"])     # stable: equal keys keep the fair collection order
     if not rows:
         return ('<p class="pa-coll-count">%s</p>'
                 '<p class="pa-coll-empty">New work is published as artists add it. <a href="../gallery/">Meet the artists in the Artists’ Gallery</a>.</p>'
                 % spec["empty"] + collection_data(rows, path))
     artists = len({pkg["artist"]["slug"] for pkg, _ in rows})
     refine = spec.get("refine") is True
-    return ('<p class="pa-coll-count"%s>%d %s by %d %s</p>%s'
+    return ('<p class="pa-coll-count"%s>%d %s by %d %s</p>%s%s'
             '\n  <ol class="pa-coll-grid" aria-label="%s">%s\n  </ol>%s\n  %s') % (
         ' data-rf-count aria-live="polite"' if refine else "",
         len(rows), spec["count"] % ("work" if len(rows) == 1 else "works"), artists, "artist" if artists == 1 else "artists",
+        spec["note"](rows) if spec.get("note") else "",
         refine_bar(rows) if refine else "",
         spec["label"], "".join(collection_card(pkg, w, n, refine) for n, (pkg, w) in enumerate(rows, 1)),
         '\n  <p class="pa-rf-none" data-rf-none hidden>No works match these choices. '
@@ -405,7 +486,15 @@ def figures(packages):
             "low": min(prices) if prices else None, "high": max(prices) if prices else None,
             "kinds": [many for one, many in KIND_PLURAL if one in kinds],
             "large": len(large), "large_artists": len({p["artist"]["slug"] for p, _ in large}),
-            "large_150": sum(1 for _, w in large if max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0)) >= 150)}
+            "large_150": sum(1 for _, w in large if max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0)) >= 150),
+            "under": _subset(rows, is_under), "landscape": _subset(rows, is_landscape)}
+
+
+def _subset(rows, keep):
+    """(works, artists, lowest public price) of the available works that pass keep."""
+    sub = [(p, w) for p, w in rows if keep(w)]
+    prices = [w["price_eur"] for _, w in sub if priced(w)]
+    return len(sub), len({p["artist"]["slug"] for p, _ in sub}), (min(prices) if prices else None)
 
 
 def _home(f):
@@ -433,6 +522,22 @@ def _large(f):
         f["large"], "work" if f["large"] == 1 else "works", plural(f["large_artists"], "artist", "artists"), over)
 
 
+def _under(f):
+    works, artists, low = f["under"]
+    if not works:
+        return "Original art under €500 by artists based or working in Ireland. See each size and price, and enquire with the artist."
+    return "%s under €500 by %s based or working in Ireland, from %s. See sizes and prices, and enquire with the artist." % (
+        plural(works, "original work", "original works"), plural(artists, "artist", "artists"), P.euro(low))
+
+
+def _landscape(f):
+    works, artists, low = f["landscape"]
+    if not works:
+        return "Landscape, coastal and place-based paintings by artists based or working in Ireland. Enquire with the artist."
+    return "%s of landscape, coast and place by %s based or working in Ireland%s. See sizes and prices; enquire with the artist." % (
+        plural(works, "original work", "original works"), plural(artists, "artist", "artists"), (", from " + P.euro(low)) if low is not None else "")
+
+
 def _buy(f):
     tail = (" See live prices from %s." % P.euro(f["low"])) if f["low"] is not None else " See the live artwork prices."
     return "Where to buy original Irish art, what it costs, and what to ask about framing, VAT and delivery before you buy." + tail
@@ -442,6 +547,8 @@ HUB_META = {
     "index.html": ("PlotArt | Original & Contemporary Irish Art Online", _home),
     "artworks/index.html": ("Original Irish Art for Sale | Paintings & Prints | PlotArt", _artworks),
     "large-artworks/index.html": ("Large Original Paintings for Sale in Ireland | PlotArt", _large),
+    "original-art-under-500/index.html": ("Original Art Under €500 in Ireland | PlotArt", _under),
+    "landscape-paintings-ireland/index.html": ("Landscape Paintings for Sale in Ireland | PlotArt", _landscape),
     "buy-original-art-ireland.html": ("Buy Original Art in Ireland | Prices & Guide | PlotArt", _buy),
     "abstract-contemporary-art-ireland.html": ("Abstract Art Ireland | Original Irish Abstract Art | PlotArt",
                                                lambda f: "Original Irish abstract art: paintings and prints with sizes and prices, and a short "

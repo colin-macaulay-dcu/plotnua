@@ -292,7 +292,12 @@ for name in PAGES:
     else:
         try:
             need(C.update(s, name, SEO.public_packages(SITE)) == s, "L3 %s has stale or unapproved collection content" % name)
-            need("€" not in visible_text(C.outside(s)), "L3 %s has an ungoverned price outside its collection" % name)
+            # Original art under €500 (growth package, 27 Nov 2026): that page alone may name its fixed threshold
+            # (C.UNDER_LABEL, i.e. C.UNDER_EUR) outside the collection; any other euro figure there is still refused.
+            _outside_vt = visible_text(C.outside(s))
+            if name == "original-art-under-500/index.html" and C.UNDER_LABEL == "€%d" % C.UNDER_EUR:
+                _outside_vt = _outside_vt.replace(C.UNDER_LABEL, "")
+            need("€" not in _outside_vt, "L3 %s has an ungoverned price outside its collection" % name)
         except ValueError as e:
             need(False, "L3 " + str(e))
     need(not re.search(r"example price|demonstration|fictional", vt, re.I), "L3 %s uses demonstration wording" % name)

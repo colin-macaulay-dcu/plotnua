@@ -62,6 +62,9 @@ CSS = '''/* PlotArt artwork collection (plotart/artworks/, 13 Nov 2026): a galle
 .pa-coll-more h2{font-size:clamp(30px,3.4vw,44px);line-height:1.12;margin:0 0 16px}
 .pa-coll-more p{max-width:62ch}
 .pa-coll-links{display:flex;flex-wrap:wrap;gap:12px 14px;margin-top:26px}
+.pa-coll-note{max-width:62ch;font-size:15px;line-height:1.65;color:var(--stone);margin:-14px 0 clamp(28px,3.5vw,48px)}
+.pa-coll-list{max-width:62ch;margin:0;padding-left:1.2em}
+.pa-coll-list li{margin:0 0 12px;line-height:1.65}
 @media (prefers-reduced-motion:reduce){.pa-coll-art img{transition:none}.pa-coll-art:hover img{transform:none}}
 @media (max-width:1099px){.pa-coll-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pa-coll-art{height:clamp(240px,38vw,380px)}}
 @media (max-width:639px){.pa-coll-grid{grid-template-columns:1fr;gap:44px}.pa-coll-art{height:auto;max-height:none}.pa-coll-art img{max-height:72vh}
@@ -83,7 +86,7 @@ COLLECTION
 <section class="pa-coll-more"><div class="pa-wrap">
 <h2>Before you choose.</h2>
 <p>Measure the wall you have in mind, read the medium and dimensions, and ask the artist about framing, delivery and the total price. Each artist’s gallery tells you more about their practice and the rest of their work. If nothing here suits the space, you can <a href="../commissions/" data-pa-track="artworks_commissions">commission a new work from an Irish artist</a>.</p>
-<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../choose-art-for-living-room.html">Choosing art for your living room →</a><a class="pa-btn pa-btn--ghost" href="../abstract-contemporary-art-ireland.html">Abstract &amp; contemporary art →</a><a class="pa-btn pa-btn--ghost" href="../large-artworks/">Large artworks, 100 cm or more →</a></div>
+<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../choose-art-for-living-room.html">Choosing art for your living room →</a><a class="pa-btn pa-btn--ghost" href="../abstract-contemporary-art-ireland.html">Abstract &amp; contemporary art →</a><a class="pa-btn pa-btn--ghost" href="../large-artworks/">Large artworks, 100 cm or more →</a><a class="pa-btn pa-btn--ghost" href="../landscape-paintings-ireland/">Landscape paintings →</a><a class="pa-btn pa-btn--ghost" href="../original-art-under-500/">Original art for smaller budgets →</a></div>
 </div></section>
 '''
 
@@ -112,10 +115,78 @@ COLLECTION
 <p><strong>Agree delivery with the artist.</strong> Collection, delivery, any installation and the total price are arranged directly between you and the artist. Ask for them in writing before you pay.</p>
 <p><strong>For a workplace or commercial interior,</strong> consider light, heat and where people will see the work, and ask the artist how it should be cared for.</p>
 <p><strong>Need a particular size?</strong> Some PlotArt artists welcome commissions: you can <a href="../commissions/" data-pa-track="large_commissions">commission a work for a specific wall</a>.</p>
-<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a></div>
+<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../original-art-under-500/">Original art for smaller budgets →</a><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a></div>
 </div></section>
 '''
-PAGES = {PATH: (TITLE, DESCRIPTION, BODY), LARGE_PATH: (LARGE_TITLE, LARGE_DESCRIPTION, LARGE_BODY)}
+
+# Growth package (27 Nov 2026): two filtered collections on the Large Artworks pattern (one shell, one stylesheet, the
+# generated region refreshed at every publication). Outside the main navigation: reached from All Artworks, Large Artworks
+# and the buying guide. Their search titles and descriptions come from C.HUB_META (live figures).
+UNDER_PATH = "original-art-under-500/index.html"
+UNDER_BODY = '''
+<section class="pa-coll-hero"><div class="pa-wrap">
+<p class="pa-eyebrow">PlotArt · Original art under €500</p>
+<h1>Original art under €500.</h1>
+<p class="pa-lede">A first original, a gift, or a smaller piece for a particular wall. These are the available works on PlotArt with a published asking price under €500, by artists based or working in Ireland. The list updates whenever artists publish, sell or reprice their work, and starts from the lowest price.</p>
+<p class="pa-coll-how">“Original” here means work made by the artist: a one-off painting, drawing or mixed-media piece, or an original print made through a printmaking process. A monoprint is one of a kind; a screen print or etching may be one of a small edition. The medium is shown under each work, and the artwork page carries the artist’s own description, so you can see exactly what you would receive.</p>
+<p class="pa-coll-how">Smaller works suit a shelf, a hallway, a desk or a group of pictures. Check a size against your wall or furniture with the free <a href="../art-size-calculator.html">art size calculator</a>. Each artist is the seller of their own work: when a piece appeals, enquire directly with the artist.</p>
+<div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../artworks/">Browse All Artworks →</a></div>
+</div></section>
+<section class="pa-coll-wall" aria-labelledby="collH"><div class="pa-wrap">
+<h2 id="collH" class="pa-sr">Available original artworks under €500</h2>
+COLLECTION
+</div></section>
+<section class="pa-coll-more"><div class="pa-wrap">
+<h2>Before you buy.</h2>
+<ul class="pa-coll-list">
+<li><strong>Measure first.</strong> Sizes are the artist’s own, in centimetres. Ask whether the stated size includes a frame or mount.</li>
+<li><strong>Know what you are buying.</strong> Is it a one-off work or a print? For a print, ask about the edition size, its number and whether it is signed.</li>
+<li><strong>Ask what the price includes.</strong> Framing, any VAT that applies and how the work will reach you are agreed with the artist.</li>
+<li><strong>Buying a gift?</strong> Tell the artist, and ask how the work is packed and whether it can be collected or sent.</li>
+<li><strong>Get it in writing.</strong> Confirm the work, the total price and the arrangements before you pay.</li>
+</ul>
+<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../landscape-paintings-ireland/">Landscape paintings →</a><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a></div>
+</div></section>
+'''
+
+LANDSCAPE_PATH = "landscape-paintings-ireland/index.html"
+LANDSCAPE_BODY = '''
+<section class="pa-coll-hero"><div class="pa-wrap">
+<p class="pa-eyebrow">PlotArt · Landscape paintings</p>
+<h1>Landscape paintings for sale in Ireland.</h1>
+<p class="pa-lede">Paintings and mixed-media works of landscape, coast and place, by artists based or working in Ireland: from closely observed woodland and riverbanks to coastal scenes and abstracted views of the land. Every work is shown whole, with the artist’s own dimensions and asking price.</p>
+<p class="pa-coll-how">This is a curated selection. PlotArt chooses each work from its title, the artist’s own description and the image, and the page changes as works are sold or published. Some works stay close to a place the artist knows; others move towards abstraction, holding on to its light, colour and structure.</p>
+<p class="pa-coll-how">Sizes vary from small framed works on paper to larger paintings. Check a work against your wall with the free <a href="../art-size-calculator.html">art size calculator</a>, or see <a href="../large-artworks/">large artworks of 100 cm or more</a>. When a work stays with you, enquire directly with the artist.SPACES_NOTE</p>
+<div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../artworks/">Browse All Artworks →</a></div>
+</div></section>
+<section class="pa-coll-wall" aria-labelledby="collH"><div class="pa-wrap">
+<h2 id="collH" class="pa-sr">Available landscape, coastal and place-based works</h2>
+COLLECTION
+</div></section>
+<section class="pa-coll-more"><div class="pa-wrap">
+<h2>Before you choose.</h2>
+<ul class="pa-coll-list">
+<li><strong>Think about the light.</strong> A landscape changes with the light in the room. Ask the artist how the work is finished, and keep works on paper out of direct sun.</li>
+<li><strong>Measure the wall.</strong> Compare the stated dimensions with the wall and the distance the work will be seen from.</li>
+<li><strong>Ask about framing.</strong> Check whether the work is framed or glazed, and whether the size given includes the frame.</li>
+<li><strong>Get it in writing.</strong> Confirm the work, the total price and the arrangements with the artist before you pay.</li>
+</ul>
+<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../original-art-under-500/">Original art for smaller budgets →</a><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a></div>
+</div></section>
+'''
+
+
+def spaces_note():
+    """Spaces is PlotArt's curated gallery for work about place. While it is in preparation the page says so and links
+    nothing (no placeholder is presented as open); it links to Spaces only once the founder's switch opens it."""
+    state = SEO.switches().get("spaces_gallery_state")
+    if state == "open":
+        return ' For a curated gallery of work about place, visit <a href="../spaces/">Spaces</a>.'
+    return " PlotArt’s Spaces gallery, a curated home for work about place, is in preparation."
+
+
+PAGES = {PATH: (TITLE, DESCRIPTION, BODY), LARGE_PATH: (LARGE_TITLE, LARGE_DESCRIPTION, LARGE_BODY),
+         UNDER_PATH: (None, None, UNDER_BODY), LANDSCAPE_PATH: (None, None, LANDSCAPE_BODY)}
 
 
 def relink(fragment):
@@ -147,7 +218,7 @@ def render(packages, path=PATH):
     refine = C.COLLECTIONS[path].get("refine") is True
     if refine:
         head += '<link rel="stylesheet" href="../' + REFINE_CSS + '">\n'
-    body = body_copy.replace("COLLECTION", C.BEGIN + "\n" + C.content(path, packages) + "\n" + C.END)
+    body = body_copy.replace("SPACES_NOTE", spaces_note()).replace("COLLECTION", C.BEGIN + "\n" + C.content(path, packages) + "\n" + C.END)
     return ('<!DOCTYPE html>\n<html lang="en-IE" class="no-js">\n<head>' + head + '</head>\n<body class="pa">\n'
             '<a class="pa-skip" href="#main">Skip to content</a>\n' + relink(header) + '\n<main id="main" class="pa-coll">' + body + '</main>\n'
             + relink(footer) + '\n<script src="../assets/plotart.js" defer></script>\n'

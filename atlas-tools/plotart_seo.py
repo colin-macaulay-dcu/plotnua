@@ -15,10 +15,14 @@ REGION = re.compile(re.escape(BEGIN) + r".*?" + re.escape(END), re.S)
 GUIDE_PATHS = ("buy-original-art-ireland.html", "abstract-contemporary-art-ireland.html")
 # The artwork collection (SEO buyer-intent Phase 1, 13 Nov 2026): every published, available work on one indexable
 # page. Like the guides, only its generated collection region changes when galleries are published.
-COLLECTION_PATHS = ("artworks/index.html", "large-artworks/index.html")
+COLLECTION_PATHS = ("artworks/index.html", "large-artworks/index.html",
+                    # growth package (27 Nov 2026): two filtered collections built exactly like large-artworks/
+                    "original-art-under-500/index.html", "landscape-paintings-ireland/index.html")
 # each collection has its own indexing and sitemap switches (prepared separately, released separately)
 COLLECTION_SWITCHES = {"artworks/index.html": ("artworks_indexable", "artworks_in_sitemap"),
-                       "large-artworks/index.html": ("large_artworks_indexable", "large_artworks_in_sitemap")}
+                       "large-artworks/index.html": ("large_artworks_indexable", "large_artworks_in_sitemap"),
+                       "original-art-under-500/index.html": ("under_500_indexable", "under_500_in_sitemap"),
+                       "landscape-paintings-ireland/index.html": ("landscape_paintings_indexable", "landscape_paintings_in_sitemap")}
 EDITORIAL_PATHS = ("choose-art-for-living-room.html",)
 # Commercial Conversion Sprint 1 (founder approval 26 Nov 2026): the homepage's availability line and the living-room
 # guide's price-band recommendations are generated regions too, refreshed from published galleries at every publication

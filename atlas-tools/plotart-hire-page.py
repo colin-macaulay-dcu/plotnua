@@ -40,8 +40,8 @@ PROVINCES = (("Connacht", ("Galway", "Leitrim", "Mayo", "Roscommon", "Sligo")),
              ("Ulster", ("Antrim", "Armagh", "Cavan", "Derry", "Donegal", "Down", "Fermanagh", "Monaghan", "Tyrone")))
 FORBIDDEN = {"handling_note", "artist_email", "email", "replacement_value", "price_eur", "fee", "private"}
 TITLE = "Art for Hire: Original Irish Art for Businesses | PlotArt"   # SEO and analytics package, 26 Nov 2026 (section 2.4)
-DESC = ("Proposed terms for renting original Irish art for offices: six-month terms and a clear monthly charge based on the agreed "
-        "price. Rentals are being prepared.")
+DESC = ("Proposed terms for renting original Irish art for offices, hotels, restaurants and clinics. Rentals are being prepared: "
+        "register your interest.")
 FINE = ("Works offered for hire are listed by their artists and checked by PlotArt. PlotArt introduces hirers to artists: it doesn't take "
         "artwork rent or deposits, arrange transport or insure work. Any PlotArt fee is separately agreed and invoiced. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
 
@@ -176,7 +176,9 @@ def body(cards, api, form, bar=""):
   <p class="afh3-hero-credit">%(credit)s</p>
 </section>
 <p class="afh3-hero-credit-m">%(credit)s</p>
+%(status)s
 %(business)s
+%(sizes)s
 %(opportunities)s
 
 <section class="pa-hire-gal afh3-works" id="afh3-works" aria-labelledby="pa-hire-gal-h" data-hire-section%(works_hidden)s><div class="pa-wrap">
@@ -197,7 +199,67 @@ def body(cards, api, form, bar=""):
 """ % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "region": region(cards, bar), "opportunities": OPP.BEGIN + OPP.END,
        "works_hidden": "" if cards else " hidden", "lede": lede, "second": second, "sel": BUSINESS.SELECTION, "brief": BUSINESS.BRIEF,
        "business": ("\n" + BUSINESS.REGION + "\n") if business_on else "", "terms": BUSINESS.TERMS if business_on else ARTISTS_ONLY,
-       "artist_line": BUSINESS.ARTIST_LINE if business_on else "", "api": E(api), "enq": "on" if form else "off"}
+       "artist_line": BUSINESS.ARTIST_LINE if business_on else "", "api": E(api), "enq": "on" if form else "off",
+       "status": status(bool(cards), form, business_on), "sizes": SIZES}
+
+
+# Growth package (27 Nov 2026): where Art for Hire stands, said plainly. Every statement has a source in the repository:
+#  - artists open to hire: the artist opportunity list (plotart_opportunities, "art_for_hire"), which is interest only;
+#  - register interest: the hello@plotnua.ie selection request (plotart_business_rental.SELECTION);
+#  - works listed for hire: none can be while HIRE_TERMS_ENABLED is "false" in worker/plotart-studio/wrangler.toml (hire.js:
+#    artist acceptance of PA-AFH, the artist's own offer and founder approval are all required); said from the catalogue;
+#  - enquiries: art_for_hire_enquiry_form (launch switches) is false;
+#  - the rental terms: plotart-business-rental-terms.md (PA-BHR-2026-11 v1.1) describes them as the "proposed business rental
+#    model", "not an executed contract", "not been independently reviewed by a solicitor or insurer", and "Each work requires
+#    the artist's express approval".
+# No price or percentage appears here: the only figures stay inside the approved business region (guard L17).
+def status(listed, form, business_on):
+    works = ("Works their artists have approved for hire are shown under “Available to hire” below." if listed else
+             "No work is listed for hire yet. Each artist must approve each work, and its terms, before it can be offered.")
+    enquiries = ("You can enquire about a listed work on this page." if form else
+                 "Hire enquiries through this page are not yet open. To register interest, email PlotArt.")
+    terms = ('<dt>The rental terms</dt><dd>The monthly rate, the six-month initial term, the artist’s and PlotArt’s shares, and the '
+             'arrangements for insurance, transport and sales described below are PlotArt’s proposed model. They are not yet in use.</dd>'
+             '<dt>The agreement</dt><dd>The agreement template has not yet been independently reviewed by a solicitor or an insurer. '
+             'Nothing is agreed until each side signs the completed details.</dd>') if business_on else ""
+    return """<section class="afx-sec" id="status" aria-labelledby="afx-status-h"><div class="pa-wrap">
+  <div class="afx-head"><h2 class="afx-h2" id="afx-status-h">Where Art for Hire stands.</h2><p class="afx-lede">Art for Hire is being prepared. Here is what you can do today, and what is still proposed.</p></div>
+  <div class="afx-offers">
+    <article class="afx-offer afx-offer--main">
+      <h3>Available now</h3><p class="afx-for">Open to businesses and artists today.</p>
+      <dl><dt>Meet the artists</dt><dd>Browse the PlotArt artists who have said they would welcome conversations about hiring out their work.</dd>
+      <dt>Register interest</dt><dd>Email PlotArt about your space: location, wall sizes, number of works, budget and dates. We’ll come back with a first selection, or a few questions.</dd>
+      <dt>See sizes and prices</dt><dd>Every available work is in <a href="../artworks/">All Artworks</a>, with the artist’s own measurements and asking price.</dd>%(guide)s</dl>
+      <p class="afx-acts"><a class="afx-btn" href="%(sel)s" data-pa-track="hire_request_selection">Register interest</a></p>
+    </article>
+    <article class="afx-offer">
+      <h3>Proposed</h3><p class="afx-for">Not yet in place.</p>
+      <dl>%(terms)s<dt>Works for hire</dt><dd>%(works)s</dd><dt>Enquiries</dt><dd>%(enquiries)s</dd></dl>
+    </article>
+  </div>
+  <p class="afx-note">Nothing on this page means that an artist has agreed to rental terms. Terms would apply only to a specific work, once its artist has approved it and a written agreement is signed.</p>
+</div></section>""" % {"guide": ('<dt>For artists</dt><dd>Read the proposed artist guide and agreement template (PDF, below).</dd>' if business_on else ""),
+                        "sel": BUSINESS.SELECTION, "terms": terms, "works": works, "enquiries": enquiries}
+
+
+# Sizes and spaces (growth package, 27 Nov 2026): practical guidance only; every work's size comes from its artist's gallery.
+SIZES = """<section class="afx-sec" id="sizes" aria-labelledby="afx-sizes-h"><div class="pa-wrap">
+  <div class="afx-head"><h2 class="afx-h2" id="afx-sizes-h">Sizes for working spaces.</h2><p class="afx-lede">Offices, hotels, restaurants and clinics each ask something different of a work of art.</p></div>
+  <div class="afx-offers">
+    <article class="afx-offer">
+      <h3>Where it hangs</h3>
+      <dl><dt>Receptions and lobbies</dt><dd>A large work holds a wall that people see from across the room. See <a href="../large-artworks/">large artworks of 100 cm or more</a>.</dd>
+      <dt>Meeting and consulting rooms</dt><dd>Works seen from a table or a chair can be smaller, and quieter.</dd>
+      <dt>Corridors, restaurants and hotel rooms</dt><dd>A run or a group of smaller works can carry a long wall or a series of rooms.</dd></dl>
+    </article>
+    <article class="afx-offer">
+      <h3>What to check</h3>
+      <dl><dt>Measurements</dt><dd>Every size on PlotArt is the artist’s own, in centimetres. Compare a work with your wall in the free <a href="../art-size-calculator.html">art size calculator</a>.</dd>
+      <dt>Light, heat and footfall</dt><dd>Keep works out of direct sun and away from heaters, kitchens and busy doorways. Works on paper are usually framed behind glass.</dd>
+      <dt>Weight and fixings</dt><dd>Ask the artist about a work’s weight, frame and hanging, and check what the wall will take.</dd></dl>
+    </article>
+  </div>
+</div></section>"""
 
 
 # Without business rental information: the artists' section alone (the same wording as before the redesign).
