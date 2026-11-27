@@ -73,8 +73,21 @@
       '</div></li>';
   }
   window.MGInvite = invite;
-  if (cards) cards.innerHTML = P.map(function (p, i) { return card(p, i); }).join('') +
+  /* A compact row (design standard, 27 Nov 2026): name, place, public introduction, status and profile; nothing else. */
+  function row(p) {
+    var status = participating(p) ? 'Participating gallery' : 'Prospective Gallery — Participation Unconfirmed';
+    return '<li class="mg-row" data-provider="' + E(p.id) + '"><div class="mg-row-id"><h3>' + E(p.name) + '</h3>' +
+      '<p class="mg-row-loc">' + (p.location ? E(p.location.text) : TBC) + '</p></div>' +
+      '<p class="mg-row-intro">' + (p.intro ? E(p.intro.text) : TBC) + '</p>' +
+      '<div class="mg-row-meta"><span class="mg-row-flag">' + status + '</span>' +
+      (p.profile ? '<a class="mg-link" href="gallery.html#' + E(p.id) + '">View gallery profile</a>' : '') + '</div></li>';
+  }
+  if (cards && cards.hasAttribute('data-compact')) cards.innerHTML = P.map(row).join('');
+  else if (cards) cards.innerHTML = P.map(function (p, i) { return card(p, i); }).join('') +
     Array.apply(null, Array(window.MG_INVITE_SLOTS || 0)).map(function (_, k) { return invite(P.length + k); }).join('');
+  /* The matcher stays hidden until at least one gallery has confirmed its participation in writing. */
+  var findSec = document.getElementById('find');
+  if (findSec && P.some(participating)) findSec.hidden = false;
 
   /* ---- Find art for your home --------------------------------------- */
   var form = document.getElementById('mg-find');
