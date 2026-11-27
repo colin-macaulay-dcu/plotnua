@@ -82,8 +82,8 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       online purchase) and links only to the available-artworks page; with nothing available there is no line.
   L23 Analytics (SEO and analytics package, founder approval 26 Nov 2026, section 1.2): every PlotArt page except the
       four generated former-address redirect pages carries exactly the approved consent and analytics block
-      (plotart_shell.ANALYTICS_HEAD: Consent Mode v2 defaults, Cookiebot b8abbc45..., GA4 G-PKKJ0RK6N8 with
-      content_group 'PlotArt'), once, as the first script in <head>, and loads no other third-party script; the redirect
+      (plotart_shell.ANALYTICS_HEAD: Consent Mode v2 defaults, then the self-hosted consent module for GA4 G-PKKJ0RK6N8 with
+      content group PlotArt; consent architecture of 27 Nov 2026, checked against fixed expectations, module included), once, as the first script in <head>, and loads no other third-party script; the redirect
       pages carry none.
   L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
       notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
@@ -1225,10 +1225,35 @@ for _d, _, _fs in os.walk(PA):
                  "L23 %s is a redirect page and must carry no consent or analytics script" % _rel)
         else:
             need(SHELL.analytics_ok(_doc), "L23 %s must carry exactly the approved consent and analytics block, first in <head>, and no other third-party script" % _rel)
-need(SHELL.COOKIEBOT_CBID == "b8abbc45-15b0-4d27-8f95-83ebd240a305" and SHELL.GA4_ID == "G-PKKJ0RK6N8"
-     and "content_group: 'PlotArt'" in SHELL.ANALYTICS_HEAD and "analytics_storage: 'denied'" in SHELL.ANALYTICS_HEAD
-     and SHELL.ANALYTICS_HEAD.index("gtag('consent', 'default'") < SHELL.ANALYTICS_HEAD.index('id="Cookiebot"') < SHELL.ANALYTICS_HEAD.index("googletagmanager"),
-     "L23 the analytics block must be the approved one: consent defaults (denied) first, then Cookiebot b8abbc45..., then GA4 G-PKKJ0RK6N8 (PlotArt)")
+# L23 (consent architecture, founder approval 27 Nov 2026): the self-hosted consent module replaced Cookiebot. The block is
+# checked against fixed expectations here, NOT against whatever plotart_shell currently says, so a changed block is refused:
+#   1. Google Consent Mode defaults first, every signal denied except security_storage; advertising data redacted;
+#   2. then exactly one script, the same-site module /assets/consent/site-consent.js, configured for GA4 G-PKKJ0RK6N8 with the
+#      PlotArt content group and the cookie policy; no Cookiebot and no Google script in the page at all;
+#   3. the module itself loads Google Analytics only from loadAnalytics(), only after an explicit Accept (or a stored Accept),
+#      with advertising signals off, and removes _ga cookies when consent is absent or withdrawn.
+_H = SHELL.ANALYTICS_HEAD
+_pairs = dict(re.findall(r"\b(\w+_storage|ad_user_data|ad_personalization):\s*'(granted|denied)'", _H))
+_srcs = re.findall(r'<script\b[^>]*\bsrc="([^"]+)"', _H)
+need(_H.startswith('<script data-cookieconsent="ignore">') and "gtag('consent', 'default'" in _H
+     and all(_pairs.get(k) == "denied" for k in ("ad_storage", "ad_user_data", "ad_personalization", "analytics_storage", "functionality_storage", "personalization_storage"))
+     and [k for k, v in _pairs.items() if v == "granted"] == ["security_storage"] and "gtag('set', 'ads_data_redaction', true)" in _H,
+     "L23 the consent defaults must come first and deny every signal except security_storage")
+need(len(_srcs) == 1 and re.match(r"^/assets/consent/site-consent\.js(\?v=\d+)?$", _srcs[0]) and _H.index("gtag('consent', 'default'") < _H.index(_srcs[0])
+     and 'data-ga="G-PKKJ0RK6N8"' in _H and 'data-content-group="PlotArt"' in _H and re.search(r'data-policy="[^"]*cookie-policy\.html', _H)
+     and not re.search(r"(?i)cookiebot|googletagmanager|google-analytics\.com|gtag/js", _H),
+     "L23 the analytics block must be the approved one: consent defaults (denied), then only the self-hosted consent module for GA4 G-PKKJ0RK6N8 (PlotArt); no Cookiebot or Google script")
+_mod_path = os.path.join(SITE, "assets", "consent", "site-consent.js")
+_mod = re.sub(r"/\*.*?\*/", "", open(_mod_path, encoding="utf-8").read(), flags=re.S) if os.path.exists(_mod_path) else ""   # code only, without block comments
+_la = re.search(r"function loadAnalytics\(\) \{(.*?)\n  \}", _mod, re.S)
+_calls = re.findall(r"loadAnalytics\(\)", _mod)
+need(bool(_la) and _mod.count("googletagmanager.com") == 1 and "googletagmanager.com" in _la.group(1)
+     and len(_calls) == 2 and "if (statistics) loadAnalytics();" in _mod
+     and "if (a === 'accept') choose(true);" in _mod and "apply(choice ? choice.statistics : null);" in _mod
+     and "allow_google_signals: false" in _la.group(1) and "allow_ad_personalization_signals: false" in _la.group(1)
+     and not re.search(r"(ad_storage|ad_user_data|ad_personalization):\s*'granted'", _mod)
+     and "if (!choice) stopAnalytics();" in _mod and not re.search(r"(?i)cookiebot", _mod),
+     "L23 the consent module must load Google Analytics only after Accept, with advertising signals off, and clear analytics cookies without consent")
 
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
