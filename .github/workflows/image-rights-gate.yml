@@ -517,6 +517,7 @@ jobs:
           python3 atlas-tools/release/prove-release-app-push.py
           python3 atlas-tools/release/prove-release-app-push.py --self-test
           bash atlas-tools/release/prove-release-promote.sh
+          bash atlas-tools/release/prove-release-freshness.sh
 
       # Premium pages (Batch 1, founder approval 23 Oct 2026). One registry
       # (atlas-tools/premium_pages.py); every legacy layout builder that could rewrite
