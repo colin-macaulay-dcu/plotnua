@@ -1243,7 +1243,7 @@ need(len(_srcs) == 1 and re.match(r"^/assets/consent/site-consent\.js(\?v=\d+)?$
      and 'data-ga="G-PKKJ0RK6N8"' in _H and 'data-content-group="PlotArt"' in _H and re.search(r'data-policy="[^"]*cookie-policy\.html', _H)
      and not re.search(r"(?i)cookiebot|googletagmanager|google-analytics\.com|gtag/js", _H),
      "L23 the analytics block must be the approved one: consent defaults (denied), then only the self-hosted consent module for GA4 G-PKKJ0RK6N8 (PlotArt); no Cookiebot or Google script")
-_mod_path = os.path.join(SITE, "assets", "consent", "site-consent.js")
+_mod_path = next((x for x in (os.path.join(SITE, "assets", "consent", "site-consent.js"), os.path.join(ROOT, "assets", "consent", "site-consent.js")) if os.path.exists(x)), "")   # the site's copy, else this repository's (page-only fixtures)
 _mod = re.sub(r"/\*.*?\*/", "", open(_mod_path, encoding="utf-8").read(), flags=re.S) if os.path.exists(_mod_path) else ""   # code only, without block comments
 _la = re.search(r"function loadAnalytics\(\) \{(.*?)\n  \}", _mod, re.S)
 _calls = re.findall(r"loadAnalytics\(\)", _mod)
