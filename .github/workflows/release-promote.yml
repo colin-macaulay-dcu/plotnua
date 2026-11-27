@@ -27,6 +27,8 @@
 # publishers promote their own releases (and those releases' rollbacks) themselves, so this workflow leaves those
 # branches alone and never races them.
 name: Release to production
+# The candidate's branch in the run's title, so a waiting approval can be matched to its candidate (release-freshness.yml).
+run-name: "Release to production · ${{ github.event.workflow_run.head_branch }}"
 on:
   workflow_run:
     workflows: ["Image rights gate"]

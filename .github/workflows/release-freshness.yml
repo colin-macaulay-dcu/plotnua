@@ -1,0 +1,40 @@
+# PlotNua · keep waiting release candidates fresh (27 Nov 2026).
+# On every push to main: any "Release to production" run still WAITING for the founder whose candidate no longer contains
+# main is cancelled before it can be approved in vain, and the candidate is refreshed by merging main into it and pushing
+# the result as a new release/auto/ branch (new gate, new approval). See atlas-tools/release/refresh-stale-candidates.sh.
+# It never touches main, never forces, and never carries an approval over to a different commit.
+name: Release candidate freshness
+on:
+  push:
+    branches: [main]
+concurrency:
+  group: release-freshness
+  cancel-in-progress: false
+permissions:
+  contents: read
+  actions: write      # cancel a waiting run whose candidate went stale
+  issues: write       # ops-alert issues
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: release-automation   # the PlotNua Release App key (main only)
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Trusted copy of the release tooling (from main)
+        run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
+      - name: Refresh stale waiting candidates
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
+        run: bash "$RUNNER_TEMP/release-tools/refresh-stale-candidates.sh"
