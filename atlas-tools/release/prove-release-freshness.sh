@@ -26,7 +26,8 @@ case "\$1 \$2" in
 esac
 EOF
 chmod +x "$T/bin/gh"; touch "$T/alerts.log"
-run() { PATH="$T/bin:$PATH" GITHUB_REPOSITORY=o/r GITHUB_OUTPUT="$T/ghout" bash "$HERE/refresh-stale-candidates.sh" "$@"; }
+# as in GitHub Actions: the refresher pushes through push-release-branch.sh with an App token (here a dummy, to the local remote)
+run() { PATH="$T/bin:$PATH" GITHUB_ACTIONS=true GITHUB_REPOSITORY=o/r GITHUB_OUTPUT="$T/ghout" RELEASE_PUSH_TOKEN=test-token RELEASE_PUSH_REMOTE="$T/origin.git" bash "$HERE/refresh-stale-candidates.sh" "$@"; }
 run --cancel > "$T/out1" 2>&1; rc1=$?
 STALE=$(sed -n 's/^stale=//p' "$T/ghout")
 ok "cancel: completes" '[ $rc1 = 0 ]'
