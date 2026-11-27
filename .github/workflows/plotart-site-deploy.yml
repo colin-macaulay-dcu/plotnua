@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'   # wrangler 4.150.0 requires Node.js 22 or later
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -101,7 +101,7 @@ jobs:
         working-directory: worker/plotart-site
         run: |
           npx --yes wrangler@4.150.0 deploy --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 \
-            || { echo "FAIL  dry run"; grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+            || { echo "FAIL  dry run"; grep -vE "^\s*$" "$RUNNER_TEMP/wrangler.log" | grep -viE "token|account" | tail -8; exit 1; }
           echo "PASS  Wrangler dry run (nothing uploaded)" | tee -a "$GITHUB_STEP_SUMMARY"
           echo "PLOTART_SITE_ENABLED is ${{ vars.PLOTART_SITE_ENABLED == 'true' && 'ON' || 'OFF (deploys stay inert)' }}" | tee -a "$GITHUB_STEP_SUMMARY"
 
@@ -117,7 +117,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'   # wrangler 4.150.0 requires Node.js 22 or later
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
