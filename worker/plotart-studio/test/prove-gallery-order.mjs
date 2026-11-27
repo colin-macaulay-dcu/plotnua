@@ -1,4 +1,4 @@
-// PROVE · PlotArt Studio · Gallery order and Founding 25 numbers (founder decision 31 Oct 2026). Synthetic artists only;
+// PROVE · PlotArt Studio · Gallery order and permanent Founding Artist numbers. Synthetic artists only;
 // the Worker runs locally (Miniflare/workerd) with a local D1. Nothing here touches Cloudflare.
 //   node test/prove-gallery-order.mjs
 import { start, token, FOUNDER, PIPELINE_TOKEN } from './local.mjs';
@@ -24,7 +24,7 @@ let r = await call('GET', '/api/admin/gallery-order', FOUNDER);
 check('G1 the founder sees all 25 positions (open on a new Studio) and the artists who can be placed',
   r.s === 200 && r.j.positions.length === 25 && r.j.positions.every((p, i) => p.position === i + 1 && p.state === 'open') && r.j.artists.length === 3);
 r = await call('GET', '/admin/gallery', FOUNDER);
-check('G2 the founder opens the Gallery order tab', r.s === 200 && r.t.includes('Gallery order'));
+check('G2 the founder can open the Gallery order screen through the Review Desk shell', r.s === 200 && r.t.includes('id="app"') && r.t.includes('/assets/admin.js'));
 
 r = await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: NOTE }, { position: 5, state: 'artist', artist_id: A }] });
 check('G3 the founder reserves 01 with a private note and places an artist at 05', r.s === 200 && r.j.positions[0].state === 'reserved' && r.j.positions[0].note === NOTE &&
@@ -70,19 +70,21 @@ r = await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ posit
 check('G11 the founder releases a reservation (01 open again)', r.s === 200 && r.j.positions[0].state === 'open');
 await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: NOTE }, { position: 2, state: 'artist', artist_id: B }, { position: 3, state: 'artist', artist_id: A }] });
 
-// Founding 25 numbers are separate from the order
+// Permanent Founding Artist numbers are separate from the order. Historical 1-25 values remain in artists;
+// open numbers start at 26 in the additive migration 0031 table.
 const fn1 = await call('PUT', `/api/admin/artists/${A}/founding-number`, FOUNDER, { founding_number: 3 });
 const fnDup = await call('PUT', `/api/admin/artists/${B}/founding-number`, FOUNDER, { founding_number: 3 });
 const fnNon = await call('PUT', `/api/admin/artists/${C}/founding-number`, FOUNDER, { founding_number: 9 });
-const fnRange = await call('PUT', `/api/admin/artists/${B}/founding-number`, FOUNDER, { founding_number: 26 });
-check('G12 the founder sets a permanent Founding 25 number; a number held by another artist, a non-Founding artist and 26 are refused',
-  fn1.s === 200 && fnDup.s === 409 && fnNon.s === 400 && fnRange.s === 400);
+const fnOpen = await call('PUT', `/api/admin/artists/${B}/founding-number`, FOUNDER, { founding_number: 29 });
+const fnOpenRow = await db.prepare('SELECT founding_number FROM founding_artist_numbers WHERE artist_id=?').bind(B).first();
+check('G12 the founder sets historical and open permanent numbers; a duplicate and a non-Founding artist are refused',
+  fn1.s === 200 && fnDup.s === 409 && fnNon.s === 400 && fnOpen.s === 200 && fnOpenRow?.founding_number === 29);
 await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: NOTE }, { position: 2, state: 'artist', artist_id: A }, { position: 3, state: 'artist', artist_id: B }] });
 const fnAfter = await db.prepare('SELECT founding_number FROM artists WHERE id = ?').bind(A).first();
-check('G13 moving an artist in the gallery never changes their Founding 25 number', fnAfter.founding_number === 3);
+check('G13 moving an artist in the gallery never changes their Founding Artist number', fnAfter.founding_number === 3);
 r = await call('PUT', '/api/me/profile', 'aoife@example.test', { founding_number: 1, bio: 'A short biography of the artist.' });
 const fnStill = await db.prepare('SELECT founding_number FROM artists WHERE id = ?').bind(A).first();
-check('G14 an artist cannot set their own Founding 25 number', fnStill.founding_number === 3, r.s);
+check('G14 an artist cannot set their own Founding Artist number', fnStill.founding_number === 3, r.s);
 
 // founder brief 31 Oct 2026: Founding Artist No. 2 at display position 02 moves to 05; the number stays 2
 await call('PUT', `/api/admin/artists/${A}/founding-number`, FOUNDER, { founding_number: 2 });
