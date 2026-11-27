@@ -98,9 +98,42 @@ def load_h6():
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 
+def repin_gridnua(check_only):
+    """GridNua launch manifest (atlas-tools/release/gridnua-launch-manifest.json): the two page pins move to production's
+    page + the declared consent transform; nothing else."""
+    import hashlib
+    path = os.path.join(ROOT, "atlas-tools", "release", "gridnua-launch-manifest.json")
+    raw = open(path, encoding="utf-8").read(); man = json.loads(raw); out = raw; n = 0
+    for page in ("gridnua/index.html", "gridnua/technology/index.html"):
+        prod = git_show(page)
+        h_old = hashlib.sha256(prod.encode("utf-8")).hexdigest()
+        want = S.transform(prod)
+        h_new = hashlib.sha256(want.encode("utf-8")).hexdigest()
+        live = open(os.path.join(ROOT, page), encoding="utf-8").read()
+        if live != want: sys.exit("REFUSED gridnua: %s is not production's page + the declared consent transform" % page)
+        if man["files"][page] == h_new: continue
+        if man["files"][page] != h_old or out.count(h_old) != 1: sys.exit("REFUSED gridnua: stored pin for %s is not production's" % page)
+        out = out.replace(h_old, h_new); n += 1
+        print("%-20s gridnua pin    %s %s -> %s" % ("gridnua", page, h_old[:12], h_new[:12]))
+    import re
+    chk = "disc026-compute-readiness-check.html"
+    prod = git_show(chk); want = S.transform(prod)
+    if open(os.path.join(ROOT, chk), encoding="utf-8").read() != want:
+        sys.exit("REFUSED gridnua: the Readiness Check is not production's page + the declared consent transform")
+    scripts = lambda t: hashlib.sha256("\n".join(re.findall(r"<script[\s\S]*?</script>", t)).encode()).hexdigest()
+    for key, o, nw in (("readiness_check_sha256", hashlib.sha256(prod.encode()).hexdigest(), hashlib.sha256(want.encode()).hexdigest()),
+                       ("readiness_check_scripts_sha256", scripts(prod), scripts(want))):
+        if man[key] == nw: continue
+        if man[key] != o or out.count(o) != 1: sys.exit("REFUSED gridnua: stored %s is not production's" % key)
+        out = out.replace(o, nw); n += 1
+        print("%-20s gridnua pin    %s %s -> %s" % ("gridnua", key, o[:12], nw[:12]))
+    if n and not check_only: open(path, "w", encoding="utf-8").write(out)
+    return n > 0
+
+
 def main():
     check_only = "--check" in sys.argv
-    pending = sum(repin_hash(g, check_only) for g in HASH_GUARDS) + repin_h6(check_only)
+    pending = sum(repin_hash(g, check_only) for g in HASH_GUARDS) + repin_h6(check_only) + repin_gridnua(check_only)
     if check_only:
         print("CHECK · %d snapshot(s) %s" % (pending, "left to re-pin" if pending else "re-pinned; every guard passes"))
         sys.exit(1 if pending else 0)
