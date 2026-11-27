@@ -611,3 +611,11 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-cu-grid p{ margin:6px 0 0; font-size:13px; }
 .st-cu-save{ margin-top:12px; }
 @media (max-width:720px){ .st-cu-row{ grid-template-columns:2em 52px minmax(0,1fr); } .st-cu-ctl{ grid-column:1 / -1; justify-content:flex-start; } .st-cu-thumb{ width:52px; height:52px; } }
+
+/* Commercial (migration 0030): compact forms and timeline */
+.cm-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:14px 18px; align-items:end; margin-top:16px; }
+.cm-grid .st-actions{ margin:0; }
+.cm-tl{ list-style:none; margin:16px 0 0; padding:0; }
+.cm-tl li{ padding:12px 0; border-top:1px solid var(--line); line-height:1.5; }
+.cm-tl details summary{ cursor:pointer; color:var(--stone); font-size:14px; }
+.st-table td form.st-row{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }

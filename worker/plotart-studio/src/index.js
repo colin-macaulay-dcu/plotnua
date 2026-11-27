@@ -29,6 +29,7 @@ import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { outcomes as OUTCOMES } from './outcomes.js';   // founder-only aggregate commercial outcomes (Sprint 1, 26 Nov 2026)
 import { send } from './mailer.js';
+import * as CM from './commercial.js';   // commercial leads and placements (migration 0030, 27 Nov 2026)
 import { AREAS as IDEA_AREAS, clean as ideaClean, problem as ideaProblem } from './ideas-rules.js';
 import { KINDS as G_KINDS, SPACE_TYPES as G_SPACE, AVAILABILITY as G_AVAIL, LISTING_DAYS as G_DAYS, clean as gClean, textProblem as gTextProblem, areaProblem as gAreaProblem } from './garden-rules.js';
 
@@ -1098,6 +1099,7 @@ export default {
      30 days ago are erased from storage (Gallery Publication and Image Licence 6.3). */
   async scheduled(_event, env) {
     let enquiries_logged = 0;
+    try { await CM.expire(env); } catch { /* commercial leads not installed */ }   // retention: migration 0030
     try { enquiries_logged = await logMissingRelayEnquiries(env); } catch { /* enquiry log not installed */ }
     await env.DB.prepare('DELETE FROM enquiries WHERE delete_after < ?').bind(now()).run();
     const cut = new Date(Date.now() - 30 * 86400_000).toISOString();
@@ -1264,7 +1266,7 @@ async function route(req, env) {
   // static assets (public, no data)
   const asset = { '/assets/studio.css': [A.STUDIO_CSS, 'text/css'], '/assets/plotart.css': [A.PLOTART_CSS, 'text/css'],
     '/assets/studio.js': [A.STUDIO_JS, 'text/javascript'], '/assets/admin.js': [A.ADMIN_JS, 'text/javascript'],
-    '/assets/plotnua-mark.svg': [A.MARK_SVG, 'image/svg+xml'], '/assets/plotnua-icon.svg': [A.PN_ICON_SVG, 'image/svg+xml'], '/assets/checkout-pilot.js': [A.CHECKOUT_JS, 'text/javascript'] }[p];
+    '/assets/plotnua-mark.svg': [A.MARK_SVG, 'image/svg+xml'], '/assets/plotnua-icon.svg': [A.PN_ICON_SVG, 'image/svg+xml'], '/assets/checkout-pilot.js': [A.CHECKOUT_JS, 'text/javascript'], '/assets/commercial.js': [A.COMMERCIAL_JS, 'text/javascript'] }[p];
   if (asset && m === 'GET') return res(asset[0], asset[1] + '; charset=utf-8', 200, { 'Cache-Control': 'public, max-age=300' });
   if (LOGO[p] && m === 'GET') return res(LOGO[p][0], LOGO[p][1], 200, { 'Cache-Control': 'public, max-age=86400' });
 
@@ -1392,6 +1394,27 @@ async function route(req, env) {
     if (p === '/admin/agreements') return html(A.ADMIN_HTML);
     if (p === '/admin/leaving') return html(A.ADMIN_HTML);
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
+    // Commercial leads and placements (migration 0030): its own page and script, like Basket readiness
+    if (p === '/admin/commercial') return html(A.COMMERCIAL_HTML);
+    if (p.startsWith('/api/admin/commercial')) {
+      const body = async () => (await req.json().catch(() => null)) || {};
+      if (p === '/api/admin/commercial' && m === 'GET') return json({ ok: true, ...(await CM.list(env)) });
+      if (p === '/api/admin/commercial/catalogue' && m === 'GET') return json({ ok: true, ...(await CM.catalogue(env)) });
+      if (p === '/api/admin/commercial/leads' && m === 'POST') { const b = await body(); const c = await CM.createLead(env, me.email, b, { source: b.source }); return json({ ok: true, ...(await CM.view(env, c.id)) }); }
+      if ((mm = p.match(/^\/api\/admin\/commercial\/leads\/(cl[0-9a-z]+)$/))) {
+        if (m === 'GET') return json({ ok: true, ...(await CM.view(env, mm[1])) });
+        if (m === 'PATCH') return json({ ok: true, ...(await CM.updateLead(env, me.email, mm[1], await body())) });
+      }
+      if ((mm = p.match(/^\/api\/admin\/commercial\/leads\/(cl[0-9a-z]+)\/(notes|selections|documents|placements)$/)) && m === 'POST') {
+        const f = { notes: CM.note, selections: CM.addSelection, documents: CM.addDocument, placements: CM.addPlacement }[mm[2]];
+        return json({ ok: true, ...(await f(env, me.email, mm[1], await body())) });
+      }
+      if ((mm = p.match(/^\/api\/admin\/commercial\/selections\/(cs[0-9a-z]+)$/)) && m === 'PATCH') return json({ ok: true, ...(await CM.setSelection(env, me.email, mm[1], await body())) });
+      if ((mm = p.match(/^\/api\/admin\/commercial\/documents\/(cd[0-9a-z]+)$/)) && m === 'PATCH') return json({ ok: true, ...(await CM.setDocument(env, me.email, mm[1], await body())) });
+      if ((mm = p.match(/^\/api\/admin\/commercial\/documents\/(cd[0-9a-z]+)\/payments$/)) && m === 'POST') return json({ ok: true, ...(await CM.addPayment(env, me.email, mm[1], await body())) });
+      if ((mm = p.match(/^\/api\/admin\/commercial\/placements\/(cpl[0-9a-z]+)$/)) && m === 'PATCH') return json({ ok: true, ...(await CM.setPlacement(env, me.email, mm[1], await body())) });
+      return json({ ok: false, error: 'Not found' }, 404);
+    }
     if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
     if (p === '/admin/featured') return html(A.ADMIN_HTML);
     if (p === '/admin/galleries') return html(A.ADMIN_HTML);

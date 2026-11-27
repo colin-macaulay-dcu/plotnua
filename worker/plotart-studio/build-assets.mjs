@@ -7,7 +7,7 @@ const shell = r('ui/shell.html');
 const fill = (o) => Object.entries(o).reduce((s, [k, v]) => s.replaceAll(`{${k}}`, v), shell);
 const STUDIO_HTML = fill({ title: 'PlotArt Studio', home: '#/', label: 'Studio', script: '/assets/studio.js',
   tabs: '<a href="#/">Gallery</a><a href="#/works">Works</a><a href="#/profile">Profile</a><a href="#/opportunities">Opportunities</a><a href="#/enquiries">Enquiries</a><a href="/checkout-pilot">Online sales</a><a href="#/agreement">Agreement</a><a href="/preview/" target="_blank" rel="noopener">Preview ↗</a>' });
-const ADMIN_HTML = fill({ title: 'PlotArt Studio · Review desk', home: '#/', label: 'Review desk', script: '/assets/admin.js', tabs: '<a href="/admin" data-t="desk">Review desk</a><a href="/admin/applications" data-t="apps">Applications</a><a href="/admin/galleries" data-t="gals">Galleries</a><a href="/admin/ideas" data-t="ideas">Ideas</a><a href="/admin/garden" data-t="garden">Garden</a><a href="/admin/agreements" data-t="agree">Agreements</a><a href="/admin/leaving" data-t="leave">Leaving</a><a href="/admin/hire" data-t="hire">Art for Hire</a><a href="/admin/opportunities" data-t="opps">Opportunities</a><a href="/admin/baskets" data-t="baskets">Basket readiness</a>' })
+const ADMIN_HTML = fill({ title: 'PlotArt Studio · Review desk', home: '#/', label: 'Review desk', script: '/assets/admin.js', tabs: '<a href="/admin" data-t="desk">Review desk</a><a href="/admin/applications" data-t="apps">Applications</a><a href="/admin/galleries" data-t="gals">Galleries</a><a href="/admin/ideas" data-t="ideas">Ideas</a><a href="/admin/garden" data-t="garden">Garden</a><a href="/admin/agreements" data-t="agree">Agreements</a><a href="/admin/leaving" data-t="leave">Leaving</a><a href="/admin/hire" data-t="hire">Art for Hire</a><a href="/admin/commercial" data-t="commercial">Commercial</a><a href="/admin/opportunities" data-t="opps">Opportunities</a><a href="/admin/baskets" data-t="baskets">Basket readiness</a>' })
   .replace('<nav class="st-tabs" aria-label="Studio">', '<nav class="st-tabs st-tabs--wrap" aria-label="Review desk">')
   .replace('<div class="st-who" id="who"></div>', '<div class="st-who" id="who">Founder<br><a href="/cdn-cgi/access/logout">Sign out</a></div>');
 // PLOTART-STUDIO-ACCESS-002: shown when Cloudflare Access has verified an email that has no invited or active artist
@@ -86,6 +86,9 @@ out.CHECKOUT_ARTIST_HTML = STUDIO_HTML.replace('<script src="/assets/studio.js" 
 if (out.CHECKOUT_ARTIST_HTML.includes('studio.js') || !out.CHECKOUT_ARTIST_HTML.includes('aria-current="page">Online sales')) throw new Error('CHECKOUT_ARTIST_HTML not built');
 // The Review desk's "Basket readiness" tab (22 Nov 2026): the Review desk header and tabs, with the payment pilot page's
 // own founder readiness section (checkout-pilot.js, /admin/baskets mode). One dashboard, two ways in.
+// Commercial leads and placements (migration 0030): its own page and script, the same header and tabs as the Review desk.
+out.COMMERCIAL_HTML = ADMIN_HTML.replace('<script src="/assets/admin.js" defer></script>', '<script src="/assets/commercial.js" defer></script>').replace('data-t="commercial"', 'data-t="commercial" aria-current="page"');
+out.COMMERCIAL_JS = r('ui/commercial.js');
 out.BASKETS_HTML = ADMIN_HTML.replace('<script src="/assets/admin.js" defer></script>', '<script src="/assets/checkout-pilot.js" defer></script>')
   .replace('<title>PlotArt Studio · Review desk</title>', '<title>PlotArt Studio · Basket readiness</title>')
   .replace('<a href="/admin/baskets" data-t="baskets">', '<a href="/admin/baskets" data-t="baskets" aria-current="page">');
