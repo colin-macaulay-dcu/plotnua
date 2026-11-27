@@ -1,0 +1,47 @@
+{
+  "site": "plotnua.ie",
+  "consentKey": "pn-consent",
+  "functional": [
+    "plotart-checkout.colin-a41.workers.dev",
+    "plotart-enquiry.colin-a41.workers.dev",
+    "plotnua-art-space-register.colin-a41.workers.dev",
+    "fonts.googleapis.com",
+    "fonts.gstatic.com",
+    "cesium.com",
+    "*.cesium.com",
+    "lh3.googleusercontent.com",
+    "d1l23c7hiawhq3.cloudfront.net",
+    "donmodularhomes.ie",
+    "static.wixstatic.com",
+    "www.thepodfactory.ie",
+    "images.squarespace-cdn.com",
+    "www.ognyx.com",
+    "cdn.prod.website-files.com",
+    "b3819663.assetcdn.net",
+    "triqbriq.de",
+    "www.biobuilds.com",
+    "irishsaunacompany.com",
+    "www.nuamodular.com",
+    "cdn.shopify.com",
+    "elmlandscaping.ie",
+    "themobilepods.ie"
+  ],
+  "analytics": [
+    "www.googletagmanager.com",
+    "*.google-analytics.com",
+    "*.analytics.google.com"
+  ],
+  "expectAnalyticsAfterAccept": true,
+  "buttons": {
+    "accept": "Accept analytics",
+    "reject": "Reject optional"
+  },
+  "pages": [
+    "/",
+    "/discoveries.html",
+    "/contact.html",
+    "/suppliers/nook-prefab.html",
+    "/thanks.html"
+  ],
+  "_note": "Privacy regression baseline for plotnua.ie (27 Nov 2026). functional = the third-party hosts PlotNua pages contact today before any choice, none of them analytics: PlotArt's own Workers; Google Fonts (recommended: self-host, as PlotArt now does); Cesium/Google 3D imagery on Your Plot; and supplier images loaded from suppliers' own sites on a few supplier pages (recommended: host approved images locally). Any NEW host, any analytics request before consent or after Reject, or any cookie or storage fails the test."
+}

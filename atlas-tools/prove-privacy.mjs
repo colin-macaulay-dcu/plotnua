@@ -34,8 +34,8 @@ async function visit(page, phase, choose) {
   await tab.waitForTimeout(700);
   if (choose) {
     const b = cfg.buttons || { accept: 'Accept analytics', reject: 'Reject optional' };
-    const btn = 'text=' + (choose === 'accept' ? b.accept : b.reject);
-    if (await tab.isVisible(btn)) await tab.click(btn); else note(page, phase, 'consent banner not shown');
+    const btn = tab.getByRole('button', { name: choose === 'accept' ? b.accept : b.reject, exact: true });   // the banner's button, not policy text quoting it
+    if (await btn.count() === 1 && await btn.isVisible()) await btn.click(); else note(page, phase, 'consent banner not shown');
     await tab.reload({ waitUntil: 'domcontentloaded' });
     await tab.waitForTimeout(700);
   }
@@ -58,7 +58,9 @@ const all = from ? walk(from).map(f => '/' + relative(from, f).split('\\').join(
   .map(f => f.endsWith('/index.html') ? f.slice(0, -10) : f).sort() : cfg.pages;
 const pages = all.slice(0, limit);
 for (const p of pages) await visit(p, 'before consent', null);
-for (const p of pages.filter(x => !/(^|\/)404\.html$/.test(x)).slice(0, 5)) { await visit(p, 'after reject', 'reject'); await visit(p, 'after accept', 'accept'); }
+// choices are made on pages that carry the consent tool (a page with no analytics at all has no banner to answer)
+const hasTool = x => !from || /(site|pa)-consent\.js/.test(readFileSync(join(from, x.endsWith('/') ? x + 'index.html' : x), 'utf8'));
+for (const p of pages.filter(x => !/(^|\/)404\.html$/.test(x) && hasTool(x)).slice(0, Number(arg('--choice-pages') || 5))) { await visit(p, 'after reject', 'reject'); await visit(p, 'after accept', 'accept'); }
 await browser.close();
 if (arg('--report')) writeFileSync(arg('--report'), JSON.stringify({ site: cfg.site, pages: pages.length, findings }, null, 1));
 console.log(`PRIVACY ${cfg.site} · ${pages.length} pages · ${findings.length} findings`);

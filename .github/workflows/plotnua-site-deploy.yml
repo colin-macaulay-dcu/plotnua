@@ -7,7 +7,8 @@
 # cannot affect plotart.ie, and a plotart.ie deploy cannot affect this.
 #
 #   * Manual runs only (Actions -> "PlotNua site test deploy" -> Run workflow). No push trigger until a cutover is approved.
-#   * verify (default): build, allowlist, 1,700 local proofs, Wrangler dry run. Deploys nothing.
+#   * verify (default): build, allowlist, 1,700 local proofs, privacy regression test and consent events, Wrangler dry run.
+#     Deploys nothing.
 #   * deploy: only when the repository variable PLOTNUA_SITE_ENABLED = true and the environment "plotnua-site" holds
 #     the secret CLOUDFLARE_API_TOKEN and the variable CLOUDFLARE_ACCOUNT_ID (main branch only).
 #     After the deploy, the workers.dev address is checked; a failure rolls the Worker back automatically.
@@ -53,6 +54,15 @@ jobs:
         run: |
           python3 atlas-tools/plotnua_site_build.py . worker/plotnua-site/dist --mode test
           node worker/plotnua-site/test/prove-site.mjs "$GITHUB_WORKSPACE/worker/plotnua-site/dist" "$GITHUB_WORKSPACE" | tail -3
+      - name: Privacy regression test and consent events (nothing before consent or after Reject; measurement after Accept)
+        run: |
+          set -o pipefail
+          npm install --prefix atlas-tools --no-save --no-package-lock --silent playwright@1.63.0 > /dev/null
+          (cd atlas-tools && npx playwright install --with-deps chromium > /dev/null)
+          node atlas-tools/serve-site-local.mjs "$GITHUB_WORKSPACE/worker/plotnua-site/src/index.js" "$GITHUB_WORKSPACE/worker/plotnua-site/dist" index &
+          sleep 2
+          node atlas-tools/prove-privacy.mjs worker/plotnua-site/privacy.json http://127.0.0.1:8799 --pages-from worker/plotnua-site/dist --choice-pages 12 | tee -a "$GITHUB_STEP_SUMMARY"
+          node atlas-tools/prove-plotnua-consent-events.mjs http://127.0.0.1:8799 | tail -1 | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Wrangler dry run
         if: inputs.mode == 'verify'
         working-directory: worker/plotnua-site
