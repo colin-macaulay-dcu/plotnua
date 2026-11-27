@@ -15,7 +15,8 @@
    - Reject: nothing is loaded; the choice is remembered.
    - Change of mind at any time: "Cookie settings" in the footer of every page (and any [data-pa-consent-open] element).
      Withdrawing stops GA4 immediately, deletes its _ga cookies on plotart.ie and reloads the page.
-   - The choice is kept on this device only (localStorage "pa-consent", strictly necessary) for 6 months, then asked again;
+   - The choice is kept on this device only (localStorage "pa-consent", strictly necessary) for 6 months, then asked again
+     (DPC guidance: reaffirm no later than 6 months); the analytics cookies are also limited to 6 months (cookie_expires);
      a new policy version (VERSION) also asks again. Nothing is sent to PlotArt or anyone else.
    - window.paConsent = { statistics: true|false|null } for PlotArt's own event code (pa-enquiry.js, pa-basket.js). */
 (function () {
@@ -49,7 +50,7 @@
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
     d.head.appendChild(s);
     w.gtag('js', new Date());
-    w.gtag('config', GA_ID, { site_name: 'PlotArt', cookie_domain: 'plotart.ie', allow_google_signals: false, allow_ad_personalization_signals: false });
+    w.gtag('config', GA_ID, { site_name: 'PlotArt', cookie_domain: 'plotart.ie', cookie_expires: 15552000, allow_google_signals: false, allow_ad_personalization_signals: false });
   }
   function stopAnalytics() {
     w['ga-disable-' + GA_ID] = true;
