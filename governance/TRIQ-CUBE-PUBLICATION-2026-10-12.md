@@ -1,6 +1,6 @@
 # TRIQ CUBE — PUBLIC PAGE · PUBLICATION RECORD
 
-**Supplier:** TRIQBRIQ AG, Stuttgart (Atlas ORG-000195) · contact Christian Klerner
+**Supplier:** TRIQBRIQ AG, Stuttgart (Atlas ORG-000195) · contact held in Atlas
 **Product:** TRIQ CUBE (TRIQ Office 3×3, "Gartenoffice")
 **Prepared:** 12 October 2026 · **Status:** PREPARED, NOT LIVE. Goes live only when the founder pushes `main`.
 
@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| Supplier approval | Christian Klerner, email of 12 October 2026: *"After consulting with our product management team, the landing page has now been approved."* |
+| Supplier approval | TRIQBRIQ AG, email of 12 October 2026: after consulting its product management team, the landing page was approved (wording held privately since 10 Nov 2026). |
 | Approval received | 12 October 2026 |
 | Founder decision | 12 October 2026: the approved page may proceed to public publication and integration |
 | Image permission | Written grant of 22 September 2026, condition: credit "© TRIQBRIQ AG" (IPO-TRIQBRIQ-20260922) |
@@ -149,7 +149,7 @@ Irish availability (unanswered by TRIQBRIQ); §4.2 commercial terms.
 
 ## Addendum, 13 October 2026: product name corrected to TRIQ QUBE
 
-TRIQBRIQ AG (Christian Klerner) confirmed that the correct product name is **TRIQ QUBE**, not "TRIQ CUBE". The founder instructed the correction the same day.
+TRIQBRIQ AG confirmed by email that the correct product name is **TRIQ QUBE**, not "TRIQ CUBE". The founder instructed the correction the same day.
 
 **Corrected:** every visible use on the public page:
 - title, meta description, Open Graph and Twitter metadata;
@@ -177,9 +177,7 @@ This file keeps its original name for traceability.
 
 ## Addendum, 13 October 2026: manufacturer delivery confirmation
 
-Christian Klerner (TRIQBRIQ AG), in writing:
-
-> "In principle, our building kit is available for delivery worldwide. We would be happy to review specific delivery addresses individually with each prospective customer upon enquiry."
+TRIQBRIQ AG, in writing (wording held privately since 10 Nov 2026): the building kit is available for delivery worldwide in principle, and specific delivery addresses are reviewed individually with each prospective customer on enquiry.
 
 **Change on `triq-cube.html`:** two items in "What PlotNua has not established" are replaced by one item carrying the founder-approved wording, verbatim. The two items were "Irish availability is not yet confirmed … no confirmation that the TRIQ QUBE can be supplied" and "Delivery to Ireland is not established". The new item reads:
 

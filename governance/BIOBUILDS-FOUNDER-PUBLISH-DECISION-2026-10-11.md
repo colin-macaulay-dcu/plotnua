@@ -16,7 +16,7 @@ confirmation.
 imagery on any public page. The imagery grant remains scoped by this record's
 own conditions to the private, noindexed review preview.
 
-**Not claimed, anywhere:** that Mateus confirmed the corrected preview. He has
+**Not claimed, anywhere:** that BIOBUILDS confirmed the corrected preview. It has
 not. The record says so in two places and five guards refuse any file that
 says otherwise.
 
@@ -24,13 +24,11 @@ says otherwise.
 
 ## 2 · THE AUTHORISATION THIS RESTS ON
 
-Mateus, BIOBUILDS, 2 October 2026, verbatim and preserved in the rights
-record:
-
-> "Yes. We are happy for PlotNua to feature BioBuilds and use selected images
-> from our website, with credit and a link back to us. We supply the Republic
-> of Ireland. Please send us the listing before it goes live, so we can check
-> it."
+BIOBUILDS, by email, 2 October 2026 (wording held privately since 10 Nov 2026,
+PN-EVID-RIGHTS-ORG-000153-20261002): PlotNua may feature BioBuilds and use
+selected images from its website, with credit and a link back; BIOBUILDS
+supplies the Republic of Ireland; and PlotNua should send the listing before it
+goes live so that BIOBUILDS can check it.
 
 Three separate things in one message: permission to **feature**, permission to
 use **imagery** with conditions, and a request for a **pre-live check**. The
@@ -71,7 +69,7 @@ listing_review.state            AWAITING_CONFIRMATION   ← UNCHANGED
 listing_review.confirmed_at     null                    ← UNCHANGED
 asset_approval_state            REFERENCE_ONLY          ← UNCHANGED
 permission                      GRANTED, 2026-10-02     ← UNCHANGED
-evidence (Mateus's words)       verbatim                ← UNCHANGED
+evidence (the 2 Oct grant)      as recorded            ← UNCHANGED
 conditions (all 7)              intact                  ← UNCHANGED
 
 founder_exception               NEW

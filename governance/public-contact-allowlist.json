@@ -1,0 +1,103 @@
+{
+  "schema": "plotnua.public-contact-allowlist.v1",
+  "about": "Email addresses that may appear in this PUBLIC repository, each reviewed. Checked by .github/scripts/check_public_correspondence.py (C3). Only a supplier's published or supplier-authorised BUSINESS contact, a service identity or a synthetic test fixture may be listed; personal webmail addresses can never be listed, and supplier correspondence never belongs here. PlotNua's own addresses (plotnua.ie, plotart.ie) and reserved test domains (example.com, *.test, *.invalid, *.example) need no entry. An entry whose address no longer appears in the repository fails the check until it is removed.",
+  "reviewed": "2026-11-27",
+  "contacts": [
+    {
+      "address": "movingart@mauriceward.com",
+      "kind": "public-business-contact",
+      "published_on": "plotart/services.html (Maurice Ward Art Handling listing)",
+      "reason": "The provider's published enquiry address, shown on its PlotArt Services listing."
+    },
+    {
+      "address": "michael@nicouriers.com",
+      "kind": "public-business-contact",
+      "published_on": "plotart/services.html (N.I. Couriers listing)",
+      "reason": "The contact address N.I. Couriers authorised PlotArt to publish on its listing (25 Nov 2026; PN-EVID-RIGHTS-IPO-NICOURIERS-20261125)."
+    },
+    {
+      "address": "info@fastlanecouriers.com",
+      "kind": "public-business-contact",
+      "published_on": "plotart/services.html (FastLane Couriers listing)",
+      "reason": "FastLane Couriers' published generic enquiry address, supplied by the owner for its listing."
+    },
+    {
+      "address": "ThePodFactoryShowroomVisit@thepodfactory.ie",
+      "kind": "public-business-contact",
+      "published_on": "suppliers/the-pod-factory.html",
+      "reason": "The showroom-booking address The Pod Factory publishes on thepodfactory.ie."
+    },
+    {
+      "address": "clients@pineca.ie",
+      "kind": "public-business-contact",
+      "published_on": "atlas-tools/public-information-listings.json",
+      "reason": "Pineca's generic web-form address, named only as the sender of an automatic acknowledgement."
+    },
+    {
+      "address": "info@tanktribe.ie",
+      "kind": "public-business-contact",
+      "published_on": ".github/scripts/build-tanktribe-grant.py",
+      "reason": "Tanktribe's published generic contact address, recorded as the supplier's contact channel."
+    },
+    {
+      "address": "git@github.com",
+      "kind": "service-identity",
+      "published_on": "governance/G3-CLOSURE-VERSION-CONTROL-PLAN.md, governance/G6-CONTROLLED-ACTIVATION-RUNBOOK-2026-10-12.md",
+      "reason": "GitHub's SSH remote user in a git URL, not an email address."
+    },
+    {
+      "address": "noreply@anthropic.com",
+      "kind": "service-identity",
+      "published_on": "atlas-tools/publish-targeted-update.py",
+      "reason": "Commit co-author trailer for automated commits."
+    },
+    {
+      "address": "a@b.ie",
+      "kind": "test-fixture",
+      "published_on": "worker/plotart-studio/test, worker/garden-register/test, atlas-tools/prove-idea-board.py",
+      "reason": "Synthetic address used to prove that contact details are refused or validated."
+    },
+    {
+      "address": "x@y.ie",
+      "kind": "test-fixture",
+      "published_on": "worker/plotart-studio/test/prove-garden-board.mjs, atlas-tools/prove-disc032-page.py",
+      "reason": "Synthetic address used to prove that contact details are refused."
+    },
+    {
+      "address": "f@x.ie",
+      "kind": "test-fixture",
+      "published_on": "worker/plotart-studio/test",
+      "reason": "Synthetic founder identity in local test databases."
+    },
+    {
+      "address": "founder@x.ie",
+      "kind": "test-fixture",
+      "published_on": "worker/plotart-studio/test/prove-showcase.mjs",
+      "reason": "Synthetic founder identity in a local test database."
+    },
+    {
+      "address": "a@x.ie",
+      "kind": "test-fixture",
+      "published_on": "worker/plotart-studio/test/prove-checkout-deploy.mjs",
+      "reason": "Synthetic tester list in a deploy-configuration test."
+    },
+    {
+      "address": "b@x.ie",
+      "kind": "test-fixture",
+      "published_on": "worker/plotart-studio/test/prove-checkout-deploy.mjs",
+      "reason": "Synthetic tester list in a deploy-configuration test."
+    },
+    {
+      "address": "x@studio.gallery",
+      "kind": "test-fixture",
+      "published_on": "worker/art-space-register/test/prove-email-check.mjs",
+      "reason": "Synthetic address proving long top-level domains are accepted."
+    },
+    {
+      "address": "a_b-c@sub.domain.ie",
+      "kind": "test-fixture",
+      "published_on": "worker/art-space-register/test/prove-email-check.mjs",
+      "reason": "Synthetic address proving punctuation and subdomains are accepted."
+    }
+  ]
+}

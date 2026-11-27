@@ -111,6 +111,17 @@ jobs:
       # difference of date alone must pass. The real records, manifest and
       # generator are hashed before and after: a proof that edits what it
       # proves has proved nothing.
+      # THIS REPOSITORY IS PUBLIC (M8C Stage 2, refreshed 27 Nov 2026). Supplier
+      # correspondence and personal contact details are held privately
+      # (Atlas, the Supplier CRM, plotnua-infrastructure/confidential-records)
+      # and cited here only by evidence reference. The guard scans every
+      # tracked file; its proof plants each kind of leak and must see it refused.
+      - name: No supplier correspondence or personal contact details in the public repository
+        run: python3 .github/scripts/check_public_correspondence.py
+
+      - name: Prove the public-correspondence guard refuses what it is for
+        run: python3 .github/scripts/prove-public-correspondence-guard.py
+
       - name: Prove the manifest date-stamp exemption is narrow
         run: python3 .github/scripts/prove-manifest-check-capability.py
 

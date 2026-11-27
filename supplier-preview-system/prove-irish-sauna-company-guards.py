@@ -89,7 +89,7 @@ r = results.append
 
 # ---- G0 . the grant, read from the register and not from this file --------
 # THIS GUARD CHANGED SIDES ON 10 OCTOBER 2026. It used to refuse imagery
-# because permission was unknown; Brona granted it, so it now refuses imagery
+# because permission was unknown; Irish Sauna Company granted it, so it now refuses imagery
 # that is NOT covered by a live grant in the generated manifest. The three
 # breaks are the three ways that cover can be lost.
 r(run("G0 . the register is consulted at a path that does not exist",

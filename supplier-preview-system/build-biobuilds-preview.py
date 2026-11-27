@@ -27,7 +27,7 @@ ATLAS:
     PROD-001216  BIOBUILDS Bloom           recjdCtvV26NtbNA0   €354,000 / €572,000
 
     ALL FIVE MODELS, 16 October 2026. The preview now carries the whole Irish
-    range so Mateus can confirm all five before anything is published. Every
+    range so BIOBUILDS can confirm all five before anything is published. Every
     figure in RANGE below was re-read from BIOBUILDS' own Irish pages on
     16 October 2026 (biobuilds.com/ie/design#<model>, the rendered model
     panel; biobuilds.com/ie/catalog and /ie/faq for the per-floorplan area
@@ -257,7 +257,7 @@ def range_block():
 
 
 # ── THE COPY ───────────────────────────────────────────────────────────────
-# Voice: ordinary, direct, the way Colin would say it to Mateus. Nothing
+# Voice: ordinary, direct, the way Colin would say it to BIOBUILDS. Nothing
 # about the medium of the imagery. No certification claim, no thermal claim,
 # no Irish planning claim -- those are in the review note instead.
 FILL = {

@@ -1,5 +1,5 @@
 {
-  "_about": "NOOK Prefab's six supplied images (Gmail 1a1b08cf25c1fcb1, 6 Nov 2026) and the optimised copies PlotNua hosts under assets/suppliers/nook-prefab/ (resize + recompress, metadata stripped; no crop, no other edit). 'sha256' is the supplier's ORIGINAL file, kept unmodified off-repository. Hosting permission: NOOK Prefab, 11 Nov 2026 (image-rights-records.json, ORG-000209).",
+  "_about": "NOOK Prefab's six supplied images (supplied by email, 6 Nov 2026; held privately, PN-EVID-RIGHTS-ORG-000209-20261111) and the optimised copies PlotNua hosts under assets/suppliers/nook-prefab/ (resize + recompress, metadata stripped; no crop, no other edit). 'sha256' is the supplier's ORIGINAL file, kept unmodified off-repository. Hosting permission: NOOK Prefab, 11 Nov 2026 (image-rights-records.json, ORG-000209).",
   "images": {
     "nook-10-installed-spain": {
       "original": "NOOK-10-installed-Spain.jpg",

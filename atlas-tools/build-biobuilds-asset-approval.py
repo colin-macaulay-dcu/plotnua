@@ -48,7 +48,7 @@ at once, and G5 below asserts the wording one.
 
 WHAT ELSE IS PRESERVED EXACTLY. The supplier's words, the credit, the
 link-back, the withdrawal right, ownership, the no-resale term, and
-listing_review.state = AWAITING_CONFIRMATION with confirmed_at null. Mateus
+listing_review.state = AWAITING_CONFIRMATION with confirmed_at null. BIOBUILDS
 has still not confirmed the corrected preview and this builder does not say
 he has.
 

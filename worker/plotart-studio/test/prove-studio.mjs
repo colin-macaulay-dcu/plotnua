@@ -76,7 +76,7 @@ check('S11 the local test key set is refused outside the local environment (fail
 await prod.mf.dispose();
 
 console.log('— profile and validation');
-r = await call('PUT', '/api/me/profile', A, { bio: 'I paint the coast of Galway. Email me at aoife@gmail.com for commissions please.' });
+r = await call('PUT', '/api/me/profile', A, { bio: 'I paint the coast of Galway. Email me at test.artist@example.com for commissions please.' });
 check('V1 contact details in a biography are refused', r.s === 400 && /email address, phone number or Eircode/.test(r.j.error));
 r = await call('PUT', '/api/me/profile', A, { bio: '<b>bold</b> biography text that is long enough to pass the minimum.' });
 check('V2 markup is refused', r.s === 400);
