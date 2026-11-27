@@ -83,6 +83,7 @@ jobs:
           [ "$INDEXING" = noindex ] || { echo "FAIL  verify expects the testing setting INDEXING = noindex"; exit 1; }
           python3 ../../atlas-tools/plotart_site_build.py ../.. dist --mode test
           node test/prove-site.mjs "$PWD/dist" "$GITHUB_WORKSPACE" | tail -3
+          python3 -c "import json;r=json.load(open('dist/.build-report.json'));print('pages and files', r['pages_and_files'], '· sitemap', r['sitemap_urls'], '· analytics blocks removed', r['analytics_blocks_removed'], '· tracking scripts', len(r['tracking_or_consent_scripts']))" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Privacy regression test (no cookie, storage or third-party request before consent or after Reject)
         run: |
           ANALYTICS=$(sed -nE 's/^ANALYTICS *= *"([a-z]+)".*/\1/p' worker/plotart-site/wrangler.toml)
@@ -93,7 +94,6 @@ jobs:
           sleep 2
           node atlas-tools/prove-privacy.mjs worker/plotart-site/privacy.json http://127.0.0.1:8799 \
             --pages-from worker/plotart-site/dist --report "$RUNNER_TEMP/privacy-report.json"
-          python3 -c "import json;r=json.load(open('dist/.build-report.json'));print('pages and files', r['pages_and_files'], '· sitemap', r['sitemap_urls'], '· analytics blocks removed', r['analytics_blocks_removed'], '· tracking scripts', len(r['tracking_or_consent_scripts']))" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Token and account can manage Workers (read-only; nothing printed but PASS/FAIL)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
