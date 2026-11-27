@@ -61,6 +61,11 @@ export function createSite(site) {
     if (request.method !== 'GET' && request.method !== 'HEAD') {
       return finish(env, new Response('Method not allowed', { status: 405, headers: { Allow: 'GET, HEAD' } }));
     }
+    // Any address other than the live apex (workers.dev, local tests) tells every crawler to stay away entirely. Files that
+    // bypass the Worker (static assets) carry no noindex header, so this robots.txt is what keeps the whole copy out of search.
+    if (url.pathname === '/robots.txt' && (url.hostname !== apex || (env.INDEXING || 'noindex') !== 'index')) {
+      return finish(env, new Response(request.method === 'HEAD' ? null : 'User-agent: *\nDisallow: /\n', { headers: { 'Content-Type': 'text/plain' } }));
+    }
     const moved = site.redirect ? site.redirect(url, env) : null;
     if (moved) return redirect(env, moved);
     let path;

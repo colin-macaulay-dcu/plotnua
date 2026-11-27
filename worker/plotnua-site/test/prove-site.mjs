@@ -39,6 +39,11 @@ const w = await get('https://www.plotnua.ie/discoveries.html?x=1');
 ok(w.status === 301 && w.headers.get('location') === 'https://plotnua.ie/discoveries.html?x=1', 'www -> apex');
 ok((await get('https://plotnua.ie/')).headers.get('x-robots-tag') === null, 'plotnua.ie indexable');
 ok((await get('https://plotnua-site.colin-a41.workers.dev/')).headers.get('x-robots-tag') === 'noindex, nofollow', 'workers.dev noindex');
+// Option B: workers.dev (and any non-live address) disallows all crawling; plotnua.ie serves its real robots.txt
+{ const r = await get('https://plotnua-site.colin-a41.workers.dev/robots.txt'); ok(r.status === 200 && (await r.text()) === 'User-agent: *\nDisallow: /\n', 'workers.dev robots.txt disallows everything'); }
+{ const r = await get('https://plotnua.ie/robots.txt'); ok(Buffer.from(await r.arrayBuffer()).equals(readFileSync(join(root, 'robots.txt'))), 'plotnua.ie robots.txt is the published file'); }
+{ const t = readFileSync(join(root, 'worker/plotnua-site/wrangler.toml'), 'utf8');
+  ok(/^run_worker_first = \["\/\*", "!\/assets\/\*"\]$/m.test(t), 'only /assets/* bypasses the Worker (pages, JSON and /plotart/* always go through it)'); }
 // header parity with GitHub Pages (plotnua.ie today): cache-control and content types
 for (const [path, type] of [['/', 'text/html; charset=utf-8'], ['/discoveries.html', 'text/html; charset=utf-8'], ['/robots.txt', 'text/plain; charset=utf-8'], ['/sitemap.xml', 'application/xml'], ['/CNAME', null]]) {
   const r = await get('https://plotnua.ie' + path);
