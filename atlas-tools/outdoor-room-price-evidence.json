@@ -1,0 +1,79 @@
+{
+  "schema": "plotnua.outdoor-room-price-evidence",
+  "version": 1,
+  "page": "discovery-the-outdoor-room.html",
+  "section": "#what-it-costs",
+  "what_this_is": "The advertised pergola and veranda prices shown in the 'What pergolas and verandas cost in Ireland' section of DISC-035 The Outdoor Room. Each row is one price as the business published it on its own website, with what the business says it includes, the source page and the date PlotNua read it. Read-only evidence for atlas-tools/prove-disc035-page.py (O19), which proves the section shows exactly these rows and nothing else. Method mirrors garden-room-prices-ireland.html: advertised prices only, never quotes; nothing estimated, averaged or inferred; fields the business does not state are recorded as not stated.",
+  "method": {
+    "basis": "ADVERTISED_PRICE",
+    "rule": "A price is listed only when it is read from the business's own published page and recorded with its check date. Three prices from two businesses are too few for an average, a median or a typical range, so the section shows the individual prices only.",
+    "average_published": false,
+    "recheck": {
+      "attempted": "2026-11-27",
+      "outcome": "NOT_COMPLETED",
+      "reason": "The 27 Nov 2026 build session could not reach superiorpergola.ie or outdoor.ie (network allowlist). The rows keep the 4 Nov 2026 check date under which they were first published on this page and on suppliers/superior-pergola-ireland.html; they are not re-dated.",
+      "next_action": "Re-read both source pages and either confirm (update checked) or correct each row before 3 Jan 2027 (60 days after the check date)."
+    }
+  },
+  "prices": [
+    {
+      "id": "superior-pergola-aluminium-pergola",
+      "supplier": "Superior Pergola Ireland",
+      "product": "Aluminium pergola",
+      "price_eur": 2500,
+      "price_type": "FROM",
+      "size_spec": "Made to measure; no standard size is published for the starting price. Powder-coated aluminium frame; clear glass, tinted glass or polycarbonate roof.",
+      "installation": "INCLUDED",
+      "installation_basis": "Published as a starting price including fitting.",
+      "vat": "NOT_STATED",
+      "source_url": "https://www.superiorpergola.ie/products/",
+      "showcase": "suppliers/superior-pergola-ireland.html",
+      "atlas_record": "recEmspiTMDe7dTHu",
+      "checked": "2026-11-04"
+    },
+    {
+      "id": "superior-pergola-veranda",
+      "supplier": "Superior Pergola Ireland",
+      "product": "Veranda (framed or frameless glazed system)",
+      "price_eur": 8100,
+      "price_type": "FROM",
+      "size_spec": "Made to measure; no standard size is published for the starting price. Aluminium frame; framed sliding or fixed panels, or frameless glass panels in tracks.",
+      "installation": "INCLUDED",
+      "installation_basis": "Published as a starting price including fitting.",
+      "vat": "NOT_STATED",
+      "source_url": "https://www.superiorpergola.ie/products/",
+      "showcase": "suppliers/superior-pergola-ireland.html",
+      "atlas_record": "reckkOgwV2NMmkvXs",
+      "checked": "2026-11-04"
+    },
+    {
+      "id": "outdoor-scene-motorised-louvred-roof",
+      "supplier": "The Outdoor Scene",
+      "product": "Motorised louvred roof (pergola)",
+      "price_eur": 21000,
+      "price_type": "ESTIMATED",
+      "size_spec": "Shown by the business as an estimated price; the size it applies to is not recorded by PlotNua.",
+      "installation": "NOT_STATED",
+      "installation_basis": "The page gives an estimated price; what it includes is not stated.",
+      "vat": "NOT_STATED",
+      "source_url": "https://www.outdoor.ie/?p=70869",
+      "showcase": null,
+      "atlas_record": null,
+      "checked": "2026-11-04"
+    }
+  ],
+  "considered_not_used": [
+    {
+      "what": "Pergola and veranda prices seen only in web-search result summaries on 27 Nov 2026 (garden-building retailers and kit pergolas)",
+      "why": "Not read from the business's own page in this session; a search summary is not a verified source. Not used."
+    },
+    {
+      "what": "The Outdoor Scene outdoor kitchen unit (EUR 10,895-12,795 plus about EUR 1,000-1,200 delivery and installation)",
+      "why": "An outdoor kitchen, not a pergola or veranda; it stays in the existing makers' 'What makers advertise' panel, not in this table."
+    },
+    {
+      "what": "Apex Verandas and QOLA",
+      "why": "Neither publishes prices (Apex: quotes follow a measure-up)."
+    }
+  ]
+}

@@ -30,6 +30,11 @@
   O16 images: only DISC-035 copies that are recorded edits of the two declared masters; no master is served
   O17 the hero AI disclosure is never covered by the Back dock or pill (the page-local step-aside is present)
   O18 chapter 06 links DISC-008 Living in the Garden, DISC-001 Garden Retreat and DISC-029 Hidden Bins
+  O19 "What pergolas and verandas cost in Ireland" (#what-it-costs, growth round 2, 27 Nov 2026): the table shows
+      exactly the rows of atlas-tools/outdoor-room-price-evidence.json (supplier, product, price, check date), each
+      with a source link; the method note ("How we checked") and its date; no average, median or typical range;
+      every recorded check date is within 90 days (the evidence lapses and the page must be re-checked); the
+      Superior Pergola showcase links back to this section
 Prints "DISC-035 PAGE · OK" only when every check passes.
 """
 import html, json, os, re, sys
@@ -280,9 +285,40 @@ ch6 = s[s.index('id="lg-ch06"'):] if 'id="lg-ch06"' in s else ""
 for link in ("discovery-living-in-the-garden.html", "discovery-garden-retreat.html", "discovery-hidden-bins.html"):
     need(ch6.count('href="%s"' % link) >= 2, "O18 related link missing (closing exit and related card): " + link)
 
+# O19
+import datetime as _dt
+ev = json.loads(read("atlas-tools/outdoor-room-price-evidence.json"))
+cs = re.search(r'<section class="pd-section" id="what-it-costs".*?</section>', s, re.S)
+need(cs, "O19 the cost section #what-it-costs")
+need("<h2 class=\"pd-h2\" id=\"orCostH\">What pergolas and verandas cost in Ireland</h2>" in s, "O19 the section heading")
+need(ev["method"]["average_published"] is False and ev["method"]["basis"] == "ADVERTISED_PRICE", "O19 evidence method")
+if cs:
+    c = cs.group(0); ct = text(c)
+    rows = re.findall(r"<tr><th scope=\"row\">(.*?)</th>(.*?)</tr>", c, re.S)
+    need(len(rows) == len(ev["prices"]), "O19 one table row per evidence price (%d rows, %d prices)" % (len(rows), len(ev["prices"])))
+    for (head, body), p in zip(rows, ev["prices"]):
+        h = text(head)
+        need(p["supplier"] in h, "O19 row supplier: %s" % p["supplier"])
+        fig_ = "€{:,}".format(p["price_eur"])
+        need(fig_ in text(body) and ("From " + fig_ in text(body)) == (p["price_type"] == "FROM"), "O19 row price: %s %s" % (p["id"], fig_))
+        need(("href=\"%s\"" % (p["showcase"] or html.escape(p["source_url"]))) in body, "O19 row source link: %s" % p["id"])
+        need(p["vat"] != "NOT_STATED" or "VAT" in text(body), "O19 row says VAT is not stated: %s" % p["id"])
+        age = (_dt.date.today() - _dt.date.fromisoformat(p["checked"])).days
+        need(0 <= age <= 90, "O19 %s was checked %s, more than 90 days ago: re-check it and update the evidence" % (p["id"], p["checked"]))
+    dates = {p["checked"] for p in ev["prices"]}
+    need(len(dates) == 1, "O19 one check date per section (the method note states it)")
+    d0 = _dt.date.fromisoformat(sorted(dates)[0])
+    need(("How we checked. Each price was read on the business’s own website on %d %s" % (d0.day, d0.strftime("%B %Y"))) in ct,
+         "O19 the method note and its date")
+    for bad in ("average", "median", "typical price", "typically costs", "on average"):
+        need(bad not in ct.lower().replace("too few of them for an average", "").replace("estimated, averaged", ""), "O19 no average: " + bad)
+    need("not a quote" in ct.lower(), "O19 the prices are not quotes")
+need('href="../discovery-the-outdoor-room.html#what-it-costs"' in read("suppliers/superior-pergola-ireland.html"),
+     "O19 the Superior Pergola showcase links to the independent cost section")
+
 if problems:
     print("DISC-035 PAGE · FAILED")
     for p in problems:
         print("  " + p)
     sys.exit(1)
-print("DISC-035 PAGE · OK (O1-O18)")
+print("DISC-035 PAGE · OK (O1-O19)")

@@ -23,6 +23,9 @@
       homeowners", no form
   S16 images: only DISC-020 copies that are recorded edits of the two declared masters; no master PNG is served
   S17 the hero AI disclosure is never covered by the Back dock or pill (the page-local step-aside is present)
+  S18 question-led headings (growth round 2, 27 Nov 2026): cost, grants, lift types and planning are asked as the
+      questions people search; the grants intro names both local authority schemes, means-testing and approval first,
+      and adds no grant figure beyond the verified ones (S9/S12)
 Prints "DISC-020 PAGE · OK" only when every check passes.
 """
 import html, json, os, re, sys
@@ -202,9 +205,21 @@ need(next(x for x in reg["records"] if x["asset"].endswith("DISC-020-01-BEFORE-M
 # S17
 need("sh-dock-away" in s and "DISC-020 · the hero AI disclosure is never hidden" in s, "S17 the dock step-aside is missing")
 
+# S18
+for h in ('<h2 class="pd-h2" id="shCostH">How much does a home lift cost in Ireland?</h2>',
+          '<h3 class="pd-h2" id="shGrantsH">Are there grants for a home lift in Ireland?</h3>',
+          '<h3 class="pd-h2" id="shTypesH">Platform lift vs through-floor lift vs stairlift: what&rsquo;s the difference?</h3>',
+          '<h3 class="pd-h4">Do you need planning permission for a home lift?</h3>',
+          '<h3 class="pd-h4 reveal" id="shCostFactorsH" style="margin:0">What makes one home lift cost more than another?</h3>'):
+    need(s.count(h) == 1, "S18 question heading missing: " + re.sub(r"<[^>]+>", "", h))
+gi = re.search(r'id="shGrantsH">.*?</div>', s, re.S)
+need(gi and all(t in html.unescape(gi.group(0)) for t in ("Housing Adaptation Grant for People with a Disability",
+     "Mobility Aids Grant", "means-tested", "local authority", "approved")) and "€" not in html.unescape(gi.group(0)),
+     "S18 the grants intro: both schemes, means test, local authority, approval first, no new figure")
+
 if problems:
     print("DISC-020 PAGE · FAILED")
     for p in problems:
         print("  " + p)
     sys.exit(1)
-print("DISC-020 PAGE · OK (S1-S17)")
+print("DISC-020 PAGE · OK (S1-S18)")

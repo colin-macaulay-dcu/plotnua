@@ -215,6 +215,7 @@ CSS = """<style>
 .pn-pd .sp .sp-steps h3::before{ content:counter(sp, decimal-leading-zero) "  "; color:var(--stone); }
 .sp-steps p, .sp-note p{ margin:0; font-size:15px; line-height:1.7; }
 .sp-fine{ margin:26px 0 0; font-size:13.5px; line-height:1.7; color:var(--stone); max-width:80ch; }
+.sp-fine a{ color:var(--ink); text-decoration:underline; text-decoration-color:var(--bronze); text-underline-offset:3px; }
 .sp-notes{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px,3vw,44px); }
 .sp-note{ border-top:1px solid var(--line); padding-top:16px; }
 .sp-route .pn-two{ max-width:none; }
@@ -229,6 +230,13 @@ CSS = """<style>
 @media (max-width:560px){ .sp-grid{ grid-template-columns:1fr; } .sp-spec{ grid-template-columns:1fr; } .sp-spec dt{ border-bottom:0; padding-bottom:0; } }
 </style>
 """
+
+
+# Growth round 2 (27 Nov 2026): generic pergola / veranda searches land here; point them to PlotNua's independent,
+# dated comparison of advertised prices (DISC-035 #what-it-costs), which links back to this showcase.
+COMPARE = ('<p class="sp-fine">Comparing prices? PlotNua&rsquo;s independent guide sets these starting prices beside other '
+           'pergola and veranda prices advertised in Ireland, with what each one covers: '
+           '<a href="../discovery-the-outdoor-room.html#what-it-costs">What pergolas and verandas cost in Ireland</a>.</p>')
 
 
 def fig(i, first=False):
@@ -316,6 +324,7 @@ def build(offer_preview=False):
   <div class="sp-head"><div><p class="sp-k">The range</p><h2 class="sp-h2" id="sp-pr-h">Five ranges, all made to measure.</h2></div>
   <p class="sp-p">{E(DATA["standfirst"])}</p></div>
   {"".join(cats)}
+  {COMPARE}
 </div></section>
 
 <section class="sp-sec" id="collection" aria-labelledby="sp-col-h"><div class="sp-w">
@@ -353,6 +362,7 @@ def build(offer_preview=False):
 <footer class="sp-rec"><div class="sp-w">
   <p>Photography: {E(s["name"])}, from <a href="{E(s["creditHref"])}" rel="noopener" target="_blank">superiorpergola.ie</a>, used with the supplier&rsquo;s permission. The supplier keeps ownership of its photographs.</p>
   <p>Product details and starting prices as published on superiorpergola.ie (checked 4 November 2026). Prices and specifications can change; confirm them with the supplier.</p>
+  <p><a href="/terms.html#legal-information">Terms &amp; legal information</a></p>
 </div></footer>
 </main>
 </body>

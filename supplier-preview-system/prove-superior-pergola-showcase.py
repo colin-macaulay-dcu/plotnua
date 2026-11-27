@@ -48,7 +48,7 @@ def check(code, ok, what):
 
 
 print("SUPERIOR PERGOLA IRELAND SHOWCASE GUARD\n" + "=" * 74)
-check("SP1", B.build() == page, "page matches the builder output")
+check("SP1", B._pn_current_head(B.build()) == page, "page matches the builder output (with the declared consent + fonts head transform main() applies)")
 
 imgs = re.findall(r'<img src="([^"]+)"', page)
 check("SP2", bool(imgs) and all(u.startswith(PREFIX) for u in imgs) and len(imgs) == len(set(imgs)),
