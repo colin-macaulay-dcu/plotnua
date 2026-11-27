@@ -5,8 +5,11 @@
    What it does
    - Before any choice: Google Consent Mode v2 defaults are all "denied" (set inline in the page head) and Google Analytics
      is NOT loaded at all (Basic Consent Mode): no request to Google, no cookie, no identifier.
-   - The banner offers "Accept analytics" and "Reject" as two equal buttons, plus "Choose" for the detail. Nothing is
-     pre-ticked. Closing or ignoring the banner is not consent.
+   - The banner offers "Accept analytics" and "Reject optional" as two equal buttons, plus "Cookie settings" for the detail.
+     Nothing is pre-ticked. Closing or ignoring the banner is not consent.
+   - Cross-domain measurement (plotnua.ie <-> plotart.ie) cannot override a choice: GA4, and with it the cross-domain
+     linker, runs on plotart.ie only after Accept here. A linker parameter (_gl) arriving from plotnua.ie is removed from
+     the address straight away unless this visitor has accepted analytics on plotart.ie, so it is never read or kept.
    - Accept: Consent Mode update (analytics_storage granted; every advertising signal stays denied), then GA4 is loaded
      from googletagmanager.com with the same property as PlotNua (continuity) and site_name "PlotArt" (to tell traffic apart).
    - Reject: nothing is loaded; the choice is remembered.
@@ -80,18 +83,19 @@
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'false');
     el.setAttribute('aria-labelledby', 'pa-ck-t');
+    el.setAttribute('aria-describedby', 'pa-ck-p');
     el.innerHTML =
       '<h2 id="pa-ck-t">Cookies on PlotArt</h2>' +
-      '<p>We would like to use Google Analytics to understand how visitors find and use PlotArt. It is off unless you accept, ' +
+      '<p id="pa-ck-p">We would like to use Google Analytics to understand how visitors find and use PlotArt. It is off unless you accept, ' +
       'and you can change your mind at any time under “Cookie settings”. <a href="' + POLICY + '">Cookie policy</a></p>' +
       (detail ? '<div class="pa-ck-d">' +
         '<label><input type="checkbox" checked disabled> <span><strong>Necessary</strong> Remembers this choice on your device. Always on.</span></label>' +
         '<label><input type="checkbox" id="pa-ck-s"' + (cur && cur.statistics ? ' checked' : '') + '> <span><strong>Analytics</strong> Google Analytics: pages visited, device and approximate region. Never used for advertising.</span></label>' +
         '</div>' : '') +
       '<div class="pa-ck-b">' +
-        '<button type="button" data-a="reject">Reject</button>' +
+        '<button type="button" data-a="reject">Reject optional</button>' +
         (detail ? '<button type="button" data-a="save">Save choice</button>' : '<button type="button" data-a="accept">Accept analytics</button>') +
-        (detail ? '' : '<button type="button" class="pa-ck-more" data-a="more">Choose</button>') +
+        (detail ? '' : '<button type="button" class="pa-ck-more" data-a="more">Cookie settings</button>') +
       '</div>';
     el.addEventListener('click', function (e) {
       var a = e.target && e.target.getAttribute && e.target.getAttribute('data-a');
@@ -122,6 +126,11 @@
   }
 
   var choice = read();
+  // a cross-domain linker parameter from plotnua.ie is only honoured with consent given here (see above)
+  if (!(choice && choice.statistics) && /[?&]_gl=/.test(location.search) && w.history && history.replaceState) {
+    var q = location.search.slice(1).split('&').filter(function (p) { return p.split('=')[0] !== '_gl'; }).join('&');
+    history.replaceState(history.state, '', location.pathname + (q ? '?' + q : '') + location.hash);
+  }
   apply(choice ? choice.statistics : null);
   function start() { settingsLink(); if (!choice) banner(false); }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', start); else start();
