@@ -533,6 +533,47 @@ def gallery_order(pkgs):
     return sorted(pkgs, key=lambda p: (p["publication"].get("approved_at") or "9999", p["artist"]["display_name"]))
 
 
+# Search titles and descriptions for particular artist galleries (growth package, 27 Nov 2026). Kept HERE, in the builder,
+# keyed by slug, so a Studio publication (which rewrites gallery.json) never overwrites them. Every fact must come from that
+# artist's own published biography or statement; the figures ({works}, {from_price}) are computed from the published
+# gallery at every build. An artist not listed keeps the standard title and description. Titles at most 60 characters,
+# descriptions at most 160 (checked by artist_meta, which falls back to the standard wording rather than publish a longer one).
+# Review an entry whenever that artist's biography changes.
+ARTIST_META = {
+    # bio: "Best known for his appearances on MasterChef Ireland and Hell's Kitchen ... working alongside ... Marco Pierre
+    # White"; "Today, Nick channels his creativity into painting". Search Console: most "nick munier" searches are about the
+    # restaurateur and TV figure, so the title says plainly that this page is his painting.
+    "nick-munier": ("Nick Munier | From MasterChef Ireland to Painting | PlotArt",
+                    "Nick Munier, of MasterChef Ireland and Hell’s Kitchen, worked alongside Marco Pierre White. Now he paints: see {works}{from_price} and enquire."),
+    # bio: "Dublin-based contemporary artist originally from Cahirciveen, Co. Kerry"; "painting, printmaking, photography and
+    # collage"; "Inspired by the Irish landscape, coastal settings"; "vibrant, layered artworks"
+    "carolyn-walsh": ("Carolyn Walsh Art | Coastal Mixed-Media Works | PlotArt",
+                      "Carolyn Walsh is a Dublin-based artist from Cahirciveen, Co. Kerry, making layered coastal works in paint, print and collage. See {works}{from_price}."),
+    # bio: "Hewson won the Whyte's Award for painting at the 190th RHA Annual Exhibition"; "currently Artist in Residence at
+    # The Royal Hibernian Academy"; statement: "abstract language that ... extends into print"
+    "leah-hewson": ("Leah Hewson | Abstract Paintings & Prints | PlotArt",
+                    "Leah Hewson, Artist in Residence at the RHA and winner of the Whyte’s Award for painting at the 190th RHA Annual. See {works}{from_price}."),
+}
+TITLE_LIMIT, DESCRIPTION_LIMIT = 60, 160
+
+
+def artist_meta(pkg):
+    """(title, description) of an artist's gallery page: the standard wording, or the ARTIST_META entry with live figures."""
+    a = pkg["artist"]
+    standard = ("%s | Original Art | PlotArt" % a["display_name"],
+                "Explore original work by %s. View artworks, published prices and the artist biography, and enquire through PlotArt." % a["display_name"])
+    if a["slug"] not in ARTIST_META:
+        return standard
+    title, template = ARTIST_META[a["slug"]]
+    available = [w for w in pkg["works"] if w["availability"] == "available"]
+    prices = [w["price_eur"] for w in available if w.get("price_eur") and not w.get("price_on_request")]
+    works = ("%d original %s" % (len(available), "work" if len(available) == 1 else "works")) if available else "the artist’s original work"
+    description = template.format(works=works, from_price=(" from " + euro(min(prices))) if prices else "")
+    if len(title) > TITLE_LIMIT or len(description) > DESCRIPTION_LIMIT:
+        return standard
+    return title, description
+
+
 def gallery_pages(pkg, page, enquiry_endpoint=None, basket_origin=None):
     """Every page of one artist's gallery: [(path under plotart/, html)]. `page` is the page shell
     (plotart_shell.artist_page in production, build-plotart's page() in the builder)."""
@@ -540,9 +581,8 @@ def gallery_pages(pkg, page, enquiry_endpoint=None, basket_origin=None):
     base = "artists/%s/" % a["slug"]
     scripts = ("plotart.js", "pa-enquiry.js") if enquiry_endpoint else ("plotart.js",)
     art_scripts = scripts + ("pa-basket.js",) if basket_origin else scripts
-    out = [page(base + "index.html", "%s | Original Art | PlotArt" % a["display_name"],
-                ("Explore original work by %s. View artworks, published prices and the artist biography, and enquire through PlotArt." % a["display_name"]),
-                artist_body(pkg, enquiry_endpoint=enquiry_endpoint), scripts)]
+    title, description = artist_meta(pkg)
+    out = [page(base + "index.html", title, description, artist_body(pkg, enquiry_endpoint=enquiry_endpoint), scripts)]
     ws = shown(pkg)
     for i, w in enumerate(ws):
         out.append(page(base + w["slug"] + ".html", artwork_title(pkg, w), artwork_description(pkg, w),

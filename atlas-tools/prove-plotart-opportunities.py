@@ -142,7 +142,9 @@ for f in pkgs:
                 a[k], b[k] = (re.sub(r'(?m)^ *<div class="pa-aw-cta">.*\n', "", x) if x is not None else x for x in (a[k], b.get(k)))
                 # SEO and analytics package (founder approval 26 Nov 2026, section 2.5): one added line, the two links
                 # (size calculator, available artworks); nothing else may differ
-                b[k] = b[k].replace("      " + P.MORE_LINKS + "\n", "", 1) if b.get(k) is not None else b.get(k)
+                # (27 Nov 2026) only while main's renderer predates that line; once main carries it, nothing is removed
+                if not hasattr(M, "MORE_LINKS"):
+                    b[k] = b[k].replace("      " + P.MORE_LINKS + "\n", "", 1) if b.get(k) is not None else b.get(k)
             if a[k] == b.get(k) or (k == "index" and OPP.open_to(pkg)):   # 17 Nov 2026: pills change the gallery page of an artist who shows something
                 same += 1
             else:
