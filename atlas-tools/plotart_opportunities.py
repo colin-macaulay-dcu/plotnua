@@ -155,7 +155,7 @@ def _rows(pkgs, base, commission_page=False, choices=None):
 GALLERY_FIRST = 8
 HIRE_SAID = "Original work from PlotArt artists who welcome hire and rental. Every placement is arranged through PlotArt."   # communication standard, founder approval 27 Nov 2026
 HIRE_HEAD = "Artists open to hire."
-HIRE_INVITE = ('<h3>Seen a work you like?</h3><p>Tell us which piece, and where it would go. We confirm availability, price and dates with the artist for you.</p>'
+HIRE_INVITE = ('<h3>Seen a work you like?</h3><p>Tell us which piece, and where it would go. Rental enquiries come through PlotArt: we confirm availability, price and dates with the artist for you.</p>'
                '<p class="afx-acts"><a class="afx-btn" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%3A%20a%20specific%20work" data-pa-track="hire_ask_work">Ask about a work</a></p>')
 
 
