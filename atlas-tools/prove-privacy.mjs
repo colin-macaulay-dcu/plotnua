@@ -6,7 +6,9 @@
 //   3. "Accept analytics": analytics hosts become allowed, nothing else new.
 // Usage: node atlas-tools/prove-privacy.mjs <config.json> <base-url> [--pages-from <build dir>] [--pages N] [--report out.json]
 // config: { "site": "plotart.ie", "consentKey": "pa-consent", "functional": ["plotart-enquiry.colin-a41.workers.dev", ...],
-//           "analytics": ["www.googletagmanager.com", "*.google-analytics.com", "*.analytics.google.com"], "pages": ["/", ...] }
+//           "analytics": ["www.googletagmanager.com", "*.google-analytics.com", "*.analytics.google.com"], "pages": ["/", ...],
+//           "expectAnalyticsAfterAccept": true, "buttons": { "accept": "Accept analytics", "reject": "Reject optional" } }
+// Analytics hosts are prohibited before any choice and after Reject, and REQUIRED after Accept (when expectAnalyticsAfterAccept).
 // Exit 1 on any finding; each finding names the page, the phase and the host or cookie.
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -31,7 +33,8 @@ async function visit(page, phase, choose) {
   await tab.goto(base + page, { waitUntil: 'domcontentloaded' });
   await tab.waitForTimeout(700);
   if (choose) {
-    const btn = choose === 'accept' ? 'text=Accept analytics' : 'text=Reject optional';
+    const b = cfg.buttons || { accept: 'Accept analytics', reject: 'Reject optional' };
+    const btn = 'text=' + (choose === 'accept' ? b.accept : b.reject);
     if (await tab.isVisible(btn)) await tab.click(btn); else note(page, phase, 'consent banner not shown');
     await tab.reload({ waitUntil: 'domcontentloaded' });
     await tab.waitForTimeout(700);
@@ -42,6 +45,8 @@ async function visit(page, phase, choose) {
   await ctx.close();
   const allowed = [origin, ...(cfg.functional || []), ...(choose === 'accept' ? cfg.analytics : [])];
   for (const h of hosts) if (!match(h, allowed)) note(page, phase, `request to ${h}`);
+  // the other direction: after an explicit Accept, analytics must actually start (measurement is not silently lost)
+  if (choose === 'accept' && cfg.expectAnalyticsAfterAccept && ![...hosts].some(h => match(h, cfg.analytics))) note(page, phase, 'analytics did not start after Accept');
   const okCookie = c => choose === 'accept' && /^_ga(_|$)/.test(c.name);
   for (const c of cookies) if (!okCookie(c)) note(page, phase, `cookie ${c.name} (${c.domain})`);
   for (const k of storage) if (k !== cfg.consentKey) note(page, phase, `storage ${k}`);

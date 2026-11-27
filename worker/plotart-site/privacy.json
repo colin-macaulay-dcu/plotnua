@@ -17,5 +17,10 @@
     "/artists/clare-o-connor/",
     "/join.html"
   ],
-  "_note": "Privacy regression test config for atlas-tools/prove-privacy.mjs. functional: PlotArt's own services a page may contact before any choice, strictly for the page to work (artwork availability for the basket, Art for Hire availability, enquiry and application forms); they set no cookies and are covered by the privacy notice. Anything else before consent fails the test."
+  "_note": "Privacy regression test config for atlas-tools/prove-privacy.mjs. functional: PlotArt's own services a page may contact before any choice, strictly for the page to work (artwork availability for the basket, Art for Hire availability, enquiry and application forms); they set no cookies and are covered by the privacy notice. Anything else before consent fails the test.",
+  "expectAnalyticsAfterAccept": true,
+  "buttons": {
+    "accept": "Accept analytics",
+    "reject": "Reject optional"
+  }
 }
