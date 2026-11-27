@@ -15,14 +15,14 @@
   gtag('set', 'ads_data_redaction', true);
 </script>
 <script data-cookieconsent="ignore">
-/* PlotNua intention events: supplier_outbound_click, whatsapp_click, email_click. Statistics consent only; no personal data. */
+/* PlotNua intention events: supplier_outbound_click, whatsapp_click, email_click. Analytics consent only; no personal data. */
 (function(){
   var SUP=/(^|\.)(arcticwellness\.ie|donmodularhomes\.ie|elmlandscaping\.ie|gardenroomireland\.ie|gardenhouse24\.ie|nookprefab\.com|superiorpergola\.ie|themobilepods\.ie|thepodfactory\.ie|shomera\.ie|irishsaunacompany\.com|polaris-sauna\.ie|summerhouse24\.ie|pineca\.ie|ognyx\.com|conceptmodular\.ie|allinonecabins\.ie|triqbriq\.de|timbertrove\.com|oodhouse\.com|powersheds\.com|yardbox\.co\.uk|apexverandas\.ie|accesslifts\.ie|tanktribe\.ie)$/i;
   var NOT=/(^|\.)(plotnua\.ie|facebook\.com|instagram\.com|linkedin\.com|tiktok\.com|pinterest\.com|x\.com|twitter\.com|youtube\.com|google\.com|googleapis\.com|gstatic\.com|cookiebot\.com|gov\.ie|irishstatutebook\.ie)$/i;
   document.addEventListener('click',function(e){
     try{
       var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
-      if(!a||typeof gtag!=='function'||!(window.Cookiebot&&Cookiebot.consent&&Cookiebot.consent.statistics))return;
+      if(!a||typeof gtag!=='function'||!(window.siteConsent&&siteConsent.statistics))return;
       var p=location.pathname,u=new URL(a.getAttribute('href'),location.href);
       if(u.protocol==='mailto:'){gtag('event','email_click',{page:p});return;}
       var h=u.hostname.toLowerCase().replace(/^www\./,'');
@@ -33,16 +33,8 @@
   },true);
 })();
 </script>
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b8abbc45-15b0-4d27-8f95-83ebd240a305" data-blockingmode="auto" type="text/javascript"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-PKKJ0RK6N8', { content_group: 'PlotNua' });
-</script>
+<link rel="stylesheet" href="/assets/consent/site-consent.css?v=1">
+<script src="/assets/consent/site-consent.js?v=1" data-site="PlotNua" data-key="pn-consent" data-version="PN-CK-2026-12" data-ga="G-PKKJ0RK6N8" data-domain="plotnua.ie" data-policy="/cookie-policy.html" data-content-group="PlotNua"></script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

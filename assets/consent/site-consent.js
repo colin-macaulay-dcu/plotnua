@@ -52,6 +52,9 @@
   function loadAnalytics() {
     if (loaded) return;
     loaded = true;
+    // Only what happens after the explicit Accept is measured: events a page queued before the choice are dropped,
+    // so nothing collected before consent is sent once Google Analytics starts.
+    for (var i = w.dataLayer.length - 1; i >= 0; i--) { var q = w.dataLayer[i]; if (q && q[0] === 'event') w.dataLayer.splice(i, 1); }
     w['ga-disable-' + GA_ID] = false;
     w.gtag('consent', 'update', { analytics_storage: 'granted' });
     var s = d.createElement('script');
@@ -59,7 +62,9 @@
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
     d.head.appendChild(s);
     w.gtag('js', new Date());
-    w.gtag('config', GA_ID, { site_name: SITE, cookie_domain: DOMAIN, cookie_expires: 15552000, cookie_update: false, allow_google_signals: false, allow_ad_personalization_signals: false });
+    var conf = { site_name: SITE, cookie_domain: DOMAIN, cookie_expires: 15552000, cookie_update: false, allow_google_signals: false, allow_ad_personalization_signals: false };
+    if (cfg('content-group')) conf.content_group = cfg('content-group');   // PlotNua's existing GA4 reporting dimension, kept
+    w.gtag('config', GA_ID, conf);
   }
   function stopAnalytics() {
     w['ga-disable-' + GA_ID] = true;
