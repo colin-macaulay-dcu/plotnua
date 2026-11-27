@@ -3,26 +3,25 @@
 """
 BOUNDED BUILDER — OGNYX: FROM PREVIEW-SCOPED RECORD TO PUBLICATION RECORD.
 
-Founder decision, 14 October 2026: "PROCEED. Fabian at OGNYX has given PlotNua
-the green light to feature the company and its products." The founder also
+Founder decision, 14 October 2026: PROCEED -- OGNYX has given PlotNua the
+green light to feature the company and its products. The founder also
 asked for the exact scope to be established from the ORIGINAL correspondence,
 not from any later reading of it. This builder writes that scope, and nothing
 wider.
 
-THE EVIDENCE (Gmail thread 1a0fd83e5f6c284f, read 14 Oct 2026)
-  2 Oct  PlotNua (1a0fd83e5f6c284f) asks to feature OGNYX and use selected
-         imagery; offers a private preview.
-  2 Oct  OGNYX (1a0fe3d7b43366cf): "Before proceeding, we would be interested
-         in seeing the preview of how OGNYX would be presented within PlotNua."
-  2 Oct  PlotNua (1a0fe99ef44b3eb8) sends the preview: "a simple YES is enough
-         for us to proceed with featuring OGNYX and using the selected imagery
-         shown in the preview, with clear credit and a link back".
-  12 Oct PlotNua (1a1303acc64d5590): "If you're happy for us to feature OGNYX
-         and use the selected product images shown there (where you have the
-         rights to authorise their use), a simple YES is perfect."
-  13 Oct OGNYX (1a13699d55beb7f9): "We have reviewed your offer and can confirm
-         we would be happy to proceed with this. ... Please let us know once
-         this is launched and we can see our products on your page."
+THE EVIDENCE (email thread read 14 Oct 2026; held privately,
+PN-EVID-RIGHTS-OGNYX-20261002 and PN-EVID-RIGHTS-OGNYX-20261013)
+  2 Oct  PlotNua asks to feature OGNYX and use selected imagery; offers a
+         private preview.
+  2 Oct  OGNYX asks to see how OGNYX would be presented before proceeding.
+  2 Oct  PlotNua sends the preview: a simple YES would be enough to proceed
+         with featuring OGNYX and using the selected imagery shown in the
+         preview, with clear credit and a link back.
+  12 Oct PlotNua asks whether OGNYX is happy for PlotNua to feature OGNYX and
+         use the selected product images shown there (where OGNYX has the
+         rights to authorise their use); a simple YES would do.
+  13 Oct OGNYX confirms it is happy to proceed, and asks to be told once the
+         page is launched.
 
 WHAT THAT SUPPORTS, AND WHAT IT DOES NOT
   * feature OGNYX and its products publicly          -> permission.scope "feature"
@@ -68,6 +67,8 @@ PREFIX = "https://www.ognyx.com/cdn/shop/files/"
 
 PERMISSION = {
     "state": "GRANTED",
+    # M8C Stage 2: OGNYX asked to see the presentation first (PG4s).
+    "pre_live_review_requested": True,
     "ref": "WELLNESS-FIRST-OGNYX-20261002",
     "record": "recIjRDMQ55nk6cOn",
     "date": "2026-10-13",
@@ -75,14 +76,8 @@ PERMISSION = {
     "conditions": ["four-named-images-only", "credit", "link-back",
                    "visualisations-labelled", "unmodified-hotlink",
                    "withdrawable-on-request"],
-    "asked": ("If you're happy for us to feature OGNYX and use the selected "
-              "product images shown there (where you have the rights to "
-              "authorise their use), a simple YES is perfect. "
-              "(PlotNua, 12 Oct 2026, Gmail 1a1303acc64d5590)"),
-    "answered": ("We have reviewed your offer and can confirm we would be happy "
-                 "to proceed with this. ... Please let us know once this is "
-                 "launched and we can see our products on your page. "
-                 "(OGNYX, 13 Oct 2026, Gmail 1a13699d55beb7f9)"),
+    "asked": ("PlotNua, by email 12 Oct 2026: asked whether OGNYX was happy for PlotNua to feature OGNYX and use the selected product images shown in the preview (where OGNYX has the rights to authorise their use); a simple YES would suffice."),
+    "answered": ("OGNYX, by email 13 Oct 2026: confirmed it was happy to proceed, and asked to be told once the page is launched so it can see its products. Wording held privately (PN-EVID-RIGHTS-OGNYX-20261013)."),
     "note": ("Founder decision 14 Oct 2026: PROCEED, scope established from the "
              "original correspondence. Featuring OGNYX and its products is "
              "permitted; imagery is permitted for the four selected images "
@@ -94,10 +89,9 @@ PERMISSION = {
 LISTING_REVIEW = {
     "state": "CONFIRMED",
     "requested_by": "supplier",
-    "requested_in": "Gmail 1a0fe3d7b43366cf, 2 Oct 2026: \"Before proceeding, "
-                    "we would be interested in seeing the preview\"",
+    "requested_in": "Email, 2 Oct 2026: OGNYX asked to see the preview before proceeding",
     "confirmed_at": "2026-10-13",
-    "confirmed_in": "Gmail 1a13699d55beb7f9",
+    "confirmed_in": "Email, 13 Oct 2026 (PN-EVID-RIGHTS-OGNYX-20261013)",
     "note": ("OGNYX asked to see the presentation before proceeding, reviewed "
              "the preview sent on 2 Oct (re-sent 9 and 12 Oct) and confirmed "
              "on 13 Oct. The public listing is a subset of the range in that "
@@ -108,8 +102,7 @@ ASSET_APPROVAL = {
     "state": "SELECTED_ASSETS_APPROVED",
     "default_for_unlisted": "NOT_AUTHORISED",
     "approved_count": 4,
-    "authorised_by": "OGNYX, 13 Oct 2026 (Gmail 1a13699d55beb7f9); founder "
-                     "decision 14 Oct 2026",
+    "authorised_by": "OGNYX, by email 13 Oct 2026; founder decision 14 Oct 2026",
     "note": ("Approval is by ENUMERATION, per asset. An OGNYX image is usable "
              "because it appears in approved_assets, never because it is served "
              "from ognyx.com. atlas-tools/prove-ognyx-imagery-containment.mjs "
@@ -153,9 +146,7 @@ APPROVED_ASSETS = [
             "timber step stool alongside, beside a swimming pool"},
 ]
 CONDITIONS = [
-    "FEATURE: PlotNua may feature OGNYX and its products publicly (OGNYX, 13 Oct "
-    "2026, Gmail 1a13699d55beb7f9, answering the 12 Oct ask 1a1303acc64d5590 to "
-    "\"feature OGNYX and use the selected product images shown there\").",
+    "FEATURE: PlotNua may feature OGNYX and its products publicly (OGNYX, by email 13 Oct 2026, answering PlotNua's 12 Oct ask to feature OGNYX and use the selected product images shown in the preview).",
     "IMAGES: the four images enumerated in approved_assets and NO OTHER OGNYX "
     "image, on any page. Enforced per asset by "
     "atlas-tools/prove-ognyx-imagery-containment.mjs.",
@@ -180,24 +171,13 @@ NOTE = (
     "whose own pages contradict themselves stay held in Atlas and are not "
     "published.")
 EVIDENCE_ADD = (
-    " PUBLICATION RECORD, 14 October 2026: the founder decided to PROCEED on the "
-    "original words of the 12 October ask (\"feature OGNYX and use the selected "
-    "product images shown there\") and OGNYX's 13 October reply (\"happy to "
-    "proceed ... let us know once this is launched and we can see our products "
-    "on your page\"). The four images are no longer confined to the preview.")
+    " PUBLICATION RECORD, 14 October 2026: the founder decided to PROCEED on the 12 October ask (feature OGNYX and use the selected product images) and OGNYX's 13 October reply (happy to proceed; asked to be told once the page is launched). The four images are no longer confined to the preview.")
 GRADUATION = {
     "name": "OGNYX",
     "removed": "2026-10-14",
     "was": "imagery_mode 'preview-only' -- four images invited for "
            "ognyx-preview.html while publication was withheld.",
-    "why_removed": ("OGNYX answered the 12 October 2026 ask to \"feature OGNYX "
-                    "and use the selected product images shown there\" with "
-                    "\"We have reviewed your offer and can confirm we would be "
-                    "happy to proceed with this\" (13 Oct 2026, Gmail "
-                    "1a13699d55beb7f9). The founder decided on 14 October 2026 "
-                    "to proceed on those words. That is a publication grant, so "
-                    "under this register's own rule (the_grant_boundary) the row "
-                    "does not belong here any more."),
+    "why_removed": ("OGNYX accepted the 12 October 2026 ask to feature OGNYX and use the selected product images, on 13 October 2026 (evidence_ref, held privately). The founder decided on 14 October 2026 to proceed on that acceptance. That is a publication grant, so under this register's own rule (the_grant_boundary) the row does not belong here any more."),
     "what_constrains_them_now": ("image-rights-records.json (approved_assets: "
                                  "exactly four images, by enumeration) and "
                                  "atlas-tools/prove-ognyx-imagery-containment.mjs, "

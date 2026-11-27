@@ -53,8 +53,8 @@ NEW = {
     "permitted_domain": DOMAIN,
     "required_credit": CREDIT,
     "evidence": (
-        "Tanktribe replied “YES” on 2 October 2026 to the Home "
-        "Wellness outreach, Gmail thread 1a0fd832b4b384f2, giving explicit "
+        "Tanktribe replied YES by email on 2 October 2026 to the Home "
+        "Wellness outreach (held privately), giving explicit "
         "permission to feature Tanktribe and use selected website imagery "
         "with clear credit and a link back. Recorded in Atlas as Image "
         "Permission Outreach " + IPO_REF + " (" + IPO_RECORD + ") against "

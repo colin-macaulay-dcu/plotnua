@@ -9,20 +9,19 @@ TRIQBRIQ, Hutsmith, Honka, BIOBUILDS and Cosy Cabins previews.
 
 *** THE IMAGERY DECISION. STATE A SINCE 9 OCTOBER 2026. ***
 
-This page was built in IMAGERY STATE C -- no imagery at all -- because Brona
-had replied "PREVIEW" on 2 October and Atlas held Permission Outcome
+This page was built in IMAGERY STATE C -- no imagery at all -- because the
+supplier had replied PREVIEW on 2 October and Atlas held Permission Outcome
 "Unknown -- Awaiting Reply". UNKNOWN is not GRANTED, so G0 refused any
 attempt to fill the image list. That was correct at the time and the
 reasoning is kept here because it is the reason this builder can be trusted
 with the opposite state now.
 
-IT CHANGED. Brona replied on 9 October 2026 at 12:02 UTC from
-info@irishsaunacompany.com, Gmail thread 1a0fd83ddde922b1, message
-1a1208b5549f0e23: "we would be delighted for you to use our imagery and
-product on your site." That answers a follow-up which spelled out what YES
-meant -- "happy for PlotNua to feature us and use selected imagery from our
-website" -- against an original outreach promising to "clearly credit Irish
-Sauna Company, and link back to you". Atlas Image Permission Outreach
+IT CHANGED. Irish Sauna Company replied by email on 9 October 2026 (held
+privately, PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261009) granting use of its
+imagery and products on PlotNua. That answers a follow-up which spelled out
+what YES meant -- featuring the company and using selected imagery from its
+website -- against an original outreach promising to clearly credit Irish
+Sauna Company and link back to it. Atlas Image Permission Outreach
 recH6lssOAemyP9rz now reads "Granted -- Founder Confirmed", and the grant is
 recorded in image-rights-records.json and the generated manifest.
 
@@ -80,8 +79,8 @@ import re
 import sys
 
 # RETIRED 27 OCT 2026. Irish Sauna Company withdrew the Harvia range this preview
-# describes and asked PlotNua to feature its own Island Collection instead (Gmail
-# 1a17c9a56ea0fdca); the founder approved the replacement and retired this
+# describes and asked PlotNua to feature its own Island Collection instead (by
+# email, held privately); the founder approved the replacement and retired this
 # preview the same day. irish-sauna-company-preview.html is now a static
 # retirement notice with no product, price or image. This builder refuses to
 # regenerate the old page; the history above is kept as the record of it.
@@ -183,7 +182,7 @@ def die(msg):
 
 
 # ── THE OPEN QUESTIONS ─────────────────────────────────────────────────────
-# NOT A SECOND PRODUCT SECTION. Brona asked to see how products,
+# NOT A SECOND PRODUCT SECTION. The supplier asked to see how products,
 # specifications and pricing would be presented, so the page leads with one
 # fully specified product and then asks the three things her own site leaves
 # open. Each question names what the site does say, so it reads as attention
@@ -225,7 +224,7 @@ OPEN_QUESTIONS = """<!-- THE OPEN QUESTIONS — the three things the supplier's 
 
 # ── THE COPY ───────────────────────────────────────────────────────────────
 # Every figure traces to irishsaunacompany.com, read live 2 October 2026.
-# Specification-forward, because that is what Brona asked to see.
+# Specification-forward, because that is what the supplier asked to see.
 FILL = {
     "SUPPLIER_NAME": SUPPLIER,
     "SUPPLIER_SHORT": SUPPLIER,
@@ -411,7 +410,7 @@ def main():
     src = src.replace(block.group(0), "\n")
 
     # G1b · Remove the introductory hero so the page opens on the
-    # demonstration: the first thing Brona sees is her own result.
+    # demonstration: the first thing the supplier sees is its own result.
     hero = re.search(r"\n<div class=\"wrap\">\n  <header class=\"hero\">.*?"
                      r"\n  </header>\n</div>\n", src, re.S)
     if not hero:

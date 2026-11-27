@@ -64,7 +64,7 @@ PROVIDERS = [
                ("Please note", "Hang-It doesn’t transport artwork.")],
      "links": [("https://www.hangit.ie/", "Website", "services_hangit_web", True),
                ("https://wa.me/353876634458", "WhatsApp 087 663 4458", "services_hangit_whatsapp", "wa")]},
-    # FastLane Couriers, added 22 Nov 2026 (founder brief): the owner, Joseph Collins, agreed to be listed and supplied the
+    # FastLane Couriers, added 22 Nov 2026 (founder brief): the owner agreed to be listed and supplied the
     # logo and the branded-van photograph for this listing (image-rights-records.json ORG-FASTLANE / IPO-FASTLANE-20261122).
     # Independent provider: no partner wording, no insurance, qualifications, guarantees or prices.
     {"key": "fl", "publish": True, "name": "FastLane Couriers",
@@ -84,12 +84,12 @@ PROVIDERS = [
                ("tel:+35319081167", "Call 01 908 1167", "services_fastlane_phone", False),
                ("https://wa.me/353851402487", "WhatsApp 085 140 2487", "services_fastlane_whatsapp", "wa")]},
     # DropBy, prepared 24 Nov 2026 (founder brief): an Irish delivery marketplace preparing to launch in Dublin; co-founder
-    # Cristian confirmed interest in being listed. Text-only until DropBy supplies approved imagery (none requested from the web).
+    # confirmed interest in being listed. Text-only until DropBy supplies approved imagery (none requested from the web).
     # AT LAUNCH: delete "status", reword or drop the "Watch this space" fact, add contact/booking links, update "Area".
     # No partner wording, bookings, prices, insurance, qualifications, launch date or present-tense nationwide coverage.
     {"key": "db", "publish": True, "name": "DropBy",
      "status": "Launching Soon",
-     # image (25 Nov 2026): DropBy's own promotional graphic, sent by Cristian "which you can use" (image-rights-records.json
+     # image (25 Nov 2026): DropBy's own promotional graphic, supplied by DropBy for PlotArt to use (image-rights-records.json
      # ORG-DROPBY / IPO-DROPBY-20261125); hosted as a 16:9 crop of the logo tile and wordmark only, declared as Logo
      "photo": {"dir": "dropby", "stem": "dropby-logo", "big": 969, "w": 969, "h": 545, "credit": "Image: DropBy", "kind": "Logo",
                "alt": "DropBy logo"},
@@ -100,14 +100,14 @@ PROVIDERS = [
                                       "packaging and handling requirements."),
                ("Watch this space", "An exciting new Irish delivery marketplace preparing for its official launch.")],
      "links": [("https://www.dropbycouriers.com/", "Discover DropBy", "services_dropby_web", True)]},
-    # N.I. Couriers, added 25 Nov 2026 (founder brief): Michael Murphy authorised the listing by email the same day
-    # ("Fell free to add our details.") — Atlas Organisation ORG-NICOURIERS (recIy6hMan7ytOVz8). Text-only: no image
+    # N.I. Couriers, added 25 Nov 2026 (founder brief): the owner authorised the listing by email the same day
+    # (held privately, PN-EVID-RIGHTS-IPO-NICOURIERS-20261125) — Atlas Organisation ORG-NICOURIERS (recIy6hMan7ytOVz8). Text-only: no image
     # permission yet. Website, telephone, coverage and imagery requested; add them when supplied. Overnight parcel
     # services are discontinued — never advertise them. No insurance, art-handling experience, nationwide availability or prices.
     {"key": "ni", "publish": True, "name": "N.I. Couriers",
      "placeholder": "Dedicated same-day delivery",
-     # logo (25 Nov 2026): the NiC logo from Michael's email; the founder confirmed Michael told him to go ahead and was
-     # delighted for it to be used (image-rights-records.json ORG-NICOURIERS / IPO-NICOURIERS-20261125); no photograph yet
+     # logo (25 Nov 2026): the NiC logo from N.I. Couriers' email; the founder confirmed the owner told him to go ahead
+     # with it (image-rights-records.json ORG-NICOURIERS / IPO-NICOURIERS-20261125); no photograph yet
      "logo": {"dir": "nicouriers", "file": "nicouriers-logo.png", "w": 461, "h": 130, "alt": "N.I. Couriers", "plaque": "white"},
      "what": "Dedicated same-day, direct-drive and time-critical delivery services.",
      "facts": [("Area", "Based in County Antrim, Northern Ireland. Contact N.I. Couriers directly to discuss delivery "

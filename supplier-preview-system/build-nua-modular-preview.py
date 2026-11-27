@@ -17,9 +17,9 @@ FOUNDER DECISIONS, 27 OCTOBER 2026
          updated shared template; prepare private hosting; nothing deployed
 
 IMAGERY STATE A (27 Oct 2026, 15:45 founder instruction): permission
-requested 13:40 UTC (Gmail 1a17d976ddf345a4) and GRANTED by Sean Lannen at
-15:29 UTC (Gmail 1a17dfb25a1be992): "Ya no problem at all - use whatever you
-need." IPO recHiUyd9FkxqeW5e, Granted — Founder Confirmed; rights record
+requested by email at 13:40 UTC and GRANTED without restriction by Nua
+Modular's founder at 15:29 UTC (held privately,
+PN-EVID-RIGHTS-ORG-000194-20261027). IPO recHiUyd9FkxqeW5e, Granted — Founder Confirmed; rights record
 "Nua Modular" in image-rights-records.json. Only the two photographs
 enumerated there are used, hot-linked unmodified from nuamodular.com and
 credited "© Nua Modular". G0 refuses any other image, a manifest without the

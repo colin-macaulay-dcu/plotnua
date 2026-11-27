@@ -11,7 +11,7 @@
  *   "Preserve the original supplier permission and correspondence records
  *    accurately."                                            FX1, FX2, FX3
  *   "Record the founder's explicit decision to proceed."      FX4, FX5, FX6
- *   "Do not falsely record Mateus as having confirmed."       FX7, FX8, FX9
+ *   "Do not falsely record BIOBUILDS as having confirmed."       FX7, FX8, FX9
  *   "Without weakening the general publication gate for other
  *    suppliers."                                     FX10–FX14, FX15, FX16
  *
@@ -79,12 +79,16 @@ console.log('='.repeat(74));
   /* The supplier's own words. This is the single most important string in
      the record and the one an edit is most likely to lose. */
   const ev = String(BB.evidence || '');
-  const quoted = ev.includes('happy for PlotNua to feature BioBuilds')
+  /* M8C Stage 2: the supplier's words are held privately; the public record
+     states the grant neutrally and carries the review request twice -- in
+     the wording and as structure (permission.pre_live_review_requested). */
+  const quoted = ev.includes('PlotNua may feature BioBuilds and use selected images')
     && ev.includes('with credit and a link back')
-    && ev.includes('Please send us the listing before it goes live');
+    && ev.includes('send the listing before it goes live')
+    && (BB.permission || {}).pre_live_review_requested === true;
   quoted
-    ? ok('FX2 Mateus’s words survive verbatim, including the review request')
-    : bad('FX2 Mateus’s words survive verbatim', ev.slice(0, 120));
+    ? ok('FX2 the 2 October grant and its review request survive (wording and structured flag)')
+    : bad('FX2 the 2 October grant and its review request survive', ev.slice(0, 120));
 }
 {
   const c = (BB.conditions || []).join(' | ');
