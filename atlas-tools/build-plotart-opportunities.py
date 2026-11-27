@@ -63,7 +63,7 @@ COM_BODY = """
 <p class="pa-eyebrow">PlotArt · Commissions</p>
 <h1>Commission an original work.</h1>
 <p class="pa-lede">Some PlotArt artists welcome enquiries about new work made for you: a painting for a particular wall, a piece for a home or a workplace, or a gift. Choose an artist below and send an enquiry through their gallery.</p>
-<p class="pa-com-intro">The artists listed on this page are those who have switched on “Open for commissions” in their PlotArt gallery, so a commission enquiry reaches them directly. Every one of them is based or working in Ireland, and each decides for themselves which commissions to take on.</p>
+<p class="pa-com-intro">The artists listed on this page, all based or working in Ireland, have said they welcome commission enquiries through PlotArt. Each decides for themselves which commissions to take on, and agrees the details directly with you.</p>
 <ul class="pa-opp-jumps" aria-label="On this page"><li><a href="#open-artists">Artists open to commissions</a></li><li><a href="#com-agree">What to agree</a></li><li><a href="#com-size">Choosing the size</a></li><li><a href="#com-price">Price guidance</a></li></ul>
 </div></section>
 <section class="pa-com-how" aria-labelledby="com-how-h"><div class="pa-wrap pa-com-how-in">
