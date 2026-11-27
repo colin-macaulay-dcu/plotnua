@@ -24,4 +24,4 @@ not_found_handling = "none"
 
 [vars]
 ANALYTICS = "consent"           # "consent" only together with site.json, after founder approval (self-hosted consent banner, GA4 after Accept)
-INDEXING = "noindex"         # "index" only at the founder-approved cutover (see PLOTART-DOMAIN-RUNBOOK.md)
+INDEXING = "index"           # "index" only at the founder-approved cutover (see PLOTART-DOMAIN-RUNBOOK.md)

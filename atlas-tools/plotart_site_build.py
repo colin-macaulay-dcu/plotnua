@@ -137,6 +137,10 @@ def plotart_sitemap(root, mode):
     head = re.search(r"<urlset[^>]*>", doc).group(0)
     rows = re.findall(r"<url>.*?</url>", block, re.S)
     outside = SEO.REGION.sub("", doc)
+    extra = os.path.join(root, "worker", "plotart-site", "sitemap-hand-listed.xml")   # hand-listed rows moved out at the cutover
+    if os.path.exists(extra):
+        with open(extra, encoding="utf-8") as f:
+            outside += f.read()
     rows += [b for b in re.findall(r"<url>.*?</url>", outside, re.S) if ABS_OLD.search(re.search(r"<loc>(.*?)</loc>", b).group(1))]
     seen, out = set(), []
     for block in rows:

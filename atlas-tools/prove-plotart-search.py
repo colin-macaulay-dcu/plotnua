@@ -151,6 +151,9 @@ check("archived artwork leaves sitemap", len(SEO.sitemap_paths([archived], launc
 check("removal leaves no artist or artwork URL", all("/artists/" not in u for u in re.findall(r"<loc>(.*?)</loc>", SEO.sitemap_block([], launch))))
 
 # Parse image namespace independently; page URL checks must never count image URLs.
+if launch.get("plotart_domain_sitemap") is True:   # domain cutover: compare against the region plotart.ie's sitemap uses
+    check("cutover: PlotNua's sitemap lists no PlotArt URL", "plotnua.ie/plotart" not in xml)
+    xml = SEO.update_sitemap(xml, packages, dict(launch, plotart_domain_sitemap=False))
 root = ET.fromstring(xml)
 ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9", "image": SEO.IMAGE_NS}
 expected_images = {SEO.canonical(p): urls for p, urls in SEO.sitemap_images(packages, launch).items()}
@@ -200,6 +203,7 @@ with tempfile.TemporaryDirectory(prefix="pa-search-boundary-") as d:
                             base, sha] + (["--instant"] if instant else []), cwd=site, capture_output=True, text=True)
         return r.returncode
 
+    launch = dict(launch, plotart_domain_sitemap=False)   # the fixture proves the boundary on a populated region
     git("init", "-q")
     write("atlas-tools/release/plotart-launch-switches.json", json.dumps(launch))
     skeleton = '<urlset xmlns:image="' + SEO.IMAGE_NS + '"><url><loc>https://plotnua.ie/</loc></url>' + SEO.sitemap_block([], launch) + '</urlset>'

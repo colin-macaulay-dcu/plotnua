@@ -16,7 +16,7 @@ ENVIRONMENT = "production"
 CHECKOUT_PILOT_ENABLED = "false"
 CHECKOUT_ORIGIN = "https://plotart-checkout.NOT-CONFIGURED.workers.dev"   # set to the deployed Worker's own origin
 EXTRA_GALLERY_ORIGINS = "https://plotart.ie"   # domain migration R1, test go-live (founder, 27 Nov 2026): basket availability readable from plotart.ie too; "" = plotnua.ie only
-PUBLIC_GALLERY_URL = ""      # domain migration R1: "https://plotart.ie" at cutover; empty = https://plotnua.ie/plotart (unchanged)
+PUBLIC_GALLERY_URL = "https://plotart.ie"      # domain migration R1: "https://plotart.ie" at cutover; empty = https://plotnua.ie/plotart (unchanged)
 
 [triggers]
 crons = ["*/15 * * * *"]   # releases lapsed reservations and expires lapsed quotes

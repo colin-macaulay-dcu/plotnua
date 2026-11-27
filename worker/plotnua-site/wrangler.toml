@@ -22,4 +22,4 @@ not_found_handling = "none"
 
 [vars]
 INDEXING = "index"            # plotnua.ie is the live site; workers.dev and any test host stay noindex regardless
-PLOTART_ADDRESS = "plotnua.ie" # "plotart.ie" only at the approved cutover (the /plotart 301s)
+PLOTART_ADDRESS = "plotart.ie" # "plotart.ie" only at the approved cutover (the /plotart 301s)

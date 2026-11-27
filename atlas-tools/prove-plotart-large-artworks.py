@@ -152,8 +152,12 @@ check("B6 the large page has its own switch (artworks' switch does not control i
 # B7
 sm = (ROOT / "sitemap.xml").read_text()
 entry = "  <url><loc>https://plotnua.ie/plotart/large-artworks/</loc></url>\n"
-listed = SEO.indexable(PATH, launch) and launch.get("large_artworks_in_sitemap") is True
 check("B7 sitemap.xml is exactly the generated region for the current switches", SEO.update_sitemap(sm, packages, launch) == sm)
+if launch.get("plotart_domain_sitemap") is True:   # domain cutover: PlotArt is listed only in plotart.ie's own sitemap
+    check("B7 cutover: PlotNua's sitemap lists no PlotArt URL", "plotnua.ie/plotart" not in sm)
+    launch = dict(launch, plotart_domain_sitemap=False)   # the region the plotart.ie sitemap is generated from
+    sm = SEO.update_sitemap(sm, packages, launch)
+listed = SEO.indexable(PATH, launch) and launch.get("large_artworks_in_sitemap") is True
 check("B7 the large page is listed %s" % ("once" if listed else "not yet (switch off)"), sm.count("plotart/large-artworks/") == (1 if listed else 0))
 on = dict(launch, large_artworks_indexable=True, large_artworks_in_sitemap=True)
 check("B7 switched on: exactly one added entry, nothing else changes",
