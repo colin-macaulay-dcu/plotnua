@@ -179,6 +179,17 @@ async function agreementVersionFor(env, artistId) {
 async function termsInstalled(env) {
   try { await env.DB.prepare('SELECT 1 FROM artist_terms LIMIT 1').all(); return true; } catch { return false; }
 }
+// Migration 0031 keeps numbers above 25 in an additive table so no historical artist row or Founding 25 record changes.
+async function openFoundingNumbers(env) {
+  try { return await all(env, 'SELECT artist_id, founding_number FROM founding_artist_numbers'); } catch { return []; }
+}
+async function openFoundingNumbersInstalled(env) {
+  try { await env.DB.prepare('SELECT 1 FROM founding_artist_numbers LIMIT 1').all(); return true; } catch { return false; }
+}
+const applyOpenFoundingNumbers = (rows, numbers) => {
+  const byArtist = new Map(numbers.map(r => [r.artist_id, r.founding_number]));
+  return rows.map(r => byArtist.has(r.id || r.artist_id) ? { ...r, founding_number: byArtist.get(r.id || r.artist_id) } : r);
+};
 async function acceptanceRows(env, artistId) {
   const rows = await all(env, 'SELECT * FROM agreement_acceptances WHERE artist_id = ? ORDER BY accepted_at, id', artistId);
   let gaa = [];
@@ -519,7 +530,7 @@ async function runDeletionSchedule(env) {
   return out;
 }
 async function participationAdmin(env) {
-  const artists = await all(env, 'SELECT * FROM artists ORDER BY display_name');
+  const artists = applyOpenFoundingNumbers(await all(env, 'SELECT * FROM artists ORDER BY display_name'), await openFoundingNumbers(env));
   const rows = [];
   for (const a of artists) {
     const pt = await participation(env, a);
@@ -684,7 +695,7 @@ async function previewImage(env, img) {
 /* ---------------------------------------------------------------- founder */
 /* ---- Gallery order (founder decision 31 Oct 2026). Display positions 01-25 in the public Virtual Gallery, set only by
    the founder. A position holds an artist or a reservation (with a private note that is never exported). An artist's
-   permanent Founding 25 number (artists.founding_number) is separate and never changes when the order changes. */
+   permanent Founding Artist number is separate and never changes when the order changes. */
 const POSITIONS = 25;
 // An artist is visible to the pipeline only while a gallery is published or being published (not removed).
 const VISIBLE_SQL = `SELECT q.artist_id FROM publish_queue q WHERE q.status IN ('exporting','published')
@@ -695,8 +706,10 @@ const VISIBLE_SQL = `SELECT q.artist_id FROM publish_queue q WHERE q.status IN (
 const pubSql = env => { const ids = T.testIds(env).map(i => i.replace(/[^0-9a-z]/g, '')).filter(Boolean);
   return ids.length ? `${VISIBLE_SQL} AND q.artist_id NOT IN (${ids.map(i => `'${i}'`).join(',')})` : VISIBLE_SQL; };
 async function galleryOrder(env) {
-  const rows = await all(env, `SELECT g.position, g.artist_id, g.reserved, g.note, g.updated_at, a.display_name, a.slug, a.founding, a.founding_number, a.account_status
+  let rows = await all(env, `SELECT g.position, g.artist_id, g.reserved, g.note, g.updated_at, a.display_name, a.slug, a.founding, a.founding_number, a.account_status
     FROM gallery_positions g LEFT JOIN artists a ON a.id = g.artist_id ORDER BY g.position`);
+  const openNumbers = await openFoundingNumbers(env);
+  rows = applyOpenFoundingNumbers(rows, openNumbers);
   const visible = new Set((await all(env, VISIBLE_SQL)).map(r => r.artist_id));
   const by = new Map(rows.map(r => [r.position, r]));
   const positions = [];
@@ -707,8 +720,8 @@ async function galleryOrder(env) {
           founding_number: r.founding_number, live: visible.has(r.artist_id) });
   }
   const placed = new Set(rows.filter(r => r.artist_id).map(r => r.artist_id));
-  const artists = (await all(env, `SELECT id, display_name, slug, founding, founding_number, account_status, first_published_at FROM artists
-    WHERE account_status IN ('invited','active') ORDER BY founding DESC, display_name`))
+  const artists = applyOpenFoundingNumbers((await all(env, `SELECT id, display_name, slug, founding, founding_number, account_status, first_published_at FROM artists
+    WHERE account_status IN ('invited','active') ORDER BY founding DESC, display_name`)), openNumbers)
     .map(a => ({ ...a, founding: !!a.founding, live: visible.has(a.id), placed: placed.has(a.id) }));
   return { positions, artists };
 }
@@ -849,7 +862,11 @@ async function saveGalleryOrder(env, founder, body) {
 }
 
 async function overview(env) {
-  const artists = await all(env, 'SELECT id, slug, email, display_name, founding, founding_number, account_status, licence_version, licence_accepted_at, first_published_at, application_ref, created_at FROM artists ORDER BY created_at');
+  const artists = applyOpenFoundingNumbers(await all(env, 'SELECT id, slug, email, display_name, founding, founding_number, account_status, licence_version, licence_accepted_at, first_published_at, application_ref, created_at FROM artists ORDER BY created_at'), await openFoundingNumbers(env));
+  // A closed Founding place may still have been reserved before the original incentive ended. These private reservation notes
+  // are shown only in the founder desk. They are evidence for the one narrow grandfathered-invitation path below; they
+  // never make the general Founding route available again and are never returned to artists or the public pipeline.
+  const foundingReservations = await all(env, 'SELECT position, note FROM gallery_positions WHERE reserved = 1 AND artist_id IS NULL ORDER BY position');
   // a gallery is live while its newest released job is not a removal (VISIBLE_SQL), whatever is queued behind it (17 Nov 2026)
   const visible = new Set((await all(env, VISIBLE_SQL)).map(r => r.artist_id));
   const out = [];
@@ -866,7 +883,8 @@ async function overview(env) {
   const queue = await all(env, `SELECT q.*, a.display_name FROM publish_queue q JOIN artists a ON a.id = q.artist_id WHERE (q.status IN ('awaiting_founder','ready','exporting')
     OR (q.status = 'failed' AND NOT EXISTS (SELECT 1 FROM publish_queue n WHERE n.artist_id = q.artist_id AND n.version > q.version AND n.status <> 'superseded'))) ORDER BY q.created_at`);
   const flags = await all(env, `SELECT i.id, i.artist_id, a.display_name, i.sha256 FROM images i JOIN artists a ON a.id=i.artist_id WHERE i.deleted_at IS NULL AND i.checks LIKE '%DUPLICATE_OF_OTHER_ARTIST%'`);
-  return { artists: out, submissions: subs, queue, flags, agreement_installed: !!(await agreementDocs(env)), f25: { selected_with_studio: artists.filter(a => a.founding && !T.isTest(env, a.id)).length, target: 25 },
+  return { artists: out, submissions: subs, queue, flags, agreement_installed: !!(await agreementDocs(env)),
+    founding_reservations: foundingReservations, open_founding_numbers_installed: await openFoundingNumbersInstalled(env),
     instant_autopublish: env.INSTANT_AUTOPUBLISH === 'true', terms_installed: await termsInstalled(env), galleries_installed: await G.installed(env) };
 }
 async function decide(env, founder, id, body) {
@@ -1581,13 +1599,23 @@ async function route(req, env) {
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/founding-number$/)) && m === 'PUT') {
       const b = await req.json(), a = await one(env, 'SELECT id, founding, founding_number FROM artists WHERE id = ?', mm[1]);
       if (!a) throw new Bad('Not found', 404);
+      const open = (await openFoundingNumbers(env)).find(r => r.artist_id === a.id) || null;
+      const current = open ? open.founding_number : a.founding_number;
       const n = b.founding_number == null || b.founding_number === '' ? null : Number(b.founding_number);
-      if (n !== null && (!Number.isInteger(n) || n < 1 || n > 25)) throw new Bad('A Founding 25 number is from 1 to 25');
-      if (n !== null && !a.founding) throw new Bad('Only a Founding Artist has a Founding 25 number');
-      if (n !== null) T.refuse(env, a.id, 'it never holds a Founding 25 number.');
-      if (n !== null && await one(env, 'SELECT id FROM artists WHERE founding_number = ? AND id <> ?', n, a.id)) throw new Bad(`No. ${n} is already held by another artist`, 409);
-      await env.DB.prepare('UPDATE artists SET founding_number=?, updated_at=? WHERE id=?').bind(n, now(), a.id).run();
-      await audit(env, me.email, 'founder', 'founding_number', a.id, { from: a.founding_number, to: n });
+      if (n !== null && (!Number.isInteger(n) || n < 1 || n > 999)) throw new Bad('A Founding Artist number is from 1 to 999');
+      if (n !== null && !a.founding) throw new Bad('Only a Founding Artist has a Founding Artist number');
+      if (n !== null) T.refuse(env, a.id, 'it never holds a Founding Artist number.');
+      if (open && n !== current) throw new Bad(`Founding No. ${current} is permanent and can’t be changed`, 409);
+      if (n !== null && (await one(env, 'SELECT id FROM artists WHERE founding_number = ? AND id <> ?', n, a.id)
+        || (await openFoundingNumbers(env)).some(r => r.founding_number === n && r.artist_id !== a.id))) throw new Bad(`No. ${n} is already held by another artist`, 409);
+      if (n !== null && n > 25) {
+        if (!(await openFoundingNumbersInstalled(env))) throw new Bad('Open Founding Artist numbers need migration 0031.', 503);
+        if (current !== null && current !== undefined && current !== n) throw new Bad(`Founding No. ${current} is already assigned`, 409);
+        if (!open) await env.DB.prepare('INSERT INTO founding_artist_numbers (artist_id, founding_number, assigned_by, assigned_at) VALUES (?,?,?,?)').bind(a.id, n, me.email, now()).run();
+      } else {
+        await env.DB.prepare('UPDATE artists SET founding_number=?, updated_at=? WHERE id=?').bind(n, now(), a.id).run();
+      }
+      await audit(env, me.email, 'founder', 'founding_number', a.id, { from: current, to: n });
       return json({ ok: true, founding_number: n });
     }
     /* ---- Founding 25 applications with artwork images (private bucket plotart-applications; founder only) */
@@ -1670,9 +1698,10 @@ async function route(req, env) {
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/agreement$/)) && m === 'GET') {
       const a = await one(env, 'SELECT * FROM artists WHERE id=?', mm[1]);
       if (!a) return json({ ok: false, error: 'Artist not found' }, 404);
+      const [shown] = applyOpenFoundingNumbers([a], await openFoundingNumbers(env));
       const ag = await agreementState(env, a);
       const log = (await agreementDocs(env)) ? await all(env, 'SELECT reference, route, introduced_at, founding, founding_year_end, late_entry, corrects, logged_at FROM enquiry_log WHERE artist_id=? ORDER BY introduced_at DESC', a.id) : [];
-      return json({ ok: true, artist: { id: a.id, display_name: a.display_name, founding: !!a.founding, founding_number: a.founding_number, first_published_at: a.first_published_at, account_status: a.account_status },
+      return json({ ok: true, artist: { id: a.id, display_name: a.display_name, founding: !!a.founding, founding_number: shown.founding_number, first_published_at: a.first_published_at, account_status: a.account_status },
         agreement: { ...agreementSummary(ag), history: effectiveRows(ag.history, await corrections(env, a.id)) }, documents: (await agreementDocs(env)) || [], enquiries: log,
         participation: await participation(env, a), terms: await termsFor(env, a.id), terms_installed: await termsInstalled(env) });
     }
@@ -1724,11 +1753,31 @@ async function route(req, env) {
       const programme = b.programme === 'founding' || b.programme === 'gallery_artist' ? b.programme
         : b.programme === undefined && b.founding === true ? 'founding' : b.programme === undefined && b.founding === false ? 'licence_only' : null;
       if (!programme) throw new Bad('Choose the programme for this invitation: Founding Artist or Gallery Artist');
-      /* 26 Nov 2026 (founder decision on Report 33): the Founding Artists initiative has ended. New invitations are Gallery
-         Artist invitations; a new Founding Artist (or the old licence-only route) is refused here, with no override. The one
-         exception is the local test harness (ENVIRONMENT 'local', never production or staging), whose older proofs still build
-         Founding accounts to test the rights existing Founding Artists keep. Existing Founding Artists are not touched. */
-      if (programme !== 'gallery_artist' && env.ENVIRONMENT !== 'local')
+      /* The general Founding invitation route remains closed. A founder may complete an earlier invitation through the
+         separate, explicit confirmation path, assigning an unused permanent Founding Artist number in the same database
+         batch. The old 25 was a campaign limit, not a contractual cap. An existing private Gallery-order reservation may
+         optionally be attached, but is not required and is never guessed. This cannot convert an existing artist or put
+         the artist on the newer Gallery Artist agreement. */
+      let foundingException = false, foundingReservation = null, foundingNumber = null;
+      const gf = programme === 'founding' && b.grandfathered_founding && typeof b.grandfathered_founding === 'object' ? b.grandfathered_founding : null;
+      if (programme === 'founding' && env.ENVIRONMENT !== 'local' && gf) {
+        const position = gf.position === null || gf.position === undefined || gf.position === '' ? null : Number(gf.position);
+        const number = Number(gf.founding_number);
+        if (gf.confirm !== 'COMPLETE EARLIER FOUNDING INVITATION') throw new Bad('Confirm that this completes an earlier Founding invitation');
+        if (position !== null && (!Number.isInteger(position) || position < 1 || position > 25)) throw new Bad('Choose a valid reserved gallery position, or leave it unassigned');
+        if (!Number.isInteger(number) || number < 26 || number > 999) throw new Bad('New Founding Artist numbers start at 26');
+        if (!(await openFoundingNumbersInstalled(env))) throw new Bad('Open Founding Artist numbers need migration 0031.', 503);
+        if (b.application_ref && !String(b.application_ref).startsWith('F25-')) throw new Bad('A grandfathered Founding invitation can only use its original F25 application reference');
+        if (position !== null) {
+          foundingReservation = await one(env, 'SELECT position, note FROM gallery_positions WHERE position = ? AND reserved = 1 AND artist_id IS NULL', position);
+          if (!foundingReservation) throw new Bad('That gallery position is no longer reserved. Refresh the desk before continuing.', 409);
+        }
+        if (await one(env, 'SELECT id FROM artists WHERE founding_number = ?', number)
+          || (await openFoundingNumbers(env)).some(r => r.founding_number === number)) throw new Bad(`Founding No. ${number} is already held by another artist`, 409);
+        foundingNumber = number;
+        foundingException = true;
+      }
+      if (programme !== 'gallery_artist' && env.ENVIRONMENT !== 'local' && !foundingException)
         throw new Bad('The Founding Artists initiative has ended: new artists join as Gallery Artists. Existing Founding Artists keep their agreements, numbers and terms.', 409);
       // A PlotArt application (PA-AP-…, Phase 3) is an application to join on the Gallery Artist terms: it can only lead to
       // a Gallery Artist invitation. A Founding 25 reference (F25-…) may lead to either, as the founder decides.
@@ -1743,17 +1792,33 @@ async function route(req, env) {
       if (b.galleries !== undefined && !G.validInviteGalleries(b.galleries)) throw new Bad('Choose one or more galleries');
       if (b.galleries !== undefined && !(await G.installed(env))) throw new Bad('Gallery choice at invitation needs the three-gallery records (migration 0023)', 503);
       const id = rid('a'), at = now();
-      await env.DB.batch([
-        env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
-          .bind(id, slug, email, name, programme === 'founding' ? 1 : 0, b.application_ref || null, at, at),
+      const writes = [
+        foundingException && foundingReservation
+          ? env.DB.prepare(`INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at, founding_number)
+              SELECT ?,?,?,?,?,?,?,?,? FROM gallery_positions WHERE position=? AND reserved=1 AND artist_id IS NULL`)
+              .bind(id, slug, email, name, 1, b.application_ref || null, at, at, foundingNumber <= 25 ? foundingNumber : null, foundingReservation.position)
+          : foundingException
+            ? env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at, founding_number) VALUES (?,?,?,?,?,?,?,?,?)')
+                .bind(id, slug, email, name, 1, b.application_ref || null, at, at, foundingNumber <= 25 ? foundingNumber : null)
+            : env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
+                .bind(id, slug, email, name, programme === 'founding' ? 1 : 0, b.application_ref || null, at, at),
+        ...(foundingException && foundingNumber > 25 ? [env.DB.prepare(`INSERT INTO founding_artist_numbers (artist_id, founding_number, assigned_by, assigned_at)
+          VALUES (?,?,?,?)`).bind(id, foundingNumber, me.email, at)] : []),
+        ...(foundingReservation ? [env.DB.prepare(`UPDATE gallery_positions SET artist_id=?, reserved=0, note=NULL, updated_at=?
+          WHERE position=? AND reserved=1 AND artist_id IS NULL`).bind(id, at, foundingReservation.position)] : []),
         ...(programme === 'gallery_artist' ? [env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
           VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)] : []),
         // R2 (migration 0030): the version is fixed in the same batch as the invitation, at the artist's creation time
         ...(useR2 ? [env.DB.prepare(`INSERT INTO artist_agreement_versions (artist_id, agreement_version, licence_version, assigned_by, assigned_at)
           VALUES (?,?,?,?,?)`).bind(id, AG.GAA_R2, AG.GPIL_R2, me.email, at)] : []),
         // the chosen galleries go in the SAME batch: the artist and their gallery invitations are created together or not at all
-        ...G.inviteStatements(env, me.email, id, b.galleries, b.application_ref || null, at)]);
-      await audit(env, me.email, 'founder', 'invite', id, { slug, founding: programme === 'founding', programme });
+        ...G.inviteStatements(env, me.email, id, b.galleries, b.application_ref || null, at)];
+      const written = await env.DB.batch(writes);
+      const reservationWrite = foundingReservation ? (foundingNumber > 25 ? 2 : 1) : -1;
+      if (foundingReservation && (written[0]?.meta?.changes !== 1 || written[reservationWrite]?.meta?.changes !== 1))
+        throw new Bad('The reservation changed while the invitation was being created. No Founding account was created; refresh and try again.', 409);
+      await audit(env, me.email, 'founder', 'invite', id, { slug, founding: programme === 'founding', programme,
+        ...(foundingException ? { grandfathered: true, founding_number: foundingNumber, ...(foundingReservation ? { reservation_position: foundingReservation.position } : {}) } : {}) });
       if (b.galleries !== undefined) await audit(env, me.email, 'founder', 'gallery_membership_proposed', id, { galleries: b.galleries, source: b.application_ref ? 'application' : 'founder_invitation' });
       // Start the artist's private working profile from their Founding 25 application, where there is one (11 Nov 2026).
       let prefill = { fields: [], skipped: {}, reason: 'no application reference' };

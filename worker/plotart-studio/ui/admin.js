@@ -150,7 +150,7 @@
         <div class="st-kpi"><b>${o.submissions.length}</b><span>to review</span></div>
         <div class="st-kpi"><b>${ready.length}</b><span>ready to publish</span></div>
         <div class="st-kpi"><b>${live}</b><span>galleries live</span></div>
-        <div class="st-kpi"><b>${o.artists.filter(a => a.founding).length}/25</b><span>Founding Artists in Studio</span></div>
+        <div class="st-kpi"><b>${o.artists.filter(a => a.founding).length}</b><span>Founding Artists in Studio</span></div>
       </div>
       <section class="st-card"><h2>To review</h2>
         ${o.submissions.length ? `<ul class="st-works">${o.submissions.map(s => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto"><div>
@@ -210,6 +210,23 @@
           <label class="st-check"><input type="checkbox" name="i-gal" value="being" style="accent-color:var(--terra);width:20px;height:20px"> <span>Being <span class="st-muted">· an invitation they accept in their Studio</span></span></label>
         </fieldset>` : ''}
         <button class="st-btn st-btn--solid" id="inv"${o.terms_installed ? '' : ' disabled'}>Create Studio account</button><p class="st-err" id="ierr"></p></div></div></section>
+      ${o.open_founding_numbers_installed ? `<section class="st-card"><h2>Complete an earlier Founding Artist invitation</h2>
+        <p class="st-muted">This does not reopen general Founding invitations. Use it only for an artist accepted earlier. It fixes a permanent Founding Artist number and assigns the original Founding Artist Agreement and Image Licence. The former “25” was the campaign limit, not a contractual cap. No existing artist is changed.</p>
+        <div class="st-two"><div>
+          <div class="st-f"><label for="gf-name">Artist name</label><input id="gf-name" type="text"></div>
+          <div class="st-f"><label for="gf-email">Email for their Studio</label><input id="gf-email" type="email"></div>
+          <div class="st-f"><label for="gf-ref">Original application reference <span class="st-muted">optional</span></label><input id="gf-ref" type="text" placeholder="F25-…"></div>
+        </div><div>
+          <div class="st-f"><label for="gf-pos">Gallery-order reservation <span class="st-muted">optional</span></label><select id="gf-pos"><option value="">Do not assign a gallery-order position</option>${(o.founding_reservations || []).map(r => `<option value="${r.position}">${String(r.position).padStart(2, '0')}${r.note ? ' · ' + E(r.note) : ' · reserved'}</option>`).join('')}</select></div>
+          <div class="st-f"><label for="gf-num">Permanent Founding Artist number</label><input id="gf-num" type="number" min="26" max="999" step="1" value="29"></div>
+          ${o.galleries_installed ? `<fieldset class="st-f st-inv-gal" style="border:0;margin:0 0 14px;padding:0"><legend style="padding:0;margin:0 0 6px">Galleries <span class="st-req">At least one</span></legend>
+            <label class="st-check"><input type="checkbox" name="gf-gal" value="contemporary" checked style="accent-color:var(--terra);width:20px;height:20px"> <span>Contemporary</span></label>
+            <label class="st-check"><input type="checkbox" name="gf-gal" value="spaces" style="accent-color:var(--terra);width:20px;height:20px"> <span>Spaces</span></label>
+            <label class="st-check"><input type="checkbox" name="gf-gal" value="being" style="accent-color:var(--terra);width:20px;height:20px"> <span>Being</span></label>
+          </fieldset>` : ''}
+          <label class="st-check"><input type="checkbox" id="gf-ok" style="accent-color:var(--terra);width:20px;height:20px"> <span>I have checked this artist was accepted earlier and should retain the original Founding terms.</span></label>
+          <button class="st-btn st-btn--solid" id="gf-inv" style="margin-top:12px">Create Founding Artist account</button><p class="st-err" id="gf-err"></p>
+        </div></div></section>` : ''}
       <section class="st-card"><h2>System check</h2><p class="st-muted">Writes, reads back and removes a test record in the database and a test file in image storage.</p>
         <button class="st-btn" id="sys">Run system check</button><ul class="st-list" id="sysout"></ul></section>`;
     $('#sys').addEventListener('click', async () => { const r = await api('POST', '/api/admin/selftest');
@@ -319,6 +336,21 @@
         say((r.invitation_sent ? 'Account created · invitation emailed' : 'Account created · email is off, so send the invitation by hand') + pfNote); home();
       } catch (e) { $('#ierr').textContent = e.message; }
     });
+    if ($('#gf-inv')) $('#gf-inv').addEventListener('click', async () => {
+      const err = $('#gf-err'); err.textContent = '';
+      try {
+        if (!$('#gf-ok').checked) { err.textContent = 'Tick the box after checking the earlier acceptance and terms.'; return; }
+        const position = $('#gf-pos').value ? Number($('#gf-pos').value) : null, founding_number = Number($('#gf-num').value);
+        if (!founding_number) { err.textContent = 'Choose the permanent Founding Artist number.'; return; }
+        const gals = [...document.querySelectorAll('input[name=gf-gal]:checked')].map(x => x.value), hasGal = !!document.querySelector('input[name=gf-gal]');
+        if (hasGal && !gals.length) { err.textContent = 'Choose at least one gallery.'; return; }
+        const r = await api('POST', '/api/admin/artists', { display_name: $('#gf-name').value, email: $('#gf-email').value,
+          application_ref: $('#gf-ref').value || null, programme: 'founding',
+          grandfathered_founding: { ...(position ? { position } : {}), founding_number, confirm: 'COMPLETE EARLIER FOUNDING INVITATION' },
+          ...(hasGal && !(gals.length === 1 && gals[0] === 'contemporary') ? { galleries: gals } : {}) });
+        say(r.invitation_sent ? 'Founding Artist account created · invitation emailed' : 'Founding Artist account created · email is off, so send the invitation by hand'); home();
+      } catch (e) { err.textContent = e.message; }
+    });
   }
 
   async function review(id) {
@@ -384,7 +416,7 @@
 
 
   /* ---- Gallery order (founder only, 31 Oct 2026). The 25 positions of the public Virtual Gallery. Display order only:
-     a Founding 25 number is set separately below and never changes when cards move. */
+     a Founding Artist number is set separately below and never changes when cards move. */
   async function order() {
     let d = await api('GET', '/api/admin/gallery-order');
     let pos = d.positions.map(p => ({ ...p })), dirty = false;
@@ -411,10 +443,10 @@
         <p class="st-sub">The 25 positions of the public Virtual Gallery, in order. Drag a card onto another to swap them, or use ↑ ↓. Only you can change this. Saved changes reach plotnua.ie on the next publishing run (within about 10 minutes).</p>
         <div class="st-go-bar"><span id="go-state" class="st-muted">${dirty ? 'Unsaved changes' : 'Saved'}</span><button class="st-btn st-btn--solid" id="go-save"${dirty ? '' : ' disabled'}>Save order</button></div>
         <ol class="st-go" id="go">${pos.map(row).join('')}</ol>
-        <section class="st-card" style="margin-top:22px"><h2>Founding 25 numbers</h2>
+        <section class="st-card" style="margin-top:22px"><h2>Founding Artist numbers</h2>
           <p class="st-muted">Each Founding Artist's permanent number. It is separate from the gallery order above: moving a card never changes it. Numbers are set only here, by you, and are never assigned automatically.</p>
           <div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Founding No.</th></tr></thead><tbody>
-          ${d.artists.filter(a => a.founding).map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.live ? ' <span class="st-muted">· live</span>' : ''}</td><td><select data-fn="${a.id}" aria-label="Founding 25 number for ${E(a.display_name)}"><option value="">—</option>${Array.from({ length: 25 }, (_, k) => k + 1).map(n => { const h = d.artists.find(x => x.founding_number === n && x.id !== a.id); return `<option value="${n}"${a.founding_number === n ? ' selected' : ''}${h ? ' disabled' : ''}>${n}${h ? ' · ' + E(h.display_name) : ''}</option>`; }).join('')}</select></td></tr>`).join('') || '<tr><td colspan="2" class="st-muted">No Founding Artists yet.</td></tr>'}
+          ${d.artists.filter(a => a.founding).map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.live ? ' <span class="st-muted">· live</span>' : ''}</td><td><input type="number" min="1" max="999" step="1" data-fn="${a.id}" aria-label="Founding Artist number for ${E(a.display_name)}" value="${a.founding_number || ''}" placeholder="—"></td></tr>`).join('') || '<tr><td colspan="2" class="st-muted">No Founding Artists yet.</td></tr>'}
           </tbody></table></div><p class="st-err" id="fnerr"></p></section>`;
       wire();
       if (focus != null) { const b = app.querySelector(`[data-i="${focus}"] .st-go-mv:not([disabled])`); if (b) b.focus(); }
