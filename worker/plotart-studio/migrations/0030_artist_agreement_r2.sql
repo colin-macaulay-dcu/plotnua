@@ -1,8 +1,5 @@
 -- Preserve existing version assignments and register the fixed texts.
 ALTER TABLE artist_terms ADD COLUMN agreement_version TEXT CHECK (agreement_version IS NULL OR agreement_version = 'PA-GAA-2026-11-R2');
-CREATE TRIGGER artist_terms_agreement_version_fixed BEFORE UPDATE OF agreement_version ON artist_terms
-WHEN NEW.agreement_version IS NOT OLD.agreement_version
-BEGIN SELECT RAISE(ABORT, 'The invitation agreement version cannot be reassigned'); END;
 
 INSERT INTO gallery_agreement_documents (doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at, created_at)
 VALUES ('PA-GAA-2026-11-R2', 'gallery_artist_agreement', 'PlotArt Artist Agreement', 'fixed', '911acac839aed25f2bbeadc8f15678e41c82e65bc361500795238a44bf5c82ad', '3d660bdee95fb00c940ccdefce9233c9b7307e5b8fc365999209d6189aadbdca', strftime('%Y-%m-%dT%H:%M:%SZ','now'), strftime('%Y-%m-%dT%H:%M:%SZ','now'));
