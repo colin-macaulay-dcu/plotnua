@@ -34,7 +34,8 @@ SRCSET = re.compile(r'(?P<pre>\bsrcset=)(?P<q>["\'])(?P<val>[^"\']*)(?P=q)')
 # also blocks scripts from any other host. Measurement can only be added through an approved release that changes both.
 TRACKERS = re.compile(r"googletagmanager\.com|google-analytics\.com|consent\.cookiebot\.com|cookiebot\.com/uc|"
                       r"connect\.facebook\.net|hotjar|clarity\.ms|doubleclick|plausible\.io|matomo|"
-                      r"usercentrics|cookieyes|iubenda|termly|osano|klaro", re.I)
+                      r"usercentrics|cookieyes|iubenda|termly|osano|klaro|"
+                      r"fonts\.googleapis\.com|fonts\.gstatic\.com", re.I)   # fonts are self-hosted: no third-party request before consent
 # In pages, any gtag/fbq call is refused too; scripts may keep their guarded event calls (they run only when gtag exists
 # and the visitor gave statistics consent, so on plotart.ie, with no gtag, they never fire).
 PAGE_TRACKERS = re.compile(r"\bgtag\(|\bfbq\(|dataLayer", re.I)
