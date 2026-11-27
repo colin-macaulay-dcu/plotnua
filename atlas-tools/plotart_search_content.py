@@ -25,7 +25,8 @@ REGION = re.compile(re.escape(BEGIN) + r".*?" + re.escape(END), re.S)
 # photography) are left out.
 ABSTRACT_ARTISTS = frozenset({"leah-hewson", "anna-marie-savage", "carmel-marrinan", "clare-o-connor", "fintan-whelan", "karen-ebbs",
                               "lena-fawaz", "naomi-taitz-duffy", "nessa-mccormack", "olivia-jones"})
-ABSTRACT_SHOWN = 16      # the abstract page's curated grid: up to this many available works, one artist at a time
+# Growth round 2 (27 Nov 2026): the abstract page lists EVERY available abstract work (is_abstract below), no longer a
+# 16-work sample, so it answers "abstract art Ireland" with the whole live selection.
 # Section 2.6: the abstract page links to these artists' galleries ("[artist]'s abstract work") while they are published
 ABSTRACT_LINKED = ("karen-ebbs", "clare-o-connor", "naomi-taitz-duffy", "fintan-whelan")
 E = lambda x: html.escape(str(x), quote=True)
@@ -70,6 +71,10 @@ def is_under(w):
 # presents a landscape, seascape/coast or a particular place; abstract works whose titles merely mention nature are left
 # out. NEEDS REVIEW whenever works are published or changed: a new work is never added automatically, and a listed work
 # that is sold or withdrawn simply drops off the page. Keyed by artwork id (stable across title and slug edits).
+# Borderline review (growth round 2, 27 Nov 2026; decisions and quotes in 13-landscape-classification.md): Carmel
+# Marrinan's Dos Palmas and Two blue Pools ("Mediterranean abstract"), House in the Garden and Night Garden ("Abstract
+# garden") and Silly Bunch ("Abstract flowers"), and Rasher's Sweat from the Sun, Tears from the Moon ("Two Figures in a
+# landscape": the figures are the subject) all stay OUT.
 LANDSCAPE_WORKS = frozenset({
     "wlmcbkhe75h",  # Carmel Marrinan: Over the river (alt text: "Abstract landscape"; a stylised river landscape)
     "wh4ve2xmvb1",  # Carolyn Walsh: Coastal Series 8 (coastal scene; her bio: "inspired by the Irish landscape, coastal settings")
@@ -87,6 +92,44 @@ LANDSCAPE_WORKS = frozenset({
 
 def is_landscape(w):
     return w["id"] in LANDSCAPE_WORKS
+
+
+# Abstract works (growth round 2, 27 Nov 2026). A DOCUMENTED RULE plus a short curated allowlist, never a keyword guess:
+#   1. every available work by an artist in ABSTRACT_ARTISTS (they call themselves abstract painters/artists in their own
+#      published words: see the note above ABSTRACT_ARTISTS), EXCEPT
+#   2. works on the landscape page (LANDSCAPE_WORKS): presented as landscapes or places, they are listed there instead, so
+#      the two pages never compete for the same work; PLUS
+#   3. ABSTRACT_WORKS: individual works by artists who describe a MIXED practice, included only where the artist's own
+#      words for that work (its alt text or description) call it abstract, or place it in an abstract movement by name
+#      (op art), and the image is non-representational. Works the artist calls "abstract figurative", or that show
+#      figures, objects or places (Disco Ball, Vr Vacation), are left out; so is work the artist never calls abstract.
+# NEEDS REVIEW whenever works are published or changed: a new work by a mixed-practice artist is never added
+# automatically; a listed work that is sold or withdrawn drops off the page. Record: 23-plotart-round2-report.md.
+ABSTRACT_WORKS = frozenset({
+    "wz0d06ew7g0",  # Sarah Fitzgibbon: Figure 8 ("Inspired by the Op Artists of the 1960s"; a geometric double spiral)
+    "watmpkc5ya2",  # Sarah Fitzgibbon: Stratify (alt: "Blue, yellow and red abstract layered screen-print")
+    "wj556tda2xd",  # Sarah Fitzgibbon: Circuit II (alt: "abstract layered concentric circles")
+    "wk5gy6lpm0r",  # Sarah Fitzgibbon: Chromatic Construction I (alt: "Multi coloured abstract geometric halftone screen print")
+    "w017upqj4w2",  # Sarah Fitzgibbon: Boxed in (alt: "Green and Purple abstract halftone screen print")
+    "wlxhll1c2g2",  # Sarah Fitzgibbon: Chromatic Construction II (alt: "Green and pink abstract halftone screen print")
+    "wdnw495vv27",  # Ciaran McCoy (PIGSY): One Two Three (iii) (alt: "Large portrait abstract painting with five red circular forms")
+})
+
+
+def is_abstract(w, pkg):
+    """The abstract page's rule (above): the artist's own words, per artist or per work; landscapes listed elsewhere."""
+    if w.get("id") in LANDSCAPE_WORKS:
+        return False
+    return pkg["artist"]["slug"] in ABSTRACT_ARTISTS or w.get("id") in ABSTRACT_WORKS
+
+
+def abstract_rows(packages):
+    """Every available abstract work, in the artwork collection's own fair order (one artist at a time)."""
+    out = []
+    for pkg, w in collection_order(packages):
+        if is_abstract(w, pkg):
+            out.append((pkg, w))
+    return out
 
 
 def _price_key(row):
@@ -426,8 +469,8 @@ def content(path, packages):
                 'Ask the artist to confirm what applies to the particular work.</p>') % body
     if path != "abstract-contemporary-art-ireland.html":
         raise ValueError("Unknown buyer guide")
-    # the curated grid: available works by the artists above, one from each in turn (the collection's own fair order)
-    rows = collection_order([p for p in packages if p["artist"]["slug"] in ABSTRACT_ARTISTS])[:ABSTRACT_SHOWN]
+    # the live grid: every available abstract work (is_abstract), one artist at a time (the collection's own fair order)
+    rows = abstract_rows(packages)
     by_slug = {p["artist"]["slug"]: p for p in packages}
     linked = ['<a href="artists/%s/">%s’s abstract work</a>' % (E(sl), E(by_slug[sl]["artist"]["display_name"])) for sl in ABSTRACT_LINKED if sl in by_slug]
     further = ('<p>Go further into %s, or see <a href="large-artworks/">large abstract paintings</a> among the works of 100 cm or more.</p>' % series(linked)) if linked else ""
@@ -450,9 +493,14 @@ def content(path, packages):
                          E(work_url(pkg, w)), E(prefix + d["file"]), E(P.srcset(im, prefix)), d["pixels"][0], d["pixels"][1], E(im["alt"]),
                          E(work_url(pkg, w)), E(w["title"]), E(pkg["artist"]["slug"]), E(pkg["artist"]["display_name"]), credit,
                          E(w["medium"]), E(P.size_line(w)[0]), E(P.price_line(w))))
-    return ('<p>A selection from the available abstract and contemporary work published on PlotArt. '
-            'Each link opens the artist-supplied details, dimensions, price and enquiry route.</p>'
-            '<ul class="pa-guide-works">%s</ul>%s<p><a class="pa-btn pa-btn--ghost" href="gallery/">Explore all artist galleries →</a></p>%s') % ("".join(cards), further, every)
+    n_art = len({pkg["artist"]["slug"] for pkg, _ in rows})
+    return ('<p><strong>%s by %s</strong>, available on PlotArt.</p>'
+            '<p>Every available abstract work published on PlotArt, by artists based or working in Ireland, one artist at a time. '
+            'Each link opens the artist-supplied details, dimensions, price and enquiry route. The selection updates whenever '
+            'artists publish or sell work.</p>%s'
+            '<ul class="pa-guide-works">%s</ul>%s<p><a class="pa-btn pa-btn--ghost" href="gallery/">Explore all artist galleries →</a></p>%s') % (
+                E(plural(len(rows), "abstract work", "abstract works")), E(plural(n_art, "artist", "artists")),
+                under_note(rows).replace('class="pa-coll-note"', 'class="pa-guide-note"'), "".join(cards), further, every)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -487,12 +535,13 @@ def figures(packages):
             "kinds": [many for one, many in KIND_PLURAL if one in kinds],
             "large": len(large), "large_artists": len({p["artist"]["slug"] for p, _ in large}),
             "large_150": sum(1 for _, w in large if max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0)) >= 150),
-            "under": _subset(rows, is_under), "landscape": _subset(rows, is_landscape)}
+            "under": _subset(rows, is_under), "landscape": _subset(rows, is_landscape),
+            "abstract": _subset(rows, None, is_abstract)}
 
 
-def _subset(rows, keep):
-    """(works, artists, lowest public price) of the available works that pass keep."""
-    sub = [(p, w) for p, w in rows if keep(w)]
+def _subset(rows, keep, keep_pkg=None):
+    """(works, artists, lowest public price) of the available works that pass keep (or keep_pkg(work, package))."""
+    sub = [(p, w) for p, w in rows if (keep_pkg(w, p) if keep_pkg else keep(w))]
     prices = [w["price_eur"] for _, w in sub if priced(w)]
     return len(sub), len({p["artist"]["slug"] for p, _ in sub}), (min(prices) if prices else None)
 
@@ -538,6 +587,16 @@ def _landscape(f):
         plural(works, "original work", "original works"), plural(artists, "artist", "artists"), (", from " + P.euro(low)) if low is not None else "")
 
 
+def _abstract(f):
+    """Growth round 2: the original wording, with the live number of abstract works, artists and lowest price."""
+    works, artists, low = f["abstract"]
+    if not works:
+        return ("Original Irish abstract art: paintings and prints with sizes and prices, and a short "
+                "guide to choosing abstract art you want to live with.")
+    return "Original Irish abstract art: %s by %s%s, with sizes and prices, and a short guide to choosing abstract art you want to live with." % (
+        plural(works, "available work", "available works"), plural(artists, "artist", "artists"), (", from " + P.euro(low)) if low is not None else "")
+
+
 def _buy(f):
     tail = (" See live prices from %s." % P.euro(f["low"])) if f["low"] is not None else " See the live artwork prices."
     return "Where to buy original Irish art, what it costs, and what to ask about framing, VAT and delivery before you buy." + tail
@@ -550,9 +609,7 @@ HUB_META = {
     "original-art-under-500/index.html": ("Original Art Under €500 in Ireland | PlotArt", _under),
     "landscape-paintings-ireland/index.html": ("Landscape Paintings for Sale in Ireland | PlotArt", _landscape),
     "buy-original-art-ireland.html": ("Buy Original Art in Ireland | Prices & Guide | PlotArt", _buy),
-    "abstract-contemporary-art-ireland.html": ("Abstract Art Ireland | Original Irish Abstract Art | PlotArt",
-                                               lambda f: "Original Irish abstract art: paintings and prints with sizes and prices, and a short "
-                                                         "guide to choosing abstract art you want to live with."),
+    "abstract-contemporary-art-ireland.html": ("Abstract Art Ireland | Original Irish Abstract Art | PlotArt", _abstract),
     "choose-art-for-living-room.html": (LIVING_TITLE, lambda f: LIVING_DESCRIPTION),
 }
 
