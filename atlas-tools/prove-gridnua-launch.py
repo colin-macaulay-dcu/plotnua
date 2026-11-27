@@ -43,6 +43,9 @@ CHECK = "disc026-compute-readiness-check.html"
 # once and inside <head>; any other script, form, endpoint or analytics tag still fails GL4.
 sys.path.insert(0, str(ROOT / "atlas-tools"))
 from seo_pn_analytics import FULL as SEO_PN_FULL
+# Consent migration (prepared 27 Nov 2026): the exempted head block is the same block after the declared transform.
+import seo_pn_consent
+SEO_PN_FULL = seo_pn_consent.transform(SEO_PN_FULL)
 
 
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()

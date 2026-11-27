@@ -9,7 +9,7 @@
    Not restyled: the Cesium viewer, governed photographs and credits, the
    Atlas A mark and the PlotNua brand marks.
    ========================================================================== */
-@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
+@import url("/assets/fonts/pn-fonts.css?v=1");
 
 html[data-pn-skin="your-plot"]{ background:#1B1C1E; color-scheme:dark; }
 html[data-pn-skin="your-plot"] body{

@@ -327,23 +327,25 @@ with tempfile.TemporaryDirectory() as td:
     # ── ISSUE 005 PIECE E2.2 — A CORRECT LABEL CARRYING PERSONAL DATA ─────
     # The first real supplier artefact was refused because Ecohouse's IRISH
     # PRESENCE value cited a landline. The label and the selection were both
-    # correct; only the VALUE was unsafe. The whole segment must be withheld —
-    # never stripped and salvaged, which would mean deciding where the evidence
-    # stops and the personal data starts.
+    # correct; only the VALUE was unsafe. Since 27 Nov 2026 the number itself is
+    # withheld (replaced by a marker) and the evidence sentence is kept.
     print("\n--- E2.2: a correct label whose VALUE carries a phone number ---")
     if sup:
         eco = sup.get(ORG_PHONE_IN_PRESENCE, {}).get("locality", {})
-        ck("E2.2: irishPresence is WITHHELD, not stripped",
-           "irishPresence" not in eco, eco.get("irishPresence"))
-        ck("E2.2: no remainder of the unsafe value survives",
-           not any("Irish premises" in str(v) for v in eco.values()), eco)
+        # 27 Nov 2026 (founder direction): the NUMBER is withheld and the evidence kept (contact_redaction.py),
+        # because dropping the whole segment lost useful supplier information.
+        ck("E2.2: irishPresence keeps its evidence with the number withheld",
+           "Irish premises" in str(eco.get("irishPresence")) and "[phone number withheld]" in str(eco.get("irishPresence")),
+           eco.get("irishPresence"))
+        ck("E2.2: no digit of the number survives in the segment",
+           "253" not in str(eco.get("irishPresence")) and "3786" not in str(eco.get("irishPresence")), eco)
         ck("E2.2: the exact production number is absent from the artefact",
            "+353 1 253 3786" not in json.dumps(sup))
         ck("E2.2: the SAFE labels on the same record still export",
            eco.get("jurisdiction") == "Republic of Ireland"
            and eco.get("installationModel") == "INCLUDED IN PRICE", eco)
         ck("E2.2: no phone survives anywhere in the supplier artefact",
-           not re.search(r"\+\d[\d ()-]{7,}", json.dumps(sup)))
+           not re.search(r"\+\d[\d ()-]{7,}|(?<![\w.,-])0\d{1,4}[ -]\d{3,4}(?:[ -]\d{3,4})?(?!\d)", json.dumps(sup)))
         ck("E2.2: no email survives anywhere in the supplier artefact",
            not re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", json.dumps(sup)))
 
@@ -466,13 +468,13 @@ with tempfile.TemporaryDirectory() as td:
     print("\n--- E2.2 guard capability: remove the refusal, the failure returns ---")
     unsafe = td / "unsafe_generator.py"
     gtext = GEN.read_text(encoding="utf-8")
-    refusal = ("        if SUPPLIER_PERSONAL_RE.search(value):\n"
-               "            return None\n")
-    if gtext.count(refusal) != 1:
-        ck("E2.2: the refusal is uniquely locatable for the negative test",
-           False, gtext.count(refusal))
+    refusal = ("        return redact_contacts(value)\n", "        return value\n")
+    refusal2 = ("    supplier_evidence = redact_tree(supplier_evidence)", "    pass  # redaction removed")
+    if gtext.count(refusal[0]) != 1 or gtext.count(refusal2[0]) != 1:
+        ck("E2.2: the withholding is uniquely locatable for the negative test",
+           False, (gtext.count(refusal[0]), gtext.count(refusal2[0])))
     else:
-        unsafe.write_text(gtext.replace(refusal, ""), encoding="utf-8")
+        unsafe.write_text(gtext.replace(*refusal).replace(*refusal2), encoding="utf-8")
         out3 = td / "out3"
         out3.mkdir()
         r3 = run_generator(unsafe, out3, snap)

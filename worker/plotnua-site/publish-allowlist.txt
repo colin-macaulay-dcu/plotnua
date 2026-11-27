@@ -22,8 +22,8 @@ maker-explorer.js
 provider-explorer.js
 # Public data files read by the site's own pages (each reviewed 27 Nov 2026). Excluded after review (also in _config.yml):
 # image-provenance-records, image-adaptation-licences, wellness-universe-v1 and the four unrequested garden-room-detail
-# partitions (alternatives, bestfor, strengths, typicalhomeowner). parking-platform-evidence and supplier-export-evidence stay
-# public as evidence under the public-disclosure firewall, pending a founder decision.
+# partitions (alternatives, bestfor, strengths, typicalhomeowner), and (founder decision 27 Nov 2026) parking-platform-evidence
+# and supplier-export-evidence.
 additional-home-universe-v1.json
 atlas-match-pool.json
 atlas-recognition-pool.json
@@ -38,11 +38,9 @@ garden-room-detail-planningconsiderations-v1.json
 garden-room-detail-sources-v1.json
 garden-room-detail-suppliers-v1.json
 garden-room-recommendation-universe-v1.json
-parking-platform-evidence.json
 power-station-provider-universe-v1.json
 recommendation-universe-v1.json
 search-index-v1.json
-supplier-export-evidence.json
 # Folders
 assets/*
 plotart/*

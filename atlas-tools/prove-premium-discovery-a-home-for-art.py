@@ -166,6 +166,10 @@ def seo_gr2_home(h):
     return "/" + h[len("index.html"):] if h == "index.html" or h.startswith(("index.html#", "index.html?")) else h
 
 COOKIEBOT_OLD, COOKIEBOT_NEW = "8a5219c1-0f84-4a7e-9c17-d22fab76adc1", "b8abbc45-15b0-4d27-8f95-83ebd240a305"
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import seo_pn_consent
+
 def cookiebot_id(v):
     """Analytics restore (26 Nov 2026): the Cookiebot domain group moved from the suspended trial account
     (8a5219c1…) to the active account (b8abbc45…). Declared mapping applied to the BASE head only; this
@@ -255,7 +259,9 @@ R6_HERO_SHA256 = "f9f81ed103d6bdd4024d1cd1794e21df2c657f1733d2c710a79ccafcc3f4c5
 def check(new, base):
     nh = head(new)                                                     # P1
     for k in nh:
-        if nh[k] != cookiebot_id(base["head"][k]): die("P1 head changed: %s" % k)
+        want = cookiebot_id(base["head"][k])
+        if k == "scripts": want = seo_pn_consent.swap_tags(want)   # consent migration (declared in seo_pn_consent.py)
+        if nh[k] != want: die("P1 head changed: %s" % k)
     want = sorted((Counter(base["img"]) - Counter(R6_IMG_REMOVED) + Counter(R6_IMG_ADDED)).elements())   # P2
     if imgs(new) != want: die("P2 the set of <img> tags differs from BASE + the declared Release 6 changes")
     if hashlib.sha256(hero(new).encode("utf-8")).hexdigest() != R6_HERO_SHA256: die("P2 the hero is not the approved Release 6 slider")

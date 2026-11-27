@@ -14,6 +14,9 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import sys as _sys2, os as _os2
+_sys2.path.insert(0, _os2.path.dirname(_os2.path.abspath(__file__)))
+from contact_redaction import redact_tree  # noqa: E402
 import json
 import re
 import sys
@@ -575,6 +578,7 @@ def main():
         "products": emitted,
     }
 
+    payload = redact_tree(payload)   # contact details withheld from published text (contact_redaction.py)
     body = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
 
     # ── firewall, on the artefact itself, before it is written ──────────────

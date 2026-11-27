@@ -64,6 +64,9 @@ import hashlib
 import json
 import os
 import re
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from contact_redaction import redact as redact_contacts, redact_tree  # noqa: E402
 import sys
 import time
 import urllib.error
@@ -245,7 +248,7 @@ SUPPLIER_LABELS_WITHHELD = {
 SUPPLIER_PERSONAL_RE = re.compile(
     r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"      # email
     r"|(?:\+\d[\d ()-]{7,})"                                # international phone
-    r"|(?<![\d.,])0\d{1,4}[ -]\d{3,4}(?:[ -]\d{3,4})?(?!\d)"  # national phone, e.g. 087 123 4567 (27 Nov 2026)
+    r"|(?<![\w.,-])0\d{1,4}[ -]\d{3,4}(?:[ -]\d{3,4})?(?!\d)"  # national phone, e.g. 087 123 4567 (27 Nov 2026)
 )
 
 
@@ -288,9 +291,9 @@ def supplier_segment(text: str, label: str):
         # because its evidence cites a landline. A null here means "Atlas holds
         # this but it is not exportable in its present form", NOT "no Irish
         # presence". UNKNOWN is not FALSE.
-        if SUPPLIER_PERSONAL_RE.search(value):
-            return None
-        return value
+        # 27 Nov 2026 (founder direction): the number or address is withheld, the evidence is kept
+        # (contact_redaction.py); dropping the whole segment lost useful supplier information.
+        return redact_contacts(value)
     return None
 
 FEATURES_WANTED = {
@@ -1887,6 +1890,7 @@ def main():
              "qualificationRuleVersion": RULE_VERSION,
              "excludedCount": len(excluded), "excluded": excluded}
 
+    payload = redact_tree(payload)   # contact details withheld from published text (contact_redaction.py)
     (out / "garden-room-recommendation-universe-v1.json").write_text(
         json.dumps(payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
     (out / "garden-room-exclusions-v1.json").write_text(
@@ -1896,6 +1900,7 @@ def main():
     # Keyed by canonical Airtable product id, which is the ONLY join. No price,
     # no ranking, no qualification, no organisation — nothing that would make
     # this a second copy of the product.
+    detail_products = redact_tree(detail_products)   # contact details withheld (contact_redaction.py)
     detail_payload = {
         "schema": SCHEMA + ".detail",
         "version": VERSION,
@@ -2036,6 +2041,7 @@ def main():
     # Shaped as a PARTITION, not a special case: same keys, same index entry,
     # same validator run, same atomic publication. Only its per-record shape
     # differs, and that is what the validator dispatches on.
+    supplier_evidence = redact_tree(supplier_evidence)   # contact details withheld (contact_redaction.py)
     supplier_doc = {
         "schema": SCHEMA + ".detail",
         "version": VERSION,

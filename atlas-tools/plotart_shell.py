@@ -20,23 +20,10 @@ E = lambda s: html.escape(str(s), quote=True)
 # already-published pages; prove-plotart-launch.py L23 and prove-plotart-wall-size.py check it is exactly this and nothing else.
 COOKIEBOT_CBID = "b8abbc45-15b0-4d27-8f95-83ebd240a305"
 GA4_ID = "G-PKKJ0RK6N8"
-ANALYTICS_HEAD = """<script data-cookieconsent="ignore">
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('consent', 'default', {
-    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
-    analytics_storage: 'denied', functionality_storage: 'denied',
-    personalization_storage: 'denied', security_storage: 'granted',
-    wait_for_update: 500 });
-  gtag('set', 'ads_data_redaction', true);
-</script>
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="%s" data-blockingmode="auto" type="text/javascript"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
-<script>
-  gtag('js', new Date());
-  gtag('config', '%s', { content_group: 'PlotArt' });
-</script>
-""" % (COOKIEBOT_CBID, GA4_ID, GA4_ID)
+# Consent migration (prepared 27 Nov 2026, not released): PlotArt pages on plotnua.ie use the shared consent module with
+# plotnua.ie's own consent record; Cookiebot and the static Google tag are gone (see seo_pn_consent.py).
+import seo_pn_consent as _consent
+ANALYTICS_HEAD = _consent.PLOTART_HEAD
 _VIEWPORT = re.compile(r'<head>\n<meta charset="utf-8">\n<meta name="viewport" content="[^"]*">\n')
 
 
