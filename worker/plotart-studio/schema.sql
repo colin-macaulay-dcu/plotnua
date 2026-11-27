@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS artists (
   below_min_since TEXT,             -- a Founding gallery fell below 10 works: 30-day top-up from this date
   application_ref TEXT,
   created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
-  founding_number INTEGER CHECK (founding_number IS NULL OR founding_number BETWEEN 1 AND 25)   -- permanent Founding 25 number (founder only)
+  founding_number INTEGER CHECK (founding_number IS NULL OR founding_number BETWEEN 1 AND 25)   -- historical permanent numbers 1-25; later numbers use founding_artist_numbers
 );
 
 CREATE TABLE IF NOT EXISTS artworks (
@@ -109,7 +109,7 @@ CREATE INDEX IF NOT EXISTS enquiries_artist ON enquiries (artist_id, created_at)
 
 -- Gallery order (founder decision 31 Oct 2026). The founder's positions 01-25 in the public Virtual Gallery: a row holds
 -- either an artist or a reservation. A reservation's note is private (founder only) and is never exported.
--- Display order only: an artist's permanent Founding 25 number is artists.founding_number and never changes with it.
+-- Display order only: an artist's permanent Founding Artist number never changes with their gallery position.
 CREATE TABLE IF NOT EXISTS gallery_positions (
   position INTEGER PRIMARY KEY CHECK (position BETWEEN 1 AND 25),
   artist_id TEXT UNIQUE REFERENCES artists(id),
@@ -119,6 +119,17 @@ CREATE TABLE IF NOT EXISTS gallery_positions (
   CHECK ((reserved = 1 AND artist_id IS NULL) OR (reserved = 0 AND artist_id IS NOT NULL AND note IS NULL))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS artists_founding_number ON artists(founding_number) WHERE founding_number IS NOT NULL;
+
+-- Open-ended Founding Artist numbers (migration 0031). Existing 1–25 values stay in artists.founding_number unchanged;
+-- later numbers are additive, so the historical Founding 25 records and agreement wording are preserved verbatim.
+CREATE TABLE IF NOT EXISTS founding_artist_numbers (
+  artist_id       TEXT PRIMARY KEY REFERENCES artists(id) ON DELETE CASCADE,
+  founding_number INTEGER NOT NULL UNIQUE CHECK (founding_number BETWEEN 26 AND 999),
+  assigned_by     TEXT NOT NULL,
+  assigned_at     TEXT NOT NULL
+);
+CREATE TRIGGER IF NOT EXISTS founding_artist_numbers_no_update BEFORE UPDATE ON founding_artist_numbers
+BEGIN SELECT RAISE(ABORT, 'a Founding Artist number never changes'); END;
 
 -- PlotNua Idea Board (migration 0003, 1 Nov 2026): the same two tables, for new installs and local tests.
 CREATE TABLE ideas (

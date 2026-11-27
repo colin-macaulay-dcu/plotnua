@@ -14,6 +14,8 @@ its release/auto/ branch with the "PlotNua Release" App token, and nothing may d
   A6  push-release-branch.sh that could push without the token in Actions, push main, or force
   A7  "Release to production" not leaving the self-promoting publishers' branches (and their rollbacks) to them
   A8  the App key referenced anywhere outside those environment-scoped jobs
+  A12 the freshness canceller (release-freshness.yml, job stale): the only job allowed actions: write, and only to run
+      refresh-stale-candidates.sh --cancel, with no secret, no App token and no push (27 Nov 2026)
   A11 promote.sh pushing main or a prod/ tag other than as the App, in one atomic push (Stage 2, 21 Nov 2026)
 
   python3 atlas-tools/release/prove-release-app-push.py [--self-test]
@@ -38,6 +40,7 @@ RELEASING = {
     "plotart-content-publish.yml": {"publish": ["Publish approved gallery content (content-only, guarded, fast-forward)"]},
     "atlas-stats.yml": {"refresh": ["Commit, only if a governed figure changed"]},
     "atlas-match-universe-refresh.yml": {"refresh": ["Publish the candidates, only if they are genuinely different"]},
+    "release-freshness.yml": {"refresh": ["Refresh stale candidates as new release branches"]},   # 27 Nov 2026
 }
 SELF_PROMOTING = ["plotart", "garden", "ideas"]
 
@@ -174,6 +177,22 @@ def check(workflows, texts, tools):
         errs.append("A10 the ordinary promote job must never accept an Atlas check in place of the founder's approval")
     if set(jobs) != {"preview", "approval", "promote", "promote-atlas"}:
         errs.append("A10 Release to production must have exactly the jobs preview, approval, promote and promote-atlas")
+    # A12 the freshness canceller: actions: write in exactly one non-releasing job, which only cancels
+    rf = workflows.get("release-freshness.yml")
+    if rf is not None:
+        sj = (rf.get("jobs") or {}).get("stale") or {}
+        runs = [str(x.get("run", "")) for x in (sj.get("steps") or []) if x.get("run")]
+        if (sj.get("permissions") or {}).get("actions") != "write" or runs != ["bash atlas-tools/release/refresh-stale-candidates.sh --cancel"] \
+                or "secrets." in json.dumps(sj) or sj.get("environment") or any(x.get("id") == "app" for x in (sj.get("steps") or [])):
+            errs.append("A12 release-freshness.yml/stale must only run refresh-stale-candidates.sh --cancel, with actions: write and no secret or App token")
+        for jn, jj in (rf.get("jobs") or {}).items():
+            if jn != "stale" and (jj.get("permissions") or {}).get("actions") == "write":
+                errs.append("A12 release-freshness.yml/%s must not hold actions: write" % jn)
+        if "refresh" in (rf.get("jobs") or {}) and "stale" not in str((rf["jobs"]["refresh"] or {}).get("needs", "")):
+            errs.append("A12 release-freshness.yml/refresh must follow the stale job")
+    rs = tools.get(os.path.join(REL, "refresh-stale-candidates.sh"), "")
+    if rs and (re.search(r"push[^\n#]*(\s-f\b|--force)", rs) or re.search(r"refs/heads/main\b", rs) or "push-release-branch.sh" not in rs or "MAX_REFRESH" not in rs):
+        errs.append("A12 refresh-stale-candidates.sh must push only through push-release-branch.sh, never main, never force, and cap refreshes (MAX_REFRESH)")
     # A8 the key only in the releasing jobs
     allowed = set(RELEASING)
     for path, t in texts.items():
@@ -233,6 +252,12 @@ def self_test():
     case("Atlas re-check dropped", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote-atlas"].__setitem__("steps", [s for s in w["release-promote.yml"]["jobs"]["promote-atlas"]["steps"] if "verify-atlas" not in str(s.get("run",""))]), "A10")
     case("Atlas job made to run always()", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote-atlas"].__setitem__("if", "always() && " + w["release-promote.yml"]["jobs"]["promote-atlas"]["if"]), "A10")
     case("a third unapproved release job added", lambda w,t,tl: w["release-promote.yml"]["jobs"].__setitem__("promote-fast", {"runs-on": "ubuntu-latest", "steps": []}), "A10")
+    case("freshness canceller given the App key", lambda w,t,tl: w["release-freshness.yml"]["jobs"]["stale"]["steps"].append({"id": "app", "uses": PIN}), "A12")
+    case("freshness canceller runs more than the cancel", lambda w,t,tl: w["release-freshness.yml"]["jobs"]["stale"]["steps"].append({"run": "gh workflow run x"}), "A12")
+    case("freshness refresh given actions: write", lambda w,t,tl: w["release-freshness.yml"]["jobs"]["refresh"]["permissions"].__setitem__("actions", "write"), "A4")
+    case("freshness refresh without the release-automation environment", lambda w,t,tl: w["release-freshness.yml"]["jobs"]["refresh"].__setitem__("environment", "x"), "A1")
+    case("refresh script pushes main", lambda w,t,tl: tl.__setitem__(os.path.join(REL, "refresh-stale-candidates.sh"), tl[os.path.join(REL, "refresh-stale-candidates.sh")] + "\ngit push origin HEAD:refs/heads/main\n"), "A12")
+    case("refresh script without the refresh cap", lambda w,t,tl: tl.__setitem__(os.path.join(REL, "refresh-stale-candidates.sh"), tl[os.path.join(REL, "refresh-stale-candidates.sh")].replace("MAX_REFRESH", "LIMIT")), "A12")
     case("key referenced by another workflow", lambda w,t,tl: t.__setitem__(os.path.join(WF,"site-health.yml"), t.get(os.path.join(WF,"site-health.yml"),"")+"\n# ${{ secrets.RELEASE_APP_KEY }}\n"), "A8")
     print("\nRELEASE APP PUSH SELF-TEST · %s · %d failed" % ("OK" if fails == 0 else "FAIL", fails))
     return 1 if fails else 0
@@ -244,5 +269,5 @@ if __name__ == "__main__":
     errs = check(*gather())
     for e in errs:
         print("  REFUSED  " + e)
-    print("RELEASE APP PUSH · %s" % ("OK (A1-A11: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
+    print("RELEASE APP PUSH · %s" % ("OK (A1-A12: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
     sys.exit(1 if errs else 0)

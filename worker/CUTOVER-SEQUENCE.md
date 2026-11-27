@@ -12,41 +12,86 @@ A goes first because the redirects then live in the Worker's own code (`PLOTART_
 
 ---
 
-## Preparation (no approval needed; nothing changes)
+## Preparation: done 27 Nov 2026
 
-1. **DNS reconciliation:**
-   - Export the Blacknight zone (needs one sign-in).
-   - Run `python3 atlas-tools/dns-reconcile.py check <zone> --live atlas-tools/release/plotnua-dns-live-2026-11-27.json`.
-   - Every record must be classified, and nothing answering today may be missing.
-2. **Resend:** the plotnua.ie domain shows *Verified* in the Resend dashboard. Its records today:
-   - `resend._domainkey` (TXT, DKIM);
-   - `send` CNAME → `send.forge.rmta.net`.
-3. **Parity:** the PlotNua test deploy and comparison run green (last result 27 Nov: 1,647 URLs, 0 differences).
+1. **DNS reconciliation:** done. The Blacknight zone (18 records) was read with the founder signed in. Against public DNS it shows 0 items needing attention. The copy is in plotnua-infrastructure `hosting-migration/plotnua-dns-2026-11-27/`.
+2. **Resend:** plotnua.ie is *Verified*, with three verified records:
+   - `resend._domainkey` TXT (DKIM);
+   - `send` CNAME → `send.forge.rmta.net`;
+   - `rsend` CNAME → `rsend-euw1.forge.rmta.net`. This one was found in the dashboard and added to the tooling in #76.
+3. **Parity:** the PlotNua test deploy and comparison ran green again on 27 Nov, after #72.
 
 ---
 
 ## A. PlotNua hosting migration
 
-### A1. Add plotnua.ie to Cloudflare (Free plan, no cost)
+### A1. Add plotnua.ie to Cloudflare (Free plan, no cost): COMPLETE 27 Nov 2026
 
-- Import every record, **all DNS only (grey cloud)**: mail, verification, GitHub Pages A/CNAME.
-- Check `dns-reconcile.py check <zone> --cloudflare <export>`: 0 missing, 0 extra.
-- **Founder action:** add the site in the Cloudflare dashboard. The API token does not have zone permission, by design.
+- **Founder:** added the site on the Free plan.
+- **Records in Cloudflare:** Cloudflare discovered 11 records. Claude added the 3 it missed: the Google DKIM TXT, Resend `send` and Resend `rsend`.
+- **Accounted for:** 14 records in Cloudflare, plus the 4 Blacknight NS records, which Cloudflare replaces with `rosalie` / `sevki` = 18.
+- **Proxy:** every record is **DNS only**.
+- **Check:** `dns-reconcile.py check <blacknight zone> --cloudflare <cloudflare export>` → 0 missing, 0 extra.
+- **Zone state:** pending (nameservers unchanged). The export is in plotnua-infrastructure.
 - **Rollback:** delete the pending zone. Nothing has changed until nameservers move.
 
-### A2. Lower TTLs at Blacknight
+### A2. Lower TTLs at Blacknight: DONE 27 Nov 2026, 18:46 UTC
 
-- Set them to 300 s, 24 hours ahead. This keeps any later rollback fast.
-- **Rollback:** restore the TTLs.
+- **Changed:** all 14 non-NS records went to **300 s**:
+  - the A RRset (previously 600);
+  - MX, every TXT, `www`, `send` and `rsend` (previously 3600).
+- **Unchanged:**
+  - the record contents;
+  - the four NS records at the zone apex (3600). The founder's instruction is no nameserver change, and these are only meaningful while Blacknight is authoritative.
+- **Public DNS:** verified the same evening. Google and Cloudflare resolvers serve the new values with TTL ≤ 300 once their old entries expire. Every old entry has expired by **19:46 UTC**, because the longest previous TTL was 3600 s.
+- **Earliest safe A3 time:** the founder requires at least 24 hours, so **Saturday 28 Nov 2026, 19:00 UTC (19:00 Dublin)** or later.
+- **Rollback:** restore the TTLs. This is harmless either way.
 
-### A3. Change nameservers at Blacknight to the two Cloudflare names
+### A3. Change nameservers at Blacknight to `rosalie.ns.cloudflare.com` and `sevki.ns.cloudflare.com`
 
-- **Founder approval and action at Blacknight.**
-- **Email continuity:**
-  - MX, SPF, DKIM (Google and Resend), DMARC and the Resend `send` CNAME are identical and DNS only, so mail flow does not change.
-  - Verify by sending to and from `hello@` and `colin@`, and by a Resend test send from the enquiry relay.
-- **Website:** still on GitHub Pages (DNS only), unchanged.
-- **Rollback:** set the Blacknight nameservers back. Records are identical on both sides, so either answer is correct during propagation.
+**Founder approval and action at Blacknight.** No other change in the same window: no website release, Studio publication batch, Worker deploy, D1 migration, Cloudflare setting or proxy change. The freeze runs from the baseline run to the +1 h compare; see *Coordination* below.
+
+**Before:**
+1. Run the **cutover check baseline**: Actions → *PlotNua cutover check* → `baseline`. All checks must pass. Note the run ID.
+2. Re-run `dns-reconcile.py check <blacknight zone> --live` and `--cloudflare <fresh export>`. Both must show 0 items, so the two zones are still identical.
+3. Check at Blacknight that DNSSEC is off for plotnua.ie. There must be no DS record; the reconcile check also confirms this.
+
+**Change:** at Blacknight, set *Nameservers* to the two Cloudflare names. Cloudflare then activates the zone. The founder may need to click *Check nameservers* in Cloudflare. Its proxy settings stay DNS only.
+
+**After:** run `compare` against the baseline run ID at +15 min, +1 h, +24 h and +48 h. The compare covers:
+- every published PlotNua file (status and bytes);
+- the plotart.ie pages and Studio (site health H1–H6);
+- every Worker endpoint the forms and checkout use;
+- DNS for Google Workspace and Resend;
+- TLS certificates and redirects;
+- robots, sitemaps, canonicals and noindex state;
+- the Google Maps key and the Cesium token.
+
+Expected change: only which nameservers answer.
+
+**Email delivery, by hand at +1 h:**
+- the founder sends from `hello@plotnua.ie` to an outside address and replies back;
+- one PlotArt enquiry through the live form, which the founder receives through Resend;
+- the Resend dashboard still shows the domain *Verified*.
+
+**Rollback: two different kinds of propagation, which are not the same:**
+
+- **Records (inside a zone):** these follow the record TTL, now 300 s.
+  - If a record is wrong, correct it **in Cloudflare**; the fix reaches resolvers within about 5 minutes.
+  - During the transition, make any correction **in both zones** (Cloudflare and Blacknight), because resolvers may still be asking either. Keep the Blacknight zone intact and identical for at least 7 days after A3.
+- **Delegation (which nameservers answer):** this does **not** follow the 300 s record TTL.
+  - The `.ie` registry publishes the delegation with its own NS TTL, which the zone owner cannot set and which is typically **one to two days**. Resolvers also cache the NS set from the zone itself: 3600 s at Blacknight, **86 400 s** at Cloudflare.
+  - Registrars and registries apply nameserver changes on their own schedule (minutes to hours).
+  - So setting the nameservers back to Blacknight can take **up to about 48 hours** to reach every resolver. During that time some visitors and mail servers are still answered by Cloudflare.
+  - That is safe only because both zones hold identical records. A nameserver rollback is therefore a last resort, for a fault in Cloudflare's DNS service itself. Every other problem is fixed by correcting records in the zone that answers.
+- **Do not delete the Cloudflare zone, or change records in only one zone,** while either delegation may still be cached.
+
+**Website:** still served by GitHub Pages (DNS only), so it is unchanged. GitHub Pages hosting stays fully operational throughout A3 and A4.
+
+**Coordination (other development workstreams):**
+- The freeze window, from the baseline to the +1 h compare (about 90 minutes), is announced on the open PRs. These are the Art for Hire and Mobile Gallery release, the Studio Commercial branch and the cutover PRs.
+- During the window no workstream merges to main, publishes, deploys a Worker or runs a D1 migration.
+- A legitimate release that slips in anyway is recognised by the compare: a file that changed to exactly the new build is reported, not failed.
 
 ### A4. Attach plotnua.ie and www.plotnua.ie to the plotnua-site Worker (Cloudflare dashboard, Custom Domains)
 

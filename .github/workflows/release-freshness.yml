@@ -1,0 +1,68 @@
+# PlotNua · keep waiting release candidates fresh (27 Nov 2026). See atlas-tools/release/refresh-stale-candidates.sh.
+# On every push to main, in two jobs so that no job holds both powers:
+#   stale    cancels any "Release to production" run still waiting for the founder whose candidate no longer contains main
+#            (actions: write; no App key; pushes nothing; dispatches nothing);
+#   refresh  merges main into each stale candidate and pushes it as a new release/auto/ branch with the PlotNua Release
+#            App (contents only): new gate, new approval. It never touches main, never forces, never carries an approval
+#            over, and stops after three refreshes of one candidate.
+name: Release candidate freshness
+on:
+  push:
+    branches: [main]
+concurrency:
+  group: release-freshness
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: write      # only to cancel a waiting run whose candidate went stale
+      issues: write
+    outputs:
+      stale: ${{ steps.find.outputs.stale }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Cancel waiting releases whose candidate no longer contains main
+        id: find
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash atlas-tools/release/refresh-stale-candidates.sh --cancel
+
+  refresh:
+    needs: stale
+    if: needs.stale.outputs.stale != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    environment:
+      name: release-automation   # the PlotNua Release App key (main only)
+      deployment: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Trusted copy of the release tooling (from main)
+        run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
+      - name: Refresh stale candidates as new release branches
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
+          STALE: ${{ needs.stale.outputs.stale }}
+        run: bash "$RUNNER_TEMP/release-tools/refresh-stale-candidates.sh" --refresh $STALE

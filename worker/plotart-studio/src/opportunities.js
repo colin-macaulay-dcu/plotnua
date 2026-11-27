@@ -149,7 +149,10 @@ export async function adminView(env) {
     FROM artists a LEFT JOIN artist_opportunities o ON o.artist_id = a.id
     WHERE a.account_status IN ('invited', 'active') OR o.artist_id IS NOT NULL
     ORDER BY a.display_name COLLATE NOCASE`);
-  const items = rows.map(r => ({ id: r.id, display_name: r.display_name, slug: r.slug, account_status: r.account_status, founding_number: r.founding_number,
+  let open = [];
+  try { open = await all(env, 'SELECT artist_id, founding_number FROM founding_artist_numbers'); } catch { /* before migration 0031 */ }
+  const numbers = new Map(open.map(r => [r.artist_id, r.founding_number]));
+  const items = rows.map(r => ({ id: r.id, display_name: r.display_name, slug: r.slug, account_status: r.account_status, founding_number: numbers.get(r.id) ?? r.founding_number,
     prefs: r.artist_id ? parse(r) : null }));
   const answered = items.filter(i => i.prefs), online = answered.filter(i => i.prefs.interests.includes('online_only'));
   const by = Object.fromEntries(Object.keys(R.INTERESTS).map(k => [k, answered.filter(i => i.prefs.interests.includes(k)).length]));
