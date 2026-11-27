@@ -37,3 +37,19 @@ body.pa .pa-com-page #open-artists .pa-opp-more{ grid-column:1; grid-row:3; marg
   body.pa .pa-com-page #open-artists .pa-opp-in{ display:block; }
   body.pa .pa-com-page #open-artists .pa-opp-list{ margin-top:26px; }
 }
+
+/* Artist opportunities hub (design standard, founder approval 27 Nov 2026): every list in three compact columns with
+   uncropped thumbnails, tighter sections, introductions kept short. Scoped to the hub (.pa-opp-hub): the Living Gallery,
+   Art for Hire, Mobile Gallery and Commissions lists are unchanged. */
+body.pa .pa-opp-hub .pa-opp-hero .pa-wrap{ padding-top:clamp(48px,5.6vw,84px); padding-bottom:clamp(28px,3vw,44px); }
+body.pa .pa-opp-hub .pa-opp{ padding:clamp(40px,4.4vw,64px) 0; border-top:1px solid var(--line); }
+body.pa .pa-opp-hub .pa-opp-in{ max-width:var(--max); }
+body.pa .pa-opp-hub .pa-opp h2{ font-size:clamp(32px,3.4vw,48px); line-height:1.05; }
+body.pa .pa-opp-hub .pa-opp-said{ max-width:72ch; font-size:15.5px; color:var(--stone); }
+body.pa .pa-opp-hub .pa-opp-list{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:32px; }
+body.pa .pa-opp-hub .pa-opp-thumb{ flex-basis:64px; width:64px; height:64px; object-fit:contain; background:#242526; }
+body.pa .pa-opp-hub .pa-opp-row{ gap:14px; padding:10px 0; }
+body.pa .pa-opp-hub .pa-opp-name{ font-size:19px; }
+body.pa .pa-opp-hub .pa-opp-what{ display:none; }
+@media (max-width:980px){ body.pa .pa-opp-hub .pa-opp-list{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:640px){ body.pa .pa-opp-hub .pa-opp-list{ grid-template-columns:1fr; } body.pa .pa-opp-hub .pa-opp-row{ grid-template-columns:56px 1fr; } body.pa .pa-opp-hub .pa-opp-thumb{ width:56px; height:56px; } }

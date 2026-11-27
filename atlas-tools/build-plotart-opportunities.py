@@ -27,8 +27,8 @@ DESC = ("Irish artists open to exhibitions, the Living Gallery, Art for Hire, ho
 E = lambda s: html.escape(str(s), quote=True)
 
 BODY = """
+<div class="pa-opp-hub">
 <section class="pa-opp-hero"><div class="pa-wrap">
-<p class="pa-eyebrow">PlotArt · Artist opportunities</p>
 <h1>Work with our artists.</h1>
 <p class="pa-lede">PlotArt artists tell us which opportunities they’d welcome a conversation about. Each list below links to their galleries. Being listed shows interest, not a booking: every opportunity is discussed and agreed individually with the artist.</p>
 <ul class="pa-opp-jumps" aria-label="Opportunities">%(jumps)s</ul>
@@ -37,6 +37,7 @@ BODY = """
 <section class="pa-opp-contact"><div class="pa-wrap">
 <p>To talk to an artist about an opportunity, open their gallery and send an enquiry through PlotArt. For anything else, email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
 </div></section>
+</div>
 """
 
 
