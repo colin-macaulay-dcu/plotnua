@@ -15,6 +15,16 @@
       "title": "PlotArt Gallery Artist Agreement",
       "html_sha256": "60bab19a949add256b53162b2819c610985e02c878eadd45f274a1e1fb39d038",
       "pdf_sha256": "a7f943f391674f8df1f430be4ae575c531c6752c75c44f186950934389f51781"
+    },
+    "PA-GAA-2026-11-R2": {
+      "title": "PlotArt Artist Agreement",
+      "html_sha256": "911acac839aed25f2bbeadc8f15678e41c82e65bc361500795238a44bf5c82ad",
+      "pdf_sha256": "3d660bdee95fb00c940ccdefce9233c9b7307e5b8fc365999209d6189aadbdca"
+    },
+    "PA-GPIL-2026-11-R2": {
+      "title": "PlotArt Gallery Publication and Image Licence",
+      "html_sha256": "0732b2d78e04482f3be9e50ee85153891f6c98a39b0692a25bec6cc66fa3be88",
+      "pdf_sha256": "52710066590bac8d2f27ef87bd3f7f213765b6249dceca2ee7ebc85a36857833"
     }
   }
 }

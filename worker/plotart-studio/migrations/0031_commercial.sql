@@ -1,4 +1,4 @@
--- PlotArt Studio · migration 0030 · Commercial leads and placements (founder approval in principle, 27 Nov 2026)
+-- PlotArt Studio · migration 0031 · Commercial leads and placements (founder approval in principle, 27 Nov 2026)
 -- PROPOSAL FOR FOUNDER APPROVAL. NOT RUN against any real database.
 -- Adds SIX new tables and their indexes. No existing table, row, column, consent, agreement, artwork or artist record
 -- changes: artists and artworks are only REFERENCED (never written).

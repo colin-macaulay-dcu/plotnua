@@ -1,4 +1,4 @@
-/* PlotArt · commercial inbound routes on the enquiry Worker (migration 0030; founder approval in principle 27 Nov 2026).
+/* PlotArt · commercial inbound routes on the enquiry Worker (migration 0031; founder approval in principle 27 Nov 2026).
    NOT DEPLOYED. Both write to the Studio's commercial records (commercial.js); neither sends anything to an artist.
 
    POST /v1/lead-capture     Gmail capture. Called only by the founder's Apps Script (integrations/gmail-leads.gs) with

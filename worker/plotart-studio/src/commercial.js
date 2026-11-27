@@ -1,4 +1,4 @@
-/* PlotArt Studio · Commercial leads and placements (founder approval in principle 27 Nov 2026; migration 0030).
+/* PlotArt Studio · Commercial leads and placements (founder approval in principle 27 Nov 2026; migration 0031).
    NOT DEPLOYED. Studio is the single record of business enquiries and everything that follows them:
      lead → timeline (notes, emails captured from Gmail, website form) → artwork selections, each approved or refused by
      its artist → proposal → PlotArt fee agreement + artist–business hire agreement → placement (six months) → invoices
@@ -31,7 +31,7 @@ const DAY = /^\d{4}-\d{2}-\d{2}$/;
 const RETAIN_MONTHS = 24, INVOICE_YEARS = 6;
 
 export async function installed(env) { try { await env.DB.prepare('SELECT 1 FROM commercial_leads LIMIT 1').all(); return true; } catch { return false; } }
-async function need(env) { if (!(await installed(env))) throw new Bad('Commercial leads aren’t installed yet (migration 0030)', 503); }
+async function need(env) { if (!(await installed(env))) throw new Bad('Commercial leads aren’t installed yet (migration 0031)', 503); }
 
 /* ---- small helpers ---------------------------------------------------------------------------------------------- */
 const str = (v, max, what, { min = 1, optional = true } = {}) => {

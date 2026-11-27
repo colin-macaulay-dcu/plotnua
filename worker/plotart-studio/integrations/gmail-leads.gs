@@ -1,5 +1,5 @@
 /**
- * PlotArt · Gmail → Studio Commercial (migration 0030). Runs in the founder's own Google account (script.google.com).
+ * PlotArt · Gmail → Studio Commercial (migration 0031). Runs in the founder's own Google account (script.google.com).
  *
  * What it does: every 10 minutes it sends the messages in threads labelled "PlotArt Lead" to PlotArt Studio, which records
  * each message once on the lead for that thread or sender (creating the lead when there is none). The thread is then

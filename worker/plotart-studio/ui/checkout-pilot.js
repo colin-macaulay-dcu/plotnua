@@ -466,7 +466,8 @@
     } else {
       const m = j.membership;
       h += '<section class="st-card st-os-sec">';   // the artist's payment set-up in one card (22 Nov 2026)
-      if (!m.opted_in) h += j.addendum ? `<h2 id="pay-join">Join online sales</h2><p>Read the <a href="/payment-terms/${esc(j.addendum.doc_id)}.html" target="_blank" rel="noopener">${esc(j.addendum.title)}</a>.</p>
+      if (j.agreement_unavailable) h += `<h2 id="pay-join">Online sales</h2><p class="st-warn" data-r2-unavailable>${esc(j.agreement_unavailable)}</p>`;
+      else if (!m.opted_in) h += j.addendum ? `<h2 id="pay-join">Join online sales</h2><p>Read the <a href="/payment-terms/${esc(j.addendum.doc_id)}.html" target="_blank" rel="noopener">${esc(j.addendum.title)}</a>.</p>
         <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label>${sw.enabled ? '<button>Set up online sales</button>' : '<button disabled aria-describedby="os-closed-note">Set up online sales</button><p class="st-muted" id="os-closed-note">Online sales are not open yet.</p>'}</form>` : '<p id="pay-join">The payment addendum has not been issued yet.</p>';
       else {
         h += `<h2>Payments and Stripe</h2><p class="st-muted">${esc(j.direct_payment_note)}</p>`;

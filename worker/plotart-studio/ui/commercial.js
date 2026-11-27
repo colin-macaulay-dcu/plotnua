@@ -1,4 +1,4 @@
-/* PlotArt Studio · Commercial (founder; migration 0030, 27 Nov 2026). One page: the leads list (#/) and a lead (#/lead/<id>).
+/* PlotArt Studio · Commercial (founder; migration 0031, 27 Nov 2026). One page: the leads list (#/) and a lead (#/lead/<id>).
    Studio is the single record of business enquiries: emails captured from Gmail and website requests arrive here on their
    own; everything after (works, artist approvals, proposal, agreements, invoices, payments, placements, renewals) is
    recorded here, once. */
@@ -28,7 +28,7 @@
 
   async function list() {
     let d; try { d = await api('GET', '/api/admin/commercial'); } catch (e) { app.innerHTML = `<p class="st-err">${E(e.message)}</p>`; return; }
-    if (!d.installed) { app.innerHTML = '<section class="st-card"><h1 class="st-h">Commercial</h1><p class="st-muted">Commercial leads aren’t installed yet: they start once migration 0030 has run.</p></section>'; return; }
+    if (!d.installed) { app.innerHTML = '<section class="st-card"><h1 class="st-h">Commercial</h1><p class="st-muted">Commercial leads aren’t installed yet: they start once migration 0031 has run.</p></section>'; return; }
     const t = d.totals, today = new Date().toISOString().slice(0, 10);
     app.innerHTML = `<section class="st-card"><h1 class="st-h">Commercial</h1>
       <p class="st-muted">Every business enquiry and what follows it, in one place. Replies you label <b>PlotArt Lead</b> in Gmail and requests from the Art for Hire page arrive here on their own.</p>
