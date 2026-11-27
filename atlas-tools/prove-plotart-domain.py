@@ -101,6 +101,17 @@ def redirects(root):
     s, h, _ = fetch("https://plotnua.ie/plotart", "HEAD")
     if s != 301 or {k.lower(): v for k, v in h.items()}.get("location") not in ("https://plotart.ie/", "https://plotart.ie"):
         fails.append(f"{s} https://plotnua.ie/plotart (no slash)")
+    # www, and a query on a deep artwork page
+    s, h, _ = fetch("https://www.plotnua.ie/plotart/artworks/?sort=new", "HEAD")
+    loc = {k.lower(): v for k, v in h.items()}.get("location", "")
+    if not (s == 301 and loc == "https://plotart.ie/artworks/?sort=new"):
+        fails.append(f"www: {s} -> {loc or '-'}")
+    # the rule must match ONLY /plotart and /plotart/...: PlotNua's own pages, and look-alike paths, are never redirected
+    for path in ("", "discoveries.html", "discovery-a-home-for-art.html", "privacy.html", "plotart-x.html", "plotartist/", "plotart.html"):
+        s, h, _ = fetch(f"https://plotnua.ie/{path}", "HEAD")
+        loc = {k.lower(): v for k, v in h.items()}.get("location", "")
+        if "plotart.ie" in loc:
+            fails.append(f"unrelated path redirected: /{path} -> {loc}")
     return ps, fails
 
 
