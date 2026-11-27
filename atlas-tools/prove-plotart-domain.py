@@ -21,6 +21,10 @@ INVENTORY = {   # plotnua.ie, public DNS, 26 Nov 2026 (dns.google). Must survive
     ("_dmarc.plotnua.ie", "TXT"): ["v=DMARC1; p=none; rua=mailto:hello@plotnua.ie; fo=1"],
     ("google._domainkey.plotnua.ie", "TXT"): ["v=DKIM1;k=rsa;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMZASa42wLEp1dfJimOzoguB3Z9NNWEU6SwOCocr/BoLeadq8+c+KUb5sBLXrmBZ2jus+0zXEpMJzlBaGdzGbmMxwMIEN1Ji9wcLZhsjQBwNikQ9XQaAyzHXGJxPI1zIXdxInoRhuCqyBHbV7PAcNZsdSNG8bupyf5+1awTtH9bfyWVnEiRfUKh+UuGNmf2hd9k2meAzChXdffuke8jZZ/DeHzAukxh/USENKN11mpkj924mNsBImha/obukzVn3jLyAumKXNXZM6jwQQhWij1OLBeQASG2/16W/cQerNUu6HLGjs698ULSW8wufoLVIA0pgrHIfEOLGeY+N/wz+YQIDAQAB"],
     ("www.plotnua.ie", "CNAME"): ["colin-macaulay-dcu.github.io."],
+    # Resend (transactional email: enquiry relay, Studio, checkout), as listed in the Resend dashboard, 27 Nov 2026
+    ("resend._domainkey.plotnua.ie", "TXT"): ["p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqy4niKGHDMp6yeXTa7PU/GcOyJUqO1XwfotJxjGOQnIxQyJ//yZ046jp1xWhAPTroWfvtV6MAFdz/FMSQHY9eHxKQClbmSCR6D1giGjG5sbgvzZiHOwVuMkxJKi47LWn+GoH2NpM41w+Wx0EsO59C77r9r3HvWYuzVK/btxysSQIDAQAB"],
+    ("send.plotnua.ie", "CNAME"): ["send.forge.rmta.net."],
+    ("rsend.plotnua.ie", "CNAME"): ["rsend-euw1.forge.rmta.net."],
 }
 PLOTNUA_PAGES = ["", "discoveries.html", "privacy.html", "terms.html", "contact.html", "about.html",
                  "cookie-policy.html", "discovery-a-home-for-art.html", "sitemap.xml", "robots.txt"]
