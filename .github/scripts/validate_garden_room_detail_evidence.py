@@ -120,6 +120,7 @@ SUPPLIER_ORG_TYPES = {
 SUPPLIER_PERSONAL = re.compile(
     r"[A-Za-z0-9._%%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"      # email
     r"|(?:\+\d[\d ()-]{7,})"                                # international phone
+    r"|(?<![\d.,])0\d{1,4}[ -]\d{3,4}(?:[ -]\d{3,4})?(?!\d)"  # national phone, e.g. 087 123 4567 (27 Nov 2026)
 )
 
 
