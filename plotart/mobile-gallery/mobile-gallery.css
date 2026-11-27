@@ -247,7 +247,8 @@ body.pa.mg .mg-row h3{ font-size:clamp(24px,2.2vw,30px); line-height:1.1; margin
 body.pa.mg .mg-row-loc{ margin:6px 0 0; font-size:14px; color:var(--mute); }
 body.pa.mg .mg-row-intro{ margin:0; color:var(--light); line-height:1.55; max-width:52ch; }
 body.pa.mg .mg-row-meta{ display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
-body.pa.mg .mg-row-flag{ font-size:12.5px; line-height:1.4; color:var(--mute); border:1px solid var(--light-soft); border-radius:999px; padding:4px 11px; }
+body.pa.mg .mg-row-flag{ display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:500; line-height:1.35; color:var(--ivory); background:rgba(237,235,231,.07); border:1px solid rgba(237,235,231,.34); border-radius:999px; padding:6px 13px; }
+body.pa.mg .mg-row-flag::before{ content:""; flex:0 0 7px; width:7px; height:7px; border-radius:50%; border:1.5px solid var(--ivory); }
 body.pa.mg .mg-recruit h2{ font-size:clamp(40px,4.6vw,64px); }
 body.pa.mg .mg-recruit-p{ max-width:44ch; }
 @media (max-width:820px){ body.pa.mg .mg-row{ grid-template-columns:1fr; gap:10px; } }
@@ -256,3 +257,7 @@ body.pa.mg .mg-stages li::before{ color:var(--ivory); }
 body.pa.mg .pa-opp-list{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); column-gap:40px; }
 @media (max-width:820px){ body.pa.mg .pa-opp-list{ grid-template-columns:1fr; } }
 @media (max-width:560px){ body.pa.mg .mg-stages{ grid-template-columns:repeat(2, minmax(0,1fr)); } body.pa.mg .mg-stages li{ padding:20px 14px 18px 0 !important; border-left:0 !important; } body.pa.mg .mg-stages li::before{ font-size:32px; margin-bottom:12px; } }
+body.pa.mg #open-artists .pa-opp-in{ max-width:var(--max); }
+body.pa.mg #open-artists .pa-opp-said{ max-width:68ch; }
+body.pa.mg .pa-opp-thumb{ flex-basis:104px; width:104px; height:104px; object-fit:contain; background:#242526; }
+@media (max-width:640px){ body.pa.mg .pa-opp-row{ grid-template-columns:88px 1fr; } body.pa.mg .pa-opp-thumb{ width:88px; height:88px; } }
