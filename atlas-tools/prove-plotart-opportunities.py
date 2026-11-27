@@ -309,8 +309,8 @@ try:
     good = run(["git", "rev-parse", "HEAD"], cwd=wt)[1].strip()
     lgp = os.path.join(wt, "plotart", "living-gallery.html")
     doc = open(lgp, encoding="utf-8").read()
-    assert '<p class="pa-eyebrow">For artists</p>' in doc
-    open(lgp, "w", encoding="utf-8").write(doc.replace('<p class="pa-eyebrow">For artists</p>', '<p class="pa-eyebrow">For all artists</p>', 1))
+    assert '<h2>A home, not a showroom.</h2>' in doc   # a fixed heading outside the list region (the eyebrows went in the design standard, 27 Nov 2026)
+    open(lgp, "w", encoding="utf-8").write(doc.replace('<h2>A home, not a showroom.</h2>', '<h2>A home, not a shop.</h2>', 1))
     gitc("commit", "-qam", "tamper outside")
     c2, o2 = bnd(base_sha, "HEAD")
     gitc("reset", "-q", "--hard", good)
