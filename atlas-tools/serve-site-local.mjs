@@ -1,0 +1,6 @@
+// Local test server for a site Worker build (used by the privacy regression test in CI): node serve-site-local.mjs <worker index.js> <dist> <INDEXING> <ANALYTICS>
+import http from 'node:http'; import { readFileSync, statSync } from 'node:fs'; import { join } from 'node:path';
+const { handle } = await import(process.argv[2]); const dist = process.argv[3];
+const ASSETS = { async fetch(req) { const p = decodeURIComponent(new URL(req.url).pathname); try { const f = join(dist, p); if (!statSync(f).isFile()) throw 0; const T={css:'text/css',js:'text/javascript',html:'text/html; charset=utf-8',svg:'image/svg+xml',png:'image/png',jpg:'image/jpeg',webp:'image/webp',json:'application/json',xml:'application/xml',txt:'text/plain'}; return new Response(readFileSync(f), { headers: { 'Content-Type': T[f.split('.').pop()] || 'application/octet-stream' } }); } catch { return new Response('nf', { status: 404 }); } } };
+http.createServer(async (q, s) => { const r = await handle(new Request('http://127.0.0.1:8799' + q.url, { method: q.method }), { ASSETS, INDEXING: process.argv[4], ANALYTICS: process.argv[5] || 'off' });
+  s.writeHead(r.status, Object.fromEntries(r.headers)); s.end(Buffer.from(await r.arrayBuffer())); }).listen(8799);

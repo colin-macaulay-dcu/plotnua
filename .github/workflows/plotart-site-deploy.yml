@@ -19,6 +19,9 @@
 #     manage Workers, and runs a Wrangler dry run. It deploys NOTHING and runs even while the deploy is not enabled.
 #   * The live check always covers the workers.dev address (always noindexed, so it can never compete with plotart.ie in
 #     search) and, once plotart.ie is attached to the Worker, plotart.ie too.
+#   * Before every deploy, the privacy regression test loads every page in a real browser: any cookie, storage or
+#     third-party request before consent or after Reject fails the run and NOTHING is deployed; after Accept, analytics
+#     must start (so measurement is not silently lost).
 #   * After every deploy the live check runs against the Worker; if it fails, the previous version is restored
 #     automatically (wrangler rollback) and the run fails, so the founder is notified by GitHub.
 # Logs are public: no step prints a credential or an account identifier.
@@ -35,6 +38,8 @@ on:
       - '404.html'
       - 'sitemap.xml'
       - 'worker/plotart-site/**'
+      - 'atlas-tools/prove-privacy.mjs'
+      - 'atlas-tools/serve-site-local.mjs'
       - 'atlas-tools/plotart_site_build.py'
       - 'atlas-tools/plotart_shell.py'
       - 'atlas-tools/plotart_seo.py'
@@ -77,11 +82,23 @@ jobs:
       - name: Build and prove the site (nothing is deployed)
         working-directory: worker/plotart-site
         run: |
+          set -o pipefail   # "| tail" below must not hide a failed proof
           INDEXING=$(sed -nE 's/^INDEXING *= *"([a-z]+)".*/\1/p' wrangler.toml)
           [ "$INDEXING" = noindex ] || { echo "FAIL  verify expects the testing setting INDEXING = noindex"; exit 1; }
           python3 ../../atlas-tools/plotart_site_build.py ../.. dist --mode test
           node test/prove-site.mjs "$PWD/dist" "$GITHUB_WORKSPACE" | tail -3
           python3 -c "import json;r=json.load(open('dist/.build-report.json'));print('pages and files', r['pages_and_files'], '· sitemap', r['sitemap_urls'], '· analytics blocks removed', r['analytics_blocks_removed'], '· tracking scripts', len(r['tracking_or_consent_scripts']))" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Privacy regression test (nothing before consent or after Reject; analytics only after Accept)
+        run: |
+          set -o pipefail   # the output is shown in the run summary; a finding must still fail the step
+          ANALYTICS=$(sed -nE 's/^ANALYTICS *= *"([a-z]+)".*/\1/p' worker/plotart-site/wrangler.toml)
+          # Playwright is installed for this run only (into atlas-tools/node_modules, never committed); no account or service needed
+          npm install --prefix atlas-tools --no-save --no-package-lock --silent playwright@1.63.0 > /dev/null
+          (cd atlas-tools && npx playwright install --with-deps chromium > /dev/null)
+          node atlas-tools/serve-site-local.mjs "$GITHUB_WORKSPACE/worker/plotart-site/src/index.js" "$GITHUB_WORKSPACE/worker/plotart-site/dist" noindex "${ANALYTICS:-off}" &
+          sleep 2
+          node atlas-tools/prove-privacy.mjs worker/plotart-site/privacy.json http://127.0.0.1:8799 \
+            --pages-from worker/plotart-site/dist --report "$RUNNER_TEMP/privacy-report.json" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Token and account can manage Workers (read-only; nothing printed but PASS/FAIL)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -129,6 +146,17 @@ jobs:
           echo "INDEXING=$INDEXING" >> "$GITHUB_ENV"
           python3 ../../atlas-tools/plotart_site_build.py ../.. dist --mode "$MODE"
           node test/prove-site.mjs "$PWD/dist" "$GITHUB_WORKSPACE"
+      - name: Privacy regression test (nothing before consent or after Reject; analytics only after Accept)
+        run: |
+          set -o pipefail   # the output is shown in the run summary; a finding must still fail the step
+          ANALYTICS=$(sed -nE 's/^ANALYTICS *= *"([a-z]+)".*/\1/p' worker/plotart-site/wrangler.toml)
+          # Playwright is installed for this run only (into atlas-tools/node_modules, never committed); no account or service needed
+          npm install --prefix atlas-tools --no-save --no-package-lock --silent playwright@1.63.0 > /dev/null
+          (cd atlas-tools && npx playwright install --with-deps chromium > /dev/null)
+          node atlas-tools/serve-site-local.mjs "$GITHUB_WORKSPACE/worker/plotart-site/src/index.js" "$GITHUB_WORKSPACE/worker/plotart-site/dist" noindex "${ANALYTICS:-off}" &
+          sleep 2
+          node atlas-tools/prove-privacy.mjs worker/plotart-site/privacy.json http://127.0.0.1:8799 \
+            --pages-from worker/plotart-site/dist --report "$RUNNER_TEMP/privacy-report.json" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Deploy
         working-directory: worker/plotart-site
         env:
