@@ -319,9 +319,7 @@ page = HEAD_TAGS + f'''
 <meta name="twitter:description" content="{DESC}">
 <meta name="twitter:image" content="https://plotnua.ie/assets/og/plotnua-og-image-1200x630.png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fonts/pn-fonts.css?v=1">
 <style>
 {CSS}
 /* ── PUBLIC CHROME (shared PlotNua brand mark + footer) ─────────── */

@@ -5,10 +5,10 @@
   "files": {
     "gridnua/assets/gridnua-utility-room-concept.svg": "9c547942728e96d73fa0ac8731713e0e809959e07712c4c6494ff3ee4e1a6473",
     "gridnua/assets/gridnua.css": "36643486bfc3b835b63d6ae2fda1a12bb70ba745e06e3307c3df1ad910cf533b",
-    "gridnua/index.html": "d153f5b7f9c54b638b4ae7481ea8b399b011ceea58e6c10481845f217cd72810",
-    "gridnua/technology/index.html": "2bbe1388e9553e1078b1c5bcc02f30428b8b754132f7e6827adbcf344c166b77"
+    "gridnua/index.html": "6e4968ffd363e2ae7071c222ff59b416c784c2cbcb7fbcf9462f2ac2e8ed55bc",
+    "gridnua/technology/index.html": "6477b51547e381799840f7256cae384e1b477ecd8669df40dc0fc50d45310b0a"
   },
-  "readiness_check_sha256": "4106ff85c1892ccbeb14c9f74f50c568871e477078880d8c009c925d3076fda4",
+  "readiness_check_sha256": "0013b1520dab3323bc4318da9618c3c950a5d3acf462b2b9053905b201336701",
   "readiness_check_scripts_sha256": "755e810346139a7a5d8c3d56b1db1ffcf426c7bd76b73cc7b32c0105f0d1a106",
   "navigation_update": "29 Oct 2026: GridNua header pill, DISC-026 banner (freeze V6), Readiness Check return buttons; Readiness Check introduction reworded (founder, 29 Oct 2026)",
   "tandem_context_card": "29 Oct 2026: founder approved the Tandem Compute pods card in the Technology Gallery, 'Context: not for homes' only (GL7 narrow exception). Pages built by the private builder v2, which preserves index, follow and the canonicals.",

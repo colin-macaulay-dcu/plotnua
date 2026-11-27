@@ -17,7 +17,15 @@ import importlib.util, json, os, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "atlas-tools"))
-import seo_pn_consent as S   # noqa: E402  (S.transform: the declared consent transform)
+import seo_pn_consent as _C   # noqa: E402
+import seo_pn_fonts as _F     # noqa: E402
+
+
+class S:
+    """The declared transform for this release: consent migration, then self-hosted fonts (both declared modules)."""
+    @staticmethod
+    def transform(x):
+        return _F.transform(_C.transform(x) if _C.A.COOKIEBOT in x else x)
 
 BASE_COMMIT = "33e4b3cc490b9b4e410c733089a15f2ed93e9548"   # production main when the migration was prepared
 HASH_GUARDS = ["driveway-income", "hidden-bins", "hidden-cars", "parcel-house", "power-station"]
