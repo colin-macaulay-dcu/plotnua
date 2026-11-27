@@ -157,6 +157,10 @@ OPP_FILES = {"opportunities/index.html", "commissions/index.html", "assets/plota
 ALLOWED |= OPP_FILES
 ALLOWED |= {"assets/plotart-living.css"}
 ALLOWED |= {"for-artists.html", "assets/plotart-for-artists.css"}   # the For artists page (17 Nov 2026)
+# Issued agreement texts (PR #73, founder approval 27 Nov 2026): standalone, noindex documents linked from the invitation pages.
+# Pinned by the manifest; L23 requires them to carry no script at all (no consent block is needed where nothing is measured).
+LEGAL_DOCS = {"legal/PA-GAA-2026-11-R2.html", "legal/PA-GPIL-2026-11-R2.html"}
+ALLOWED |= LEGAL_DOCS
 # Art Services & Providers (founder brief 19 Nov 2026): the page and its stylesheet, reached by the "Services" tab
 SERVICES_PAGE = "services.html"
 # paused 19 Nov 2026 (founder; both providers asked for changes): the page, its stylesheet and the tab exist ONLY while the
@@ -1220,6 +1224,10 @@ for _d, _, _fs in os.walk(PA):
             continue
         _rel = os.path.relpath(os.path.join(_d, _f), PA).replace(os.sep, "/")
         _doc = open(os.path.join(_d, _f), encoding="utf-8").read()
+        if _rel in LEGAL_DOCS:
+            need("<script" not in _doc.lower() and '<meta name="robots" content="noindex, nofollow">' in _doc and not re.search(r"(?i)googletagmanager|cookiebot|gtag\(", _doc),
+                 "L23 %s is an agreement text and must carry no script and stay noindex" % _rel)
+            continue
         if _rel in _L23_REDIRECTS:
             need(SHELL.ANALYTICS_HEAD not in _doc and "googletagmanager" not in _doc and "cookiebot" not in _doc.lower(),
                  "L23 %s is a redirect page and must carry no consent or analytics script" % _rel)
