@@ -268,11 +268,14 @@ def main() -> int:
             ck(f"no Garden Room product field '{bad}'", bad not in blob)
         u = json.loads((ROOT / "garden-room-recommendation-universe-v1.json")
                        .read_text(encoding="utf-8"))
-        ck("Garden Room universe unchanged at 487 admitted",
-           len(u["products"]) == 487)
-        ck("Garden Room tiers unchanged (138/349/0)",
-           (u["highConfidenceCount"], u["withCaveatCount"],
-            u["limitedEvidenceCount"]) == (138, 349, 0))
+        # 27 Nov 2026: the universe grows through approved Atlas refreshes, so a frozen count (487, then 138/349/0)
+        # went stale without anything being wrong. Containment is what this proves: every product is an admitted
+        # Garden Room product counted by the generator's own tiers, and nothing of the pilot is in it.
+        _tiers = (u["highConfidenceCount"], u["withCaveatCount"], u["limitedEvidenceCount"])
+        ck("Garden Room universe holds exactly its admitted products (%d)" % len(u["products"]),
+           len(u["products"]) == u["eligibleCount"] == sum(_tiers))
+        ck("Garden Room tiers account for every product (%d/%d/%d)" % _tiers,
+           all(isinstance(t, int) and t >= 0 for t in _tiers) and sum(_tiers) == len(u["products"]))
         ck("no electricity supplier leaked into the Garden Room universe",
            not any(s in json.dumps(u).lower()
                    for s in ("electric ireland", "bord gáis", "bord gais",
@@ -288,8 +291,13 @@ def main() -> int:
         ck("Parking pilot carries no correspondence provenance either",
            "COMMERCIAL_CORRESPONDENCE" not in pk["claimsByProvenance"])
         d26 = json.loads((ROOT / "disc026-evidence.json").read_text(encoding="utf-8"))
-        ck("DISC-026 authority manifest unchanged (38 records)",
-           len(d26["records"]) == 38)
+        # 27 Nov 2026: DISC-026's manifest grows through its own approved evidence releases (38 -> 43), so a frozen count
+        # went stale. Containment is what matters: every record is a DISC-026 authority record of a public source type,
+        # none comes from this pilot's supplier pages, and (next check) no claim is duplicated between them.
+        _d26_types = {"SCHEME_PAGE", "REGULATOR_DECISION", "OPERATOR_STANDARD", "SECONDARY", "STATUTE_SI", "PRESS_RELEASE", "TAX_RULE"}
+        ck("DISC-026 authority manifest holds only its own authority records (%d)" % len(d26["records"]),
+           all(r.get("source_type") in _d26_types for r in d26["records"])
+           and not ({r.get("source_url") for r in d26["records"]} & {c.get("source_url") for c in claims if c.get("source_url")}))
         ck("no national rule is duplicated from the DISC-026 manifest",
            not (set(c["claim_field"] for c in claims)
                 & set(r["claim_key"] for r in d26["records"])))

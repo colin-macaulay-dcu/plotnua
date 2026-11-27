@@ -212,6 +212,10 @@ def homeowner_text(s: str):
     # the evidence either side of it.
     s = re.sub(r"(?:^|(?<=[.!?]))\s*DO NOT (?:RANK|USE)\b[^.!?]*[.!?]", " ", s,
                flags=re.IGNORECASE)
+    # 27 Nov 2026: the same directive written as a trailing CLAUSE ("VERIFIED NOMINAL SIZE — DO NOT RANK ON INTERNAL
+    # AREA.", "Bespoke; DO NOT RANK on area.", "…not: DO NOT RANK on external footprint, and …") reached the artefact
+    # through targeted updates. The clause goes up to its sentence end; the finding before it stays, closed by a stop.
+    s = re.sub(r"\s*[—–;:,]\s*(?:SAFE TO RANK\b[^.!?]*?,\s*BUT\s+)?DO NOT (?:RANK|USE)\b[^.!?]*([.!?])", r"\1", s, flags=re.IGNORECASE)
     # Internal LABELS attached to genuinely useful evidence. The label goes;
     # the sentence stays. "CATEGORY INTEGRITY: Auroom supplies wellness
     # cabins…" is real homeowner information wearing a researcher's badge, and
@@ -220,6 +224,9 @@ def homeowner_text(s: str):
                "", s)
     s = re.sub(r"\bflagged as an integrity issue\b", "flagged", s,
                flags=re.IGNORECASE)
+    # A sentence that is ABOUT an open integrity issue ("RECORD INTEGRITY ISSUE MUST BE RESOLVED FIRST.", "It is recorded
+    # here as an open integrity issue for the Layer Completion Audit …") is researcher-only: the sentence goes.
+    s = re.sub(r"(?:^|(?<=[.!?]))[^.!?]*\bintegrity issue\b[^.!?]*[.!?]?", " ", s, flags=re.IGNORECASE)
     # A SECOND-PERSON PROPERTY CLAIM IS NEVER PUBLISHED, WHOEVER WROTE IT.
     #
     # Measured 11 October 2026: two MyCabin records carried, inside the

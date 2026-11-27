@@ -16,7 +16,7 @@ Founder-approved principles carried by the block:
   * fields: name, email, county, timeframe, optional description. No phone,
     Eircode or address. Nothing preselected. No marketing permission.
   * no pop-up: the primary action expands the form in place;
-  * analytics events only with Cookiebot statistics consent, never personal data.
+  * analytics events only with analytics consent (the shared consent module), never personal data.
 
 Supplier pages call apply() from their own builder (fully regenerated pages).
 Premium guides and discoveries take the block as a fenced region
@@ -108,7 +108,7 @@ JS = """<script>/* Package N introduction block. No storage. Analytics only with
 (function(){var s=document.getElementById('pn-intro');if(!s)return;
 var go=s.querySelector('.pni-go'),f=s.querySelector('.pni-f'),m=s.querySelector('.pni-msg'),ok=s.querySelector('.pni-ok'),t0=0,busy=false;
 var kind=s.getAttribute('data-kind'),pt=s.getAttribute('data-page-type'),sup=s.getAttribute('data-supplier')||'';
-function ev(n){try{if(window.Cookiebot&&Cookiebot.consent&&Cookiebot.consent.statistics&&typeof window.gtag==='function'){var p={intro_kind:kind,page_type:pt};if(kind==='supplier')p.supplier=sup;gtag('event',n,p);}}catch(e){}}
+function ev(n){try{if(window.siteConsent&&siteConsent.statistics&&typeof window.gtag==='function'){var p={intro_kind:kind,page_type:pt};if(kind==='supplier')p.supplier=sup;gtag('event',n,p);}}catch(e){}}
 go.addEventListener('click',function(){f.hidden=false;go.setAttribute('aria-expanded','true');go.hidden=true;t0=Date.now();ev('pn_intro_open');var first=f.querySelector('input[name=name]');if(first)first.focus();});
 f.addEventListener('submit',function(e){e.preventDefault();if(busy)return;
  if(!f.reportValidity()){return;}

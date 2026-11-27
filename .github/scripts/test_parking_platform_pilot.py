@@ -261,11 +261,14 @@ def main() -> int:
             ck(f"no Garden Room product field '{bad}'", bad not in blob)
         u = json.loads((ROOT / "garden-room-recommendation-universe-v1.json")
                        .read_text(encoding="utf-8"))
-        ck("Garden Room universe still holds 487 admitted products",
-           len(u["products"]) == 487)
-        ck("Garden Room tiers unchanged (138/349/0)",
-           (u["highConfidenceCount"], u["withCaveatCount"],
-            u["limitedEvidenceCount"]) == (138, 349, 0))
+        # 27 Nov 2026: the universe grows through approved Atlas refreshes, so a frozen count (487, then 138/349/0)
+        # went stale without anything being wrong. Containment is what this proves: every product is an admitted
+        # Garden Room product counted by the generator's own tiers, and nothing of the pilot is in it.
+        _tiers = (u["highConfidenceCount"], u["withCaveatCount"], u["limitedEvidenceCount"])
+        ck("Garden Room universe holds exactly its admitted products (%d)" % len(u["products"]),
+           len(u["products"]) == u["eligibleCount"] == sum(_tiers))
+        ck("Garden Room tiers account for every product (%d/%d/%d)" % _tiers,
+           all(isinstance(t, int) and t >= 0 for t in _tiers) and sum(_tiers) == len(u["products"]))
         ck("no parking platform leaked into the Garden Room universe",
            "yourparkingspace" not in json.dumps(u).lower())
         ck("the pilot is not referenced by the runtime",
