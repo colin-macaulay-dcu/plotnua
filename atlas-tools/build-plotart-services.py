@@ -175,24 +175,74 @@ def card(p):
 
 
 LISTED = [p for p in PROVIDERS if p["publish"]]
+# Design standard (founder approval 27 Nov 2026): the providers grouped by what they do, each a compact row: the provider's
+# own image where permission is held (otherwise its logo, otherwise nothing: no placeholder panels), the provider's approved
+# words unchanged, the facts in a two-column list and the contacts as quiet links. The independence note sits at the foot.
+GROUPS = [("transport", "Moving your art.", "Collection, delivery and specialist art handling.", ("mw", "fl", "ni", "db")),
+          ("hanging", "Hanging your art.", "Professional hanging and installation at home or at work.", ("hi",))]
+
+
+def row(p):
+    e = lambda t: t.replace("&", "&amp;")
+    hid = "sv" + p["key"].upper()
+    media = ""
+    if "photo" in p:
+        ph = p["photo"]; base = "assets/services/" + ph["stem"]
+        media = ('<figure class="pa-sv2-media"><picture>'
+                 '<source type="image/webp" srcset="%(b)s-800.webp 800w, %(b)s-%(big)d.webp %(big)dw" sizes="(max-width:820px) 100vw, 360px">'
+                 '<img src="%(b)s-%(big)d.jpg" width="%(w)d" height="%(h)d" alt="%(alt)s" data-kind="%(kind)s" loading="lazy" decoding="async"></picture>'
+                 '<figcaption>%(credit)s</figcaption></figure>') % dict(b=base, big=ph.get("big", 1600), w=ph["w"], h=ph["h"], alt=ph["alt"],
+                                                                      credit=ph["credit"], kind=ph.get("kind", "Photograph"))
+    logo = ""
+    if "logo" in p:
+        lg = p["logo"]
+        logo = ('<span class="pa-sv2-logo pa-sv2-logo--%s"><img src="assets/services/%s" width="%d" height="%d" alt="%s logo" data-kind="Logo"></span>'
+                % (lg["plaque"], lg["file"], lg["w"], lg["h"], lg["alt"]))
+    lead = media or (logo and '<div class="pa-sv2-media pa-sv2-media--logo">%s</div>' % logo)
+    if media:
+        media_logo = logo
+    else:
+        media_logo = ""
+    facts = "".join('<div><dt>%s</dt><dd>%s</dd></div>' % (e(k), e(v)) for k, v in p["facts"])
+    links = []
+    for href, label, track, ext in p["links"]:
+        attrs = ' rel="noopener" target="_blank"' if ext else ""
+        sr = '<span class="pa-sr"> (opens WhatsApp)</span>' if ext == "wa" else ('<span class="pa-sr"> (opens in a new tab)</span>' if ext else "")
+        arrow = ' <span aria-hidden="true">↗</span>' if ext is True else ""
+        links.append('<a href="%s"%s data-pa-track="%s">%s%s%s</a>' % (href, attrs, track, label, arrow, sr))
+    status = '<p class="pa-sv2-status">%s</p>' % e(p["status"]) if p.get("status") else ""
+    about = ' %s' % e(p["about"]) if p.get("about") else ""
+    name = '%s<h3 id="%s">%s</h3>' % (status, hid, e(p["name"]))
+    if not lead:   # no image or logo permission: the name stands in the left column (no placeholder panel)
+        lead, name = '<div class="pa-sv2-name">%s</div>' % name, ""
+    return ('  <article class="pa-sv2-row" aria-labelledby="%s">\n    %s\n    <div class="pa-sv2-body">%s%s\n'
+            '    <p class="pa-sv2-what">%s%s</p>\n    <dl class="pa-sv2-facts">%s</dl>\n    <p class="pa-sv2-contact">%s</p>\n    </div>\n  </article>'
+            % (hid, lead, media_logo, name, e(p["what"]), about, facts, "".join(links)))
+
+
+def group(g):
+    key, head, said, keys = g
+    rows = [row(p) for k in keys for p in LISTED if p["key"] == k]
+    if not rows:
+        return ""
+    return ('<section class="pa-sv2-sec" aria-labelledby="sv-%s"><div class="pa-wrap">\n  <div class="pa-sv2-head"><h2 id="sv-%s">%s</h2><p>%s</p></div>\n%s\n</div></section>'
+            % (key, key, head, said, "\n".join(rows)))
+
+
 BODY = """
-<section class="pa-sec pa-sec--deep pa-sv-hero" aria-labelledby="svH"><div class="pa-wrap">
-  <p class="pa-eyebrow">PlotArt · Services</p>
+<section class="pa-sv2-hero" aria-labelledby="svH"><div class="pa-wrap">
   <h1 id="svH">Art Services &amp; Providers</h1>
   <p class="pa-lede">Independent specialists who can help once you’ve chosen a work: moving it safely, and hanging it well.</p>
-  <p class="pa-sv-note">These independent providers have agreed to be listed on PlotArt. Please contact them directly to discuss services, quotations and insurance. PlotArt does not arrange or guarantee their work.</p>
 </div></section>
-
-<section class="pa-sec pa-sv-sec" aria-label="Providers"><div class="pa-wrap pa-sv-list%s">
 
 %s
 
-</div></section>
-
-<section class="pa-sec pa-sv-sec pa-sv-foot"><div class="pa-wrap">
+<section class="pa-sv2-foot"><div class="pa-wrap">
+  <p>These independent providers have agreed to be listed on PlotArt. Please contact them directly to discuss services, quotations and insurance. PlotArt does not arrange or guarantee their work.</p>
   <p>Details are as supplied by each provider and may change, so please confirm them directly. Listing a provider isn’t a recommendation for any particular job, and other providers may be listed in future.</p>
 </div></section>
-""" % (" pa-sv-list--one" if len(LISTED) == 1 else "", "\n\n".join(card(p) for p in LISTED))
+""" % "\n\n".join(group(g) for g in GROUPS)
+assert all(any(p["key"] in g[3] for g in GROUPS) for p in LISTED), "every listed provider belongs to a group"
 
 
 FINE = ("Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers; the artist is the seller. "
