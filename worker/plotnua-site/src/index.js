@@ -15,6 +15,6 @@ export function plotartMove(url, env) {
   return 'https://plotart.ie' + (p.length > 8 ? p.slice(8) : '/') + url.search;
 }
 
-const site = createSite({ apex: 'plotnua.ie', redirect: plotartMove });
+const site = createSite({ apex: 'plotnua.ie', redirect: plotartMove, cacheControl: 'max-age=600' }); // as GitHub Pages
 export const handle = site.handle;
 export default { fetch: site.fetch };

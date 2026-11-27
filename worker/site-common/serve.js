@@ -36,6 +36,7 @@ export function createSite(site) {
     const policy = csp(env);
     if (policy) r.headers.set('Content-Security-Policy', policy);
     for (const [k, v] of Object.entries(extra)) r.headers.set(k, v);
+    if (site.cacheControl && !extra['Cache-Control']) r.headers.set('Cache-Control', site.cacheControl);
     // parity with GitHub Pages: text types carry charset=utf-8 (Workers assets send e.g. plain "text/html")
     const ct = r.headers.get('Content-Type') || '';
     if (/^(text\/(html|css|plain|javascript)|application\/(json|javascript))$/.test(ct)) r.headers.set('Content-Type', ct + '; charset=utf-8');

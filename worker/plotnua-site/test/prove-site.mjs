@@ -5,8 +5,10 @@ import { join, relative } from 'node:path';
 import { handle } from '../src/index.js';
 
 const [dist, root] = process.argv.slice(2);
+// content types as Workers Static Assets sends them (observed on plotart.ie, 27 Nov 2026): no charset on text types
+const CF_TYPE = { html: 'text/html', txt: 'text/plain', css: 'text/css', js: 'text/javascript', json: 'application/json', xml: 'application/xml' };
 const ASSETS = { async fetch(req) { const p = decodeURIComponent(new URL(req.url).pathname);
-  try { const f = join(dist, p); if (!f.startsWith(dist) || !statSync(f).isFile()) throw 0; return new Response(readFileSync(f), { status: 200 }); }
+  try { const f = join(dist, p); if (!f.startsWith(dist) || !statSync(f).isFile()) throw 0; return new Response(readFileSync(f), { status: 200, headers: CF_TYPE[f.split('.').pop()] ? { 'Content-Type': CF_TYPE[f.split('.').pop()] } : {} }); }
   catch { return new Response('nf', { status: 404 }); } } };
 let pass = 0, fail = 0;
 const ok = (c, m) => { if (c) pass++; else { fail++; if (fail < 30) console.log('FAIL', m); } };
@@ -37,6 +39,13 @@ const w = await get('https://www.plotnua.ie/discoveries.html?x=1');
 ok(w.status === 301 && w.headers.get('location') === 'https://plotnua.ie/discoveries.html?x=1', 'www -> apex');
 ok((await get('https://plotnua.ie/')).headers.get('x-robots-tag') === null, 'plotnua.ie indexable');
 ok((await get('https://plotnua-site.colin-a41.workers.dev/')).headers.get('x-robots-tag') === 'noindex, nofollow', 'workers.dev noindex');
+// header parity with GitHub Pages (plotnua.ie today): cache-control and content types
+for (const [path, type] of [['/', 'text/html; charset=utf-8'], ['/discoveries.html', 'text/html; charset=utf-8'], ['/robots.txt', 'text/plain; charset=utf-8'], ['/sitemap.xml', 'application/xml'], ['/CNAME', null]]) {
+  const r = await get('https://plotnua.ie' + path);
+  ok(r.headers.get('cache-control') === 'max-age=600', `cache-control as Pages ${path}`);
+  if (type) ok(r.headers.get('content-type') === type, `content-type ${path}: ${r.headers.get('content-type')}`);
+}
+for (const h of ['x-content-type-options', 'referrer-policy', 'strict-transport-security']) ok((await get('https://plotnua.ie/')).headers.get(h) !== null, `security header ${h}`);
 // 4. the PlotArt move: off until the cutover, then exact
 ok((await get('https://plotnua.ie/plotart/gallery/')).status === 200, 'before cutover: /plotart/ served here');
 const cut = env({ PLOTART_ADDRESS: 'plotart.ie' });
