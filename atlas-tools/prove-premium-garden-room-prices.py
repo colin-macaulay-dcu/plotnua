@@ -38,6 +38,8 @@ Mutation proof: atlas-tools/prove-premium-garden-room-prices-capability.py
 """
 import hashlib, html as H, json, re, subprocess, sys, pathlib
 from collections import Counter
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import seo_pn_consent  # consent migration mapping (declared)
 
 TOOLS = pathlib.Path(__file__).resolve().parent
 ROOT = pathlib.Path(sys.argv[sys.argv.index("--dir") + 1]).resolve() if "--dir" in sys.argv else TOOLS.parent
@@ -293,6 +295,8 @@ def main():
     base["head"]["jsonld"] = [x.replace('"dateModified": "2026-10-20"', '"dateModified": "%s"' % bdate0)
                                 .replace(old_desc, ld_desc)
                               for x in base["head"]["jsonld"]]
+    # consent migration (declared in seo_pn_consent.py): Cookiebot -> consent module, static Google tag dropped
+    base["head"]["scripts"] = seo_pn_consent.swap_srcs(base["head"]["scripts"])
     # G1
     now = head(t)
     for k in ("title", "metas", "canonical", "scripts", "jsonld"):

@@ -64,3 +64,31 @@ def json_transform(s, group='PlotNua'):
 # PlotArt pages on plotnua.ie (plotart_shell.ANALYTICS_HEAD): the same consent record and module as the rest of
 # plotnua.ie (one choice per domain), content group 'PlotArt'. plotart.ie still replaces this block with its own.
 PLOTART_HEAD = A.CONSENT + (MODULE % 'PlotArt')
+
+# ---- declared mapping for the pinned-snapshot guards (same method as the Cookiebot id change of 26 Nov 2026) ----
+# A guard that compares a page's external head scripts against a historical BASE applies this to the BASE list only:
+# the Cookiebot loader becomes the consent module and the static Google tag loader is dropped. Nothing else is relaxed.
+CB_SRC = 'https://consent.cookiebot.com/uc.js'
+GTAG_SRC = 'https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8'
+MODULE_SRC = '/assets/consent/site-consent.js?v=1'
+
+
+def swap_srcs(srcs):
+    """List of script src values (BASE) -> the same list after the consent migration."""
+    out = []
+    for s in srcs:
+        if s == CB_SRC: out.append(MODULE_SRC)
+        elif s == GTAG_SRC: continue
+        else: out.append(s)
+    return out
+
+
+def swap_tags(tags, group='PlotNua'):
+    """List of opening <script ... src=...> tags (BASE) -> the same list after the consent migration."""
+    module_tag = re.search(r'<script\b[^>]*src=[^>]*>', MODULE % group).group(0)
+    out = []
+    for t in tags:
+        if 'consent.cookiebot.com/uc.js' in t: out.append(module_tag)
+        elif 'googletagmanager.com/gtag/js' in t: continue
+        else: out.append(t)
+    return out

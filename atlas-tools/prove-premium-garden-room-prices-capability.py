@@ -32,7 +32,7 @@ FAULTS = [
     ("title changed", PAGE, sub("<title>Garden Room Prices Ireland 2026: Kits &amp; Installed | PlotNua</title>", "<title>Garden Room Prices | PlotNua</title>")),
     ("meta description changed", PAGE, rx(r'(<meta name="description" content=")[^"]*', r"\1Garden room prices.")),
     ("canonical changed", PAGE, sub('href="https://plotnua.ie/garden-room-prices-ireland.html">', 'href="https://plotnua.ie/prices.html">')),
-    ("consent script removed", PAGE, rx(r'<script id="Cookiebot"[^>]*></script>\n', "")),
+    ("consent script removed", PAGE, rx(r'<script src="/assets/consent/site-consent\.js[^>]*></script>\n', "")),   # consent migration: the module replaces Cookiebot
     # 11 Nov 2026: planted on whatever the builder last wrote (no figure hard-coded), so an evidence change cannot break the setup.
     ("a figure typed by hand", PAGE, rx(r"&euro;(\d[\d,]*) to &euro;", r"&euro;1\1 to &euro;")),
     ("a price region removed", PAGE, rx(r"<!-- PN-PRICES:HELD -->.*?<!-- /PN-PRICES:HELD -->", "")),
