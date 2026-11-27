@@ -987,6 +987,7 @@
         ${g.founding ? `<dt>Founding year</dt><dd>${fy ? `${E(day(fy.start))} to ${E(day(fy.end))}` : 'Starts on the day your gallery is first published'}</dd>` : ''}
       </dl></section>` : '';
     const gallery = g.programme === 'gallery_artist';
+    const r2 = (g.required || []).includes('PA-GAA-2026-11-R2');   // the revised summary is for artists assigned R2 only
     const tm = ME.terms || {};
     const pct = bp => `${(bp / 100).toLocaleString('en-IE', { maximumFractionDigits: 2 })}%`;
     // Gallery Artists (Phase 2): until the approved agreement is installed there is nothing to read or accept yet
@@ -1007,7 +1008,9 @@
         <li>${tm.commission_bp !== undefined && tm.commission_bp !== 1500 ? `Commission of ${E(pct(tm.commission_bp))}, as individually agreed with you in writing${tm.variation_agreed_on ? ` on ${E(day(tm.variation_agreed_on))}` : ''}, on` : '15% commission on'} sales to collectors PlotArt introduces to you, agreed within 24 months of the introduction. You keep at least 85%.</li>
         <li>No upfront, joining, membership, subscription or listing fees.</li>
         <li>No exclusivity: you remain free to sell your work anywhere.</li>
-        <li>Independent sales carry no PlotArt commission. Report qualifying direct sales to PlotArt. Managed checkout is optional where offered.</li>
+        ${r2 ? `<li>Independent sales carry no PlotArt commission. Report qualifying sales that you complete directly to PlotArt.</li>
+        <li>Managed checkout (online sales) isn’t available under this agreement until compatible payment terms are issued. You can still take enquiries and sell directly.</li>`
+          : '<li>Collectors pay you directly. You report each sale and PlotArt invoices you for its commission.</li>'}
         <li>Newly commissioned artwork is not covered unless you and PlotArt agree it separately in writing.</li>
         <li>You keep your copyright. You can withdraw any work, or leave, at any time.</li>
       </ul><p class="st-muted" style="margin:10px 0 0">This summary isn’t part of the agreement: the full text below is what you accept.</p></section>` : ''}

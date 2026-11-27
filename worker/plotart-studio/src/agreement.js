@@ -10,6 +10,8 @@ export const FAA = 'PA-FAA-2026-11', GPIL = 'PA-GPIL-2026-11';
 export const GAA = 'PA-GAA-2026-11';
 export const GAA_R2 = 'PA-GAA-2026-11-R2', GPIL_R2 = 'PA-GPIL-2026-11-R2';
 export const GALLERY_R2 = [GAA_R2, GPIL_R2];
+/* Managed checkout needs payment terms compatible with R2 (not yet issued): R2 artists cannot opt in, and are told why. */
+export const R2_CHECKOUT_NOTE = 'Managed checkout isn’t available under your Artist Agreement until compatible payment terms are issued. You can still take enquiries and sell directly.';
 const R2_STATEMENT = `I have read and accept the PlotArt Artist Agreement ${GAA_R2}, including the Gallery Publication and Image Licence ${GPIL_R2}.`;
 export const LEGACY_GPIL = 'PA-GPIL-2026-10-29';          // label only: no fixed full text existed; never re-attributed
 /* Licence versions the publishing pipeline may carry (must match atlas-tools LICENCE_VERSIONS and

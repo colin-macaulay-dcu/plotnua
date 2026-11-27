@@ -165,7 +165,16 @@ async function agreementDocs(env) {
 }
 /* Gallery Artist terms (migration 0012). null when the artist has none (every Founding Artist) or 0012 has not run. */
 async function termsFor(env, artistId) {
-  try { return await one(env, 'SELECT * FROM artist_terms WHERE artist_id = ?', artistId); } catch { return null; }
+  let t;
+  try { t = await one(env, 'SELECT * FROM artist_terms WHERE artist_id = ?', artistId); } catch { return null; }
+  if (t) t.agreement_version = await agreementVersionFor(env, artistId);
+  return t;
+}
+/* The agreement version fixed for an artist at invitation (migration 0030). The row is written only in the invitation
+   batch and never changes (refusal-only guards in 0030). No row: the artist keeps the agreement they were invited under. */
+async function agreementVersionFor(env, artistId) {
+  try { const r = await one(env, 'SELECT agreement_version FROM artist_agreement_versions WHERE artist_id = ?', artistId); return r ? r.agreement_version : null; }
+  catch { return null; }   // migration 0030 not applied
 }
 async function termsInstalled(env) {
   try { await env.DB.prepare('SELECT 1 FROM artist_terms LIMIT 1').all(); return true; } catch { return false; }
@@ -1737,11 +1746,11 @@ async function route(req, env) {
       await env.DB.batch([
         env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
           .bind(id, slug, email, name, programme === 'founding' ? 1 : 0, b.application_ref || null, at, at),
-        ...(programme !== 'gallery_artist' ? [] : useR2 ? [env.DB.prepare(`INSERT INTO artist_terms
-          (artist_id, track, commission_bp, agreement_version, set_by, created_at, updated_at)
-          VALUES (?, 'gallery_artist', 1500, ?, ?, ?, ?)`).bind(id, AG.GAA_R2, me.email, at, at)]
-          : [env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
-          VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)]),
+        ...(programme === 'gallery_artist' ? [env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
+          VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)] : []),
+        // R2 (migration 0030): the version is fixed in the same batch as the invitation, at the artist's creation time
+        ...(useR2 ? [env.DB.prepare(`INSERT INTO artist_agreement_versions (artist_id, agreement_version, licence_version, assigned_by, assigned_at)
+          VALUES (?,?,?,?,?)`).bind(id, AG.GAA_R2, AG.GPIL_R2, me.email, at)] : []),
         // the chosen galleries go in the SAME batch: the artist and their gallery invitations are created together or not at all
         ...G.inviteStatements(env, me.email, id, b.galleries, b.application_ref || null, at)]);
       await audit(env, me.email, 'founder', 'invite', id, { slug, founding: programme === 'founding', programme });
@@ -1918,12 +1927,15 @@ async function route(req, env) {
     return res(t.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': t.html_sha256 });
   }
   if (p.startsWith('/api/checkout')) {
-    if (p === '/api/checkout' && m === 'GET') return json({ ok: true, ...(await CO.artistView(env, artist)) });
+    if (p === '/api/checkout' && m === 'GET') {
+      const view = await CO.artistView(env, artist), terms = await termsFor(env, artist.id);
+      return json({ ok: true, ...view, ...(terms?.agreement_version === AG.GAA_R2 ? { agreement_unavailable: AG.R2_CHECKOUT_NOTE, checkout_available: false } : {}) });
+    }
     if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not available' }, 404);
     if (m === 'POST' && (p === '/api/checkout/opt-in' || p === '/api/checkout/basket/opt-in')) {
       const terms = await termsFor(env, artist.id);
       if (terms?.agreement_version === AG.GAA_R2)
-        throw new Bad('Managed checkout will be available once the payment addendum for your agreement is issued. You can still take enquiries and sell directly.', 409);
+        throw new Bad(AG.R2_CHECKOUT_NOTE, 409);
     }
     const b = m === 'GET' ? null : await req.json().catch(() => ({}));
     if (p === '/api/checkout/opt-in' && m === 'POST') return json({ ok: true, ...(await CO.optIn(env, artist, b)) });
