@@ -1,0 +1,22 @@
+/* PlotArt cookie consent (prepared 27 Nov 2026, not active). PlotArt palette and type; equal Accept and Reject. */
+.pa-ck{ position:fixed; z-index:1000; left:clamp(12px,2.4vw,28px); bottom:clamp(12px,2.4vw,28px); width:min(440px,calc(100vw - 24px));
+  box-sizing:border-box; padding:22px 22px 20px; background:var(--wall-2,#2C2E30); color:var(--stone,#B8B6B2);
+  border:1px solid var(--line-2,#4A4B4F); border-radius:var(--r,18px); box-shadow:0 18px 48px rgba(0,0,0,.42);
+  font:15px/1.55 var(--sans,'Hanken Grotesk',system-ui,sans-serif); }
+.pa-ck h2{ font-family:var(--serif,'Instrument Serif',Georgia,serif); font-weight:400; font-size:26px; line-height:1.1; color:var(--ivory,#EDEBE7); margin:0 0 8px; }
+.pa-ck p{ margin:0 0 16px; }
+.pa-ck a{ color:var(--ivory,#EDEBE7); text-underline-offset:3px; }
+.pa-ck-d{ display:grid; gap:10px; margin:0 0 16px; }
+.pa-ck-d label{ display:flex; gap:10px; align-items:flex-start; font-size:14px; }
+.pa-ck-d strong{ display:block; color:var(--ivory,#EDEBE7); font-weight:600; }
+.pa-ck-d input{ margin-top:4px; accent-color:var(--paper,#F4F0EB); width:16px; height:16px; }
+.pa-ck-b{ display:flex; flex-wrap:wrap; gap:10px; }
+.pa-ck-b button{ flex:1 1 140px; min-height:44px; padding:10px 14px; white-space:nowrap; border-radius:999px; cursor:pointer;
+  font:600 15px/1 var(--sans,'Hanken Grotesk',system-ui,sans-serif); letter-spacing:.01em;
+  background:transparent; color:var(--ivory,#EDEBE7); border:1px solid var(--line-2,#4A4B4F); }
+/* the two decisions look identical: neither is nudged */
+.pa-ck-b button[data-a="accept"], .pa-ck-b button[data-a="reject"], .pa-ck-b button[data-a="save"]{ background:var(--paper,#F4F0EB); color:var(--anth,#1B1C1E); border-color:var(--paper,#F4F0EB); }
+.pa-ck-b .pa-ck-more{ flex:0 0 100%; min-height:36px; border:0; text-decoration:underline; text-underline-offset:3px; font-weight:500; color:var(--stone,#B8B6B2); }
+.pa-ck-b button:focus-visible, .pa-ck-link:focus-visible{ outline:2px solid var(--ivory,#EDEBE7); outline-offset:3px; }
+.pa-ck-link{ background:none; border:0; padding:0; font:inherit; color:inherit; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+@media (prefers-reduced-motion:no-preference){ .pa-ck{ animation:pa-ck-in .28s ease-out; } @keyframes pa-ck-in{ from{ opacity:0; transform:translateY(8px); } } }

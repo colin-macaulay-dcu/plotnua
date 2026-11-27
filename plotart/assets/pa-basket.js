@@ -58,7 +58,7 @@
       var a = box.querySelector('a'), img = document.querySelector('.pa-aw-frame img');
       if (a) a.addEventListener('click', function () {
         try {
-          if (typeof window.gtag === 'function' && window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics) {
+          if (typeof window.gtag === 'function' && ((window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics) || (window.paConsent && window.paConsent.statistics === true))) {
             var ev = { currency: 'EUR', items: [{ item_id: id }] };
             if (typeof it.price_cents === 'number' && it.price_cents > 0) { ev.value = it.price_cents / 100; ev.items[0].price = it.price_cents / 100; }
             window.gtag('event', 'begin_checkout', ev);

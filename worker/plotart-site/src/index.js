@@ -10,25 +10,32 @@
 
 const APEX = 'plotart.ie';
 
+// Consent (founder instruction 26 Nov 2026): no non-essential tracking until an approved consent solution exists.
+// With ANALYTICS = "off", scripts may come only from plotart.ie itself and pages may talk only to PlotArt's own Workers,
+// so no analytics, advertising or consent-platform script can run here, even if one were added to a page by mistake.
+const CSP_PARTS = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: https:",
+  "connect-src 'self' https://plotart-enquiry.colin-a41.workers.dev https://plotart-checkout.colin-a41.workers.dev https://plotnua-art-space-register.colin-a41.workers.dev https://plotart-studio.colin-a41.workers.dev",
+  "form-action 'self' https://plotart-checkout.colin-a41.workers.dev https://plotart-studio.colin-a41.workers.dev",
+  "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "frame-ancestors 'self'",
+];
+// ANALYTICS = "consent" (together with site.json, only after founder approval): the Google Analytics hosts are added so
+// the self-hosted consent module can load GA4 AFTER a visitor accepts analytics. Nothing else is opened.
+const GA = ['https://www.googletagmanager.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com'];
+const csp = env => (env.ANALYTICS === 'consent'
+  ? CSP_PARTS.map(p => p.startsWith('script-src') ? `${p} ${GA[0]}` : p.startsWith('connect-src') ? `${p} ${GA.join(' ')}` : p)
+  : CSP_PARTS).join('; ');
+
 const SECURITY = {
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Strict-Transport-Security': 'max-age=31536000',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'X-Frame-Options': 'SAMEORIGIN',
-  // Consent (founder instruction 26 Nov 2026): no non-essential tracking until an approved consent solution exists.
-  // Scripts may come only from plotart.ie itself, and pages may talk only to PlotArt's own Workers, so no analytics,
-  // advertising or consent-platform script can run here, even if one were added to a page by mistake.
-  'Content-Security-Policy': [
-    "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https:",
-    "connect-src 'self' https://plotart-enquiry.colin-a41.workers.dev https://plotart-checkout.colin-a41.workers.dev https://plotnua-art-space-register.colin-a41.workers.dev https://plotart-studio.colin-a41.workers.dev",
-    "form-action 'self' https://plotart-checkout.colin-a41.workers.dev https://plotart-studio.colin-a41.workers.dev",
-    "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "frame-ancestors 'self'",
-  ].join('; '),
 };
 
 const hasExt = path => /\.[a-z0-9]+$/i.test(path.split('/').pop());
@@ -44,6 +51,7 @@ async function asset(env, url, path) {
 function finish(env, response, extra = {}) {
   const r = new Response(response.body, response);
   for (const [k, v] of Object.entries(SECURITY)) r.headers.set(k, v);
+  r.headers.set('Content-Security-Policy', csp(env));
   for (const [k, v] of Object.entries(extra)) r.headers.set(k, v);
   // only https://plotart.ie itself may ever be indexed: the workers.dev test address is always noindex
   if ((env.INDEXING || 'noindex') !== 'index' || (env.HOST && env.HOST !== APEX)) r.headers.set('X-Robots-Tag', 'noindex, nofollow');

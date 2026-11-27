@@ -77,6 +77,8 @@ class Site:
             return url
         parts = urlsplit(url)
         tail = url[len(parts.path):]                       # ?query#fragment, kept verbatim
+        if parts.path.startswith("/assets/consent/"):
+            return url                                       # plotart.ie's own consent module (copied by build())
         if parts.path.startswith("/"):
             target = posixpath.normpath(parts.path.lstrip("/")) if parts.path != "/" else ""
             if parts.path.endswith("/") and target not in ("", "."):
@@ -147,20 +149,42 @@ def plotart_sitemap(root, mode):
     return xml, sorted(seen)
 
 
+# plotart.ie's own consent head (site.json "analytics": "consent"): Consent Mode v2 all denied, then the self-hosted
+# PlotArt consent module, which loads GA4 only after a visitor accepts analytics (Basic Consent Mode). No Cookiebot.
+CONSENT_HEAD = """<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'denied',
+    personalization_storage: 'denied', security_storage: 'granted' });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+<link rel="stylesheet" href="/assets/consent/pa-consent.css?v=1">
+<script src="/assets/consent/pa-consent.js?v=1" defer></script>"""
+CONSENT_FILES = ("pa-consent.js", "pa-consent.css")
+
+
 def analytics_head(root):
-    """The one approved PlotArt analytics block (plotart_shell.ANALYTICS_HEAD) and plotart.ie's setting for it."""
+    """The approved PlotNua analytics block (plotart_shell.ANALYTICS_HEAD), and what plotart.ie puts in its place:
+    "off" = nothing; "consent" = CONSENT_HEAD. site.json and the Worker's ANALYTICS variable (its Content-Security-Policy)
+    must agree, so the policy can never block an approved banner or allow an unapproved tracker."""
     with open(os.path.join(root, "worker/plotart-site/site.json"), encoding="utf-8") as f:
         setting = json.load(f).get("analytics")
-    if setting != "off":
-        raise SystemExit('worker/plotart-site/site.json: analytics must be "off" until a consent solution for plotart.ie is approved')
+    if setting not in ("off", "consent"):
+        raise SystemExit('worker/plotart-site/site.json: analytics must be "off" or "consent"')
+    with open(os.path.join(root, "worker/plotart-site/wrangler.toml"), encoding="utf-8") as f:
+        m = re.search(r'^ANALYTICS\s*=\s*"([a-z]+)"', f.read(), re.M)
+    if (m.group(1) if m else "off") != setting:
+        raise SystemExit(f'site.json analytics "{setting}" and wrangler.toml ANALYTICS "{m.group(1) if m else "off"}" differ')
     sys.path.insert(0, os.path.join(root, "atlas-tools"))
     import plotart_shell
-    return plotart_shell.ANALYTICS_HEAD
+    return plotart_shell.ANALYTICS_HEAD, ("" if setting == "off" else CONSENT_HEAD), setting
 
 
 def build(root, out, mode):
     site = Site(root)
-    head = analytics_head(site.root)
+    head, replacement, analytics = analytics_head(site.root)
     stripped = 0
     src = os.path.join(site.root, "plotart")
     if os.path.exists(out):
@@ -177,7 +201,7 @@ def build(root, out, mode):
                 with open(p, encoding="utf-8") as f:
                     text = f.read()
                 if ext == ".html" and head in text:
-                    text = text.replace(head, "", 1)          # analytics off on plotart.ie (site.json)
+                    text = text.replace(head, replacement, 1)  # plotart.ie: nothing ("off") or its own consent head
                     stripped += 1
                 with open(dest, "w", encoding="utf-8", newline="") as f:
                     f.write(site.rewrite_text(rel, text, ext))
@@ -188,6 +212,10 @@ def build(root, out, mode):
     with open(os.path.join(out, "404.html"), "w", encoding="utf-8") as f:
         f.write(NOT_FOUND)
     site.extra.update({"assets/brand/plotart-favicon-32.png", "assets/brand/plotart-logo-stacked.svg"})
+    if analytics == "consent":
+        os.makedirs(os.path.join(out, "assets", "consent"), exist_ok=True)
+        for n in CONSENT_FILES:
+            shutil.copyfile(os.path.join(site.root, "worker/plotart-site/consent", n), os.path.join(out, "assets", "consent", n))
     copied = set()
     while site.extra - copied:                              # copied root assets may reference further assets
         for rel in sorted(site.extra - copied):
@@ -219,12 +247,18 @@ def build(root, out, mode):
                     body = f.read()
                     if ABS_OLD.search(body):
                         leftover.append(os.path.relpath(os.path.join(d, n), out))
+                    rel_out = os.path.relpath(os.path.join(d, n), out).replace(os.sep, "/")
+                    if rel_out == "assets/consent/pa-consent.js":
+                        continue                                  # the approved consent module: the only GA loader
+                    if n.endswith(".html") and analytics == "consent":
+                        body = body.replace(CONSENT_HEAD, "")     # the approved consent head
                     if TRACKERS.search(body) or (n.endswith(".html") and PAGE_TRACKERS.search(body)):
                         tracking.append(os.path.relpath(os.path.join(d, n), out))
     report = {"mode": mode, "pages_and_files": files, "root_assets_copied": sorted(copied),
               "sitemap_urls": len(urls), "missing_links": site.missing, "old_address_left_in": leftover,
               "tracking_or_consent_scripts": tracking,
-              "analytics_blocks_removed": stripped}
+              "analytics_blocks_removed": stripped,
+              "analytics_on_plotart_ie": analytics}
     with open(os.path.join(out, ".build-report.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, indent=1)
     with open(os.path.join(out, ".assetsignore"), "w", encoding="utf-8") as f:

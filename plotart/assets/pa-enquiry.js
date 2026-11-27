@@ -12,7 +12,7 @@
   var artist = (location.pathname.match(/\/artists\/([a-z0-9-]+)\//) || [])[1] || '';
   function track(name, params) {
     try {
-      if (typeof window.gtag === 'function' && window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics) window.gtag('event', name, params);
+      if (typeof window.gtag === 'function' && ((window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics) || (window.paConsent && window.paConsent.statistics === true))) window.gtag('event', name, params);
     } catch (err) { /* analytics never affects the enquiry */ }
   }
   Array.prototype.forEach.call(forms, function (form) {

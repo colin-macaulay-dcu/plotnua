@@ -19,4 +19,5 @@ html_handling = "none"       # no automatic /x.html -> /x redirects: every exist
 not_found_handling = "none"
 
 [vars]
+ANALYTICS = "off"           # "consent" only together with site.json, after founder approval (self-hosted consent banner, GA4 after Accept)
 INDEXING = "noindex"         # "index" only at the founder-approved cutover (see PLOTART-DOMAIN-RUNBOOK.md)
