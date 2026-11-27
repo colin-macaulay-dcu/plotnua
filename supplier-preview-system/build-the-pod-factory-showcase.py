@@ -106,8 +106,8 @@ HEAD = """<!DOCTYPE html>
   gtag('config', 'G-PKKJ0RK6N8');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Pod Factory Meath: Garden Pods &amp; Modular Homes | PlotNua</title>
-<meta name="description" content="The Pod Factory builds steel-framed garden pods, modular homes up to 72 m&sup2; and extensions in Co. Meath, craned into place: sizes, layouts and what to ask.">
+<title>The Pod Factory, Meath: Pods, Sizes &amp; Showroom | PlotNua</title>
+<meta name="description" content="The Pod Factory&rsquo;s five steel-framed pods, from a 3.6 &times; 5.8 m garden studio to a 72 m&sup2; home: sizes, rooms, how it quotes, and its showroom near Dunshaughlin.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/suppliers/the-pod-factory.html">
 <meta name="theme-color" content="#27282A">

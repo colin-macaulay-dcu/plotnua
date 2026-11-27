@@ -168,7 +168,39 @@ SEO_PN_ADDED = ["Looking for a sauna instead?", "Compare", "garden saunas in Ire
                 "For a room attached to the house, see", "extensions and attached sunrooms"]
 ADDED_TEXT.update({x: SEO_PN for x in SEO_PN_ADDED})
 ADDED_LINKS.update({"garden-saunas-ireland.html": 1, "discovery-extend-the-house.html#sunrooms-and-conservatories": 1})
+# Growth package, PlotNua (27 Nov 2026): one section "Garden room, sunroom or orangery: what's the difference?" before
+# the questions, for the sunroom and orangery searches that already land here. No figure, no name, no claim word
+# (CLAIM_WORDS unchanged); head, title, H1, canonical and every PN-PRICES figure untouched. The three new questions sit
+# in the builder's FAQ region (G5 proves them); their two links are counted here because G3 counts every body link.
+GROWTH = "growth package: sunroom and orangery section (27 Nov 2026)"
+GROWTH_ADDED = [
+    "A Different Building",
+    "Garden room, sunroom or orangery: what’s the difference?",
+    "The three names are often searched together, but they describe different buildings, and they are priced in different ways.",
+    "Garden room",
+    "A detached building that stands on its own base in the garden, with its own walls, roof and insulation.",
+    "It is not joined to the house: usually only a power cable runs between them.",
+    "Sunroom or conservatory",
+    "A room built onto the house, with far more glass than a usual extension.",
+    "A conservatory traditionally has a glazed roof, a sunroom more often a solid, insulated roof.",
+    "It opens into the house, so it needs foundations and a floor like any extension, and it is tied into the existing walls.",
+    "Orangery",
+    "Also built onto the house, with more solid wall than a conservatory: brick or block piers, tall windows and usually a flat roof around a glazed roof lantern.",
+    "Planning and the Building Regulations",
+    "Attached and detached buildings come under different planning exemptions.",
+    "At the rear of a house, a sunroom, conservatory or orangery is generally treated as a house extension, and shares its exemption with any earlier extension.",
+    "A garden room comes under the separate exemption for structures in the garden.",
+    "Both were amended in July 2026 and each has its own conditions, so check current exemptions with your local authority.",
+    "An attached room is building work on the house, and it must meet the Building Regulations whether or not it needs planning permission.",
+    "PlotNua’s price evidence covers garden rooms only.",
+    "Attached sunrooms and orangeries are generally priced as extensions, designed for each house, and need a quote, so this guide publishes no figure for them.",
+    "Extend the House covers sunrooms and conservatories",
+]
+ADDED_TEXT.update({x: GROWTH for x in GROWTH_ADDED})
+# the section's link to Extend the House, and the FAQ region's two links (to the section and to Extend the House)
+ADDED_LINKS.update({"discovery-extend-the-house.html#sunrooms-and-conservatories": 2, "#garden-room-sunroom-orangery": 1})
 ADDED_IDS = {"short-answer", "why-it-is-hard", "garden-homes",
+             "garden-room-sunroom-orangery",   # growth package (27 Nov 2026): the sunroom and orangery section
              "what-may-cost-extra",   # Stage 2 item 5 (6 Nov 2026), inside the EXTRAS region
              "what-affects-prices",   # SEO-GR3 (8 Nov 2026): the new section
              # the individual price comparison (founder approval 9 Nov 2026)

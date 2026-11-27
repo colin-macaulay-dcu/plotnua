@@ -711,6 +711,27 @@ def render(ev, ex):
          'It depends on the room&rsquo;s size, height, position and use, and on your garden. '
          '<a href="discovery-living-in-the-garden.html">Living in the Garden</a> explains the 2026 '
          'exemption conditions and when the Building Regulations apply.'),
+        # Sunroom and orangery questions (growth package, 27 Nov 2026): no figure, no average, no
+        # name. PlotNua holds no price evidence for attached rooms, so the answers say so.
+        ("Is a garden room cheaper than a sunroom or orangery?",
+         'PlotNua cannot answer that with a figure. Its price research covers garden rooms only, and '
+         'it holds no price evidence for sunrooms or orangeries. What differs is the work: a garden '
+         'room is a separate building on its own base, while a sunroom or orangery is an extension, '
+         'built onto the house, opened into it and finished to match. Compare written quotes for the '
+         'room you actually want. <a href="#garden-room-sunroom-orangery">See how the three differ</a>.'),
+        ("Do sunrooms and orangeries need planning permission in Ireland?",
+         'It depends on where the room goes and on what has been built before. At the rear of a house, '
+         'a sunroom, conservatory or orangery is generally treated as a house extension: its exemption '
+         'has conditions on size, height and the garden left behind, shared with any earlier extension. '
+         'At the side or front, plan for a planning application. The rules changed in July 2026, so '
+         'check current exemptions with your local authority. '
+         '<a href="discovery-extend-the-house.html#sunrooms-and-conservatories">Extend the House</a> '
+         'explains the extension rules.'),
+        ("Why doesn&rsquo;t PlotNua list sunroom prices?",
+         'Because it has no evidence to publish. PlotNua gives a range only where it holds dated, '
+         'checked prices that cover the same thing, and its research covers detached garden rooms and '
+         'garden offices. Attached sunrooms and orangeries are generally priced as extensions, designed '
+         'for each house, and need a quote. Ask for written quotes on the same specification.'),
     ]
     regions["FAQ"] = "\n".join('<div class="pr-faq"><h3>%s</h3>\n<p>%s</p></div>' % qa for qa in faq)
     regions["UPDATED"] = date_long(dt.date.fromisoformat(BUILD_DATE))
