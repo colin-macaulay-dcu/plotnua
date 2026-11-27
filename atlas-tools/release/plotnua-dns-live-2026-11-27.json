@@ -78,5 +78,11 @@
    "CNAME",
    "send.forge.rmta.net."
   ]
+ ],
+ "rsend.plotnua.ie": [
+  [
+   "CNAME",
+   "rsend-euw1.forge.rmta.net."
+  ]
  ]
 }
