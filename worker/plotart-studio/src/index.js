@@ -1411,6 +1411,7 @@ async function route(req, env) {
     if (p.startsWith('/api/admin/commercial')) {
       const body = async () => (await req.json().catch(() => null)) || {};
       if (p === '/api/admin/commercial' && m === 'GET') return json({ ok: true, ...(await CM.list(env)) });
+      if (p === '/api/admin/commercial/rent-invoices' && m === 'POST') { const r = await CM.invoiceRent(env, me.email, await body()); return json({ ok: true, ...r }); }
       if (p === '/api/admin/commercial/catalogue' && m === 'GET') return json({ ok: true, ...(await CM.catalogue(env)) });
       if (p === '/api/admin/commercial/leads' && m === 'POST') { const b = await body(); const c = await CM.createLead(env, me.email, b, { source: b.source }); return json({ ok: true, ...(await CM.view(env, c.id)) }); }
       if ((mm = p.match(/^\/api\/admin\/commercial\/leads\/(cl[0-9a-z]+)$/))) {

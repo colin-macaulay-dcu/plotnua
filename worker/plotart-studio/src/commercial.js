@@ -170,9 +170,11 @@ export async function addDocument(env, actor, id, b) {
   const number = str(b.number, 40, 'Number or reference', { min: 3, optional: false });
   const did = rid('cd'), t = now();
   try {
-    await env.DB.prepare(`INSERT INTO commercial_documents (id, lead_id, kind, number, status, issued_on, period_from, period_to, amount_cents, vat_cents, link, note, created_at, updated_at)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(did, l.id, kind, number, status, day(b.issued_on, 'Date'), day(b.period_from, 'Period start'), day(b.period_to, 'Period end'),
-      cents(b.amount, 'Amount'), cents(b.vat, 'VAT'), str(b.link, 500, 'Link'), str(b.note, 300, 'Note'), t, t).run();
+    const placement = b.placement_id ? await one(env, 'SELECT id FROM commercial_placements WHERE id = ? AND lead_id = ?', String(b.placement_id), l.id) : null;
+    if (b.placement_id && !placement) throw new Bad('That placement isn’t part of this lead');
+    await env.DB.prepare(`INSERT INTO commercial_documents (id, lead_id, kind, number, status, issued_on, period_from, period_to, placement_id, amount_cents, vat_cents, link, note, created_at, updated_at)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(did, l.id, kind, number, status, day(b.issued_on, 'Date'), day(b.period_from, 'Period start'), day(b.period_to, 'Period end'),
+      placement ? placement.id : null, cents(b.amount, 'Amount'), cents(b.vat, 'VAT'), str(b.link, 500, 'Link'), str(b.note, 300, 'Note'), t, t).run();
   } catch (e) { if (/UNIQUE/.test(String(e))) throw new Bad(`A ${kind.replace('_', ' ')} numbered ${number} already exists`); throw e; }
   await event(env, l.id, 'document', `${kind.replace('_', ' ')} ${number}: ${status}`, actor);
   await touch(env, l.id); return view(env, l.id);
@@ -274,6 +276,39 @@ export async function websiteEnquiry(env, b) {
 }
 
 /* ---- views -------------------------------------------------------------------------------------------------------- */
+/* Rental management: every month of an active placement is a period PlotArt invoices its 1% fee for (the artist invoices
+   their 3% under the hire agreement). A period is due once it has started and has no PlotArt invoice yet (a void one doesn't
+   count). Placements ending within 30 days are renewals to discuss. */
+export function periods(p, upto) {
+  const out = [];
+  for (let i = 0; i < 24; i++) {
+    const from = addMonths(p.start_on, i); if (from >= p.end_on || from > upto) break;
+    const next = addMonths(p.start_on, i + 1), to = new Date(Date.parse(next + 'T00:00:00Z') - 864e5).toISOString().slice(0, 10);
+    out.push({ from, to: to < p.end_on ? to : p.end_on });
+  }
+  return out;
+}
+export async function rentDue(env, upto = today()) {
+  const ps = await all(env, `SELECT p.id, p.lead_id, p.start_on, p.end_on, p.status, s.artwork_title, s.monthly_cents, s.artist_monthly_cents, s.plotart_monthly_cents,
+    a.display_name AS artist, l.business, l.reference FROM commercial_placements p JOIN commercial_selections s ON s.id = p.selection_id JOIN artists a ON a.id = s.artist_id
+    JOIN commercial_leads l ON l.id = p.lead_id WHERE p.status IN ('active','sale_notice') AND s.arrangement = 'rental'`);
+  const due = [];
+  for (const p of ps) {
+    const billed = new Set((await all(env, "SELECT period_from FROM commercial_documents WHERE placement_id = ? AND kind = 'invoice' AND status <> 'void'", p.id)).map(d => d.period_from));
+    for (const per of periods(p, upto)) if (!billed.has(per.from)) due.push({ placement_id: p.id, lead_id: p.lead_id, reference: p.reference, business: p.business, artwork_title: p.artwork_title,
+      artist: p.artist, period_from: per.from, period_to: per.to, plotart_cents: p.plotart_monthly_cents, artist_cents: p.artist_monthly_cents, monthly_cents: p.monthly_cents });
+  }
+  return due;
+}
+export async function invoiceRent(env, actor, b) {
+  await need(env);
+  const due = (await rentDue(env)).find(d => d.placement_id === String(b.placement_id || '') && d.period_from === String(b.period_from || ''));
+  if (!due) throw new Bad('That rental month isn’t due for an invoice');
+  const number = str(b.number, 40, 'Invoice number', { min: 3, optional: false });
+  return addDocument(env, actor, due.lead_id, { kind: 'invoice', number, status: 'issued', issued_on: today(), period_from: due.period_from, period_to: due.period_to,
+    placement_id: due.placement_id, amount: (due.plotart_cents / 100).toFixed(2), note: `PlotArt fee (1%) for ${due.artwork_title}, ${due.period_from} to ${due.period_to}` });
+}
+
 export async function list(env) {
   if (!(await installed(env))) return { installed: false };
   const leads = await all(env, `SELECT l.id, l.reference, l.business, l.sector, l.contact_name, l.contact_email, l.source, l.interest, l.stage, l.next_action, l.next_action_on,
@@ -285,11 +320,12 @@ export async function list(env) {
     a.display_name AS artist, l.business FROM commercial_placements p JOIN commercial_selections s ON s.id = p.selection_id JOIN artists a ON a.id = s.artist_id
     JOIN commercial_leads l ON l.id = p.lead_id WHERE p.status IN ('scheduled','active','sale_notice') ORDER BY p.end_on`);
   const approved = await all(env, `SELECT COUNT(DISTINCT artwork_id) AS n FROM commercial_selections WHERE status IN ('artist_approved','client_chosen') AND arrangement = 'rental'`);
-  return { installed: true, stages: STAGES, stage_label: STAGE_LABEL, leads, placements,
+  const rent_due = await rentDue(env), renewals = placements.filter(p => ['active', 'sale_notice'].includes(p.status) && p.end_on <= addMonths(t, 1));
+  return { installed: true, stages: STAGES, stage_label: STAGE_LABEL, leads, placements, rent_due, renewals,
     totals: { open: leads.filter(l => !['won', 'lost', 'not_now'].includes(l.stage)).length, due: leads.filter(l => l.next_action_on && l.next_action_on <= t).length,
       monthly_cents: placements.filter(p => p.status !== 'scheduled').reduce((s, p) => s + (p.monthly_cents || 0), 0),
       plotart_monthly_cents: placements.filter(p => p.status !== 'scheduled').reduce((s, p) => s + (p.plotart_monthly_cents || 0), 0),
-      ending_soon: placements.filter(p => p.end_on <= soon).length, approved_rental_works: approved[0].n } };
+      ending_soon: placements.filter(p => p.end_on <= soon).length, rent_due_cents: rent_due.reduce((x, d) => x + (d.plotart_cents || 0), 0), approved_rental_works: approved[0].n } };
 }
 export async function view(env, id) {
   await need(env); const l = await lead(env, id);

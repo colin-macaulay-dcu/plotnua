@@ -8,8 +8,8 @@
    about the artist's address. No IP address is stored; rate limits are per-isolate and per-day caps in D1. */
 import { send } from './mailer.js';
 import { foundingAt } from './founding.js';
-import { hireEnquiry, hireListed } from './hire-enquiry.js';
-import { leadCapture, businessEnquiry } from './commercial-inbound.js';   // commercial leads (migration 0031): both OFF until approved   // Art for Hire (Stage 3B-3): separate routes, switched off
+import { hireEnquiry, hireListed } from './hire-enquiry.js';   // Art for Hire (Stage 3B-3): separate routes, switched off
+import { leadCapture, businessEnquiry } from './commercial-inbound.js';   // commercial leads (migration 0031): both OFF until approved
 
 const NOTICE = 'PA-ENQ-2026-10-29';
 // Enquiry notice versions the relay accepts. The next version is accepted BEFORE any page shows it, so changing the notice
@@ -107,7 +107,7 @@ export default {
     if (url.pathname === '/v1/hire-enquiry') return hireEnquiry(req, env, origin);       // prepared, OFF (hire-enquiry.js)
     if (url.pathname === '/v1/hire-listed') return hireListed(req, env, origin);         // live listed-works check, fails closed
     if (url.pathname === '/v1/lead-capture') return leadCapture(req, env);                // Gmail capture (bearer token), OFF
-    if (url.pathname === '/v1/business-enquiry') return businessEnquiry(req, env, origin, { allowed, cors });   // Art for Hire form, OFF
+    if (url.pathname === '/v1/business-enquiry') return businessEnquiry(req, env, origin, { allowed, cors });   // business rental request form, OFF
     if (url.pathname !== '/v1/enquiry') return new Response('Not found', { status: 404 });
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env, origin) });
     if (req.method !== 'POST') return reply(env, origin, 405, { ok: false });

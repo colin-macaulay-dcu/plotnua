@@ -102,6 +102,7 @@ CREATE TABLE IF NOT EXISTS commercial_documents (
   status TEXT NOT NULL CHECK (status IN ('draft', 'sent', 'signed', 'accepted', 'declined', 'issued', 'paid', 'void')),
   issued_on TEXT CHECK (issued_on IS NULL OR issued_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
   period_from TEXT, period_to TEXT,
+  placement_id TEXT REFERENCES commercial_placements(id) ON DELETE SET NULL,   -- a monthly PlotArt fee invoice: the placement it is for
   amount_cents INTEGER CHECK (amount_cents IS NULL OR amount_cents >= 0),
   vat_cents INTEGER CHECK (vat_cents IS NULL OR vat_cents >= 0),
   link TEXT CHECK (link IS NULL OR length(link) <= 500),

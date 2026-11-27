@@ -37,7 +37,14 @@
         <div class="st-kpi"><b>${t.due}</b><span>actions due</span></div>
         <div class="st-kpi"><b>${t.approved_rental_works}</b><span>works approved for rental (aim 10–20)</span></div>
         <div class="st-kpi"><b>${eur(t.monthly_cents)}</b><span>monthly rent on the wall (${eur(t.plotart_monthly_cents)} PlotArt)</span></div>
-        <div class="st-kpi"><b>${t.ending_soon}</b><span>placements ending within a month</span></div></div></section>
+        <div class="st-kpi"><b>${t.ending_soon}</b><span>placements ending within a month</span></div>
+        <div class="st-kpi"><b>${eur(t.rent_due_cents)}</b><span>PlotArt fees to invoice</span></div></div></section>
+    ${d.rent_due.length ? `<section class="st-card"><h2 class="st-sub">Rent to invoice</h2><p class="st-muted">PlotArt invoices its 1% fee each month; the artist invoices their 3% under the hire agreement.</p>
+      <div class="st-scroll"><table class="st-table"><thead><tr><th>Business</th><th>Work</th><th>Month</th><th>PlotArt fee</th><th>Artist (3%)</th><th></th></tr></thead><tbody>
+      ${d.rent_due.map(r => `<tr><td><a href="#/lead/${E(r.lead_id)}">${E(r.business)}</a></td><td>${E(r.artwork_title)}<br><span class="st-muted">${E(r.artist)}</span></td><td>${E(when(r.period_from))} – ${E(when(r.period_to))}</td>
+        <td>${eur(r.plotart_cents)}</td><td>${eur(r.artist_cents)}</td><td><form data-rent class="st-row"><input type="hidden" name="placement_id" value="${E(r.placement_id)}"><input type="hidden" name="period_from" value="${E(r.period_from)}">
+        <input class="st-in" name="number" placeholder="Invoice no." required minlength="3" maxlength="40" size="10"><button class="st-btn st-btn--small">Record invoice</button></form></td></tr>`).join('')}</tbody></table></div></section>` : ''}
+    ${d.renewals.length ? `<section class="st-card"><h2 class="st-sub">Renewals to discuss</h2><ul class="cm-tl">${d.renewals.map(p => `<li><a href="#/lead/${E(p.lead_id)}">${E(p.business)}</a>: ${E(p.artwork_title)} (${E(p.artist)}) ends ${E(when(p.end_on))}</li>`).join('')}</ul></section>` : ''}
     <section class="st-card"><h2 class="st-sub">Leads</h2>
       ${d.leads.length ? `<div class="st-scroll"><table class="st-table"><thead><tr><th>Business</th><th>Stage</th><th>Next action</th><th>Works</th><th>Last activity</th></tr></thead><tbody>
       ${d.leads.map(l => `<tr><td><a href="#/lead/${E(l.id)}"><b>${E(l.business)}</b></a><br><span class="st-muted">${E(l.contact_name || l.contact_email || '')} · ${E(SOURCES[l.source] || l.source)}</span></td>
@@ -57,6 +64,7 @@
         <label class="st-f"><span class="st-lab">Source</span><select class="st-in" name="source">${opts(Object.keys(SOURCES), 'email', k => SOURCES[k])}</select></label>
         <label class="st-f"><span class="st-lab">Interest</span><select class="st-in" name="interest">${opts(['rental', 'purchase', 'project', 'unsure'], 'unsure')}</select></label>
         <div class="st-actions"><button class="st-btn st-btn--solid">Add lead</button></div></form></section>`;
+    app.querySelectorAll('[data-rent]').forEach(f => f.onsubmit = async ev => { ev.preventDefault(); try { await api('POST', '/api/admin/commercial/rent-invoices', form(f)); say('Invoice recorded'); list(); } catch (e) { fail(f, e.message); } });
     app.querySelector('[data-new]').onsubmit = async ev => { ev.preventDefault(); const f = ev.target;
       try { const r = await api('POST', '/api/admin/commercial/leads', form(f)); location.hash = '#/lead/' + r.lead.id; say('Lead added'); } catch (e) { fail(f, e.message); } };
   }

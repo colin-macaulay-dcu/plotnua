@@ -90,6 +90,23 @@ const list = await api('GET', '/api/admin/commercial');
 check('C16 the overview counts the approved rental work and the monthly rent on the wall (€80, €20 PlotArt) once the placement starts',
   list.j.totals.approved_rental_works === 1 && list.j.placements.length === 1, JSON.stringify(list.j.totals));
 
+/* rental management: monthly PlotArt fee invoices and renewals */
+const { periods } = await import('../src/commercial.js');
+const ps = periods({ start_on: '2026-12-01', end_on: '2027-06-01' }, '2027-02-15');
+check('C16b rent periods are calendar months from the start, only those already begun (Dec, Jan, Feb by 15 Feb)', ps.length === 3 && ps[0].from === '2026-12-01' && ps[0].to === '2026-12-31' && ps[2].from === '2027-02-01', JSON.stringify(ps));
+const plId = (await S.db.prepare('SELECT id FROM commercial_placements WHERE lead_id = ?').bind(L1.id).first()).id;
+await S.db.prepare("UPDATE commercial_placements SET start_on = '2026-09-01', end_on = '2027-03-01', status = 'active' WHERE id = ?").bind(plId).run();
+const due1 = (await api('GET', '/api/admin/commercial')).j;
+check('C16c an active placement lists each begun month without a PlotArt invoice, at €20 (1% of €2,000) with the artist’s €60 shown separately',
+  due1.rent_due.length >= 3 && due1.rent_due.every(r => r.plotart_cents === 2000 && r.artist_cents === 6000) && due1.rent_due[0].period_from === '2026-09-01', JSON.stringify(due1.rent_due.slice(0, 2)));
+const inv1 = await api('POST', '/api/admin/commercial/rent-invoices', { placement_id: plId, period_from: '2026-09-01', number: 'INV-0101' });
+const due2 = (await api('GET', '/api/admin/commercial')).j;
+check('C16d recording the invoice removes that month from “rent to invoice” and links the invoice to the placement',
+  inv1.s === 200 && !due2.rent_due.some(r => r.period_from === '2026-09-01') && (await S.db.prepare("SELECT placement_id, amount_cents FROM commercial_documents WHERE number = 'INV-0101'").first()).placement_id === plId, inv1.t);
+const twice = await api('POST', '/api/admin/commercial/rent-invoices', { placement_id: plId, period_from: '2026-09-01', number: 'INV-0102' });
+check('C16e the same month can’t be invoiced twice', twice.s === 400, twice.t);
+check('C16f a placement ending within a month is listed as a renewal to discuss', (await S.db.prepare("UPDATE commercial_placements SET end_on = ? WHERE id = ?").bind(new Date(Date.now() + 10 * 864e5).toISOString().slice(0, 10), plId).run(), (await api('GET', '/api/admin/commercial')).j.renewals.length === 1));
+
 /* website form (Phase 2) */
 const form = (body, origin = ORIGIN) => S.mf.dispatchFetch('http://enquiry.local/v1/business-enquiry', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', 'CF-Connecting-IP': '198.51.100.9' }, body: JSON.stringify(body) }).then(async r => ({ s: r.status, j: await r.json() }));
 const good = { notice: 'PA-ENQ-BUSINESS-2026-12', name: 'Pat Example', email: 'pat@office.example', business: 'Example Offices', role: 'Facilities', interest: 'rental', message: 'We have a new reception and two meeting rooms to fill.' };
