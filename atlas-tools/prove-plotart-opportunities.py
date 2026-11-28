@@ -209,7 +209,7 @@ check("O3c removing the pills gives back exactly today's page; artwork pages are
 both = copy.deepcopy(withp)
 both["artist"]["open_for_commissions"] = True
 bi = pages(P, both, ENDPOINT)["index"]
-check("O3d with \"Open for commissions\" on, the Commissions pill appears once and the commission section once (never twice)", bi.count('href="../../commissions/" data-pa-track="artist_opportunity_link"') == 1 and bi.count(">Open for commissions</h2>") == 1 and "Living Gallery</a>" in bi)
+check("O3d with \"Open for commissions\" on, the Commissions pill appears once and the commission section once (never twice)", bi.count('href="../../commissions/" data-pa-track="artist_opportunity_link"') == 1 and bi.count(">Open for commissions</h2>") == 1 and "Art Hosting</a>" in bi)
 
 print("— O4 the lists")
 aoife = sample("aoife-sample", "Aoife Sample", "Painter", ["exhibitions", "living_gallery", "talks"])
