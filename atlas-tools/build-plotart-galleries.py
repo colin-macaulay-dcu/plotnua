@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """PlotArt · three galleries (Phase A, founder approval 24 Nov 2026; final curatorial identity agreed 25 Nov 2026). Builds:
 
-  plotart/index.html               the region between the pa-galleries markers: the one heading "A new home for Irish art."
-                                   and the three gallery entrances: Contemporary. · Spaces. · Being. (heading and tagline)
+  plotart/index.html               the region between the pa-galleries markers: the one heading "A new home for Irish art.",
+                                   the curatorial statement (founder wording, 28 Nov 2026) and the three gallery entrances: Contemporary. · Spaces. · Being. (heading and tagline)
   plotart/gallery/index.html       the gallery tabs (pa-gallery-tabs markers) and the heading region (pa-gallery-hero
                                    markers): "Contemporary.", its tagline and its curatorial introduction. The collection,
                                    order and Featured Artists are untouched. The address gallery/ is unchanged.
@@ -132,6 +132,20 @@ def tile(key, arts):
             '<span aria-hidden="true">→</span></a></div>\n    </li>\n') % (key, art, status, E(g["title"]), E(g["text"]), HREF[key], key, label)
 
 
+# The curatorial statement (founder wording, 28 Nov 2026; not to be altered). It introduces the three gallery entrances:
+# directly under the availability line (which guard L22 keeps directly under the heading) and directly above the
+# entrances. Existing type only: the serif tagline and the sans introduction of the gallery heading block (pa-gt).
+STATEMENT_LINE = "Independently curated. Artist-led. Rooted in Ireland."
+STATEMENT_TEXT = ("PlotArt celebrates originality, artistic integrity and the individual creative voice. Through considered curation, "
+                  "we bring together distinctive artistic practices from established and emerging artists, creating meaningful "
+                  "connections between art, people and spaces.")
+
+
+def statement():
+    return ('  <div class="pa-gt pa-gx-statement"><p class="pa-gt-tag">%s</p>\n  <p class="pa-gt-intro">%s</p></div>'
+            % (E(STATEMENT_LINE), E(STATEMENT_TEXT)))
+
+
 def home_region(arts=None, avail=None):
     """avail: the homepage availability line's generated region (Commercial Conversion Sprint 1, founder approval 26 Nov
     2026), directly under the heading. This builder never writes its CONTENT: it keeps the region exactly as the
@@ -139,7 +153,7 @@ def home_region(arts=None, avail=None):
     arts = entrances() if arts is None else arts
     avail = (C.BEGIN + "\n" + C.END) if avail is None else avail
     return (HOME_BEGIN + '\n<section class="pa-gx" aria-labelledby="homeH"><div class="pa-wrap">\n'
-            '  <h1 class="pa-gx-h1" id="homeH">A new home for Irish art.</h1>\n' + avail + '\n'
+            '  <h1 class="pa-gx-h1" id="homeH">A new home for Irish art.</h1>\n' + avail + '\n' + statement() + '\n'
             '  <ul class="pa-gx-tiles" aria-label="PlotArt galleries">\n' + "".join(tile(k, arts) for k, *_ in S.GALLERIES) +
             '  </ul>\n</div></section>\n' + HOME_END)
 

@@ -389,7 +389,8 @@ need(("No artwork is currently available through PlotArt." in visible_text(home)
 # Founder decision 29 Oct 2026: the introduction is the approved lede, and availability is stated by the
 # Virtual Gallery line and the footer (the "Where PlotArt is now" panel was removed).
 # Three galleries (founder decisions 24 Nov 2026): the homepage has one heading, "A new home for Irish art.", directly above
-# the gallery entrances, and no introductory label or lede (the earlier introduction was retired with the hero).
+# the gallery entrances, and no introductory label or lede (the earlier introduction was retired with the hero). Since 28 Nov
+# 2026 the founder's curatorial statement introduces the entrances (build-plotart-galleries.py; checked by L21).
 need(re.findall(r"<h1\b[^>]*>(.*?)</h1>", home, re.S) == ["A new home for Irish art."] and "Three curated galleries" not in visible_text(home),
      "L6 the homepage heading must be exactly 'A new home for Irish art.' with no added label")
 need(len(demo_names) > 0 or not os.path.exists(cat_path), "L3 demonstration names could not be read")
@@ -451,6 +452,13 @@ need(STATE in STATES, "L8 f25_application_state is missing or not one of %s" % "
 LINE = {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed."}.get(STATE, "Applications are not yet open.")
 DESC = "PlotArt will select up to 25 artists based or working in Ireland for a free first-year gallery. " + \
        {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed."}.get(STATE, "Applications are not yet open.")
+# The programme has concluded (founder direction 28 Nov 2026): with applications closed, the page is a historical record and
+# its description says so, exactly. The other states keep their wording.
+F25_CONCLUDED_DESC = ("The Founding 25 programme, which opened the PlotArt Artists’ Gallery in 2026, has concluded. "
+                      "Current information for artists is on the For Artists page.")
+F25_TITLE = "The Founding 25 | PlotArt" if STATE == "closed" else "Founding 25: Free First-Year Artist Galleries | PlotArt"
+if STATE == "closed":
+    DESC = F25_CONCLUDED_DESC
 f25p = os.path.join(PA, "founding-25.html")
 f25 = open(f25p, encoding="utf-8").read() if os.path.exists(f25p) else ""
 f25v = visible_text(f25)
@@ -499,7 +507,10 @@ for name in PAGES:
     need(not OPEN or "room view" not in vt, "L15 %s still promises a room view (the gallery opening removes that promise)" % name)
     need(not re.search(r"no artwork is for sale|nothing is for sale", vt, re.I), "L10 %s uses the unqualified 'not for sale' wording" % name)
     need("Prototype" not in vt and "prototype" not in vt, "L10 %s says Prototype" % name)
-need("<title>Founding 25: Free First-Year Artist Galleries | PlotArt</title>" in f25, "L10 the Founding 25 title is not the approved one")
+need(("<title>%s</title>" % F25_TITLE) in f25, "L10 the Founding 25 title is not the approved one")
+if STATE == "closed":   # the concluded programme (28 Nov 2026): said near the top, the founding entitlements kept, artists pointed to For Artists
+    need("The Founding 25 programme has concluded." in f25v and "Founding Artists’ terms, founding-year entitlements and the Founding Artist badge continue as agreed." in f25v
+         and 'href="for-artists.html">For Artists</a>' in f25, "L10 the concluded Founding 25 page must say it has concluded, keep the founding entitlements and point to For Artists")
 # No Founding Artist may be presented as already selected (founder and SEO workstream,
 # 27 Oct 2026). The one approved sentence that names "the selected Founding Artists" also
 # says plainly that none has been selected; it is removed before the claim check.
@@ -696,6 +707,12 @@ for _rel, _doc in _gx_built.items():
 _gx_sec = re.search(r'<section class="pa-gx".*?</section>', home, re.S)
 _tiles = re.findall(r'<li class="pa-gx-tile" data-pa-gallery="([a-z_]+)">(.*?)</li>', _gx_sec.group(0) if _gx_sec else "", re.S)
 need([k for k, _ in _tiles] == ["contemporary", "spaces", "being"], "L21 the homepage must carry exactly the three gallery entrances, in order")
+# the curatorial statement (founder wording, 28 Nov 2026): exactly once, in the founder's words, directly above the entrances
+_stmt = '<div class="pa-gt pa-gx-statement"><p class="pa-gt-tag">%s</p>\n  <p class="pa-gt-intro">%s</p></div>\n  <ul class="pa-gx-tiles"' % (
+    html.escape(GX.STATEMENT_LINE, quote=True), html.escape(GX.STATEMENT_TEXT, quote=True))
+need(home.count(_stmt) == 1 and GX.STATEMENT_LINE == "Independently curated. Artist-led. Rooted in Ireland."
+     and GX.STATEMENT_TEXT.startswith("PlotArt celebrates originality, artistic integrity and the individual creative voice."),
+     "L21 the homepage curatorial statement must appear once, in the founder's wording, directly above the gallery entrances")
 # the editorial full stop: on the entrance headings, each with the founder's exact tagline
 for _k, _t in _tiles:
     _g = GX.GALLERY[_k]
@@ -858,7 +875,8 @@ f25m, lgm = main_of("founding-25.html"), main_of("living-gallery.html")
 f25mv = re.sub(r"\s+", " ", visible_text(f25m))
 need(SEP in f25mv, "L12 the Founding 25 page must carry the approved separation sentence")
 need("Living Gallery" not in f25mv.replace(SEP, " "), "L12 the Founding 25 page mentions the Living Gallery outside the separation sentence")
-need("Your founding year begins on the day your gallery is first published." in f25mv, "L12 the Founding 25 page must say when the founding year begins")
+need(("A Founding Artist’s founding year begins on the day their gallery is first published." if STATE == "closed" else "Your founding year begins on the day your gallery is first published.") in f25mv,
+     "L12 the Founding 25 page must say when the founding year begins")
 for name, m in (("founding-25.html", f25mv), ("living-gallery.html", re.sub(r"\s+", " ", visible_text(lgm))), ("index.html", re.sub(r"\s+", " ", visible_text(main_of("index.html")))),
                 ("gallery/index.html", re.sub(r"\s+", " ", visible_text(main_of("gallery/index.html"))))):
     need(not re.search(r"priority (?:consideration )?for the (?:Living Gallery|programme)|Founding (?:25 )?Artists? (?:would |will )?(?:receive|get|have) (?:priority|first consideration)|Priority for the Living Gallery", m, re.I),

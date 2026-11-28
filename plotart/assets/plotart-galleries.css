@@ -17,6 +17,10 @@
 .pa-gx-avail{ margin:0 0 clamp(20px, 2.4vw, 32px); font-size:15px; line-height:1.55; color:var(--stone); letter-spacing:.005em; }
 .pa-gx-avail a{ color:var(--ivory); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:4px; }
 .pa-gx-avail a:hover{ text-decoration-thickness:2px; }
+/* the curatorial statement (founder wording, 28 Nov 2026): the gallery heading block's tagline and introduction, unchanged,
+   introducing the three entrances; only its spacing is set here */
+.pa-gx-statement{ margin:0 0 clamp(28px, 3vw, 44px); }
+.pa-gx-statement .pa-gt-tag{ margin-top:0; }
 .pa-gx-tiles{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(18px, 2.2vw, 32px); list-style:none; margin:0; padding:0; }
 .pa-gx-tile{ position:relative; display:flex; flex-direction:column; min-width:0; }
 .pa-gx-art{ position:relative; margin:0; aspect-ratio:5 / 4.1; display:grid; grid-template:minmax(0, 1fr) / minmax(0, 1fr); place-items:center; overflow:hidden;
