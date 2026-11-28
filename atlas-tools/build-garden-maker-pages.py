@@ -40,9 +40,12 @@ PAGES = {
     },
     "all-in-one-cabins-garden-rooms.html": {
         "template": "all-in-one-cabins.html",
-        "title": "All In One Cabins: Garden Cabin Prices & Sizes | PlotNua",
+        # Growth round 2 (27 Nov 2026): price-led title and description, filled from source-evidence.json at build
+        # time ($boderg_price etc.), so the figures can never drift from the page body; main() already refuses to
+        # build once the evidence is more than 30 days old.
+        "title": "All In One Cabins: Prices From $boderg_price & Sizes | PlotNua",
         "h1": "All In One Cabins: Boderg, Corry and Kilglass",
-        "description": "Compare the Boderg, Corry and Kilglass cabins: published starting prices, kit and installation questions, VAT uncertainty and a Corry size discrepancy.",
+        "description": "All In One Cabins prices: Boderg from $boderg_price, Corry from $corry_price, Kilglass from $kilglass_price. Published starting prices, sizes, kit and VAT to confirm.",
         "lead": "Three flatpack cabins, three starting prices. Work out what each quotation needs to include before choosing a garden room.",
         "about": "All In One Cabins single-room cabins",
     },
@@ -95,6 +98,13 @@ def render(page, profile, evidence, identity, published=False, extra_values=None
     checked_long = f"{checked.day} {checked:%B %Y}"
     facts, sources = evidence["facts"], evidence["sources"]
     eur = lambda n: "€" + format(n, ",")
+    cab = facts["all-in-one-single"]
+    head_values = {"boderg_price": eur(cab["boderg_eur"]), "corry_price": eur(cab["corry_eur"]), "kilglass_price": eur(cab["kilglass_eur"])}
+    price_led = "$" in profile["title"]
+    profile = dict(profile, title=Template(profile["title"]).substitute(head_values),
+                   description=Template(profile["description"]).substitute(head_values))
+    if price_led and len(profile["title"]) > 60 or price_led and not 60 <= len(profile["description"]) <= 160:
+        raise ValueError("a price-led title must be at most 60 characters and its description 60-160: " + page)
     body = Template((DATA / profile["template"]).read_text()).substitute(
         checked_long=checked_long,
         standard_price=eur(facts["concept-standard"]["price_eur"]),
