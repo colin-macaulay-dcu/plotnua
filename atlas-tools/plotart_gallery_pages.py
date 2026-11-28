@@ -276,23 +276,55 @@ def work_tile(pkg, w, sizes, track="artist_artwork"):
 # PlotArt collections it is actually in, decided by the collections' own tests (plotart_search_content), so the link and
 # the collection can never disagree. Only available works are in a collection; a collection is named only while its page
 # is indexable. Most specific first, at most three links in the line. Never a list of every collection.
+# Release integration (28 Nov 2026): the growth 3 collections with their own tests join the line, in the same
+# most-specific-first order (subject, then medium, then size, then price). The broad guides (offices, collecting, gifts)
+# are not offered here. A narrower collection supersedes the broader one it sits inside (RELATED_SUPERSEDES), so a coastal
+# work names the coastal collection rather than also the landscape one, and a work under €500 names that collection rather
+# than also the under-€1,000 one.
 RELATED = (  # (key, page under plotart/, link from an artist folder, anchor)
+    ("coastal", "coastal-art-ireland/index.html", "../../coastal-art-ireland/", "coastal and seascape art"),
     ("landscape", "landscape-paintings-ireland/index.html", "../../landscape-paintings-ireland/", "landscape and coastal works"),
+    ("figurative", "figurative-art-ireland/index.html", "../../figurative-art-ireland/", "figurative and portrait art"),
     ("abstract", "abstract-contemporary-art-ireland.html", "../../abstract-contemporary-art-ireland.html", "abstract and contemporary art"),
+    ("prints", "original-prints-ireland/index.html", "../../original-prints-ireland/", "original prints and limited editions"),
+    ("oil", "oil-paintings-ireland/index.html", "../../oil-paintings-ireland/", "oil paintings"),
+    ("mixed", "mixed-media-art-ireland/index.html", "../../mixed-media-art-ireland/", "mixed media and collage"),
+    ("small", "small-artworks/index.html", "../../small-artworks/", "small original artworks"),
     ("under", "original-art-under-500/index.html", "../../original-art-under-500/", "original art under €500"),
+    ("under_1000", "original-art-under-1000/index.html", "../../original-art-under-1000/", "original art under €1,000"),
     ("large", "large-artworks/index.html", "../../large-artworks/", "large original artworks"),
 )
+RELATED_SUPERSEDES = {"coastal": "landscape", "under": "under_1000"}   # narrower key -> the broader key it replaces
+RELATED_ADDED = frozenset({"coastal", "figurative", "prints", "oil", "mixed", "small", "under_1000"})   # the growth 3 keys
 RELATED_MAX = 3
 
 
-def related(pkg, w, launch=None):
-    """The RELATED entries this work is in (empty unless it is available)."""
+def related(pkg, w, launch=None, keep_commission_room=True):
+    """The RELATED entries this work is in (empty unless it is available). keep_commission_room is the artwork line's rule
+    below; the gallery page's line (artist_related_line) has no commission link, so it does not reserve room for one."""
     import plotart_search_content as C   # lazy: plotart_search_content imports this module at the top
     if w["availability"] != "available":
         return []
     launch = SEO.switches() if launch is None else launch
-    test = {"landscape": C.is_landscape, "abstract": lambda x: C.is_abstract(x, pkg), "under": C.is_under, "large": C.is_large}
-    return [r for r in RELATED if test[r[0]](w) and SEO.indexable(r[1], launch)]
+    test = {"coastal": C.is_coastal, "landscape": C.is_landscape, "figurative": C.is_figurative,
+            "abstract": lambda x: C.is_abstract(x, pkg), "prints": C.is_print, "oil": C.is_oil, "mixed": C.is_mixed,
+            "small": C.is_small, "under": C.is_under, "under_1000": C.is_under_1000, "large": C.is_large}
+    rel = [r for r in RELATED if test[r[0]](w) and SEO.indexable(r[1], launch)]
+    # The growth 3 collections never take the commission link's place: while the artist is Open for commissions (and the
+    # Commissions page is indexable) they only fill the line up to RELATED_MAX - 1, so every work that had room for
+    # "commission a new work" keeps it. The original four collections behave exactly as before.
+    room = RELATED_MAX - sum(1 for r in rel if r[0] not in RELATED_ADDED)
+    if keep_commission_room and pkg["artist"].get("open_for_commissions") is True and SEO.indexable("commissions/index.html", launch):
+        room -= 1
+    out = []
+    for r in rel:
+        if r[0] in RELATED_ADDED:
+            if room <= 0:
+                continue
+            room -= 1
+        out.append(r)
+    keys = {r[0] for r in out}     # a narrower collection that made the line replaces the broader one it sits inside
+    return [r for r in out if not any(RELATED_SUPERSEDES.get(k) == r[0] for k in keys)]
 
 
 def _series(links):
@@ -319,7 +351,7 @@ def artist_related_line(pkg, launch=None):
     launch = SEO.switches() if launch is None else launch
     count = {}
     for w in shown(pkg):
-        for r in related(pkg, w, launch):
+        for r in related(pkg, w, launch, keep_commission_room=False):
             count[r] = count.get(r, 0) + 1
     rel = sorted(count, key=lambda r: (-count[r], RELATED.index(r)))[:RELATED_MAX]
     if not rel:
@@ -711,14 +743,14 @@ ARTIST_META = {
     "leah-hewson": ("Leah Hewson | Abstract Paintings & Prints | PlotArt",
                     "Leah Hewson, Artist in Residence at the RHA and winner of the Whyte’s Award for painting at the 190th RHA Annual. See {works}{from_price}."),
     # page fixes (27 Nov 2026, fix 8; the two artists with the most Search Console impressions after the three above).
-    # FOR FOUNDER REVIEW with the artists. bio: "Rasher, is a self-taught artist based in Wicklow. His emotionally resonating
+    # Titles set by founder decision (28 Nov 2026). bio: "Rasher, is a self-taught artist based in Wicklow. His emotionally resonating
     # oil paintings ..."; "noted for being an invited artist of the Royal Hibernian Academy Dublin"
-    "mark-kavanagh-rasher": ("Rasher Mark Kavanagh | Oil Paintings, Wicklow | PlotArt",
+    "mark-kavanagh-rasher": ("Rasher Mark Kavanagh – Oil Paintings | PlotArt",
                              "Rasher, a self-taught painter based in Wicklow and an invited artist of the RHA, makes emotionally resonant oil paintings. See {works}{from_price}."),
     # bio: "his studio occupies a former church organ factory near the historic centre of Göttingen"; "Working with pigments,
     # oils, emulsions and varnishes, he incorporates raw silk powder and fibres"; "layering of translucent and opaque
     # substances". (No nationality wording: the page states what he makes and where his studio is.)
-    "fintan-whelan": ("Fintan Whelan | Abstract Paintings in Oil & Silk | PlotArt",
+    "fintan-whelan": ("Fintan Whelan – Abstract Paintings | PlotArt",
                       "Fintan Whelan, an abstract painter with a studio in Göttingen, layers pigment, oil and raw silk into translucent surfaces. See {works}{from_price}."),
 }
 TITLE_LIMIT, DESCRIPTION_LIMIT = 60, 160
