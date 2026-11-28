@@ -287,7 +287,15 @@ for name in PAGES:
     for n in demo_names:
         need(not re.search(r"\b%s\b" % re.escape(n), vt) and not re.search(r"\b%s\b" % re.escape(html.escape(n)), s),
              "L3 %s carries demonstration content (text or markup): %s" % (name, n))
-    if name not in SEO.GENERATED_PATHS:
+    if name == OPP.COMMISSIONS:
+        # Commissions price guide (growth round 2, 27 Nov 2026): euro figures only inside the generated artist list, which
+        # L19 proves is exactly OPP.update() of the published galleries (each artist's available-work price range);
+        # outside that region the page, like every other page, carries no euro figure.
+        try:
+            need("€" not in visible_text(OPP.outside(s)) and "&euro;" not in OPP.outside(s), "L3 %s shows a euro price outside its generated list" % name)
+        except ValueError as e:
+            need(False, "L3 " + str(e))
+    elif name not in SEO.GENERATED_PATHS:
         need("€" not in vt and "&euro;" not in s, "L3 %s shows a euro price" % name)
     else:
         try:

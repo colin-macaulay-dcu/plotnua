@@ -134,17 +134,35 @@ def thumb(pkg, choice=None):
     return d["file"], (im.get("alt") or w.get("title") or "").strip(), w.get("title") or ""
 
 
+# Commissions page price guide (growth round 2, 27 Nov 2026). Under each listed artist: the lowest and highest PUBLIC asking
+# price of their works AVAILABLE on PlotArt right now (never "price on request", reserved, sold or withdrawn work), from
+# the same approved gallery package as the list itself and refreshed with it at every publication. It is labelled as a
+# guide to the artist's current prices, never as a commission price: a commission is priced by the artist. Nothing is
+# shown for an artist with no publicly priced available work.
+def price_guide(pkg):
+    prices = sorted(w["price_eur"] for w in pkg.get("works") or []
+                    if w.get("availability") == "available" and w.get("price_eur") and not w.get("price_on_request"))
+    if not prices:
+        return ""
+    eur = lambda n: "€{:,}".format(int(n) if float(n) == int(n) else n)
+    span = eur(prices[0]) if prices[0] == prices[-1] else "%s to %s" % (eur(prices[0]), eur(prices[-1]))
+    return "Price guide: %s %s" % ("available work" if len(prices) == 1 else "available works", span)
+
+
 def _rows(pkgs, base, commission_page=False, choices=None):
     def line(p):
         a = p["artist"]
         what = a.get("practice") or MEDIUM.get(a.get("medium"), "")
+        guide = price_guide(p) if commission_page else ""
+        name = ('<span class="pa-opp-who"><span class="pa-opp-name">%s</span><span class="pa-opp-price">%s</span></span>' % (E(a["display_name"]), E(guide))
+                if guide else '<span class="pa-opp-name">%s</span>' % E(a["display_name"]))
         t = thumb(p, (choices or {}).get(a["slug"]))
         img = ('<img class="pa-opp-thumb" src="%sartists/%s/img/%s" alt="%s" width="80" height="80" loading="lazy" decoding="async">'
                % (base, E(a["slug"]), E(t[0]), E(t[1] or ("Artwork by " + a["display_name"])))) if t else '<span class="pa-opp-thumb" aria-hidden="true"></span>'
         # on the Commissions page, an artist whose "Open for commissions" is on links straight to their commission enquiry
         frag = "#commission" if commission_page and a.get("open_for_commissions") is True else ""
-        return ('<li><a class="pa-opp-row" href="%sartists/%s/%s" data-pa-track="opportunity_artist">%s<span class="pa-opp-name">%s</span>%s</a></li>'
-                % (base, E(a["slug"]), frag, img, E(a["display_name"]), ('<span class="pa-opp-what">%s</span>' % E(what)) if what else ""))
+        return ('<li><a class="pa-opp-row" href="%sartists/%s/%s" data-pa-track="opportunity_artist">%s%s%s</a></li>'
+                % (base, E(a["slug"]), frag, img, name, ('<span class="pa-opp-what">%s</span>' % E(what)) if what else ""))
     return '<ul class="pa-opp-list">%s</ul>' % "".join(line(p) for p in pkgs)
 
 

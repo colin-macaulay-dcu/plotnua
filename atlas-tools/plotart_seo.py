@@ -150,13 +150,30 @@ def sitemap_images(packages, launch):
     return images
 
 
+def sitemap_lastmod(packages):
+    """{path: "YYYY-MM-DD"} for every artist and artwork page: the date the founder approved the artist's current published
+    version (publication.approved_at, from the public export). Page fixes (27 Nov 2026, fix 11): read from the data, never
+    the build clock, so the same export always gives the same sitemap. A gallery without that date gets no <lastmod>."""
+    out = {}
+    for pkg in packages:
+        day = str(pkg["publication"].get("approved_at") or "")[:10]
+        if not re.fullmatch(r"20\d\d-[01]\d-[0-3]\d", day):
+            continue
+        base = "artists/" + pkg["artist"]["slug"] + "/"
+        out[base + "index.html"] = day
+        out.update((base + w["slug"] + ".html", day) for w in pkg["works"])
+    return out
+
+
 def sitemap_block(packages, launch):
     images = sitemap_images(packages, launch)
+    lastmod = sitemap_lastmod(packages)
     rows = []
     for path in sitemap_paths(packages, launch):
         tags = "".join("<image:image><image:loc>%s</image:loc></image:image>" % html.escape(url)
                        for url in images.get(path, []))
-        rows.append("  <url><loc>%s</loc>%s</url>" % (html.escape(canonical(path)), tags))
+        mod = ("<lastmod>%s</lastmod>" % lastmod[path]) if path in lastmod else ""
+        rows.append("  <url><loc>%s</loc>%s%s</url>" % (html.escape(canonical(path)), mod, tags))
     return BEGIN + "\n" + "\n".join(rows) + "\n  " + END
 
 
@@ -194,10 +211,39 @@ def artwork_offer(work, url, seller_id):
             "itemCondition": "https://schema.org/NewCondition", "seller": {"@id": seller_id}, "url": url}
 
 
+# Person.sameAs (page fixes, 27 Nov 2026, fix 4): the artist's own website and Instagram, exactly as the page links them,
+# and only when the address is well formed. A website whose host runs "www" into the name (https://wwwname.ie, a missing
+# dot) is left out rather than published as the artist's identity.
+_WEBSITE = re.compile(r"https?://(?!www[^.])[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}(?::\d+)?(?:/\S*)?", re.I)
+_INSTAGRAM = re.compile(r"[A-Za-z0-9._]{1,30}")
+
+
+def same_as(a):
+    out = []
+    if a.get("website") and _WEBSITE.fullmatch(str(a["website"]).strip()):
+        out.append(str(a["website"]).strip())
+    if a.get("instagram") and _INSTAGRAM.fullmatch(str(a["instagram"])):
+        out.append("https://www.instagram.com/%s/" % a["instagram"])
+    return out
+
+
+def clean_title(title):
+    """The artwork's title for search titles and structured-data names only (fix 14): one balanced pair of quotation marks
+    wrapping the whole title is removed ('In Flux' -> In Flux). The visible heading always keeps the artist's own title."""
+    t = str(title or "").strip()
+    for o, c in (("'", "'"), ("‘", "’"), ("“", "”"), ('"', '"')):
+        if len(t) > 2 and t.startswith(o) and t.endswith(c) and o not in t[1:-1] and c not in t[1:-1]:
+            return t[1:-1].strip()
+    return t
+
+
 def artist_metadata(path, pkg, launch=None):
     """Public facts only. The artwork is a VisualArtwork and, since the SEO and analytics package (founder approval 26 Nov
     2026, section 2.5), also a Product whose one Offer states exactly the published asking price (EUR) and availability, sold
-    by the artist (the artist is always the seller). A work with its price on request, or not for sale, has no Offer."""
+    by the artist (the artist is always the seller). A work with its price on request, or not for sale, has no Offer, and
+    (page fixes, 27 Nov 2026, fix 3) is then a VisualArtwork only: Google's product rules require an Offer, a review or a
+    rating on every Product, and PlotArt never invents the latter two."""
+    import plotart_gallery_pages as P   # lazy: plotart_gallery_pages imports this module at the top
     launch = switches() if launch is None else launch
     if pkg["publication"].get("state") != "approved" or not indexable(path, launch):
         return ""
@@ -210,35 +256,45 @@ def artist_metadata(path, pkg, launch=None):
     artist_url = canonical(base + "index.html")
     url = canonical(path)
     person = {"@type": "Person", "@id": artist_url + "#artist", "name": a["display_name"], "url": artist_url}
-    if a.get("website"):
-        person["sameAs"] = [a["website"]]
+    if same_as(a):
+        person["sameAs"] = same_as(a)
+    if a.get("portrait") and a["portrait"].get("derivatives"):
+        # the portrait the gallery page shows (P.PORTRAIT_SHOWN): the only portrait size published
+        person["image"] = ORIGIN + base + "img/" + P.pick(a["portrait"], P.PORTRAIT_SHOWN)["file"]
     image = next((i for i in work["images"] if i["role"] == "main"), None) if work else a.get("portrait")
+    owner = work
+    if not work and not image and shown:
+        # fix 12: an artist without a portrait shares their gallery with the main image of their first shown work
+        owner = shown[0]
+        image = next((i for i in owner["images"] if i["role"] == "main"), None)
+    alt = (P.display_alt(pkg, owner, image) if owner else image.get("alt", "")) if image else ""
     graph = [person]
     page = {"@type": "WebPage" if work else "CollectionPage", "@id": url + "#page", "url": url,
-            "name": work["title"] + " by " + a["display_name"] if work else a["display_name"] + " | PlotArt",
+            "name": clean_title(work["title"]) + " by " + a["display_name"] if work else a["display_name"] + " | PlotArt",
             "about": {"@id": person["@id"]}, "breadcrumb": {"@id": url + "#breadcrumbs"}}
     image_tags = []
     if image and image.get("derivatives"):
         derivative = max(image["derivatives"], key=lambda d: d["long_edge"])
         image_url = ORIGIN + base + "img/" + derivative["file"]
         image_obj = {"@type": "ImageObject", "@id": url + "#image", "contentUrl": image_url,
-                     "url": image_url, "caption": image.get("alt", "")}
+                     "url": image_url, "caption": alt}
         if derivative.get("pixels"):
             image_obj.update(width=derivative["pixels"][0], height=derivative["pixels"][1])
         graph.append(image_obj)
         page["primaryImageOfPage"] = {"@id": image_obj["@id"]}
         esc = lambda x: html.escape(str(x), quote=True)
         image_tags = ['<meta property="og:image" content="%s">' % esc(image_url),
-                      '<meta property="og:image:alt" content="%s">' % esc(image.get("alt", "")),
+                      '<meta property="og:image:alt" content="%s">' % esc(alt),
                       '<meta name="twitter:card" content="summary_large_image">',
                       '<meta name="twitter:image" content="%s">' % esc(image_url),
-                      '<meta name="twitter:image:alt" content="%s">' % esc(image.get("alt", ""))]
+                      '<meta name="twitter:image:alt" content="%s">' % esc(alt)]
         if derivative.get("pixels"):
             image_tags += ['<meta property="og:image:%s" content="%s">' % (k, v)
                            for k, v in zip(("width", "height"), derivative["pixels"])]
     crumbs = [("PlotArt", ORIGIN), ("Artists’ Gallery", canonical("gallery/index.html")), (a["display_name"], artist_url)]
     if work:
-        art = {"@type": ["VisualArtwork", "Product"], "@id": url + "#artwork", "url": url, "name": work["title"],
+        offer = artwork_offer(work, url, person["@id"])
+        art = {"@type": ["VisualArtwork", "Product"] if offer else "VisualArtwork", "@id": url + "#artwork", "url": url, "name": clean_title(work["title"]),
                "creator": {"@id": person["@id"]}, "artMedium": work["medium"]}
         if work.get("description"):
             art["description"] = work["description"]
@@ -249,15 +305,14 @@ def artist_metadata(path, pkg, launch=None):
                 art[key] = {"@type": "QuantitativeValue", "value": work[field], "unitCode": "CMT"}
         if "primaryImageOfPage" in page:
             art["image"] = image_url
-        offer = artwork_offer(work, url, person["@id"])
         if offer:
             art["offers"] = offer
         graph.append(art)
         page["mainEntity"] = {"@id": art["@id"]}
-        crumbs.append((work["title"], url))
+        crumbs.append((clean_title(work["title"]), url))
     else:
         page["mainEntity"] = {"@type": "ItemList", "numberOfItems": len(shown), "itemListElement": [
-            {"@type": "ListItem", "position": n, "name": w["title"], "url": canonical(base + w["slug"] + ".html")}
+            {"@type": "ListItem", "position": n, "name": clean_title(w["title"]), "url": canonical(base + w["slug"] + ".html")}
             for n, w in enumerate(shown, 1)]}
     graph.extend([page, {"@type": "BreadcrumbList", "@id": url + "#breadcrumbs", "itemListElement": [
         {"@type": "ListItem", "position": n, "name": name, "item": href} for n, (name, href) in enumerate(crumbs, 1)]}])

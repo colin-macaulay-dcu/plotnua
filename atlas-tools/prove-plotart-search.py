@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Prove search eligibility and the narrow publishing boundary without network or artist changes."""
 import copy
+import html
 import json
 import re
 import subprocess
@@ -108,6 +109,38 @@ def offer_of(**work):
     return next(n for n in graph(SEO.artist_metadata(future_work_path, fx)) if is_art(n)).get("offers")
 check("price on request, not for sale or no published price: no Offer",
       offer_of(price_on_request=True) is None and offer_of(availability="not_for_sale") is None and offer_of(availability="sold", price_eur=None) is None)
+# Page fixes (27 Nov 2026, fix 3): Google requires an Offer, review or rating on every Product, so a work without an Offer
+# is a VisualArtwork only; and every published artwork page is a Product exactly when it carries its one Offer.
+def types_of(**work):
+    fx = copy.deepcopy(future)
+    fx["works"][0].update(work)
+    return next(n for n in graph(SEO.artist_metadata(future_work_path, fx)) if is_art(n))["@type"]
+check("a work without an Offer (price on request, not for sale, sold without a price) is a VisualArtwork, never a Product",
+      types_of(price_on_request=True) == "VisualArtwork" and types_of(availability="not_for_sale") == "VisualArtwork"
+      and types_of(availability="sold", price_eur=None) == "VisualArtwork")
+_product_ok = []
+for pkg in packages:
+    for path in SEO.sitemap_paths([pkg], launch):
+        if path.startswith("artists/") and not path.endswith("/index.html"):
+            node = next(n for n in graph((ROOT / "plotart" / path).read_text()) if is_art(n))
+            _product_ok.append(("Product" in (node["@type"] if isinstance(node["@type"], list) else [node["@type"]])) == bool(node.get("offers")))
+check("every published artwork page is a Product exactly when it has an Offer (%d pages)" % len(_product_ok), _product_ok and all(_product_ok))
+# fix 4: the Person's sameAs is the artist's website (when well formed) and Instagram, exactly as the page links them
+_person = lambda a: next(n for n in graph(SEO.artist_metadata("artists/future-test/index.html", dict(future, artist=dict(future["artist"], **a)))) if n["@type"] == "Person")
+check("Person.sameAs lists the website and Instagram; a malformed website (missing dot after www) or handle is left out",
+      _person({"website": "https://www.example.ie", "instagram": "future_test"}).get("sameAs") == ["https://www.example.ie", "https://www.instagram.com/future_test/"]
+      and _person({"website": "https://wwwexample.ie", "instagram": "future_test"}).get("sameAs") == ["https://www.instagram.com/future_test/"]
+      and "sameAs" not in _person({"instagram": "bad handle/"}))
+check("every published artist with an Instagram handle has it in their Person.sameAs",
+      all(("https://www.instagram.com/%s/" % pkg["artist"]["instagram"]) in next(n for n in graph((ROOT / "plotart" / ("artists/%s/index.html" % pkg["artist"]["slug"])).read_text()) if n["@type"] == "Person").get("sameAs", [])
+          for pkg in packages if pkg["artist"].get("instagram")))
+# fixes 1 and 2: every artwork page's search title is at most 60 characters and its description at most 160, each unique
+_aw = [(ROOT / "plotart" / p).read_text() for pkg in packages for p in SEO.sitemap_paths([pkg], launch) if p.startswith("artists/") and not p.endswith("/index.html")]
+_titles = [re.search(r"<title>(.*?)</title>", d, re.S).group(1) for d in _aw]
+_descs = [re.search(r'<meta name="description" content="([^"]*)"', d).group(1) for d in _aw]
+check("artwork search titles are at most 60 characters and descriptions at most 160, none repeated (%d pages)" % len(_aw),
+      _aw and all(len(html.unescape(t)) <= 60 for t in _titles) and all(len(html.unescape(x)) <= 160 for x in _descs)
+      and len(set(_titles)) == len(_titles) and len(set(_descs)) == len(_descs) and not any("buy online" in x.lower() for x in _descs))
 check("reserved and sold works say so in their Offer",
       offer_of(availability="reserved")["availability"] == "https://schema.org/LimitedAvailability"
       and offer_of(availability="sold")["availability"] == "https://schema.org/SoldOut")
@@ -148,6 +181,18 @@ except ValueError:
 archived = copy.deepcopy(future)
 archived["works"][0]["availability"] = "archived"
 check("archived artwork leaves sitemap", len(SEO.sitemap_paths([archived], launch)) == len(SEO.sitemap_paths([], launch)) + 1)
+# fix 11: <lastmod> on artist and artwork rows is the date of the approved export (publication.approved_at), never the
+# build clock: the same export always gives the same sitemap, and a gallery without that date gets no <lastmod>.
+dated = copy.deepcopy(future)
+dated["publication"]["approved_at"] = "2026-11-20T10:00:00.000Z"
+_block = SEO.sitemap_block([dated], launch)
+check("artist and artwork rows carry <lastmod> from the approved export's date, and only they",
+      _block.count("<lastmod>2026-11-20</lastmod>") == 2 and _block.count("<lastmod>") == 2
+      and "<lastmod>" not in SEO.sitemap_block([future], launch) and SEO.sitemap_block([dated], launch) == _block)
+_rows = re.findall(r"<url><loc>([^<]+)</loc>(?:<lastmod>([^<]+)</lastmod>)?", xml)
+_want_mod = {SEO.canonical(p): d for p, d in SEO.sitemap_lastmod(packages).items()}
+check("published sitemap: every artist and artwork row has its gallery's approval date as <lastmod>",
+      all((m or None) == _want_mod.get(u) for u, m in _rows if "/plotart/artists/" in u) and any(m for _, m in _rows))
 check("removal leaves no artist or artwork URL", all("/artists/" not in u for u in re.findall(r"<loc>(.*?)</loc>", SEO.sitemap_block([], launch))))
 
 # Parse image namespace independently; page URL checks must never count image URLs.
