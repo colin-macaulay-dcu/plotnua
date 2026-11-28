@@ -167,7 +167,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
     footlinks = (FOOT_GALLERIES + '<li><a href="{R}living-gallery.html">Living Gallery</a></li>'
                  + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') + ('<li><a href="{R}services.html">Services</a></li>' if services_nav else '') +
-                 '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>' + FOOT_ARTISTS).format(R=R)
+                 '<li><a href="{R}about.html">About PlotArt</a></li>' + FOOT_ARTISTS).format(R=R)
     robots = SEO.head(path, title, desc)
     return path, """<!DOCTYPE html>
 <html lang="en-IE" class="no-js">
