@@ -108,7 +108,7 @@ body.pa .pa-lg-promises li{ font-size:16px; }
    above the headline in the same serif, smaller; one hairline-ruled row for who can host and one for how hosting differs. */
 body.pa .pa-lg-h1 .pa-lg-brand{ display:block; font-size:.42em; line-height:1.2; letter-spacing:0; margin:0 0 .35em; color:var(--stone); }
 body.pa .pa-lg-h1 .pa-lg-tag{ display:block; }
-body.pa .pa-lg-who, body.pa .pa-lg-diff{ padding:clamp(56px, 6.5vw, 96px) 0; }
+body.pa .pa-lg-who, body.pa .pa-lg-diff{ padding:clamp(44px, 5vw, 72px) 0; }
 body.pa .pa-lg-who .pa-sec-head h2, body.pa .pa-lg-diff .pa-sec-head h2{ font-size:clamp(40px, 4.4vw, 64px); }
 body.pa .pa-lg-who .pa-sec-head, body.pa .pa-lg-diff .pa-sec-head{ margin-bottom:clamp(28px, 3.5vw, 44px); }
 .pa-lg-hosts, .pa-lg-ways{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); border-top:1px solid var(--line-2); }
