@@ -18,8 +18,8 @@ The founder's rule (28 Nov 2026): routine artist publications stay automatic; we
 agreements, migrations, hosting, security, privacy and deployment-workflow changes keep his explicit approval.
 Every update of main between LIVE and HEAD must therefore be ONE of:
 
-  approved  the update's resulting commit carries a successful website-production deployment, i.e. the founder pressed
-            Approve for exactly that commit (release-promote.yml, or this workflow's own approval job);
+  approved  the founder pressed Approve for exactly that commit: website-production in release-promote.yml, or
+            plotnua-site-production in plotnua-site-deploy.yml (that workflow's own approval job);
   routine   pushed by the PlotNua Release App ("plotnua-release[bot]": its key lives only in a main-only environment,
             so no person or Claude session can push as it) AND content-only by an existing boundary:
               - PlotArt gallery or hire publication: plotart-content-boundary.py BEFORE AFTER [--hire] says OK;
@@ -29,7 +29,7 @@ Every update of main between LIVE and HEAD must therefore be ONE of:
 
 Anything else (a pull-request merge, a person's push, any file outside those boundaries, a .github/ change, a gap in
 the record between LIVE and HEAD, HEAD not reachable from LIVE, an unreadable record) is MATERIAL: the deploy waits
-for the founder's approval in website-production. Fail closed: every doubt is "material".
+for the founder's approval in plotnua-site-production. Fail closed: every doubt is "material".
 
 Output (stdout, last line): DECISION=routine | DECISION=approved | DECISION=material, preceded by one line per update.
 Exit 0 always for a decision; 2 for usage errors (treated as material by the workflow).
@@ -48,7 +48,10 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "colin-macaulay-dcu/plotnua")
 # What decides what plotnua.ie serves besides the published files themselves: always material when changed.
 SITE_CODE = ("worker/plotnua-site/", "atlas-tools/plotnua_site_build.py", "atlas-tools/release/flags.json", "_config.yml",
              ".github/")
-APPROVAL_WORKFLOWS = {".github/workflows/release-promote.yml", ".github/workflows/plotnua-site-deploy.yml"}
+# Where the founder approves: website releases in release-promote.yml (website-production); material plotnua.ie deploys
+# in this workflow's own approval job (plotnua-site-production). Each environment counts only from its own workflow.
+APPROVAL_SOURCES = {"website-production": ".github/workflows/release-promote.yml",
+                    "plotnua-site-production": ".github/workflows/plotnua-site-deploy.yml"}
 
 
 def api(path):
@@ -63,29 +66,32 @@ def fetch_updates():
 
 
 def fetch_approved():
-    """Commits the founder approved for website-production, proven by the run's own approval record."""
+    """Commits the founder approved, proven by the approving run's own review record."""
     out, runs = [], {}
-    for page in (1, 2):
-        for d in api(f"repos/{REPO}/deployments?environment=website-production&per_page=100&page={page}"):
-            for st in api(f"repos/{REPO}/deployments/{d['id']}/statuses?per_page=100"):
-                if st.get("state") != "success":
-                    continue
-                m = re.search(r"/actions/runs/(\d+)/", st.get("log_url") or "")
-                if not m:
-                    continue
-                run = m.group(1)
-                if run not in runs:
-                    r = api(f"repos/{REPO}/actions/runs/{run}")
-                    ok = r.get("path") in APPROVAL_WORKFLOWS and r.get("head_branch") == "main"
-                    if ok:
-                        ok = any(a.get("state") == "approved" and (a.get("user") or {}).get("login") == FOUNDER
-                                 and any(e.get("name") == "website-production" for e in a.get("environments", []))
-                                 for a in api(f"repos/{REPO}/actions/runs/{run}/approvals"))
-                    runs[run] = ok
-                if not runs[run]:
-                    continue
-                u = re.search(r"/commit/([0-9a-f]{40})$", st.get("environment_url") or "")
-                out.append({"sha": u.group(1) if u else d["sha"], "run": int(run)})
+    for env, workflow in APPROVAL_SOURCES.items():
+        for page in (1, 2):
+            for d in api(f"repos/{REPO}/deployments?environment={env}&per_page=100&page={page}"):
+                for st in api(f"repos/{REPO}/deployments/{d['id']}/statuses?per_page=100"):
+                    if st.get("state") != "success":
+                        continue
+                    m = re.search(r"/actions/runs/(\d+)/", st.get("log_url") or "")
+                    if not m:
+                        continue
+                    key = (env, m.group(1))
+                    if key not in runs:
+                        r = api(f"repos/{REPO}/actions/runs/{m.group(1)}")
+                        ok = r.get("path") == workflow and r.get("head_branch") == "main"
+                        if ok:
+                            ok = any(a.get("state") == "approved" and (a.get("user") or {}).get("login") == FOUNDER
+                                     and any(e.get("name") == env for e in a.get("environments", []))
+                                     for a in api(f"repos/{REPO}/actions/runs/{m.group(1)}/approvals"))
+                        runs[key] = ok
+                    if not runs[key]:
+                        continue
+                    u = re.search(r"/commit/([0-9a-f]{40})$", st.get("environment_url") or "")
+                    a = {"sha": u.group(1) if u else d["sha"], "run": int(m.group(1)), "environment": env}
+                    if a not in out:
+                        out.append(a)
     return out
 
 

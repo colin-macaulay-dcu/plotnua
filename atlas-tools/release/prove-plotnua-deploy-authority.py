@@ -38,7 +38,7 @@ calls = {"deps": [{"id": 1, "sha": sha("9feb5c7b")}, {"id": 2, "sha": sha("9feb5
          "st2": [{"state": "success", "log_url": "https://github.com/x/y/actions/runs/7/job/1", "environment_url": ""}],
          "run7": {"path": ".github/workflows/other.yml", "head_branch": "main"}}
 def fake(path):
-    if "/deployments?" in path: return calls["deps"] if path.endswith("&page=1") else []
+    if "/deployments?" in path: return calls["deps"] if path.endswith("&page=1") and "website-production" in path else []
     if "/deployments/1/" in path: return calls["st1"]
     if "/deployments/2/" in path: return calls["st2"]
     if path.endswith("/runs/7"): return calls["run7"]
@@ -48,5 +48,7 @@ A.api = fake
 check("14 forged deployment statuses are not approvals", A.fetch_approved(), [])
 calls["run7"] = {"path": ".github/workflows/release-promote.yml", "head_branch": "main"}
 check("15 a real approval run with the founder's review counts", [a["sha"] for a in A.fetch_approved()], [sha("9feb5c7b")])
+calls["run7"] = {"path": ".github/workflows/plotnua-site-deploy.yml", "head_branch": "main"}
+check("16 a website-production approval counts only from release-promote.yml", A.fetch_approved(), [])
 print(f"PLOTNUA DEPLOY AUTHORITY · {sum(P)} passed, {len(P) - sum(P)} failed")
 sys.exit(0 if all(P) else 1)

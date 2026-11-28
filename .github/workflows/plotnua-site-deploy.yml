@@ -192,7 +192,7 @@ jobs:
           case "$D" in routine|approved|material) ;; *) D=material ;; esac
           echo "decision=$D" >> "$GITHUB_OUTPUT"
           { echo "### Deploy authority: **$D**"; echo '```'; cat "$RUNNER_TEMP/authority.txt"; echo '```'
-            [ "$D" = material ] && echo "A material change: the production deploy waits for the founder's approval in website-production." ; } >> "$GITHUB_STEP_SUMMARY"
+            [ "$D" = material ] && echo "A material change: the production deploy waits for the founder's approval in plotnua-site-production." ; } >> "$GITHUB_STEP_SUMMARY"
 
   approval:
     # The founder's checkpoint for MATERIAL changes only (design, commercial logic, agreements, migrations, hosting,
@@ -204,7 +204,7 @@ jobs:
     permissions: {}
     timeout-minutes: 5
     environment:
-      name: website-production
+      name: plotnua-site-production   # founder the only required reviewer, main only, no admin bypass (verify-founder-approval.sh)
       url: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
     steps:
       - run: echo "founder approved the production deploy of $GITHUB_SHA"
@@ -246,6 +246,8 @@ jobs:
           else echo "stale=false" >> "$GITHUB_OUTPUT"; fi
       - name: Material change? Re-check the founder's approval of THIS run (fail closed)
         if: steps.fresh.outputs.stale == 'false' && needs.host.outputs.decision == 'material'
+        env:
+          APPROVAL_ENV: plotnua-site-production
         run: bash atlas-tools/release/verify-founder-approval.sh "${{ github.run_id }}"
       - uses: actions/setup-node@v4
         if: steps.fresh.outputs.stale == 'false'
