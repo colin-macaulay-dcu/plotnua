@@ -1,10 +1,11 @@
 {
-  "what_this_is": "PlotNua production switches (founder decision 1 Nov 2026, Idea Board launch, Option B). Changed only by a reviewed commit, so every switch has an author, a time and a reason in git history. Read by the Idea Board publishing workflow. plotnua_host (\"pages\" or \"worker\", hosting migration A5): which host serves plotnua.ie; \"worker\" turns on the push-triggered production deploy of the plotnua-site Worker and must be set together with workers_dev = false.",
+  "what_this_is": "PlotNua production switches (founder decision 1 Nov 2026, Idea Board launch, Option B). Changed only by a reviewed commit, so every switch has an author, a time and a reason in git history. Read by the Idea Board publishing workflow. plotnua_host (\"pages\" or \"worker\", hosting migration A5): which host serves plotnua.ie; \"worker\" turns on the push-triggered production deploy of the plotnua-site Worker and must be set together with workers_dev = false. plotnua_worker_baseline: the full commit the A4 verification proved live on the Worker; the A5 deploy authority starts from it until the first production run succeeds.",
   "ideas_submissions_open": true,
   "ideas_publish_enabled": true,
   "must_not_exist": [],
   "garden_submissions_open": true,
   "garden_publish_enabled": true,
   "plotart_address": "plotnua.ie",
-  "plotnua_host": "pages"
+  "plotnua_host": "pages",
+  "plotnua_worker_baseline": ""
 }

@@ -33,10 +33,14 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'verify = build and prove (deploys nothing); deploy = test deploy to workers.dev; compare = Pages vs Worker parity'
+        description: 'verify = build and prove (deploys nothing); deploy = test deploy to the STAGING Worker; compare = live site vs staging parity; rehearse = the production job against staging'
         type: choice
-        options: [verify, deploy, compare]
+        options: [verify, deploy, compare, rehearse]
         default: verify
+      fail_live:
+        description: 'rehearse only: make the live check fail on purpose, to prove the automatic rollback'
+        type: boolean
+        default: false
       ref:
         description: 'what to build: main (default), or a development branch dev/... to TEST on workers.dev before it is released'
         type: string
@@ -45,16 +49,19 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: plotnua-site-deploy
-  cancel-in-progress: false
-
+# Concurrency is per JOB (A5 governance, 28 Nov 2026): a production deploy waiting for the founder's approval must not hold
+# up anything else, and every job that talks to Cloudflare for this site queues behind the one already running. GitHub
+# keeps at most one waiting job per group: a newer one replaces an older one that has not started (the newer commit
+# contains it), and the stale-candidate guard refuses an older commit that has.
 env:
-  WORKERS_DEV: https://plotnua-site.colin-a41.workers.dev
+  STAGING: https://plotnua-site-staging.colin-a41.workers.dev
 
 jobs:
   site:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode != 'rehearse'
+    concurrency:
+      group: plotnua-site-cloudflare
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment:
@@ -95,26 +102,25 @@ jobs:
         working-directory: worker/plotnua-site
         run: |
           npx --yes wrangler@4.150.0 deploy --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/w.log" 2>&1 || { tail -8 "$RUNNER_TEMP/w.log" | grep -viE "token|account"; exit 1; }
-      - name: Test deploy (workers.dev only)
+      - name: Test deploy (the STAGING Worker, workers.dev only; never the Worker that serves plotnua.ie)
         if: inputs.mode == 'deploy'
         working-directory: worker/plotnua-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          if grep -Eq '^\s*(routes?|custom_domain)\s*=|^\[\[routes\]\]' wrangler.toml; then echo "FAIL  wrangler.toml declares a route or domain; test deploys are workers.dev only"; exit 1; fi
-          grep -Eq '^workers_dev = true' wrangler.toml || { echo "FAIL  workers_dev must be true for a test deploy"; exit 1; }
-          npx --yes wrangler@4.150.0 deploy --message "test ${GITHUB_SHA::12}" > "$RUNNER_TEMP/w.log" 2>&1 \
+          python3 ../../atlas-tools/release/plotnua-site-config-check.py wrangler.toml staging
+          npx --yes wrangler@4.150.0 deploy --env staging --message "test ${GITHUB_SHA::12}" > "$RUNNER_TEMP/w.log" 2>&1 \
             || { echo "FAIL  the deployment did not complete"; grep -iE "error|permission" "$RUNNER_TEMP/w.log" | grep -viE "token|https?://" | head -5; exit 1; }
           grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/w.log" || true
-      - name: Live check (workers.dev is noindexed and serves the build)
+      - name: Live check (staging is noindexed and serves the build)
         id: live
         if: inputs.mode == 'deploy'
         run: |
           sleep 20
-          curl -fsSI "$WORKERS_DEV/" | grep -qi '^x-robots-tag: noindex' || { echo "FAIL  workers.dev is not noindexed"; exit 1; }
-          curl -fsSI "$WORKERS_DEV/assets/consent/site-consent.js" | grep -qi '^x-robots-tag: noindex' || { echo "FAIL  assets are not noindexed"; exit 1; }
-          echo "PASS  workers.dev serves the site, noindexed"
+          curl -fsSI "$STAGING/" | grep -qi '^x-robots-tag: noindex' || { echo "FAIL  workers.dev is not noindexed"; exit 1; }
+          curl -fsSI "$STAGING/assets/consent/site-consent.js" | grep -qi '^x-robots-tag: noindex' || { echo "FAIL  assets are not noindexed"; exit 1; }
+          echo "PASS  staging serves the site, noindexed"
       - name: Automatic rollback (live check failed)
         if: failure() && steps.live.outcome == 'failure'
         working-directory: worker/plotnua-site
@@ -122,51 +128,142 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          npx --yes wrangler@4.150.0 rollback --yes --message "automatic rollback after failed live check" > /dev/null 2>&1 && echo "Rolled back" || echo "Rollback failed: check the Cloudflare dashboard"
+          npx --yes wrangler@4.150.0 rollback --env staging --yes --message "automatic rollback after failed live check" > /dev/null 2>&1 && echo "Rolled back" || echo "Rollback failed: check the Cloudflare dashboard"
       - name: Live parity, GitHub Pages vs the Worker
         if: inputs.mode == 'compare'
         run: |
-          node atlas-tools/compare-plotnua-hosting.mjs worker/plotnua-site/dist https://plotnua.ie "$WORKERS_DEV" --report "$RUNNER_TEMP/parity.json"
+          node atlas-tools/compare-plotnua-hosting.mjs worker/plotnua-site/dist https://plotnua.ie "$STAGING" --report "$RUNNER_TEMP/parity.json"
 
   host:
-    # Hosting migration A5. Reads which host serves plotnua.ie; no credential, no environment.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Hosting migration A5. Reads which host serves plotnua.ie and decides, from GitHub's own records, whether the commit
+    # may go live without a fresh founder approval (atlas-tools/release/plotnua-deploy-authority.py). No credential.
+    # While plotnua_host is "pages" this runs in SHADOW mode: it records the decision it would take, and deploys nothing.
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.mode == 'rehearse' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      deployments: read
+      actions: read
     outputs:
       host: ${{ steps.host.outputs.host }}
+      decision: ${{ steps.authority.outputs.decision }}
+      live: ${{ steps.live.outputs.live }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Is plotnua.ie served by the Worker? (flags.json plotnua_host)
         id: host
         run: |
           HOST=$(python3 -c "import json; print(json.load(open('atlas-tools/release/flags.json')).get('plotnua_host','pages'))")
           echo "host=$HOST" >> "$GITHUB_OUTPUT"
-          if [ "$HOST" != worker ]; then echo "plotnua_host is '$HOST': GitHub Pages serves plotnua.ie, nothing to deploy" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
-          grep -Eq '^workers_dev = false' worker/plotnua-site/wrangler.toml || { echo "FAIL  plotnua_host is worker but workers_dev is not false"; exit 1; }
-          if grep -Eq '^\s*(routes?|custom_domain)\s*=|^\[\[routes\]\]' worker/plotnua-site/wrangler.toml; then echo "FAIL  domains are attached in the dashboard, never in wrangler.toml"; exit 1; fi
-          grep -Eq '^INDEXING = "index"' worker/plotnua-site/wrangler.toml || { echo "FAIL  plotnua.ie must be indexable"; exit 1; }
+          if [ "$HOST" != worker ]; then echo "plotnua_host is '$HOST': GitHub Pages serves plotnua.ie (shadow mode: the decision below is recorded, nothing is deployed)" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          python3 atlas-tools/release/plotnua-site-config-check.py worker/plotnua-site/wrangler.toml production
+      - name: Which commit is live now?
+        id: live
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The last successful production job of this workflow; else the A4-verified baseline in flags.json; in shadow
+          # mode (or for a rehearsal) the commit main was at before this push.
+          LIVE=""
+          if [ "${{ steps.host.outputs.host }}" = worker ]; then
+            for r in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/plotnua-site-deploy.yml/runs?branch=main&event=push&status=success&per_page=30" -q '.workflow_runs[].id'); do
+              if gh api "repos/$GITHUB_REPOSITORY/actions/runs/$r/jobs" -q '.jobs[]|select(.name=="production" and .conclusion=="success")|.name' | grep -q production; then
+                LIVE=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$r" -q .head_sha); break
+              fi
+            done
+            [ -n "$LIVE" ] || LIVE=$(python3 -c "import json; print(json.load(open('atlas-tools/release/flags.json')).get('plotnua_worker_baseline',''))")
+          else
+            LIVE="${{ github.event.before }}"
+            [[ "$LIVE" =~ ^[0-9a-f]{40}$ ]] || LIVE=$(git rev-parse HEAD~1)
+          fi
+          echo "live=$LIVE" >> "$GITHUB_OUTPUT"
+          echo "Live commit: ${LIVE:-unknown}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Deploy authority (routine artist publication, founder-approved release, or material change?)
+        id: authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          python3 atlas-tools/release/plotnua-deploy-authority.py "${{ steps.live.outputs.live }}" "$GITHUB_SHA" --fetch | tee "$RUNNER_TEMP/authority.txt"
+          D=$(sed -n 's/^DECISION=//p' "$RUNNER_TEMP/authority.txt" | tail -1)
+          case "$D" in routine|approved|material) ;; *) D=material ;; esac
+          echo "decision=$D" >> "$GITHUB_OUTPUT"
+          { echo "### Deploy authority: **$D**"; echo '```'; cat "$RUNNER_TEMP/authority.txt"; echo '```'
+            [ "$D" = material ] && echo "A material change: the production deploy waits for the founder's approval in plotnua-site-production." ; } >> "$GITHUB_STEP_SUMMARY"
+
+  approval:
+    # The founder's checkpoint for MATERIAL changes only (design, commercial logic, agreements, migrations, hosting,
+    # security, privacy, workflows: anything outside the content-only boundaries). Routine artist publications and
+    # releases he already approved in release-promote.yml never stop here. No steps touch anything; no secrets.
+    needs: host
+    if: needs.host.outputs.decision == 'material' && (needs.host.outputs.host == 'worker' || inputs.mode == 'rehearse')
+    runs-on: ubuntu-latest
+    permissions: {}
+    timeout-minutes: 5
+    environment:
+      name: plotnua-site-production   # founder the only required reviewer, main only, no admin bypass (verify-founder-approval.sh)
+      url: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+    steps:
+      - run: echo "founder approved the production deploy of $GITHUB_SHA"
 
   production:
-    needs: host
-    if: needs.host.outputs.host == 'worker'
+    needs: [host, approval]
+    if: >-
+      always() && needs.host.result == 'success' &&
+      (needs.host.outputs.host == 'worker' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'rehearse')) &&
+      (needs.host.outputs.decision == 'routine' || needs.host.outputs.decision == 'approved' || needs.approval.result == 'success')
+    concurrency:
+      group: plotnua-site-cloudflare
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+      deployments: read
+      issues: write
     environment:
       name: plotart-site   # the same existing Cloudflare credential; main branch only
+    env:
+      # A rehearsal runs this very job against the STAGING Worker: same guards, same rollback, nothing on plotnua.ie.
+      TARGET: ${{ github.event_name == 'workflow_dispatch' && 'https://plotnua-site-staging.colin-a41.workers.dev' || 'https://plotnua.ie' }}
+      WENV: ${{ github.event_name == 'workflow_dispatch' && '--env staging' || '' }}
+      REHEARSAL: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+      FAIL_LIVE: ${{ github.event_name == 'workflow_dispatch' && inputs.fail_live && 'true' || 'false' }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
+      - name: Stale-candidate guard (only the current head of main may go live)
+        id: fresh
+        run: |
+          HEAD=$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main | cut -f1)
+          if [ "$HEAD" != "$GITHUB_SHA" ]; then
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "SUPERSEDED: main is now ${HEAD::12}; ${GITHUB_SHA::12} is not deployed (the newer run deploys, with its own authority check)" | tee -a "$GITHUB_STEP_SUMMARY"
+          else echo "stale=false" >> "$GITHUB_OUTPUT"; fi
+      - name: Material change? Re-check the founder's approval of THIS run (fail closed)
+        if: steps.fresh.outputs.stale == 'false' && needs.host.outputs.decision == 'material'
+        env:
+          APPROVAL_ENV: plotnua-site-production
+        run: bash atlas-tools/release/verify-founder-approval.sh "${{ github.run_id }}"
       - uses: actions/setup-node@v4
+        if: steps.fresh.outputs.stale == 'false'
         with:
           node-version: '22'
       - uses: actions/setup-python@v5
+        if: steps.fresh.outputs.stale == 'false'
         with:
           python-version: '3.12'
       - name: Build through the publication allowlist and prove it
+        if: steps.fresh.outputs.stale == 'false'
         run: |
           python3 atlas-tools/plotnua_site_build.py . worker/plotnua-site/dist --mode live
           node worker/plotnua-site/test/prove-site.mjs "$GITHUB_WORKSPACE/worker/plotnua-site/dist" "$GITHUB_WORKSPACE" | tail -3
       - name: Privacy regression test and consent events
+        if: steps.fresh.outputs.stale == 'false'
         run: |
           set -o pipefail
           npm install --prefix atlas-tools --no-save --no-package-lock --silent playwright@1.63.0 > /dev/null
@@ -175,30 +272,52 @@ jobs:
           sleep 2
           node atlas-tools/prove-privacy.mjs worker/plotnua-site/privacy.json http://127.0.0.1:8799 --pages-from worker/plotnua-site/dist --choice-pages 12 | tee -a "$GITHUB_STEP_SUMMARY"
           node atlas-tools/prove-plotnua-consent-events.mjs http://127.0.0.1:8799 | tail -1 | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Deploy (production)
+      - name: Record the version live now (the rollback target), then re-check freshness and deploy
+        id: deploy
+        if: steps.fresh.outputs.stale == 'false'
         working-directory: worker/plotnua-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          npx --yes wrangler@4.150.0 deploy --message "main ${GITHUB_SHA::12}" > "$RUNNER_TEMP/w.log" 2>&1 \
-            || { echo "FAIL  the deployment did not complete"; grep -iE "error|permission" "$RUNNER_TEMP/w.log" | grep -viE "token|https?://" | head -5; exit 1; }
+          python3 ../../atlas-tools/release/plotnua-site-config-check.py wrangler.toml "$([ "$REHEARSAL" = true ] && echo staging || echo production)"
+          PREV=$(npx --yes wrangler@4.150.0 deployments status $WENV --json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['versions'][0]['version_id'])" 2>/dev/null || true)
+          echo "prev=$PREV" >> "$GITHUB_OUTPUT"
+          echo "Rollback target (version live before this deploy): ${PREV:-none recorded}" | tee -a "$GITHUB_STEP_SUMMARY"
+          HEAD=$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main | cut -f1)
+          [ "$HEAD" = "$GITHUB_SHA" ] || { echo "SUPERSEDED during the checks: main is now ${HEAD::12}; nothing deployed" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; }
+          npx --yes wrangler@4.150.0 deploy $WENV --message "main ${GITHUB_SHA::12}" > "$RUNNER_TEMP/w.log" 2>&1 \
+            || { echo "FAIL  the deployment did not complete (the live version is unchanged)"; grep -iE "error|permission" "$RUNNER_TEMP/w.log" | grep -viE "token|https?://" | head -5; exit 1; }
+          echo "deployed=true" >> "$GITHUB_OUTPUT"
           grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/w.log" || true
-      - name: Live check (plotnua.ie is served by the Worker and every page answers)
+      - name: Live check (the target is served by the Worker and every page answers)
         id: live
+        if: steps.deploy.outputs.deployed == 'true'
         run: |
           sleep 20
-          H=$(curl -fsSI --max-time 15 https://plotnua.ie/)
-          grep -qi '^server: cloudflare' <<<"$H" && grep -qi '^permissions-policy:' <<<"$H" || { echo "FAIL  plotnua.ie is not served by the Worker"; exit 1; }
-          ! grep -qi '^x-robots-tag:.*noindex' <<<"$H" || { echo "FAIL  plotnua.ie is noindexed"; exit 1; }
-          curl -fsS --max-time 15 https://plotnua.ie/robots.txt | grep -qi '^Sitemap:' || { echo "FAIL  robots.txt"; exit 1; }
-          python3 atlas-tools/prove-plotart-domain.py . plotnua
-          python3 atlas-tools/release/site-health.py
-      - name: Automatic rollback (live check failed)
+          [ "$FAIL_LIVE" != true ] || { echo "FAIL  (rehearsal) live check made to fail on purpose"; exit 1; }
+          H=$(curl -fsSI --max-time 15 "$TARGET/")
+          grep -qi '^server: cloudflare' <<<"$H" && grep -qi '^permissions-policy:' <<<"$H" || { echo "FAIL  $TARGET is not served by the Worker"; exit 1; }
+          if [ "$REHEARSAL" = true ]; then
+            grep -qi '^x-robots-tag:.*noindex' <<<"$H" || { echo "FAIL  staging must be noindexed"; exit 1; }
+          else
+            ! grep -qi '^x-robots-tag:.*noindex' <<<"$H" || { echo "FAIL  plotnua.ie is noindexed"; exit 1; }
+            curl -fsS --max-time 15 https://plotnua.ie/robots.txt | grep -qi '^Sitemap:' || { echo "FAIL  robots.txt"; exit 1; }
+            python3 atlas-tools/prove-plotart-domain.py . plotnua
+            python3 atlas-tools/release/site-health.py
+          fi
+      - name: Automatic rollback to the version that was live before (live check failed)
         if: failure() && steps.live.outcome == 'failure'
         working-directory: worker/plotnua-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          PREV: ${{ steps.deploy.outputs.prev }}
         run: |
-          npx --yes wrangler@4.150.0 rollback --yes --message "automatic rollback: failed live check (run ${{ github.run_id }})" > /dev/null 2>&1 && echo "Rolled back" || echo "Rollback failed: check the Cloudflare dashboard"
+          if npx --yes wrangler@4.150.0 rollback $PREV $WENV --yes --message "automatic rollback: failed live check (run ${{ github.run_id }})" > /dev/null 2>&1; then
+            sleep 15
+            NOW=$(npx --yes wrangler@4.150.0 deployments status $WENV --json 2>/dev/null | python3 -c "import json,sys; print(json.load(sys.stdin)['versions'][0]['version_id'])" 2>/dev/null || true)
+            curl -fsSI --max-time 15 "$TARGET/" > /dev/null && R="Rolled back to ${PREV:-the previous version}; now serving ${NOW:-?}; the site answers" || R="Rolled back, but $TARGET does not answer"
+          else R="ROLLBACK FAILED: restore from the Cloudflare dashboard (Workers > plotnua-site > Deployments)"; fi
+          echo "$R" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$REHEARSAL" = true ] || bash atlas-tools/release/ops-alert.sh "plotnua.ie deploy failed its live check" "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}: $R" || true

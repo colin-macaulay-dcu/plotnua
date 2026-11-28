@@ -23,3 +23,22 @@ not_found_handling = "none"
 [vars]
 INDEXING = "index"            # plotnua.ie is the live site; workers.dev and any test host stay noindex regardless
 PLOTART_ADDRESS = "plotnua.ie" # "plotart.ie" only at the approved cutover (the /plotart 301s)
+
+# STAGING (A4/A5 preparation, 28 Nov 2026). Once plotnua.ie is attached to the "plotnua-site" Worker (A4), a deploy of
+# that Worker IS a production deploy. Every test deploy, parity compare and A5 rehearsal therefore goes to this separate
+# Worker ("wrangler deploy --env staging"), on its own workers.dev address, always noindexed, never with a domain.
+[env.staging]
+name = "plotnua-site-staging"
+workers_dev = true
+preview_urls = false
+
+[env.staging.assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = ["/*", "!/assets/*"]
+html_handling = "none"
+not_found_handling = "none"
+
+[env.staging.vars]
+INDEXING = "noindex"
+PLOTART_ADDRESS = "plotnua.ie"
