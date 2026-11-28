@@ -151,7 +151,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
               '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, " pa-pills--hire" if hire_nav else "", pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
         galleries_menu(R, current) + mobile_gallery_pill(R + "mobile-gallery/", current == "mg"),
-        pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
+        pill("lg", R + "living-gallery.html", "Host Art", "nav_living_gallery"),   # Host Art (founder brief 28 Nov 2026): the Living Gallery page, same address
         (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
         + (pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]) if services_nav else ""),
         '<a class="pa-pill pa-pill--out" href="%sindex.html" data-pa-track="cross_plotnua_home"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a>' % T)
@@ -165,7 +165,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
              '<div class="pn-sm-panel">%s</div></details>') % "".join(_items)
     header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + LOGIN + '\n    ' + _menu + '\n  </div>\n</header>', 1)
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
-    footlinks = (FOOT_GALLERIES + '<li><a href="{R}living-gallery.html">Living Gallery</a></li>'
+    footlinks = (FOOT_GALLERIES + '<li><a href="{R}living-gallery.html">The Living Gallery</a></li>'
                  + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') + ('<li><a href="{R}services.html">Services</a></li>' if services_nav else '') +
                  '<li><a href="{R}about.html">About PlotArt</a></li>' + FOOT_ARTISTS).format(R=R)
     robots = SEO.head(path, title, desc)

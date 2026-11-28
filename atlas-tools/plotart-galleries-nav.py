@@ -84,8 +84,8 @@ MENU_RUN = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page
                       r'(?:<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>)?', re.S)
 MG_PILL = re.compile(r'<a class="pa-pill" href="([^"]*)"( aria-current="page")? data-pa-track="nav_mobile_gallery">Mobile Gallery</a>')
 MG_MENU = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery_menu">Mobile Gallery</a>')
-LG_PILL = re.compile(r'<a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery">Living Gallery</a>')
-LG_MENU = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery_menu">Living Gallery</a>')
+LG_PILL = re.compile(r'<a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery">(?:Living Gallery|Host Art)</a>')
+LG_MENU = re.compile(r'<a class="pn-sm-link" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery_menu">(?:Living Gallery|Host Art)</a>')
 FOOT_RUN = re.compile(r'<li><a href="([^"]*)gallery/">Contemporary(?: Art)?</a></li>.*?<li><a href="[^"]*mobile-gallery/">Mobile Gallery</a></li>', re.S)
 KEY_OF_TRACK = {t: k for k, _h, _l, t in S.GALLERIES}
 

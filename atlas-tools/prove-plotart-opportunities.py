@@ -203,7 +203,7 @@ withp["artist"]["open_to"] = ["exhibitions", "living_gallery", "commissions"]
 A, B = pages(P, base, ENDPOINT), pages(P, withp, ENDPOINT)
 line = ('<div class="pa-ag-opps"><p class="pa-ag-opps-h" id="agOppsH">Open to</p><ul class="pa-ag-pills" aria-labelledby="agOppsH">'
         '<li><a class="pa-ag-pill" href="../../opportunities/#exhibitions" data-pa-track="artist_opportunity_link">Exhibitions</a></li>'
-        '<li><a class="pa-ag-pill" href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Living Gallery</a></li></ul></div>')
+        '<li><a class="pa-ag-pill" href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Art Hosting</a></li></ul></div>')
 check("O3b with open_to the gallery page gains exactly one row of \"Open to\" pills, each linking to its list; Commissions chosen without \"Open for commissions\" is never shown", B["index"].count(line) == 1 and "Commissions" not in B["index"], B["index"][:0])
 check("O3c removing the pills gives back exactly today's page; artwork pages are unchanged", B["index"].replace(line, "") == A["index"] and all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
 both = copy.deepcopy(withp)
@@ -348,8 +348,8 @@ try:
     good = run(["git", "rev-parse", "HEAD"], cwd=wt)[1].strip()
     lgp = os.path.join(wt, "plotart", "living-gallery.html")
     doc = open(lgp, encoding="utf-8").read()
-    assert '<h2>A home, not a showroom.</h2>' in doc   # a fixed heading outside the list region (the eyebrows went in the design standard, 27 Nov 2026)
-    open(lgp, "w", encoding="utf-8").write(doc.replace('<h2>A home, not a showroom.</h2>', '<h2>A home, not a shop.</h2>', 1))
+    assert '<h2>Who can host.</h2>' in doc   # a fixed heading outside the list region (the eyebrows went in the design standard, 27 Nov 2026)
+    open(lgp, "w", encoding="utf-8").write(doc.replace('<h2>Who can host.</h2>', '<h2>Who may host.</h2>', 1))
     gitc("commit", "-qam", "tamper outside")
     c2, o2 = bnd(base_sha, "HEAD")
     gitc("reset", "-q", "--hard", good)

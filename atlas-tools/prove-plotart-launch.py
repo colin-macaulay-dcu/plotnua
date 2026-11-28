@@ -636,12 +636,12 @@ if os.path.exists(smp):
 # straight after Discover PlotArt and be exactly the shell's (checked below, with its current link).
 # Mobile Gallery is its own pill again, straight after the Galleries menu and before Living Gallery and Art for Hire, the order
 # of the homepage's Beyond the Gallery tiles (founder decisions, 25 Nov 2026).
-NAV_WANT = ["Discover PlotArt", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]
+NAV_WANT = ["Discover PlotArt", "Mobile Gallery", "Host Art", "PlotNua ↗"]   # Host Art: the Living Gallery page (founder brief 28 Nov 2026)
 if HIRE_ON:
     NAV_WANT.insert(3, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
 if SERVICES_ON:
     NAV_WANT.insert(len(NAV_WANT) - 1, "Services")                                        # Art Services & Providers (19 Nov 2026)
-NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": None, "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
+NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": None, "living-gallery.html": "Host Art", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery", "spaces/index.html": None, "being/index.html": None}
 # the page each Galleries menu link is current on (the menu itself is then marked as the current section)
 DD_CURRENT = {"gallery/index.html": "contemporary", "spaces/index.html": "spaces", "being/index.html": "being"}
@@ -822,7 +822,7 @@ for _d, _, _fs in os.walk(PA):
                 _nv = _navm.group(1) if _navm else ""
                 need(_t.count("data-pa-dd") == 1 and 'data-pa-track="nav_virtual_gallery' not in _t
                      and len(re.findall(r'data-pa-track="nav_mobile_gallery"', _nv)) == 1
-                     and re.search(r'</details><a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery">Living Gallery</a>', _nv) is not None,
+                     and re.search(r'</details><a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_mobile_gallery">Mobile Gallery</a><a class="pa-pill" href="[^"]*"(?: aria-current="page")? data-pa-track="nav_living_gallery">Host Art</a>', _nv) is not None,
                      "L21 %s must carry exactly one Galleries menu (three galleries), no Artists’ Gallery pill, and the Mobile Gallery pill straight after the Galleries menu, before Living Gallery" % os.path.relpath(os.path.join(_d, _f), PA))
 # Beyond the Gallery (founder brief 25 Nov 2026): straight after the three galleries, the Mobile Gallery, Living Gallery and Art
 # for Hire, in that order, each with a picture, a status, a short text and one link to its own page. Every picture is the

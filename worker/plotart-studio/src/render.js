@@ -159,7 +159,7 @@ export function previewPage(title, body, bar) {
 <header class="pa-head pa-head--pills">
   <div class="pa-wrap">
     <span class="pa-brand"><img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt=""></span>
-    <nav class="pa-pills" aria-label="PlotArt (preview: links off)"><a class="pa-pill">Discover PlotArt</a><a class="pa-pill" aria-current="page">Virtual Gallery</a><a class="pa-pill">Mobile Gallery</a><a class="pa-pill">Living Gallery</a><a class="pa-pill pa-pill--out"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/plotnua-icon.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a></nav>
+    <nav class="pa-pills" aria-label="PlotArt (preview: links off)"><a class="pa-pill">Discover PlotArt</a><a class="pa-pill" aria-current="page">Virtual Gallery</a><a class="pa-pill">Mobile Gallery</a><a class="pa-pill">Host Art</a><a class="pa-pill pa-pill--out"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/plotnua-icon.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a></nav>
   </div>
 </header>
 <main id="main">

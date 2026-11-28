@@ -38,7 +38,8 @@ COMMISSIONS = "commissions/index.html"
 OPPORTUNITIES = {
     "exhibitions": ("Exhibitions", "Artists open to exhibitions",
                     "These artists have said they’d welcome conversations about showing their work in physical gallery exhibitions.", None, "exhibitions"),
-    "living_gallery": ("Living Gallery", "Artists open to the Living Gallery",
+    "living_gallery": ("Art Hosting", "Artists open to Art Hosting at home",   # Host Art (founder brief 28 Nov 2026)
+                      
                        "These artists have said they’d welcome conversations about showing their work in someone’s home.", "living-gallery.html", "living-gallery"),
     "art_for_hire": ("Art for Hire", "Artists open to Art for Hire",
                      "These artists have said they’d welcome conversations about hiring out their work. Only the works shown under “Available to hire” have been approved for hire; being listed here doesn’t mean a particular work is available.",
@@ -46,7 +47,8 @@ OPPORTUNITIES = {
     "mobile_gallery": ("Mobile Gallery", "Artists open to home viewings",
                        "These artists have said they’d welcome conversations about home viewings arranged through participating galleries. No gallery’s participation has been confirmed yet.",
                        "mobile-gallery/", "mobile-gallery"),
-    "venues": ("Hotels and workplaces", "Artists open to hotel and workplace displays",
+    "venues": ("Business and venue hosting", "Artists open to hosting in businesses and venues",   # Host Art, 28 Nov 2026
+              
                "These artists have said they’d welcome conversations about showing their work in hotels, offices and other workplaces.", None, "hotels-and-workplaces"),
     "commissions": ("Commissions", "Artists open to commissions",
                     "These artists are currently open to commission enquiries about a new work. Any commission is agreed directly between the artist and the client.", "commissions/", "commissions"),
@@ -215,7 +217,7 @@ def _gallery(pkgs, base, key="art_for_hire", choices=None):
 # 22 Nov 2026). The Living Gallery has its own introduction (founder wording) and no invitation.
 GALLERY_PAGES = ("art-for-hire/index.html", "living-gallery.html")
 LIVING_SAID = ("Discover Irish artists interested in seeing their work displayed in real homes. Explore their galleries and find out "
-               "how you could become part of the Living Gallery. Every arrangement is agreed directly with the artist.")   # founder wording, 22 Nov 2026
+               "how you could become an Art Host. Every arrangement is agreed directly with the artist.")   # founder wording, 22 Nov 2026
 
 
 def section(key, packages, base, hub, commission_page=False, gallery=False, choices=None):
@@ -234,7 +236,7 @@ def section(key, packages, base, hub, commission_page=False, gallery=False, choi
                 '  <div class="pa-afg-head"><h2 id="opp-%s-h">%s</h2><p class="pa-opp-said">%s</p></div>\n  %s\n'
                 '  <div class="pa-afg-invite">%s</div>\n</div></section>'
                 % (sid, key, key, E(HIRE_HEAD), E(HIRE_SAID), _gallery(pkgs, base, choices=choices), HIRE_INVITE))
-    about = {"art_for_hire": "About Art for Hire", "commissions": "About commissions"}.get(key, "About the " + label)
+    about = {"art_for_hire": "About Art for Hire", "commissions": "About commissions", "living_gallery": "About Art Hosting"}.get(key, "About the " + label)
     more = ('<p class="pa-opp-more"><a href="%s">%s →</a></p>' % (E(base + page), E(about))) if hub and page else \
            ('<p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>' % E(base)) if not hub else ""
     body = _rows(pkgs, base, commission_page, choices) if pkgs else '<p class="pa-opp-none">No artists are listed here yet.</p>'

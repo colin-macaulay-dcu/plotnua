@@ -194,7 +194,7 @@ let p = await page('cia-test@example.test');
 await p.goto(S.url + '/#/', { waitUntil: 'load' }); await p.waitForTimeout(900);
 const card = await p.locator('#opp-confirm-home').innerText().catch(() => '');
 check('U1 the dashboard shows the one-click confirmation with her choices, the never-published promise explained, and an UNTICKED commissions box',
-  /Show your opportunities on your gallery\?/.test(card) && /Living Gallery · Commissions/.test(card) && /wouldn’t be published/.test(card)
+  /Show your opportunities on your gallery\?/.test(card) && /Art Hosting at home · Commissions/.test(card) && /wouldn’t be published/.test(card)
   && await p.locator('[data-cf-c]').count() === 1 && !(await p.locator('[data-cf-c]').isChecked()) && p.errs.length === 0, card + p.errs.join());
 await shot(p, 'studio-dashboard-confirm-1280.png');
 const p390 = await page('cia-test@example.test', { width: 390, height: 844 });
@@ -268,7 +268,7 @@ check('F6 a second confirmation is refused (already decided); the artist can sti
 await db.prepare("UPDATE artist_opportunities SET public_display=NULL, public_decided_at=NULL, public_notice=NULL WHERE artist_id='afc'").run();
 await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.waitForTimeout(900);
 const box = f.locator('[data-fc="afc"]'), go = f.locator('[data-fcgo="afc"]');
-const shownBefore = await box.count() === 1 && await go.isDisabled() && /I personally obtained Fay Confirm’s agreement to show these publicly: Exhibitions, Living Gallery, Art for Hire, Commissions/.test(await f.locator('#app').innerText());
+const shownBefore = await box.count() === 1 && await go.isDisabled() && /I personally obtained Fay Confirm’s agreement to show these publicly: Exhibitions, Art Hosting, Art for Hire, Commissions/.test(await f.locator('#app').innerText());
 const noneForDecided = await f.locator('[data-fc="afd"]').count() === 0 && await f.locator('[data-fc="aorla"]').count() === 0;
 await box.check(); await go.click(); await f.waitForTimeout(900);
 check('F7 Review Desk: only "not confirmed yet" answers offer it; the button stays disabled until the statement is ticked; one click shows them',

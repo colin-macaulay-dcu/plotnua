@@ -9,17 +9,17 @@ export { COUNTIES };
 // Order shown to the artist. "online_only" is exclusive of every other choice.
 export const INTERESTS = {
   exhibitions: 'Physical gallery exhibitions',
-  living_gallery: 'Living Gallery — displaying work in someone’s home',
+  living_gallery: 'Art Hosting at home — your work displayed in someone’s home (The Living Gallery)',   // Host Art, 28 Nov 2026: same choice, same scope
   art_for_hire: 'Art for Hire — renting work',
   mobile_gallery: 'Mobile Gallery — home viewings through participating galleries',   // as on plotart/mobile-gallery/ (13 Nov 2026 wording review)
-  venues: 'Hotel and workplace displays',
+  venues: 'Art Hosting in businesses and venues — hotels, offices and other workplaces',   // Host Art, 28 Nov 2026: same choice, same scope
   commissions: 'Commissions',
   talks: 'Artist talks or events',
   online_only: 'Online gallery only for now',
 };
 // Short labels for the founder's table and filters.
-export const INTEREST_SHORT = { exhibitions: 'Exhibitions', living_gallery: 'Living Gallery', art_for_hire: 'Art for Hire', mobile_gallery: 'Mobile Gallery',
-  venues: 'Hotels and workplaces', commissions: 'Commissions', talks: 'Talks and events', online_only: 'Online only for now' };
+export const INTEREST_SHORT = { exhibitions: 'Exhibitions', living_gallery: 'Art Hosting', art_for_hire: 'Art for Hire', mobile_gallery: 'Mobile Gallery',
+  venues: 'Business and venue hosting', commissions: 'Commissions', talks: 'Talks and events', online_only: 'Online only for now' };
 export const TRANSPORT = {
   deliver: 'I can deliver and collect',
   courier: 'I could arrange a courier or art transporter',

@@ -1117,7 +1117,7 @@
       </div></section>
       <section class="st-card" id="o-tr-card"><fieldset class="st-opp-fs">
         <legend><h2 class="st-opp-q">For temporary placements, how could your work get there and back?</h2></legend>
-        <p class="st-hint" style="margin:0">Exhibitions, workplace and hospitality displays, Living Gallery, Mobile Gallery and hire placements. Choose any that fit. This is separate from how you send a sold or hired work to a customer.</p>
+        <p class="st-hint" style="margin:0">Exhibitions, Art Hosting in homes, businesses and venues, Mobile Gallery and hire placements. Choose any that fit. This is separate from how you send a sold or hired work to a customer.</p>
         <div class="st-opts">${Object.entries(O.transport).map(([k, v]) => btn('t', k, v, on(st.transport, k))).join('')}</div>
         <p class="st-opp-msg" id="o-t-msg" aria-live="polite"></p>
         ${legacy && on(st.transport, 'courier') ? '<p class="st-loc-confirm" role="status" style="margin:10px 0 0">You chose “a courier or art transporter” before. These are now two answers, standard courier and specialist art transport: please check which apply, then save.</p>' : ''}

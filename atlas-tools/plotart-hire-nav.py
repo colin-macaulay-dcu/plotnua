@@ -30,9 +30,9 @@ CSS = CSS_BEGIN + """ · Art for Hire (Stage 3B-4): six pills, the fourth galler
 """ + CSS_END + "\n"
 
 NAV = re.compile(r'<nav class="pa-pills" aria-label="PlotArt">(.*?)</nav>', re.S)
-LG_PILL = re.compile(r'<a class="pa-pill" href="([^"]*)living-gallery\.html"[^>]*>Living Gallery</a>')
-LG_MENU = re.compile(r'<a class="pn-sm-link" href="([^"]*)living-gallery\.html"[^>]*>Living Gallery</a>')
-LG_FOOT = re.compile(r'<li><a href="([^"]*)living-gallery\.html">Living Gallery</a></li>')
+LG_PILL = re.compile(r'<a class="pa-pill" href="([^"]*)living-gallery\.html"[^>]*>(?:Living Gallery|Host Art)</a>')
+LG_MENU = re.compile(r'<a class="pn-sm-link" href="([^"]*)living-gallery\.html"[^>]*>(?:Living Gallery|Host Art)</a>')
+LG_FOOT = re.compile(r'<li><a href="([^"]*)living-gallery\.html">(?:The )?Living Gallery</a></li>')
 
 
 def patch(text, current):

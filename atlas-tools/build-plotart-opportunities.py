@@ -22,7 +22,7 @@ import plotart_shell as S  # the approved analytics head (26 Nov 2026)
 ROOT = Path(__file__).resolve().parent.parent
 PATH = OPP.HUB
 TITLE = "Artist Opportunities | PlotArt"
-DESC = ("Irish artists open to exhibitions, the Living Gallery, Art for Hire, home viewings, hotel and workplace displays, "
+DESC = ("Irish artists open to exhibitions, Art Hosting with the Living Gallery, Art for Hire, home viewings, business and venue hosting, "
         "commissions and talks. Every opportunity is agreed individually with the artist.")
 E = lambda s: html.escape(str(s), quote=True)
 
