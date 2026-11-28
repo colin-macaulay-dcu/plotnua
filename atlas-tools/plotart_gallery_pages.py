@@ -87,6 +87,63 @@ def main_image(w):
     return next(i for i in w["images"] if i["role"] == "main")
 
 
+# Alt text (page fixes, 27 Nov 2026, fix 10). The artist's own alt text is used verbatim whenever it describes the work;
+# only a weak one is composed here, in the builder, from the artist's own title and medium (gallery.json is never
+# changed). Weak: missing, fewer than four words, or nothing but the title. An artist's alt that is otherwise good but
+# repeated word for word on another of their works keeps every word and is prefixed with the work's own title, so each
+# image says which work it is. Artist and artwork pages only; collection and opportunity pages keep the export's alt.
+def _words(t):
+    return re.findall(r"[^\W_]+", str(t or "").casefold())
+
+
+def _weak_alt(alt, title):
+    w = _words(alt)
+    return len(w) < 4 or w == _words(title)
+
+
+def display_alt(pkg, w, img):
+    alt = str((img or {}).get("alt") or "").strip()
+    title, name = SEO.clean_title(w["title"]), pkg["artist"]["display_name"]
+    imgs = w["images"]
+    view = img is not imgs[0] and img.get("role") != "main"
+    if _weak_alt(alt, w["title"]):
+        if not view:
+            # the artist's own short words are kept ("Abstract garden"), unless they only repeat the title
+            said = " ".join(alt.split()) if alt and _words(alt) != _words(w["title"]) else ""
+            said = _lower_common(said).rstrip(".")
+            return ("%s by %s: %s, %s" % (title, name, said, medium_phrase(w))) if said else ("%s by %s, %s" % (title, name, medium_phrase(w)))
+        views = [i for i in imgs if i is not imgs[0] and i.get("role") != "main"]
+        n = ("" if len(views) == 1 else " %d" % (views.index(img) + 1))
+        return ("Detail%s of %s by %s" if "detail" in alt.lower() or not alt else "View%s of %s by %s") % (n, title, name)
+    if not view:
+        mains = [main_image(x).get("alt", "").strip().casefold() for x in pkg["works"] if x is not w and x.get("images")]
+        if alt.casefold() in mains:
+            return "%s by %s: %s" % (title, name, _lower_common(" ".join(alt.split())))
+    return alt
+
+
+_COMMON_WORDS = frozenset("""abstract abstracted painting paintings landscape lanscape garden flowers full of colour colours colourful
+bright geometric shapes patterns large scale large-scale detail view the a an with background multi coloured""".split())
+
+
+def _lower_common(t):
+    """An artist's alt words for use after a colon: material words and common describing words lower-cased ("Abstract
+    Painting" -> "abstract painting"); any other word (a place, a name: "Mediterranean") keeps its capital."""
+    return re.sub(r"[A-Za-z-]+", lambda m: m.group(0).lower() if m.group(0).lower() in _COMMON_WORDS or m.group(0).lower() in _MATERIAL_WORDS else m.group(0), t)
+
+
+KIND_PHRASE = {"Painting": "painting", "Print": "original print", "Mixed Media": "mixed-media work", "Drawing": "drawing"}
+MEDIUM_PHRASE_MAX = 40
+
+
+def medium_phrase(w):
+    """The artist's medium for use mid-sentence; a long materials list is named by its kind instead ("mixed-media work")."""
+    m = _lower_first(w["medium"])
+    if len(m) <= MEDIUM_PHRASE_MAX:
+        return m
+    return KIND_PHRASE.get(artwork_kind(w["medium"])) or "original work"
+
+
 def card_image(pkg):
     """The Virtual Gallery card shows the artist's first (artist-ordered) shown work; (None, None) if none are on show."""
     ws = shown(pkg)
@@ -200,6 +257,98 @@ def paragraphs(text):
             out.append(cur)
     return out
 
+def work_tile(pkg, w, sizes, track="artist_artwork"):
+    """One work in a gallery grid (the artist's Works, and "More by" on an artwork page): uncropped, lazy, with its price line."""
+    im = main_image(w)
+    d = pick(im, 1200)
+    cls = " is-%s" % w["availability"].replace("_", "-")
+    return ('\n    <li class="pa-ag-work%s"><a class="pa-ag-tile" href="%s.html" data-pa-track="%s">'
+            '<span class="pa-ag-art"><img src="img/%s" srcset="%s" sizes="%s" '
+            'width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></span>'
+            '<span class="pa-ag-cap"><span class="pa-ag-title">%s</span><span class="pa-ag-sub">%s</span>'
+            '<span class="pa-ag-status">%s</span></span></a></li>' % (
+                cls, E(w["slug"]), track, E(d["file"]), E(srcset(im, "img/")), sizes, d["pixels"][0], d["pixels"][1], E(display_alt(pkg, w, im)),
+                E(w["title"]), E(" · ".join(x for x in (str(w["year"]) if w.get("year") else None, w["medium"], size_line(w)[0]) if x)),
+                E(price_line(w))))
+
+
+# Related collections (page fixes, 27 Nov 2026, fixes 5 and 9): a quiet line linking a work, or an artist's gallery, to the
+# PlotArt collections it is actually in, decided by the collections' own tests (plotart_search_content), so the link and
+# the collection can never disagree. Only available works are in a collection; a collection is named only while its page
+# is indexable. Most specific first, at most three links in the line. Never a list of every collection.
+RELATED = (  # (key, page under plotart/, link from an artist folder, anchor)
+    ("landscape", "landscape-paintings-ireland/index.html", "../../landscape-paintings-ireland/", "landscape and coastal works"),
+    ("abstract", "abstract-contemporary-art-ireland.html", "../../abstract-contemporary-art-ireland.html", "abstract and contemporary art"),
+    ("under", "original-art-under-500/index.html", "../../original-art-under-500/", "original art under €500"),
+    ("large", "large-artworks/index.html", "../../large-artworks/", "large original artworks"),
+)
+RELATED_MAX = 3
+
+
+def related(pkg, w, launch=None):
+    """The RELATED entries this work is in (empty unless it is available)."""
+    import plotart_search_content as C   # lazy: plotart_search_content imports this module at the top
+    if w["availability"] != "available":
+        return []
+    launch = SEO.switches() if launch is None else launch
+    test = {"landscape": C.is_landscape, "abstract": lambda x: C.is_abstract(x, pkg), "under": C.is_under, "large": C.is_large}
+    return [r for r in RELATED if test[r[0]](w) and SEO.indexable(r[1], launch)]
+
+
+def _series(links):
+    return links[0] if len(links) == 1 else ", ".join(links[:-1]) + " and " + links[-1]
+
+
+def related_line(pkg, w, launch=None):
+    """The artwork page's line: the collections this work is in, then (room permitting, and only while the artist has
+    switched Open for commissions on and the Commissions page is indexable) a link to commission new work."""
+    launch = SEO.switches() if launch is None else launch
+    rel = related(pkg, w, launch)[:RELATED_MAX]
+    parts = []
+    if rel:
+        parts.append("Also in the %s collection%s." % (_series(['<a href="%s" data-pa-track="artwork_related_collection">%s</a>' % (E(h), E(t)) for _, _, h, t in rel]),
+                                                     "s" if len(rel) > 1 else ""))
+    if len(rel) < RELATED_MAX and pkg["artist"].get("open_for_commissions") is True and SEO.indexable("commissions/index.html", launch):
+        parts.append('You can also <a href="../../commissions/" data-pa-track="artwork_commissions_page">commission a new work</a> from %s.' % E(pkg["artist"]["display_name"]))
+    return ('<p class="pa-aw-cta-note">%s</p>' % " ".join(parts)) if parts else ""
+
+
+def artist_related_line(pkg, launch=None):
+    """The gallery page's line under the Works grid: the collections that hold the most of this artist's available works
+    (at most three, most works first; ties keep RELATED's order)."""
+    launch = SEO.switches() if launch is None else launch
+    count = {}
+    for w in shown(pkg):
+        for r in related(pkg, w, launch):
+            count[r] = count.get(r, 0) + 1
+    rel = sorted(count, key=lambda r: (-count[r], RELATED.index(r)))[:RELATED_MAX]
+    if not rel:
+        return ""
+    name = pkg["artist"]["display_name"]
+    first = name.split(" ")[0] if " " in name else name
+    return '<p class="pa-aw-cta-note">See %s’s work in the %s collection%s.</p>' % (
+        E(first), _series(['<a href="%s" data-pa-track="artist_related_collection">%s</a>' % (E(h), E(t)) for _, _, h, t in rel]), "s" if len(rel) > 1 else "")
+
+
+MORE_BY_MAX = 3   # one row of the gallery grid
+
+
+def more_by(pkg, w):
+    """"More by <artist>" under an artwork (fix 6): the next shown works in the artist's own order (wrapping round), in the
+    gallery page's own grid and tiles. Empty when the artist shows no other work."""
+    ws = shown(pkg)
+    if w not in ws or len(ws) < 2:
+        return ""
+    i = ws.index(w)
+    others = [ws[(i + k) % len(ws)] for k in range(1, len(ws))][:MORE_BY_MAX]
+    sizes = {1: "(max-width:639px) 92vw, 720px", 2: "(max-width:639px) 92vw, 520px"}.get(len(others), "(max-width:639px) 92vw, (max-width:1023px) 46vw, 31vw")
+    name = pkg["artist"]["display_name"]
+    return ('<section class="pa-ag-works" aria-labelledby="awMoreH"><div class="pa-wrap">\n'
+            '  <div class="pa-ag-head"><h2 id="awMoreH">More by %s</h2><p><a href="index.html" data-pa-track="artwork_more_by_artist">All works</a></p></div>\n'
+            '  <ol class="pa-ag-grid">%s\n  </ol>\n</div></section>\n') % (
+        E(name), "".join(work_tile(pkg, x, sizes, "artwork_more_by_artist") for x in others))
+
+
 def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     a = pkg["artist"]
     works = shown(pkg)
@@ -208,18 +357,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     # one or two works sit larger and centred (founder decision 1 Nov 2026): the size hint follows the layout
     sizes = {1: "(max-width:639px) 92vw, 720px", 2: "(max-width:639px) 92vw, 520px"}.get(len(works), "(max-width:639px) 92vw, (max-width:1023px) 46vw, 31vw")
     for w in works:
-        im = main_image(w)
-        d = pick(im, 1200)
-        cls = " is-%s" % w["availability"].replace("_", "-")
-        tiles.append(
-            '\n    <li class="pa-ag-work%s"><a class="pa-ag-tile" href="%s.html" data-pa-track="artist_artwork">'
-            '<span class="pa-ag-art"><img src="img/%s" srcset="%s" sizes="%s" '
-            'width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></span>'
-            '<span class="pa-ag-cap"><span class="pa-ag-title">%s</span><span class="pa-ag-sub">%s</span>'
-            '<span class="pa-ag-status">%s</span></span></a></li>' % (
-                cls, E(w["slug"]), E(d["file"]), E(srcset(im, "img/")), sizes, d["pixels"][0], d["pixels"][1], E(im["alt"]),
-                E(w["title"]), E(" · ".join(x for x in (str(w["year"]) if w.get("year") else None, w["medium"], size_line(w)[0]) if x)),
-                E(price_line(w))))
+        tiles.append(work_tile(pkg, w, sizes))
     portrait = ""
     if a.get("portrait"):
         p = a["portrait"]; d = pick(p, PORTRAIT_SHOWN)
@@ -243,7 +381,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
 %s
 <section class="pa-ag-works" aria-labelledby="agWorksH"><div class="pa-wrap">
   <div class="pa-ag-head"><h2 id="agWorksH">Works</h2><p>%s</p></div>
-  %s
+  %s%s
 </div></section>
 
 <section class="pa-ag-about" aria-labelledby="agAboutH"><div class="pa-wrap pa-ag-about-in">
@@ -266,6 +404,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
        commission_block(pkg, enquiry_endpoint),
        ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
        ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),
+       ("\n  " + artist_related_line(pkg)) if artist_related_line(pkg) else "",
        E(name.split(" ")[0] if " " in name else name), bio,
        ('<p class="pa-ag-links">%s</p>' % "".join(links)) if links else "",
        cv,
@@ -309,15 +448,20 @@ def artwork_kind(medium):
     return None
 
 
-TITLE_MAX = 65
+TITLE_MAX = 60
 
 
 def artwork_title(pkg, w):
-    """'<Title> by <Artist> | Original <kind> | PlotArt'; the middle segment is dropped when the whole would be long."""
-    base = "%s by %s" % (w["title"], pkg["artist"]["display_name"])
+    """The first of these that fits in TITLE_MAX characters (page fixes, 27 Nov 2026, fix 1): '<Title> by <Artist> |
+    Original <kind> | PlotArt', then without '| PlotArt' (search shows the site name anyway), then '<Title> by <Artist> |
+    PlotArt', '<Title> by <Artist>', and the title alone. The title is the artist's own, less one pair of wrapping quotation
+    marks (SEO.clean_title). No price (it goes stale and reads as retail) and no size: both are in the description."""
+    title = SEO.clean_title(w["title"])
+    base = "%s by %s" % (title, pkg["artist"]["display_name"])
     kind = artwork_kind(w["medium"])
-    full = "%s | Original %s | PlotArt" % (base, kind) if kind else None
-    return full if full and len(full) <= TITLE_MAX else "%s | PlotArt" % base
+    options = (["%s | Original %s | PlotArt" % (base, kind), "%s | Original %s" % (base, kind)] if kind else []) + \
+        ["%s | PlotArt" % base, base, title]
+    return next((t for t in options if len(t) <= TITLE_MAX), title)
 
 
 _MATERIAL_WORDS = frozenset("""oil oils bar acrylic acyrlic crylic paint mixed media on in canvas linen wood wooden panel paper board and
@@ -331,24 +475,37 @@ def _lower_first(t):
     return re.sub(r"[A-Za-z]+", lambda m: m.group(0).lower() if m.group(0).lower() in _MATERIAL_WORDS else m.group(0), str(t or "").strip())
 
 
+DESCRIPTION_MAX = 160
+
+
 def artwork_description(pkg, w):
-    """Section 2.5: medium, artist, size, the price only when the work has a public price, and what the buyer can do now.
-    Says "enquire", never "buy online" (whether a work can be bought online is decided live by the checkout)."""
+    """Section 2.5, reworded in the page fixes (27 Nov 2026, fix 2) to open with the work's own title, so no two works share
+    a description: title, artist, medium, size, the price only when the work has a public price, and what the buyer can do
+    now. Says "enquire", never "buy online" (whether a work can be bought online is decided live by the checkout). Over
+    DESCRIPTION_MAX characters, the last sentence goes first, then the medium."""
     a = pkg["artist"]
     size = " × ".join("%g" % v for v in (w["h_cm"], w["w_cm"])) + " cm"
-    text = "Original %s by %s, %s." % (_lower_first(w["medium"]), a["display_name"], size)
+    head = "%s by %s" % (SEO.clean_title(w["title"]), a["display_name"])
     av = w["availability"]
     if av == "available":
         priced = w.get("price_eur") and not w.get("price_on_request")
-        text += (" %s, available." % euro(w["price_eur"])) if priced else " Available, price on request."
-        text += " Enquire with the artist through PlotArt."
+        status, tail = ("%s." % euro(w["price_eur"])) if priced else "Price on request.", "Enquire to buy direct from the artist through PlotArt."
     elif av == "reserved":
-        text += " Reserved. Ask through PlotArt to be told if it becomes available."
+        status, tail = "Reserved.", "Ask through PlotArt to be told if it becomes available."
     elif av == "sold":
-        text += " Sold. Ask the artist through PlotArt about their other work."
+        status, tail = "Sold.", "Ask the artist through PlotArt about their other work."
     else:
-        text += " Not for sale. Ask the artist through PlotArt about their other work."
-    return text
+        status, tail = "Not for sale.", "Ask the artist through PlotArt about their other work."
+    medium = _lower_first(w["medium"])
+    kind = {"Painting": "original painting", "Print": "original print", "Mixed Media": "original mixed-media work",
+            "Drawing": "original drawing"}.get(artwork_kind(w["medium"]), "original work")
+    for text in ("%s: original %s, %s. %s %s" % (head, medium, size, status, tail),
+                 "%s: original %s, %s. %s" % (head, medium, size, status),
+                 "%s: %s, %s. %s %s" % (head, kind, size, status, tail),
+                 "%s: %s, %s. %s" % (head, kind, size, status)):
+        if len(text) <= DESCRIPTION_MAX:
+            return text
+    return text[:DESCRIPTION_MAX - 1].rsplit(" ", 1)[0] + "…"
 
 
 def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, basket_origin=None):
@@ -368,7 +525,7 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
     if len(imgs) > 1:
         views = '<ul class="pa-aw-views" aria-label="More views">%s</ul>' % "".join(
             '<li><a href="img/%s"><img src="img/%s" alt="%s" loading="lazy" decoding="async"></a></li>' % (
-                E(pick(i, VIEW_SHOWN["full"])["file"]), E(pick(i, VIEW_SHOWN["thumb"])["file"]), E(i["alt"])) for i in imgs[1:])
+                E(pick(i, VIEW_SHOWN["full"])["file"]), E(pick(i, VIEW_SHOWN["thumb"])["file"]), E(display_alt(pkg, w, i))) for i in imgs[1:])
     credit = ' <span>Photo: %s</span>' % E(im["photo_credit"]) if im.get("photo_credit") else ""
     avail = w["availability"]
     if avail in ("available", "reserved"):
@@ -408,12 +565,12 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
   </div>
   %s
 </div></section>
-""" % (E(a["display_name"]), E(w["title"]), E(d["file"]), E(srcset(im, "img/")), d["pixels"][0], d["pixels"][1], E(im["alt"]), views,
+%s""" % (E(a["display_name"]), E(w["title"]), E(d["file"]), E(srcset(im, "img/")), d["pixels"][0], d["pixels"][1], E(display_alt(pkg, w, im)), views,
        E(a["display_name"]), E(w["title"]), credit,
        E(a["display_name"]), ' <span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
        E(w["title"]), avail.replace("_", "-"), E(price_line(w)), cta, dl,   # the buttons directly under the price (Sprint 1, 26 Nov 2026)
        ('<p class="pa-aw-desc">%s</p>' % E(w["description"])) if w.get("description") else "",
-       ai, MORE_LINKS, nav)
+       ai, MORE_LINKS + (("\n      " + related_line(pkg, w)) if related_line(pkg, w) else ""), nav, more_by(pkg, w))
 
 
 # ---- The Virtual Gallery collection: Direction C2 "The Curated Collection" (founder approval 5 Nov 2026) ----
@@ -553,15 +710,56 @@ ARTIST_META = {
     # The Royal Hibernian Academy"; statement: "abstract language that ... extends into print"
     "leah-hewson": ("Leah Hewson | Abstract Paintings & Prints | PlotArt",
                     "Leah Hewson, Artist in Residence at the RHA and winner of the Whyte’s Award for painting at the 190th RHA Annual. See {works}{from_price}."),
+    # page fixes (27 Nov 2026, fix 8; the two artists with the most Search Console impressions after the three above).
+    # FOR FOUNDER REVIEW with the artists. bio: "Rasher, is a self-taught artist based in Wicklow. His emotionally resonating
+    # oil paintings ..."; "noted for being an invited artist of the Royal Hibernian Academy Dublin"
+    "mark-kavanagh-rasher": ("Rasher Mark Kavanagh | Oil Paintings, Wicklow | PlotArt",
+                             "Rasher, a self-taught painter based in Wicklow and an invited artist of the RHA, makes emotionally resonant oil paintings. See {works}{from_price}."),
+    # bio: "his studio occupies a former church organ factory near the historic centre of Göttingen"; "Working with pigments,
+    # oils, emulsions and varnishes, he incorporates raw silk powder and fibres"; "layering of translucent and opaque
+    # substances". (No nationality wording: the page states what he makes and where his studio is.)
+    "fintan-whelan": ("Fintan Whelan | Abstract Paintings in Oil & Silk | PlotArt",
+                      "Fintan Whelan, an abstract painter with a studio in Göttingen, layers pigment, oil and raw silk into translucent surfaces. See {works}{from_price}."),
 }
 TITLE_LIMIT, DESCRIPTION_LIMIT = 60, 160
+
+
+def artist_kind(pkg):
+    """'Paintings' or 'Prints' when at least three quarters of the works on show are of that kind (artwork_kind, from the
+    artist's own medium wording); otherwise 'Art'."""
+    kinds = [artwork_kind(w["medium"]) for w in shown(pkg)]
+    for k, plural in (("Painting", "Paintings"), ("Print", "Prints")):
+        if kinds and kinds.count(k) * 4 >= len(kinds) * 3:
+            return plural
+    return "Art"
+
+
+def artist_standard_meta(pkg):
+    """The standard title and description (page fixes, 27 Nov 2026, fix 7), built from the published gallery so no two
+    artists share one: the kind of work, the artist's published county, how many works are available and the lowest public
+    asking price. The county is where the artist says they are based; nothing is said about nationality."""
+    a = pkg["artist"]
+    name, kind = a["display_name"], artist_kind(pkg)
+    title = next(t for t in ("%s | Original %s for Sale | PlotArt" % (name, kind), "%s | Original %s | PlotArt" % (name, kind),
+                             "%s | PlotArt" % name, name) if len(t) <= TITLE_LIMIT or t == name)
+    available = [w for w in pkg["works"] if w["availability"] == "available"]
+    prices = [w["price_eur"] for w in available if w.get("price_eur") and not w.get("price_on_request")]
+    place = (", based in Co. %s" % a["county"]) if a.get("county") and re.fullmatch(r"[A-Z][a-z]+", str(a["county"])) else ""
+    lead = "Original %s by %s%s" % ({"Art": "art"}.get(kind, kind.lower()), name, place)
+    if available:
+        now = "%d %s available%s" % (len(available), "work" if len(available) == 1 else "works", (" from " + euro(min(prices))) if prices else "")
+        options = ["%s: %s, with sizes, prices and biography. Enquire through PlotArt." % (lead, now),
+                   "%s: %s. Enquire through PlotArt." % (lead, now)]
+    else:
+        options = ["%s: past works, sizes and biography. Ask through PlotArt about new work." % lead]
+    options.append("Original work by %s. View artworks, published prices and the artist biography, and enquire through PlotArt." % name)
+    return title, next((d for d in options if len(d) <= DESCRIPTION_LIMIT), options[-1])
 
 
 def artist_meta(pkg):
     """(title, description) of an artist's gallery page: the standard wording, or the ARTIST_META entry with live figures."""
     a = pkg["artist"]
-    standard = ("%s | Original Art | PlotArt" % a["display_name"],
-                "Explore original work by %s. View artworks, published prices and the artist biography, and enquire through PlotArt." % a["display_name"])
+    standard = artist_standard_meta(pkg)
     if a["slug"] not in ARTIST_META:
         return standard
     title, template = ARTIST_META[a["slug"]]

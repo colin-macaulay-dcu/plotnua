@@ -55,6 +55,40 @@ def pages(mod, pkg, endpoint):
     return out
 
 
+def without_page_fixes(pkg, k, body):
+    """The page fixes (27 Nov 2026, scratchpad 26-plotart-page-fix-list.md, fixes 5, 6, 9 and 10) add exactly these to a
+    gallery or artwork page, computed by the renderer's own functions, and nothing else: the related-collections line
+    (P.related_line on an artwork page, P.artist_related_line on the gallery page, each once on its own line), the
+    "More by" section (P.more_by, once, after the artwork section) and composed alt text (P.display_alt) where the artist's
+    own alt is weak or repeated. This removes exactly those (each must be present exactly once where the renderer makes
+    it) and restores the export's alt, so the rest of the page is still compared byte for byte with main. Returns None when
+    an expected addition is missing or repeated (the comparison then fails)."""
+    ws = P.shown(pkg)
+    if k == "index":
+        cut, works = (["\n  " + P.artist_related_line(pkg)] if P.artist_related_line(pkg) else []), ws
+    else:
+        w = next(x for x in ws if x["slug"] == k)
+        cut = (["\n      " + P.related_line(pkg, w)] if P.related_line(pkg, w) else []) + ([P.more_by(pkg, w)] if P.more_by(pkg, w) else [])
+        works = [w]
+    for c in cut:
+        if body is None or body.count(c) != 1:
+            return None
+        body = body.replace(c, "", 1)
+    for x in works:
+        for im in x["images"]:
+            alt, raw = P.display_alt(pkg, x, im), im.get("alt") or ""
+            if alt != raw:
+                # only where the rule allows it: the artist's alt is weak, or is the main image's alt repeated word for
+                # word on another of the artist's works (then it is kept in full after the work's own title and artist)
+                repeated = im is P.main_image(x) and sum(1 for y in pkg["works"] if y.get("images") and
+                                                          (P.main_image(y).get("alt") or "").strip().casefold() == raw.strip().casefold()) > 1
+                if not (P._weak_alt(raw, x["title"]) or (repeated and alt.startswith("%s by %s: " % (P.SEO.clean_title(x["title"]), pkg["artist"]["display_name"]))
+                                                         and alt.lower().endswith(" ".join(raw.split()).lower()[1:]))):
+                    return None
+                body = body.replace('alt="%s"' % html.escape(alt, quote=True), 'alt="%s"' % html.escape(raw, quote=True))
+    return body
+
+
 print("PROVE · Open for Commissions (website)")
 print("— the pipeline")
 if EXPORTS:
@@ -91,6 +125,9 @@ for f in pkgs:
         # (27 Nov 2026) only while main's renderer predates that line: once main carries it, both sides are compared as they are
         if not hasattr(M, "MORE_LINKS"):
             b = {k: (v.replace("      " + P.MORE_LINKS + "\n", "", 1) if k != "index" else v) for k, v in b.items()}
+        # page fixes (27 Nov 2026): the declared additions only (without_page_fixes), only while main's renderer predates them
+        if not hasattr(M, "display_alt"):
+            b = {k: without_page_fixes(pkg, k, v) for k, v in b.items()}
         for k in a:
             if a[k] == b.get(k) or (k == "index" and shows):
                 same += 1
@@ -128,7 +165,16 @@ check("C3b …one \"Enquire about a commission\" button (solid, sharing its wrap
 check("C3c the ordinary enquiry button and form are unchanged", A["index"].split('<section class="pa-ag-enq">')[1] == g.split('<section class="pa-ag-enq">')[1])
 check("C3d removing the commission section and the pills gives back exactly today's page (nothing else moved)",
       sec is not None and pills is not None and g.replace(sec.group(0), "").replace(pills.group(0), "") == A["index"])
-check("C3e artwork pages are unchanged when switched on (gallery page only)", all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
+# page fixes (27 Nov 2026, fix 5): switched on, an artwork page's related-collections line (P.related_line) also invites
+# the buyer to commission new work, whenever the line has room (fewer than P.RELATED_MAX collections); it is the only change
+def _aw_line(pkg, k):
+    return P.related_line(pkg, next(w for w in P.shown(pkg) if w["slug"] == k))
+check("C3e artwork pages are unchanged when switched on, except that their related-collections line gains the commission link where it has room",
+      all(A[k].count(_aw_line(base, k)) == 1 and B[k].count(_aw_line(onp, k)) == 1
+          and A[k].replace(_aw_line(base, k), "<line>") == B[k].replace(_aw_line(onp, k), "<line>")
+          and "commissions/" not in _aw_line(base, k)
+          and ('href="../../commissions/" data-pa-track="artwork_commissions_page"' in _aw_line(onp, k)) == (len(P.related(onp, next(w for w in P.shown(onp) if w["slug"] == k))) < P.RELATED_MAX)
+          for k in A if k != "index") and len(A) > 1)
 vis = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", sec.group(0) if sec else "")))
 check("C4 the commission wording never mentions hire, the Living Gallery, availability, opportunities or a PlotArt fee",
       sec is not None and not re.search(r"hire|living gallery|availab|opportunit|fee|percent|%|PlotArt takes", vis, re.I), vis)
