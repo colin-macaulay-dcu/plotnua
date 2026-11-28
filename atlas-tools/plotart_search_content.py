@@ -315,6 +315,9 @@ def collection(packages, path="artworks/index.html"):
     rows = collection_order(packages, spec["keep"])
     if spec.get("sort"):
         rows = sorted(rows, key=spec["sort"])     # stable: equal keys keep the fair collection order
+    full = rows
+    if spec.get("select"):                         # growth 3 guides: a live selection drawn from the eligible works
+        rows = spec["select"](rows)
     if not rows:
         return ('<p class="pa-coll-count">%s</p>'
                 '<p class="pa-coll-empty">New work is published as artists add it. <a href="../gallery/">Meet the artists in the Artists’ Gallery</a>.</p>'
@@ -325,7 +328,7 @@ def collection(packages, path="artworks/index.html"):
             '\n  <ol class="pa-coll-grid" aria-label="%s">%s\n  </ol>%s\n  %s') % (
         ' data-rf-count aria-live="polite"' if refine else "",
         len(rows), spec["count"] % ("work" if len(rows) == 1 else "works"), artists, "artist" if artists == 1 else "artists",
-        spec["note"](rows) if spec.get("note") else "",
+        (spec["note"](rows, full) if spec.get("select") else spec["note"](rows)) if spec.get("note") else "",
         refine_bar(rows) if refine else "",
         spec["label"], "".join(collection_card(pkg, w, n, refine) for n, (pkg, w) in enumerate(rows, 1)),
         '\n  <p class="pa-rf-none" data-rf-none hidden>No works match these choices. '
@@ -616,6 +619,9 @@ HUB_META = {
 
 def hub_meta(path, packages):
     """(title, description) of a generated page, from the published galleries."""
+    if path in LANDING_META:                    # growth 3 landing pages (defined below): descriptions take the packages
+        title, desc = LANDING_META[path]
+        return title, desc(packages)
     title, desc = HUB_META[path]
     return title, desc(figures(packages))
 
@@ -641,3 +647,411 @@ def refresh(root, packages):
         dest = Path(root) / "plotart" / path
         if dest.exists():
             dest.write_text(update(dest.read_text(), path, packages))
+
+
+# =====================================================================================================================
+# Growth 3 landing pages (28 Nov 2026; plan: SEO strategy doc 25, section 3; classification record 28-landing-pages-
+# classification.md). Ten more generated collections on the Large Artworks pattern: same cards, order, structured data
+# and refresh at every publication. Every test below is an explicit rule on the artist's own published fields, or a
+# curated allowlist keyed by artwork id that NEEDS REVIEW whenever works are published or changed (a new work is never
+# added automatically; a listed work that is sold or withdrawn simply drops off). Every figure on these pages (counts,
+# prices, sizes, editions) is computed here and lives inside the generated region or the generated description.
+# ---------------------------------------------------------------------------------------------------------------------
+UNDER_1000_EUR = 1000
+UNDER_1000_LABEL = "€1,000"     # the threshold as that page writes it (P.euro(UNDER_1000_EUR)); its only fixed figure
+SMALL_CM = 60                   # small artworks: at most this on the longest side (strategy doc 25, page 7)
+OFFICE_CM = 80                  # art for offices: at least this on the longest side (meeting rooms as well as receptions)
+# The fixed price thresholds a page may name outside its collection (guard L3): page -> (label, euro value)
+PRICE_LABELS = {"original-art-under-500/index.html": (UNDER_LABEL, UNDER_EUR),
+                "original-art-under-1000/index.html": (UNDER_1000_LABEL, UNDER_1000_EUR)}
+
+
+def longest(w):
+    return max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0))
+
+
+def is_under_1000(w):
+    """A public asking price (never "price on request") below €1,000."""
+    return priced(w) and float(w["price_eur"]) < UNDER_1000_EUR
+
+
+def is_print(w):
+    """An original print: the artist's medium names a printmaking process (P.artwork_kind "Print": screen print,
+    monoprint, intaglio, etching, linocut, woodcut, lithograph, drypoint...). Giclée is refused: it is a digital
+    reproduction method, not an original print."""
+    m = str(w.get("medium") or "").lower()
+    return P.artwork_kind(w.get("medium")) == "Print" and "giclee" not in m and "giclée" not in m
+
+
+def is_oil(w):
+    """An oil painting: the artist's own medium line names oil (oil bar included) and the work is a painting
+    (P.artwork_kind). Mixed-media works that include oil stay on the mixed-media page."""
+    return P.artwork_kind(w.get("medium")) == "Painting" and re.search(r"\boil\b", str(w.get("medium") or ""), re.I) is not None
+
+
+def is_mixed(w):
+    """Mixed media and collage: P.artwork_kind "Mixed Media" (the medium says mixed media or collage, or combines print
+    with paint, ink or pencil). Prints that add collage stay prints."""
+    return P.artwork_kind(w.get("medium")) == "Mixed Media"
+
+
+def is_office(w):
+    return longest(w) >= OFFICE_CM
+
+
+def is_small(w):
+    return 0 < longest(w) <= SMALL_CM
+
+
+def is_gift_size(w):
+    """The gift guide's pool: small (at most SMALL_CM) with a public price under €1,000."""
+    return is_small(w) and is_under_1000(w)
+
+
+# Figurative works. CURATED, NOT COMPUTED: chosen because the artist's own alt text or description presents figures,
+# faces, heads or people (record: 28-landing-pages-classification.md). Abstract works whose titles alone suggest a figure
+# ("Sleeping Acrobat", "Figure 8", "The Creation Of Adam": their alt text is abstract) are left out. NEEDS REVIEW.
+FIGURATIVE_WORKS = frozenset({
+    "wd82l6xepkm",  # Mark Kavanagh (Rasher): Sweat from the Sun, Tears from the Moon (alt: "Two Figures in a landscape")
+    "wnzheau9zfe",  # Mark Kavanagh (Rasher): Vr Vacation (alt: "Three Girls in abstract summer virtual reality scene")
+    "wxf94pphfgy",  # Mark Kavanagh (Rasher): The Universe is in me (alt: "Female Portrait ...")
+    "w1yt3pkcsxk",  # Ciaran McCoy: As I Say It (alt: "Abstract figurative painting ... a pink-and-yellow figure")
+    "w2j298wac6v",  # Ciaran McCoy: Non-Serviam (a skeletal, winged figure with raised hands)
+    "wtjtvws7aq5",  # Ciaran McCoy: Insatiable Greed (a large outlined head in profile)
+    "w63a1qbtp8h",  # Ciaran McCoy: Walk Your Way (a distorted pink-faced figure)
+    "wk4faqb7zs4",  # Ciaran McCoy: Sacred Words (a dark silhouetted profile; "A dark figure faces a vulnerable heart")
+    "wpu1i0j2ule",  # Ciaran McCoy: Hope (a dark figure with raised arms)
+    "whlcnuagvoj",  # Ciaran McCoy: There is Always Another Matthias (a skull-like face flanked by two smaller faces)
+    "wazcdds261l",  # Ciaran McCoy: Suspended (two dark silhouetted figures)
+    "wm9azv7n538",  # Ciaran McCoy: An Offering (two standing silhouettes and a head-like form)
+    "w1s1ro4dw5a",  # Ciaran McCoy: Disconnected Head (a distorted human face)
+    "w8kmsg8kcef",  # Ciaran McCoy: Void (a dark figure with raised arms and a yellow face)
+    "w3a7g1zf1l5",  # Karen Ebbs: 'A World Beyond Words' (alt: translucent "dancing" figures within an abstract field)
+})
+
+# Coastal works. CURATED, NOT COMPUTED: the artist presents each as coastal in its title and alt text, and her published
+# biography names coastal settings as an inspiration. The founder asked for this page with small stock (28 Nov 2026); the
+# copy says the collection is growing. River, garden and Mediterranean works are left out. NEEDS REVIEW.
+COASTAL_WORKS = frozenset({
+    "wh4ve2xmvb1",  # Carolyn Walsh: Coastal Series 8
+    "w579di55chn",  # Carolyn Walsh: Coastal series 6
+    "w32zmc2ceav",  # Carolyn Walsh: Coastal Series 4
+    "wrbk7q2jeq1",  # Carolyn Walsh: Coastal Series 5
+    "w33b6qij369",  # Carolyn Walsh: Coastal Series 7
+})
+
+
+def is_figurative(w):
+    return w["id"] in FIGURATIVE_WORKS
+
+
+def is_coastal(w):
+    return w["id"] in COASTAL_WORKS
+
+
+EDITION = re.compile(r"\b(?:edition|eidtion|editon)\s+of\s+(\d+)\b", re.I)   # the artists' own wording, typos included
+
+
+def edition_label(w):
+    """The edition as the artist states it ("edition of 10"), "one of a kind" for a monoprint or a stated 1 of 1, or None."""
+    text = " ".join(str(w.get(k) or "") for k in ("medium", "materials", "description"))
+    m = EDITION.search(text)
+    if m:
+        return "one of a kind" if m.group(1) == "1" else "edition of %s" % m.group(1)
+    if re.search(r"mono-?print", text, re.I) or re.search(r"\b1 of 1\b", text):
+        return "one of a kind"
+    return None
+
+
+def _lowest_per_artist(rows):
+    """One work per artist: that artist's lowest public asking price among the eligible works, cheapest first."""
+    best = {}
+    for pkg, w in rows:
+        if not priced(w):
+            continue
+        s = pkg["artist"]["slug"]
+        if s not in best or float(w["price_eur"]) < float(best[s][1]["price_eur"]):
+            best[s] = (pkg, w)
+    return sorted(best.values(), key=_price_key)
+
+
+def _span(values, fmt):
+    values = sorted(values)
+    if not values:
+        return ""
+    return fmt(values[0]) if values[0] == values[-1] else "%s to %s" % (fmt(values[0]), fmt(values[-1]))
+
+
+def _facts(rows):
+    """Asking prices and longest sides of the selection, from the artists' own published figures."""
+    prices = _span([w["price_eur"] for _, w in rows if priced(w)], P.euro)
+    sides = _span([longest(w) for _, w in rows], lambda v: "%g cm" % v)
+    out = []
+    if prices:
+        out.append("Asking prices %s." % (("from " + prices) if " to " in prices else ("of " + prices)))
+    if sides:
+        out.append("Longest side %s%s, from the artists’ own measurements." % ("from " if " to " in sides else "", sides))
+    return " ".join(out)
+
+
+def _note(*parts):
+    parts = [p for p in parts if p]
+    return '<p class="pa-coll-note">%s</p>' % " ".join(parts) if parts else ""
+
+
+def _count_kinds(rows, words):
+    """['collage (3)', 'resin (5)', ...] for each word the artists' own medium or materials name."""
+    found = []
+    for word, label in words:
+        n = sum(1 for _, w in rows if re.search(word, str(w.get("medium") or "") + " " + str(w.get("materials") or ""), re.I))
+        if n:
+            found.append("%s (%d)" % (label, n))
+    return found
+
+
+def note_u1000(rows):
+    under = sum(1 for _, w in rows if is_under(w))
+    link = ('%d of these %s under %s: see <a href="../original-art-under-500/">original art under %s</a>.' % (
+        under, "is" if under == 1 else "are", E(P.euro(UNDER_EUR)), E(P.euro(UNDER_EUR)))) if under else ""
+    return _note(E(_facts(rows) + " The highest prices come first."), link)
+
+
+def note_prints(rows):
+    kinds = []
+    for word, one, many in ((r"screen ?print|silkscreen|serigraph", "screen print", "screen prints"),
+                            (r"intaglio|etch", "intaglio print", "intaglio prints"),
+                            (r"mono-?print", "monoprint", "monoprints"), (r"lino ?cut|woodcut", "relief print", "relief prints"),
+                            (r"lithograph", "lithograph", "lithographs")):
+        n = sum(1 for _, w in rows if re.search(word, str(w.get("medium") or ""), re.I))
+        if n:
+            kinds.append(_plural(n, one, many))
+    groups = {}
+    for _, w in rows:
+        groups.setdefault(edition_label(w), []).append(w["title"].strip("'‘’ "))
+    order = lambda label: (label == "one of a kind", int(re.sub(r"\D", "", label) or 0))
+    eds = ["%s: %s" % (label[0].upper() + label[1:], series(sorted(t)) if len(t) <= 5 else "%d works" % len(t))
+           for label, t in sorted(((k, v) for k, v in groups.items() if k), key=lambda x: order(x[0]))]
+    unstated = len(groups.get(None, []))
+    text = ("This selection holds %s. " % series(kinds) if kinds else "") + _facts(rows)
+    ed = ("Editions as the artists state them. " + "; ".join(eds) + ".") if eds else ""
+    if unstated:
+        ed += " %s no edition stated: ask the artist." % ("One work has" if unstated == 1 else "%d works have" % unstated)
+    return _note(E(text), E(ed.strip()))
+
+
+def note_oil(rows):
+    supports = _count_kinds(rows, ((r"\blinen\b", "on linen"), (r"\bcanvas\b", "on canvas"), (r"\bpanel\b|\bdibond\b|\bboard\b", "on panel or board"),
+                                   (r"\btondo\b", "on a round wooden tondo"), (r"\bpaper\b", "on paper"), (r"oil bar", "with oil bar")))
+    return _note(E(_facts(rows)), E(("Supports and materials the artists name, with the number of works: %s." % ", ".join(supports)) if supports else ""))
+
+
+def note_mixed(rows):
+    mats = _count_kinds(rows, ((r"collage", "collage"), (r"resin", "resin"), (r"spray paint", "spray paint"),
+                               (r"oil stick|oil pastel", "oil stick or oil pastel"), (r"\bprint\b", "print"), (r"\bsilk\b", "raw silk"),
+                               (r"\bpastels?\b", "pastel"), (r"\bink\b", "ink"), (r"\bpencil\b", "pencil")))
+    return _note(E(_facts(rows)), E(("Materials the artists name, with the number of works: %s." % ", ".join(mats)) if mats else ""))
+
+
+def note_office(rows):
+    big = sum(1 for _, w in rows if longest(w) >= 150)
+    large = sum(1 for _, w in rows if is_large(w))
+    return _note(E(_facts(rows)), E("%d of these measure 100 cm or more on the longest side%s. The largest come first." % (
+        large, (", %d of them 150 cm or more" % big) if big else "")) if large else E("The largest come first."))
+
+
+def note_small(rows):
+    tiny = sum(1 for _, w in rows if longest(w) <= 40)
+    return _note(E(_facts(rows)), E(("%d %s 40 cm or less on the longest side. The smallest come first." % (
+        tiny, "work is" if tiny == 1 else "works are")) if tiny else "The smallest come first."))
+
+
+def note_collecting(rows, full):
+    return _note(E("One work from each of %s: the lowest published asking price in that artist’s available work, lowest price first. %s" % (
+        _plural(len(rows), "artist", "artists"), _facts(rows))),
+        'For more at the start of a collection, see <a href="../original-art-under-1000/">original art under %s</a> and '
+        '<a href="../original-prints-ireland/">original prints</a>.' % E(UNDER_1000_LABEL))
+
+
+def note_gifts(rows, full):
+    return _note(E("One work from each artist, chosen from %s with a longest side of %d cm or less and a published price under %s, lowest price first. %s" % (
+        _plural(len(full), "available work", "available works"), SMALL_CM, UNDER_1000_LABEL, _facts(rows))),
+        'See more in <a href="../small-artworks/">small original artworks</a>, or browse <a href="../original-art-under-500/">original art under %s</a>.' % E(P.euro(UNDER_EUR)))
+
+
+def note_plain(rows):
+    return _note(E(_facts(rows)))
+
+
+LANDING = {
+    "original-art-under-1000/index.html": {"keep": is_under_1000, "name": "Original art under €1,000", "crumb": "Original art under €1,000",
+                                           "label": "Available original artworks under €1,000", "count": "original %s under €1,000",
+                                           "empty": "No original works under €1,000 are available just now.",
+                                           "sort": lambda r: -float(r[1]["price_eur"]), "note": note_u1000},
+    "original-prints-ireland/index.html": {"keep": is_print, "name": "Original prints and limited editions", "crumb": "Original prints",
+                                           "label": "Available original prints", "count": "original printed %s",
+                                           "empty": "No original prints are available just now.", "note": note_prints},
+    "oil-paintings-ireland/index.html": {"keep": is_oil, "name": "Original oil paintings for sale in Ireland", "crumb": "Oil paintings",
+                                         "label": "Available original oil paintings", "count": "original %s in oil",
+                                         "empty": "No oil paintings are available just now.", "note": note_oil},
+    "mixed-media-art-ireland/index.html": {"keep": is_mixed, "name": "Mixed media and collage art", "crumb": "Mixed media and collage",
+                                           "label": "Available mixed-media and collage works", "count": "original mixed-media and collage %s",
+                                           "empty": "No mixed-media works are available just now.", "note": note_mixed},
+    "art-for-offices/index.html": {"keep": is_office, "name": "Art for offices and workspaces", "crumb": "Art for offices",
+                                   "label": "Available original artworks of 80 cm or more", "count": "original %s of 80 cm or more",
+                                   "empty": "No works of this size are available just now.",
+                                   "sort": lambda r: -longest(r[1]), "note": note_office},
+    "small-artworks/index.html": {"keep": is_small, "name": "Small original artworks", "crumb": "Small artworks",
+                                  "label": "Available original artworks of 60 cm or less", "count": "small original %s of 60 cm or less",
+                                  "empty": "No small works are available just now.", "sort": lambda r: longest(r[1]), "note": note_small},
+    "collecting-art-ireland/index.html": {"keep": priced, "select": _lowest_per_artist, "name": "How to start an art collection in Ireland",
+                                          "crumb": "Starting a collection", "label": "A starting point: one work from each artist",
+                                          "count": "starting points: original %s", "empty": "No priced works are available just now.",
+                                          "note": note_collecting},
+    "art-gifts-ireland/index.html": {"keep": is_gift_size, "select": _lowest_per_artist, "name": "Original art as a gift", "crumb": "Art as a gift",
+                                     "label": "Gift-sized original works, one from each artist", "count": "gift-sized original %s",
+                                     "empty": "No gift-sized works are available just now.", "note": note_gifts},
+    "figurative-art-ireland/index.html": {"keep": is_figurative, "name": "Figurative and portrait art", "crumb": "Figurative art",
+                                          "label": "Available figurative works", "count": "figurative %s",
+                                          "empty": "No figurative works are available just now.", "note": note_plain},
+    "coastal-art-ireland/index.html": {"keep": is_coastal, "name": "Coastal and seascape art", "crumb": "Coastal art",
+                                       "label": "Available coastal works", "count": "coastal %s",
+                                       "empty": "No coastal works are available just now.", "note": note_plain},
+}
+for _path, _spec in LANDING.items():
+    COLLECTIONS[_path] = dict({k: v for k, v in _spec.items() if k != "crumb"},
+                              crumbs=[("Artworks", "artworks/index.html"), (_spec["crumb"], _path)])
+
+# Search titles (at most 60) and descriptions (at most 160) with live figures. Each description tries its fuller wording
+# first and falls back to a shorter one, so a growing collection never publishes an over-long description.
+LANDING_TITLE_LIMIT, LANDING_DESCRIPTION_LIMIT = 60, 160
+
+
+def _fit(*options):
+    for o in options:
+        if len(o) <= LANDING_DESCRIPTION_LIMIT:
+            return o
+    return options[-1][:LANDING_DESCRIPTION_LIMIT - 1].rsplit(" ", 1)[0] + "."
+
+
+def _stats(packages, path):
+    spec = COLLECTIONS[path]
+    rows = collection_order(packages, spec["keep"])
+    if spec.get("select"):
+        rows = spec["select"](rows)
+    prices = [w["price_eur"] for _, w in rows if priced(w)]
+    return {"n": len(rows), "a": len({p["artist"]["slug"] for p, _ in rows}),
+            "low": min(prices) if prices else None, "high": max(prices) if prices else None}
+
+
+def _works(s, one="original work", many="original works"):
+    return "%s by %s" % (_plural(s["n"], one, many), _plural(s["a"], "artist", "artists"))
+
+
+def _from(s):
+    return (", from " + P.euro(s["low"])) if s["low"] is not None else ""
+
+
+def _range(s):
+    if s["low"] is None:
+        return ""
+    return (", %s to %s" % (P.euro(s["low"]), P.euro(s["high"]))) if s["high"] != s["low"] else ", at " + P.euro(s["low"])
+
+
+def _d_u1000(packages):
+    s = _stats(packages, "original-art-under-1000/index.html")
+    if not s["n"]:
+        return "Original art under €1,000 by artists based or working in Ireland. See sizes and prices, and enquire with the artist."
+    return _fit("%s under €1,000 by %s based or working in Ireland%s. Paintings, prints and mixed media for a first significant buy." % (
+        _plural(s["n"], "original work", "original works"), _plural(s["a"], "artist", "artists"), _range(s)),
+        "%s under €1,000%s. Paintings, prints and mixed media; enquire with the artist." % (_works(s), _range(s)))
+
+
+def _d_prints(packages):
+    s = _stats(packages, "original-prints-ireland/index.html")
+    if not s["n"]:
+        return "Original screen prints, etchings and monoprints by artists based or working in Ireland, with edition sizes as the artists state them."
+    return _fit("%s: screen prints, intaglio etchings and one-of-a-kind monoprints%s. Edition sizes as the artists state them." % (
+        _works(s, "original print", "original prints"), _from(s)),
+        "%s%s, with edition sizes. Enquire with the artist." % (_works(s, "original print", "original prints"), _from(s)))
+
+
+def _d_oil(packages):
+    s = _stats(packages, "oil-paintings-ireland/index.html")
+    if not s["n"]:
+        return "Original oil paintings on linen, canvas and panel by artists based or working in Ireland. See sizes and prices; enquire with the artist."
+    return _fit("%s on linen, canvas and panel by %s based or working in Ireland%s. See sizes and prices; enquire with the artist." % (
+        _plural(s["n"], "original oil painting", "original oil paintings"), _plural(s["a"], "artist", "artists"), _from(s)),
+        "%s%s. See sizes and prices; enquire with the artist." % (_works(s, "oil painting", "oil paintings"), _from(s)))
+
+
+def _d_mixed(packages):
+    s = _stats(packages, "mixed-media-art-ireland/index.html")
+    if not s["n"]:
+        return "Original mixed-media and collage art by artists based or working in Ireland: how each work is made, with sizes and prices."
+    return _fit("%s in mixed media, collage, resin and paint%s. See how each is made, its size and price, and enquire." % (_works(s), _from(s)),
+                "%s in mixed media and collage%s. Enquire with the artist." % (_works(s), _from(s)))
+
+
+def _d_office(packages):
+    s = _stats(packages, "art-for-offices/index.html")
+    if not s["n"]:
+        return "Buy original art for receptions, meeting rooms and workspaces in Ireland, with practical guidance on size, light and hanging."
+    return _fit("Original art for receptions, meeting rooms and workspaces: %s of 80 cm or more%s. Guidance on size and hanging." % (_works(s), _from(s)),
+                "Original art for offices: %s of 80 cm or more%s. Enquire with the artist." % (_works(s), _from(s)))
+
+
+def _d_small(packages):
+    s = _stats(packages, "small-artworks/index.html")
+    if not s["n"]:
+        return "Small original artworks of 60 cm or less for hallways, shelves and gallery walls. Sizes and prices from the artists."
+    return _fit("%s of 60 cm or less for hallways, shelves and gallery walls%s. Sizes and prices from the artists." % (
+        _works(s, "small original work", "small original works"), _from(s)),
+        "%s of 60 cm or less%s." % (_works(s, "small original work", "small original works"), _from(s)))
+
+
+def _d_collecting(packages):
+    s = _stats(packages, "collecting-art-ireland/index.html")
+    tail = (" Live picks from %s." % _plural(s["a"], "artist", "artists")) if s["n"] else ""
+    return _fit("A practical guide to starting an art collection: setting a budget, meeting artists, prints or paintings, care and records." + tail,
+                "A practical guide to starting an art collection: budget, artists, prints or paintings, care and records.")
+
+
+def _d_gifts(packages):
+    s = _stats(packages, "art-gifts-ireland/index.html")
+    if not s["n"]:
+        return "How to choose original art as a gift: size, style, budget and timing, with collection or delivery arranged with the artist."
+    return _fit("How to choose original art as a gift: size, style, budget and timing. %s under €1,000%s." % (
+        _works(s, "small original work", "small original works"), _from(s)),
+        "Original art as a gift: %s under €1,000%s." % (_works(s, "small work", "small works"), _from(s)))
+
+
+def _d_fig(packages):
+    s = _stats(packages, "figurative-art-ireland/index.html")
+    if not s["n"]:
+        return "Contemporary figurative art by artists based or working in Ireland: figures, faces and heads in paint and mixed media."
+    return _fit("Contemporary figurative art: %s, with figures, faces and heads in paint and mixed media%s. Enquire with the artist." % (_works(s), _from(s)),
+                "Contemporary figurative art: %s%s. Enquire with the artist." % (_works(s), _from(s)))
+
+
+def _d_coastal(packages):
+    s = _stats(packages, "coastal-art-ireland/index.html")
+    if not s["n"]:
+        return "Coastal and seascape art by artists based or working in Ireland. A small, curated collection that grows as artists publish."
+    return _fit("Coastal and seascape art: %s, layered in paint, print and ink%s. A small, curated collection that is growing." % (_works(s), _from(s)),
+                "Coastal art: %s%s. A small, curated collection." % (_works(s), _from(s)))
+
+
+LANDING_META = {
+    "original-art-under-1000/index.html": ("Original Art Under €1,000 in Ireland | PlotArt", _d_u1000),
+    "original-prints-ireland/index.html": ("Original Prints & Limited Editions in Ireland | PlotArt", _d_prints),
+    "oil-paintings-ireland/index.html": ("Original Oil Paintings for Sale in Ireland | PlotArt", _d_oil),
+    "mixed-media-art-ireland/index.html": ("Mixed Media & Collage Art for Sale in Ireland | PlotArt", _d_mixed),
+    "art-for-offices/index.html": ("Art for Offices & Workspaces in Ireland | PlotArt", _d_office),
+    "small-artworks/index.html": ("Small Original Artworks for Small Spaces | PlotArt", _d_small),
+    "collecting-art-ireland/index.html": ("How to Start an Art Collection in Ireland | PlotArt", _d_collecting),
+    "art-gifts-ireland/index.html": ("Original Art as a Gift in Ireland | PlotArt", _d_gifts),
+    "figurative-art-ireland/index.html": ("Figurative & Portrait Art for Sale in Ireland | PlotArt", _d_fig),
+    "coastal-art-ireland/index.html": ("Coastal & Seascape Art for Sale in Ireland | PlotArt", _d_coastal),
+}
+# update() sets the generated title and description on every HUB_META page; hub_meta() reads LANDING_META for these
+HUB_META.update({p: (t, None) for p, (t, _d) in LANDING_META.items()})

@@ -23,6 +23,20 @@ COLLECTION_SWITCHES = {"artworks/index.html": ("artworks_indexable", "artworks_i
                        "large-artworks/index.html": ("large_artworks_indexable", "large_artworks_in_sitemap"),
                        "original-art-under-500/index.html": ("under_500_indexable", "under_500_in_sitemap"),
                        "landscape-paintings-ireland/index.html": ("landscape_paintings_indexable", "landscape_paintings_in_sitemap")}
+# Growth 3 landing pages (28 Nov 2026): ten more filtered collections and guides built exactly like large-artworks/,
+# each with its own indexing and sitemap switches (plotart_search_content.LANDING holds their tests)
+LANDING_SWITCHES = {"original-art-under-1000/index.html": ("under_1000_indexable", "under_1000_in_sitemap"),
+                    "original-prints-ireland/index.html": ("original_prints_indexable", "original_prints_in_sitemap"),
+                    "oil-paintings-ireland/index.html": ("oil_paintings_indexable", "oil_paintings_in_sitemap"),
+                    "mixed-media-art-ireland/index.html": ("mixed_media_indexable", "mixed_media_in_sitemap"),
+                    "art-for-offices/index.html": ("art_for_offices_indexable", "art_for_offices_in_sitemap"),
+                    "small-artworks/index.html": ("small_artworks_indexable", "small_artworks_in_sitemap"),
+                    "collecting-art-ireland/index.html": ("collecting_guide_indexable", "collecting_guide_in_sitemap"),
+                    "art-gifts-ireland/index.html": ("art_gifts_indexable", "art_gifts_in_sitemap"),
+                    "figurative-art-ireland/index.html": ("figurative_art_indexable", "figurative_art_in_sitemap"),
+                    "coastal-art-ireland/index.html": ("coastal_art_indexable", "coastal_art_in_sitemap")}
+COLLECTION_PATHS += tuple(LANDING_SWITCHES)
+COLLECTION_SWITCHES.update(LANDING_SWITCHES)
 EDITORIAL_PATHS = ("choose-art-for-living-room.html",)
 # Commercial Conversion Sprint 1 (founder approval 26 Nov 2026): the homepage's availability line and the living-room
 # guide's price-band recommendations are generated regions too, refreshed from published galleries at every publication

@@ -305,6 +305,11 @@ for name in PAGES:
             _outside_vt = visible_text(C.outside(s))
             if name == "original-art-under-500/index.html" and C.UNDER_LABEL == "€%d" % C.UNDER_EUR:
                 _outside_vt = _outside_vt.replace(C.UNDER_LABEL, "")
+            # Growth 3 (28 Nov 2026): the same narrow exception for the under-€1,000 page, declared in C.PRICE_LABELS. Only
+            # that page's own threshold, and only while the label is exactly the euro-formatted threshold.
+            _lbl = getattr(C, "PRICE_LABELS", {}).get(name)
+            if name == "original-art-under-1000/index.html" and _lbl and _lbl[0] == "€{:,}".format(_lbl[1]) == "€1,000":
+                _outside_vt = _outside_vt.replace(_lbl[0], "")
             need("€" not in _outside_vt, "L3 %s has an ungoverned price outside its collection" % name)
         except ValueError as e:
             need(False, "L3 " + str(e))
