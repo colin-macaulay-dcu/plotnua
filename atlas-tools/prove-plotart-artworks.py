@@ -445,5 +445,49 @@ check("R7 the script fails safe and keeps hire live and fail-closed (catalogue A
 check("R8 filtering never reorders: the script only marks cards (data-rf-out), it never moves or sorts them",
       "data-rf-out" in _js and not re.search(r"\.(sort|appendChild|insertBefore|prepend|append)\(", _js.replace("document.body.style", "")))
 
+# ---- Growth 3 landing pages (28 Nov 2026): each page's rule, its live figures, its limits and its empty state ----------
+_ids = {w["id"]: w for p in packages for w in p["works"]}
+_avail = C.available(packages)
+for _p in C.LANDING:
+    _doc = (ROOT / "plotart" / _p).read_text(encoding="utf-8")
+    _t, _d = C.hub_meta(_p, packages)
+    check("G3 %s: title at most 60 and description at most 160 characters, both on the page" % _p,
+          len(_t) <= 60 and len(_d) <= 160 and ("<title>%s</title>" % html.escape(_t, quote=False)) in _doc
+          and ('<meta name="description" content="%s">' % html.escape(_d, quote=True)) in _doc, (len(_t), len(_d)))
+    _rows = C.collection_order(packages, C.COLLECTIONS[_p]["keep"])
+    check("G3 %s: every listed work is published, available and passes the page's rule" % _p,
+          all(w["availability"] == "available" and C.COLLECTIONS[_p]["keep"](w) for _, w in _rows))
+    check("G3 %s: CollectionPage, ItemList, canonical and sitemap entry" % _p,
+          '"@type":"CollectionPage"' in _doc and '"@type":"ItemList"' in _doc
+          and ('<link rel="canonical" href="%s">' % SEO.canonical(_p)) in _doc
+          and ("<loc>%s</loc>" % SEO.canonical(_p)) in (ROOT / "sitemap.xml").read_text(encoding="utf-8"))
+    check("G3 %s: never in the main navigation" % _p, ('href="%s"' % SEO.canonical(_p)) not in (ROOT / "plotart/index.html").read_text(encoding="utf-8")
+          and ('href="%s"' % _p.replace("index.html", "")) not in re.search(r'<nav class="pa-pills.*?</nav>', (ROOT / "plotart/index.html").read_text(encoding="utf-8"), re.S).group(0))
+    _empty = C.collection([], _p)
+    check("G3 %s: graceful empty state" % _p, C.COLLECTIONS[_p]["empty"] in _empty and "pa-coll-grid" not in _empty and "../gallery/" in _empty)
+    check("G3 %s: no nationality claim and no meta keywords" % _p, "Irish artist" not in _doc and 'name="keywords"' not in _doc)
+check("G3 under €1,000: public prices below the threshold only (never price on request)",
+      all(C.priced(w) and w["price_eur"] < 1000 for _, w in C.collection_order(packages, C.is_under_1000))
+      and not C.is_under_1000({"price_eur": 900, "price_on_request": True}) and not C.is_under_1000({"price_eur": 1000}))
+check("G3 prints: printmaking processes only; a giclée is refused; mixed media is not a print",
+      C.is_print({"medium": "Screen print"}) and C.is_print({"medium": "Multi Layered Etched Intaglio Print"})
+      and not C.is_print({"medium": "Giclee print"}) and not C.is_print({"medium": "Mixed Media"}))
+check("G3 prints: editions read from the artist's own words", C.edition_label({"materials": "300 gsm paper, eidtion of 10."}) == "edition of 10"
+      and C.edition_label({"medium": "Monoprint/Acrylic"}) == "one of a kind" and C.edition_label({"medium": "Screen print"}) is None)
+check("G3 oil: oil paintings only; mixed media with oil stays mixed media",
+      C.is_oil({"medium": "Oil on linen"}) and not C.is_oil({"medium": "Mixed media, raw silk & oil on canvas"}) and not C.is_oil({"medium": "Acrylic on canvas"}))
+check("G3 curated allowlists name only published works, and none is both coastal and figurative",
+      C.FIGURATIVE_WORKS <= set(_ids) and C.COASTAL_WORKS <= set(_ids) and not (C.FIGURATIVE_WORKS & C.COASTAL_WORKS))
+_offices = (ROOT / "plotart/art-for-offices/index.html").read_text(encoding="utf-8")
+check("G3 offices: the hire sentence is exactly the approved wording",
+      "Alongside artwork sales, we are developing flexible art hire arrangements for commercial spaces, subject to artwork availability and agreement with the individual artist." in _offices)
+check("G3 guides: one work per artist, publicly priced",
+      all(len({p["artist"]["slug"] for p, _ in r}) == len(r) and all(C.priced(w) for _, w in r)
+          for r in (C._lowest_per_artist(C.collection_order(packages, C.COLLECTIONS[g]["keep"])) for g in ("collecting-art-ireland/index.html", "art-gifts-ireland/index.html"))))
+_gift = (ROOT / "plotart/art-gifts-ireland/index.html").read_text(encoding="utf-8")
+check("G3 gifts: no delivery-time promise and no voucher", "makes no delivery promise" in _gift and not re.search(r"voucher|guaranteed|in time for Christmas", _gift, re.I))
+_col = (ROOT / "plotart/collecting-art-ireland/index.html").read_text(encoding="utf-8")
+check("G3 collecting: no investment or value claim", not re.search(r"\binvest(?:ment)? (?:opportunit|potential|grade)|appreciat\w* in value|returns? on|asset class", _col, re.I))
+
 print("PLOTART ARTWORKS · %d checks, %d passed, %d failed" % (len(results), sum(results), len(results) - sum(results)))
 sys.exit(0 if all(results) else 1)
