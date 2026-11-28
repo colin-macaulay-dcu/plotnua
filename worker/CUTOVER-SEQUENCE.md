@@ -49,6 +49,19 @@ A goes first because the redirects then live in the Worker's own code (`PLOTART_
 
 ### A3. Change nameservers at Blacknight to `rosalie.ns.cloudflare.com` and `sevki.ns.cloudflare.com`
 
+**DONE, Sat 28 Nov 2026** (brought forward by the founder from 19:00):
+
+| Time (UTC) | Step | Result |
+|---|---|---|
+| 11:19 | Baseline (run 46139244963) | 1,720 checks, 0 failed. Pre-checks also passed: zones equivalent, no DNSSEC or DS, mail records correct, Resend Verified, Cloudflare NS assigned, site health 15/15 |
+| 11:35 | Nameservers saved at Blacknight (founder) | Saved |
+| 12:03 | Cloudflare zone active | Active |
+| 12:25 | +20 min compare (run 46144558578) | Clean. One transient GitHub Pages 503 on a font in the first run; re-checked OK |
+| 13:06 | +1 h compare (run 46147896945) | Clean. Both public resolvers answer with the Cloudflare nameservers |
+| 13:35 | Email check | Google Workspace send and reply OK (founder). Resend delivered a Studio email after the switch |
+
+Freeze #81 closed at 13:40. The +24 h and +48 h compares are scheduled. Both zones stay identical until at least 5 Dec 2026.
+
 **Founder approval and action at Blacknight.** No other change in the same window: no website release, Studio publication batch, Worker deploy, D1 migration, Cloudflare setting or proxy change. The freeze runs from the baseline run to the +1 h compare; see *Coordination* below.
 
 **Before:**
