@@ -89,7 +89,7 @@ COLLECTION
 </div></section>
 <section class="pa-coll-more"><div class="pa-wrap">
 <h2>Before you choose.</h2>
-<p>Measure the wall you have in mind, read the medium and dimensions, and ask the artist about framing, delivery and the total price. Each artist’s gallery tells you more about their practice and the rest of their work. If nothing here suits the space, you can <a href="../commissions/" data-pa-track="artworks_commissions">commission a new work from an Irish artist</a>.</p>
+<p>Measure the wall you have in mind, read the medium and dimensions, and ask the artist about framing, delivery and the total price. Each artist’s gallery tells you more about their practice and the rest of their work. If nothing here suits the space, you can <a href="../commissions/" data-pa-track="artworks_commissions">commission a new work from an artist based or working in Ireland</a>.</p>
 <div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../choose-art-for-living-room.html">Choosing art for your living room →</a><a class="pa-btn pa-btn--ghost" href="../abstract-contemporary-art-ireland.html">Abstract &amp; contemporary art →</a><a class="pa-btn pa-btn--ghost" href="../large-artworks/">Large artworks, 100 cm or more →</a><a class="pa-btn pa-btn--ghost" href="../landscape-paintings-ireland/">Landscape paintings →</a><a class="pa-btn pa-btn--ghost" href="../original-art-under-500/">Original art for smaller budgets →</a></div>
 <p class="pa-coll-browse">Browse by medium, size and occasion: <a href="../oil-paintings-ireland/">oil paintings</a>, <a href="../original-prints-ireland/">original prints</a>, <a href="../mixed-media-art-ireland/">mixed media and collage</a>, <a href="../small-artworks/">small artworks</a>, <a href="../figurative-art-ireland/">figurative art</a>, <a href="../coastal-art-ireland/">coastal art</a>, <a href="../art-for-offices/">art for offices</a>, <a href="../art-gifts-ireland/">original art as a gift</a> and <a href="../collecting-art-ireland/">how to start a collection</a>.</p>
 </div></section>
@@ -348,7 +348,7 @@ GIFTS_BODY = _hero("Art as a gift", "Original art as a gift.", [
         "<p>Enquire directly with the artist. Tell them it is a gift: they confirm availability, the total price, packing and how the work reaches you.</p>"],
     [("../original-art-under-500/", "Original art for smaller budgets"), ("../small-artworks/", "Small original artworks"), ("../buy-original-art-ireland.html", "Buying art &amp; prices")])
 
-FIGURATIVE_BODY = _hero("Figurative art", "Figurative and portrait art.", [
+FIGURATIVE_BODY = _hero("Figurative art", "Figurative art.", [
     '<p class="pa-lede">Contemporary figurative painting and mixed media by artists based or working in Ireland: figures, faces and heads that sit between the recognisable and the abstract. Some works hold a single figure or a face in profile; others set two or three figures in a charged, invented space.</p>',
     '<p class="pa-coll-how">This is a curated selection. PlotArt chooses each work from the artist’s own description and image text: a work is here when the artist presents figures, faces or people in it. The page changes as works are sold or published.BEING_NOTE</p>']) + _wall(
     "Available figurative works") + _more([

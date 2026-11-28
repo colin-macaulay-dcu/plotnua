@@ -1050,7 +1050,7 @@ LANDING_META = {
     "small-artworks/index.html": ("Small Original Artworks for Small Spaces | PlotArt", _d_small),
     "collecting-art-ireland/index.html": ("How to Start an Art Collection in Ireland | PlotArt", _d_collecting),
     "art-gifts-ireland/index.html": ("Original Art as a Gift in Ireland | PlotArt", _d_gifts),
-    "figurative-art-ireland/index.html": ("Figurative & Portrait Art for Sale in Ireland | PlotArt", _d_fig),
+    "figurative-art-ireland/index.html": ("Figurative Art for Sale in Ireland | PlotArt", _d_fig),
     "coastal-art-ireland/index.html": ("Coastal & Seascape Art for Sale in Ireland | PlotArt", _d_coastal),
 }
 # update() sets the generated title and description on every HUB_META page; hub_meta() reads LANDING_META for these
